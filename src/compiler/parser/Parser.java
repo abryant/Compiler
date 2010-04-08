@@ -118,7 +118,7 @@ public class Parser
         }
       }
       
-      Set<Object> fullFollowSet = ruleSet.getFullFollowSet(stack.getLast().getType());
+      Set<Object> fullFollowSet = ruleSet.getFullFollowSet(stack.getLast().getType(), target);
       if (fullFollowSet.isEmpty())
       {
         // nothing can follow the current token
@@ -133,20 +133,21 @@ public class Parser
       else
       {
         Token lookahead = tokenizer.lookahead(1);
-        if (lookahead != null && !fullFollowSet.contains(lookahead.getType()))
+        if (lookahead == null ? !fullFollowSet.contains(null) : !fullFollowSet.contains(lookahead.getType()))
         {
           // the next token cannot follow this one - syntax error
           StringBuffer followSetBuffer = new StringBuffer();
           Iterator<Object> it = fullFollowSet.iterator();
           while (it.hasNext())
           {
-            followSetBuffer.append(it.next());
+            Object current = it.next();
+            followSetBuffer.append(current == null ? "(end of input)" : current);
             if (it.hasNext())
             {
               followSetBuffer.append(", ");
             }
           }
-          throw new ParseException("Syntax Error, expected one of: " + followSetBuffer); // TODO: change to "Syntax Error at " + tokenizer.getPosition()
+          throw new ParseException("Syntax Error, got: " + (lookahead == null ? "(end of input)" : lookahead.getType()) + " expected one of: " + followSetBuffer); // TODO: change to "Syntax Error at " + tokenizer.getPosition()
         }
       }
       
@@ -166,6 +167,9 @@ public class Parser
         }
         // we do not have a good match, so throw a ParseException
         StringBuffer followSetBuffer = new StringBuffer();
+        // we would not have expected the end of input, or we would not be here, so remove it from the follow set
+        // before we generate the list of expected tokens
+        fullFollowSet.remove(null);
         Iterator<Object> it = fullFollowSet.iterator();
         while (it.hasNext())
         {
@@ -175,7 +179,7 @@ public class Parser
             followSetBuffer.append(", ");
           }
         }
-        throw new ParseException("Syntax Error, expected one of: " + followSetBuffer); // TODO: change to "Syntax Error at " + tokenizer.getPosition()
+        throw new ParseException("Syntax Error, got: (end of input) expected one of: " + followSetBuffer); // TODO: change to "Syntax Error at " + tokenizer.getPosition()
       }
       
       // reduce according to the longest rule that matches the end of the current stack

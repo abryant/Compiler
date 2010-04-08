@@ -180,11 +180,13 @@ public class RuleSet
    * Since the rule can contain non-terminals, any non-terminals are expanded and the first type(s) in the expanded rules are added to the follow set.
    * If the specified type occurs at the end of a rule, the full follow set of the terminal from that rule is added to the generated follow set.
    * This method is guaranteed not to recurse indefinitely, as it keeps track of which rules it has applied and does not go into loops.
+   * Also, the result of this method contains the null element iff the specified type can be the last token. For this to work, the top level token must be passed into this method.
    * NOTE: after this is called, add() should not be called again, as this caches results that depend on the rule set being in the current state.
    * @param type - the type to generate the full follow set for
+   * @param topLevelType - the top level type that the parser is trying to reach, this type is assumed to have an extra follow entry: null
    * @return the set of terminal types that could follow the specified type
    */
-  public Set<Object> getFullFollowSet(Object type)
+  public Set<Object> getFullFollowSet(Object type, Object topLevelType)
   {
     Set<Object> terminals = fullFollowSets.get(type);
     if (terminals != null)
@@ -227,6 +229,11 @@ public class RuleSet
     for (Object currentType : initialSet)
     {
       terminals.addAll(getImmediateFollowSet(currentType));
+      if (currentType == topLevelType)
+      {
+        // add the null follow entry to represent the fact that it is possible for the specified type to be the last token
+        terminals.add(null);
+      }
     }
     return terminals;
   }
