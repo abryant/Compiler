@@ -56,25 +56,25 @@ public class ExpressionTokenizer extends Tokenizer
     case 1:
       return new Token(ExpressionType.NUMBER, new Number(1));
     case 2:
-      return new Token(ExpressionType.TIMES, null);
+      return new Token(ExpressionType.TIMES, ExpressionType.TIMES);
     case 3:
       return new Token(ExpressionType.NUMBER, new Number(2));
     case 4:
-      return new Token(ExpressionType.PLUS, null);
+      return new Token(ExpressionType.PLUS, ExpressionType.PLUS);
     case 5:
       return new Token(ExpressionType.NUMBER, new Number(3));
     case 6:
-      return new Token(ExpressionType.TIMES, null);
+      return new Token(ExpressionType.TIMES, ExpressionType.TIMES);
     case 7:
-      return new Token(ExpressionType.LPAREN, null);
+      return new Token(ExpressionType.LPAREN, ExpressionType.LPAREN);
     case 8:
-      return new Token(ExpressionType.NUMBER, new Number(5));
+      return new Token(ExpressionType.NUMBER, new Number(12));
     case 9:
-      return new Token(ExpressionType.PLUS, null);
+      return new Token(ExpressionType.MINUS, ExpressionType.MINUS);
     case 10:
       return new Token(ExpressionType.NUMBER, new Number(6));
     case 11:
-      return new Token(ExpressionType.RPAREN, null);
+      return new Token(ExpressionType.RPAREN, ExpressionType.RPAREN);
     default:
       return null;
     }

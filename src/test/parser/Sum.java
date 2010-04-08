@@ -12,15 +12,26 @@ public class Sum
 {
   
   private Product[] products;
+  private boolean[] signs;
   
-  public Sum(Product[] products)
+  public Sum(Product[] products, boolean[] signs)
   {
     this.products = products;
+    this.signs = signs;
+    if (products.length != signs.length)
+    {
+      throw new IllegalArgumentException();
+    }
   }
   
   public Product[] getProducts()
   {
     return products;
+  }
+  
+  public boolean[] getSigns()
+  {
+    return signs;
   }
   
   @Override
@@ -29,11 +40,16 @@ public class Sum
     StringBuffer buffer = new StringBuffer();
     for (int i = 0; i < products.length; i++)
     {
-      buffer.append(products[i]);
-      if (i != products.length - 1)
+      if (signs[i])
       {
-        buffer.append(" + ");
+        // the current element is positive
+        buffer.append(i == 0 ? "" : " + ");
       }
+      else
+      {
+        buffer.append(i == 0 ? "- " : " - ");
+      }
+      buffer.append(products[i]);
     }
     return buffer.toString();
   }
@@ -41,9 +57,16 @@ public class Sum
   public int evaluate()
   {
     int result = 0;
-    for (Product p : products)
+    for (int i = 0; i < products.length; i++)
     {
-      result += p.evaluate();
+      if (signs[i])
+      {
+        result += products[i].evaluate();
+      }
+      else
+      {
+        result -= products[i].evaluate();
+      }
     }
     return result;
   }

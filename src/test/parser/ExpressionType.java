@@ -16,6 +16,7 @@ public enum ExpressionType
   SUM,
   EXPRESSION,
   PLUS,
+  MINUS,
   TIMES,
   LPAREN,
   RPAREN
