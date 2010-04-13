@@ -23,7 +23,7 @@ public class ExpressionTokenizer extends Tokenizer
     new Token(ExpressionType.NUMBER, new Number(2)),
     new Token(ExpressionType.PLUS, ExpressionType.PLUS),
     new Token(ExpressionType.NUMBER, new Number(3)),
-    new Token(ExpressionType.TIMES, ExpressionType.TIMES),
+    new Token(ExpressionType.MINUS, ExpressionType.MINUS),
     new Token(ExpressionType.LPAREN, ExpressionType.LPAREN),
     new Token(ExpressionType.NUMBER, new Number(12)),
     new Token(ExpressionType.MINUS, ExpressionType.MINUS),
@@ -40,7 +40,7 @@ public class ExpressionTokenizer extends Tokenizer
     new Token(ExpressionType.RPAREN, ExpressionType.RPAREN)
   };
   
-  private Token[] tokens = TEST2;
+  private Token[] tokens = TEST1;
   
   
   

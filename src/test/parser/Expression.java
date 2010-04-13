@@ -29,7 +29,7 @@ public class Expression
     return sum.toString();
   }
   
-  public int evaluate()
+  public double evaluate()
   {
     return sum.evaluate();
   }

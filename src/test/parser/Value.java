@@ -44,7 +44,7 @@ public class Value
     return "(" + expr.toString() + ")";
   }
   
-  public int evaluate()
+  public double evaluate()
   {
     if (num != null)
     {

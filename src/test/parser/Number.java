@@ -11,14 +11,14 @@ package test.parser;
 public class Number
 {
   
-  private int n;
+  private double n;
   
-  public Number(int n)
+  public Number(double n)
   {
     this.n = n;
   }
   
-  public int get()
+  public double get()
   {
     return n;
   }

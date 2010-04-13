@@ -38,9 +38,9 @@ public class Product
     return buffer.toString();
   }
   
-  public int evaluate()
+  public double evaluate()
   {
-    int result = 1;
+    double result = 1;
     for (Value v : values)
     {
       result *= v.evaluate();

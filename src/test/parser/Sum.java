@@ -54,9 +54,9 @@ public class Sum
     return buffer.toString();
   }
   
-  public int evaluate()
+  public double evaluate()
   {
-    int result = 0;
+    double result = 0;
     for (int i = 0; i < products.length; i++)
     {
       if (signs[i])
