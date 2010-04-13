@@ -31,15 +31,6 @@ public class ExpressionTokenizer extends Tokenizer
     new Token(ExpressionType.RPAREN, ExpressionType.RPAREN)
   };
   
-  private static final Token[] TEST2 =
-  {
-    new Token(ExpressionType.LPAREN, ExpressionType.LPAREN),
-    new Token(ExpressionType.NUMBER, new Number(6)),
-    new Token(ExpressionType.TIMES, ExpressionType.TIMES),
-    new Token(ExpressionType.NUMBER, new Number(2)),
-    new Token(ExpressionType.RPAREN, ExpressionType.RPAREN)
-  };
-  
   private Token[] tokens = TEST1;
   
   
