@@ -1,5 +1,6 @@
 package compiler.parser;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,8 +18,7 @@ public class Parser
 {
   
   /**
-   * The empty type, a terminal used to represent empty rules.
-   * TODO: decide how/whether this should actually be used
+   * The empty type, a terminal used only when there are no input tokens.
    */
   public static final Object EMPTY_TYPE = new Object();
   
@@ -55,7 +55,8 @@ public class Parser
         if (tokenizer.isFinished())
         {
           // add the empty token if there are no more tokens to read and the stack is empty
-          stack.add(new Token(EMPTY_TYPE, null));
+          // i.e. if there is no input
+          stack.add(new Token(EMPTY_TYPE, EMPTY_TYPE));
         }
         else
         {
@@ -73,20 +74,23 @@ public class Parser
       
       TypeUseEntry longestCompleteMatch = null;
       int longestCompleteMatchLength = -1;
+      List<TypeUseEntry> incompleteMatches = new ArrayList<TypeUseEntry>();
       for (TypeUseEntry entry : typeUses)
       {
         Object[] requirementTypeList = entry.getRule().getRequirementTypeLists()[entry.getTypeListNum()];
         
         // check that the rule matches the tokens on the end of the stack
-        if (entry.getOffset() != requirementTypeList.length - 1 || stack.size() < requirementTypeList.length)
+        int offset = entry.getOffset();
+        if (stack.size() <= offset)
         {
+          // there are not enough tokens on the stack to match this entry
           continue;
         }
         
         boolean matches = true;
-        for (int i = 1; i <= requirementTypeList.length; i++)
+        for (int i = 0; i < offset; i++)
         {
-          if (stack.get(stack.size() - i).getType() != requirementTypeList[requirementTypeList.length - i])
+          if (stack.get(stack.size() - 1 - i).getType() != requirementTypeList[offset - i])
           {
             matches = false;
             break;
@@ -98,16 +102,36 @@ public class Parser
           continue;
         }
         
-        // find the longest use of the rule
-        if (longestCompleteMatch == null || longestCompleteMatchLength < requirementTypeList.length)
+        // the entry matches, so either update the longest complete match or the incomplete matches set
+        if (offset != requirementTypeList.length - 1)
         {
+          // this is an incomplete match, so add it to the set
+          incompleteMatches.add(entry);
+          continue;
+        }
+        
+        // this is a complete match, so update the longestCompleteMatch variable
+        if (longestCompleteMatchLength < requirementTypeList.length)
+        {
+          // we have a new longest complete match
           longestCompleteMatch = entry;
           longestCompleteMatchLength = requirementTypeList.length;
+        }
+        else if (longestCompleteMatchLength == requirementTypeList.length)
+        {
+          // we have another complete match that has exactly the same length as the previous best
+          // so the grammar has a problem - there are two instances of the right hand side of a rule
+          StringBuffer ruleBuffer = new StringBuffer();
+          for (Object type : requirementTypeList)
+          {
+            ruleBuffer.append(" " + type);
+          }
+          throw new ParseException("Grammar error! There are (at least) two possible reductions for:" + ruleBuffer.toString());
         }
       }
       
       // find the immediate follow set for the last token
-      Set<Object> immediateFollowSet = ruleSet.getImmediateFollowSet(stack.getLast().getType());
+      Set<Object> immediateFollowSet = ruleSet.getImmediateFollowSet(incompleteMatches);
       if (!immediateFollowSet.isEmpty())
       {
         Token lookahead = tokenizer.lookahead(1);
@@ -192,11 +216,20 @@ public class Parser
     return stack.get(0).getValue();
   }
   
+  /**
+   * Shifts the input by adding the next token from the tokenizer to the stack
+   */
   private void shift()
   {
     stack.add(tokenizer.next());
   }
   
+  /**
+   * Reduces the stack according to the specified rule (and the number of the type list in that rule)
+   * @param rule - the rule to reduce with
+   * @param typeListNum - the number of the type list in the specified rule to reduce with
+   * @throws ParseException - if the types on the stack do not match the type list in the rule
+   */
   private void reduce(Rule rule, int typeListNum) throws ParseException
   {
     Object[] typeList = rule.getRequirementTypeLists()[typeListNum];

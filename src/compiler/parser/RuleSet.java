@@ -26,7 +26,6 @@ public class RuleSet
   
   private Map<Object, List<TypeUseEntry>> typeUses;
   
-  private Map<Object, Set<Object>> immediateFollowSets;
   private Map<Object, Set<Object>> fullFollowSets;
   
   /**
@@ -36,7 +35,6 @@ public class RuleSet
   {
     rules = new HashMap<Object, List<Object[]>>();
     typeUses = new HashMap<Object, List<TypeUseEntry>>();
-    immediateFollowSets = new HashMap<Object, Set<Object>>();
     fullFollowSets = new HashMap<Object, Set<Object>>();
   }
   
@@ -100,26 +98,17 @@ public class RuleSet
   }
   
   /**
-   * Finds the immediate follow set of the specified type.
-   * The immediate follow set is the set of terminal types that can immediately follow the specified type as part of the same rule.
+   * Finds the immediate follow set of the specified list of type uses.
+   * The immediate follow set of a type is the set of terminal types that can immediately follow the specified type as part of the same rule.
    * Since the rule can contain non-terminals, any non-terminals are expanded and the first type(s) in the expanded rules are added to the immediate follow set.
-   * If the specified type occurs at the end of a rule, the immediate follow set of the terminal from that rule is NOT added to the generated follow set.
+   * If the type use occurs at the end of a rule, the immediate follow set of the type from that rule is NOT added to the generated follow set.
    * This method is guaranteed not to recurse indefinitely, as it keeps track of which rules it has applied and does not go into loops.
-   * NOTE: after this is called, add() should not be called again, as this caches results that depend on the rule set being in the current state.
-   * @param type - the type to generate the immediate follow set for
-   * @return the set of terminal types that could follow the specified type
+   * @param uses - the list of uses of the type to generate the immediate follow set for
+   * @return the set of terminal types that could follow the specified type uses
    */
-  public Set<Object> getImmediateFollowSet(Object type)
+  public Set<Object> getImmediateFollowSet(List<TypeUseEntry> uses)
   {
-    // check the cache first
-    Set<Object> terminals = immediateFollowSets.get(type);
-    if (terminals != null)
-    {
-      return terminals;
-    }
-    
-    terminals = new HashSet<Object>();
-    List<TypeUseEntry> uses = typeUses.get(type);
+    Set<Object> terminals = new HashSet<Object>();
     if (uses == null || uses.isEmpty())
     {
       // this type is never used, so return an empty set
@@ -157,7 +146,7 @@ public class RuleSet
       {
         if (rule.length == 0)
         {
-          queue.offer(Parser.EMPTY_TYPE);
+          // an empty rule is equivalent to no rule at all, so ignore it
           continue;
         }
         // only add the rule if we have not already visited it, otherwise we could recurse infinitely for some rules
@@ -167,9 +156,6 @@ public class RuleSet
         }
       }
     }
-    
-    // cache the result
-    immediateFollowSets.put(type, terminals);
     
     return terminals;
   }
@@ -228,7 +214,7 @@ public class RuleSet
     terminals = new HashSet<Object>();
     for (Object currentType : initialSet)
     {
-      terminals.addAll(getImmediateFollowSet(currentType));
+      terminals.addAll(getImmediateFollowSet(getTypeUses(currentType)));
       if (currentType == topLevelType)
       {
         // add the null follow entry to represent the fact that it is possible for the specified type to be the last token
