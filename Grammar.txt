@@ -72,10 +72,31 @@ Modifier  = StaticKeyword | AbstractKeyword | FinalKeyword | SynchronizedKeyword
 
 NativeSpecification = NativeKeyword LParen StringLiteral RParen
 
-ClassMemberList = MethodDefinition | MemberVariableDefinition | StaticInitializer
-                | ClassMemberList MethodDefinition
-                | ClassMemberList MemberVariableDefinition
-                | ClassMemberList StaticInitializer
+ClassMemberList = ClassMember | ClassMemberList ClassMember
+ClassMember = StaticInitializer | ConstructorDefinition | FieldDefinition | PropertyDefinition | MethodDefinition | ClassDefinition
+
+StaticInitializer = StaticKeyword Block
+
+ConstructorDefinition = AccessSpecifier ReferenceTypeName ParameterList ThrowsClause Block
+                      | AccessSpecifier ReferenceTypeName ParameterList Block
+                      | ReferenceTypeName ParameterList ThrowsClause Block
+                      | ReferenceTypeName ParameterList Block
+
+FieldDefinition = AccessSpecifier Modifiers Type VariableDeclarators Semicolon
+                | Modifiers Type VariableDeclarators Semicolon
+                | AccessSpecifier Type VariableDeclarators Semicolon
+                | Type VariableDeclarators Semicolon
+
+PropertyDefinition = PropertyKeyword Modifiers Type VariableName PropertyGetterSetter Semicolon
+                   | PropertyKeyword Type VariableName PropertyGetterSetter Semicolon
+                   | PropertyKeyword Modifiers Type VariableName Semicolon
+                   | PropertyKeyword Type VariableName Semicolon
+PropertyGetterSetter = PropertyGetter PropertySetter
+                     | PropertySetter PropertyGetter
+                     | PropertyGetter
+                     | PropertySetter
+PropertyGetter = AccessSpecifier GetKeyword Block | AccessSpecifier GetKeyword | GetKeyword Block | GetKeyword
+PropertySetter = AccessSpecifier SetKeyword Block | AccessSpecifier SetKeyword | SetKeyword Block | SetKeyword
 
 MethodDefinition = AccessSpecifier Modifiers ReturnType MethodName ParameterList MethodRest
                  | AccessSpecifier ReturnType MethodName ParameterList MethodRest
@@ -88,22 +109,17 @@ MethodRest = Semicolon
 ThrowsClause = ThrowsKeyword ExceptionList
 ExceptionList = ExceptionList Comma ReferenceTypeName | ReferenceTypeName
 
-MemberVariableDefinition = AccessSpecifier Modifiers Type VariableDeclarators Semicolon
-                         | Modifiers Type VariableDeclarators Semicolon
-                         | AccessSpecifier Type VariableDeclarators Semicolon
-                         | Type VariableDeclarators Semicolon
-
 VariableDeclarators = VariableDeclarators Comma VariableDeclarator | VariableDeclarator
 VariableDeclarator  = VariableName Equals Expression
 
-StaticInitializer = StaticKeyword Block
-
-ParameterList = LParen Params Comma DefaultParams RParam
-              | LParen Params RParem
+ParameterList = LParen Params Comma DefaultParams RParen
+              | LParen Params RParen
               | LParen DefaultParams RParen
               | LParen RParen
-Params = Params Comma Param | Param
+Params = NormalParams Comma VarArgsParam | NormalParams | VarArgsParam
+NormalParams = NormalParams Comma Param | Param
 Param  = Type VariableName
+VarArgsParam = Type Dot Dot Dot VariableName
 DefaultParams = DefaultParams Comma DefaultParam | DefaultParam
 DefaultParam  = Type At VariableName Equals Expression
 
