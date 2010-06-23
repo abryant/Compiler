@@ -1,55 +1,80 @@
 package compiler.parser;
 
+
 /*
- * Created on 7 Apr 2010
+ * Created on 22 Jun 2010
  */
 
 /**
+ * A value object which represents a use of a type in a rule set.
+ *
  * @author Anthony Bryant
- * 
  */
-class TypeUseEntry
+public final class TypeUseEntry
 {
-  
-  private final Rule rule;
-  private final int typeListNum;
-  private final int offset;
-  
+  private Rule rule;
+  private int typeListIndex;
+  private int offset;
+
   /**
-   * Creates a new TypeUseEntry with the specified rule, type list number in that rule's list of type lists, and offset in the type list.
-   * @param rule - the Rule that this type is used in
-   * @param typeListNum - the index of the Rule's type requirement list that this type is included in
-   * @param offset - the offset of the type in the Rule's specified type requirement list
+   * Creates a new TypeUseEntry to store the specified values
+   * @param rule - the rule to store
+   * @param typeListIndex - the index to store
+   * @param offset - the offset to store
    */
-  public TypeUseEntry(Rule rule, int typeListNum, int offset)
+  public TypeUseEntry(Rule rule, int typeListIndex, int offset)
   {
     this.rule = rule;
-    this.typeListNum = typeListNum;
+    this.typeListIndex = typeListIndex;
     this.offset = offset;
   }
 
   /**
-   * @return the Rule that the type is used in
+   * @return the rule
    */
   public Rule getRule()
   {
     return rule;
   }
-  
+
   /**
-   * @return the index of the Rule's type requirement list that this type is included in
+   * @return the typeListIndex
    */
-  public int getTypeListNum()
+  public int getTypeListIndex()
   {
-    return typeListNum;
+    return typeListIndex;
   }
-  
+
   /**
-   * @return the offset of the type in the Rule's specified type requirement list
+   * @return the offset
    */
   public int getOffset()
   {
     return offset;
   }
-  
+
+  /**
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object o)
+  {
+    if (!(o instanceof TypeUseEntry))
+    {
+      return false;
+    }
+    TypeUseEntry other = (TypeUseEntry) o;
+    return rule.equals(other.rule) &&
+           typeListIndex == other.typeListIndex &&
+           offset == other.offset;
+  }
+
+  /**
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode()
+  {
+    return (rule.hashCode() * 31 + typeListIndex) * 31 + offset;
+  }
 }

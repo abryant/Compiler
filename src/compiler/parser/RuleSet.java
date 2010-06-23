@@ -1,227 +1,329 @@
 package compiler.parser;
 
-import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 /*
- * Created on 6 Apr 2010
+ * Created on 21 Jun 2010
  */
 
 /**
- * A RuleSet object contains a set of rules that the parser can use to match. It supports various lookups on the set of rules.
- * Once a method other than add() has been called on an instance of this class, add() should not be called again, as this class caches results for some function calls.
- * 
+ * Stores a set of rules, and provides methods for finding information about them.
  * @author Anthony Bryant
- * 
  */
 public class RuleSet
 {
-  
-  private Map<Object, List<Object[]>> rules;
-  
-  private Map<Object, List<TypeUseEntry>> typeUses;
-  
-  private Map<Object, Set<Object>> fullFollowSets;
-  
+
+  protected Map<Object, Rule> rules;
+  protected Rule startRule = null;
+
+  private Map<Object, Set<TypeUseEntry>> typeUses = new HashMap<Object, Set<TypeUseEntry>>();
+
+  // a lazily evaluated set containing the types that are nullable (i.e. can be epsilon)
+  // populated in findNullableSet()
+  private Set<Object> nullableTypes = null;
+
+  private Map<Object, Set<Object>> firstSets = new HashMap<Object, Set<Object>>();
+  private Map<Object, Set<Object>> followSets = new HashMap<Object, Set<Object>>();
+
   /**
-   * Creates a new RuleSet.
+   * Creates a new RuleSet with the specified rules
+   * @param rules - the rules to contain in this RuleSet
+   */
+  public RuleSet(Set<Rule> rules)
+  {
+    this.rules = new HashMap<Object, Rule>();
+    for (Rule rule : rules)
+    {
+      addRule(rule);
+    }
+  }
+
+  /**
+   * Creates a new RuleSet with an empty set of rules.
    */
   public RuleSet()
   {
-    rules = new HashMap<Object, List<Object[]>>();
-    typeUses = new HashMap<Object, List<TypeUseEntry>>();
-    fullFollowSets = new HashMap<Object, Set<Object>>();
+    rules = new HashMap<Object, Rule>();
   }
-  
+
   /**
-   * Adds the specified rule to this set
+   * Adds the specified rule to the set.
+   * Note: adding two different Rules with the same productions is not supported and will throw an IllegalArgumentException (but should be unnecessary).
+   * Also, adding two different Rules with the same token type will cause the two Rules to be coalesced into a single Rule.
+   * This means that neither the existing rule nor the new rule will be contained directly in the RuleSet, instead they will be added via a MetaRule
    * @param rule - the rule to add
    */
-  public void add(Rule rule)
+  public void addRule(Rule rule)
   {
-    Object[][] requirementTypeLists = rule.getRequirementTypeLists();
-    if (requirementTypeLists == null || requirementTypeLists.length == 0)
+    // clear the caches
+    nullableTypes = null;
+    typeUses = null;
+    firstSets.clear();
+    followSets.clear();
+
+    Rule existing = rules.get(rule.getType());
+    if (existing == null)
     {
-      // there is nothing to add if this Rule does not represent any real rules
-      return;
+      rules.put(rule.getType(), rule);
     }
-    
-    // get/create the rule list for this Rule's type
-    List<Object[]> ruleLists = rules.get(rule.getType());
-    if (ruleLists == null)
+    else
     {
-      ruleLists = new ArrayList<Object[]>(requirementTypeLists.length);
-      rules.put(rule.getType(), ruleLists);
+      rules.put(rule.getType(), new MetaRule(existing, rule));
     }
-    
-    for (int i = 0; i < requirementTypeLists.length; i++)
+  }
+
+  /**
+   * Adds the specified rule as the starting rule for the grammar.
+   * @param rule - the new starting rule for this grammar.
+   */
+  public void addStartRule(Rule rule)
+  {
+    addRule(rule);
+    startRule = rule;
+  }
+
+  /**
+   * @return the start rule for this grammar
+   */
+  public Rule getStartRule()
+  {
+    return startRule;
+  }
+
+  /**
+   * Finds the set of types that can possibly have no types on their right hand side.
+   * This includes all rules which are explicitly empty, and all rules that only have nullable rules on their right hand side.
+   */
+  private void findNullableSet()
+  {
+    nullableTypes = new HashSet<Object>();
+
+    // keep looping until no elements are added to the nullable set in an iteration
+    boolean changed = true;
+    while (changed)
     {
-      Object[] typeList = requirementTypeLists[i];
-      // add the type list to the rule type list
-      ruleLists.add(typeList);
-      
-      for (int j = 0; j < typeList.length; j++)
+      changed = false;
+      for (Entry<Object, Rule> entry : rules.entrySet())
       {
-        TypeUseEntry entry = new TypeUseEntry(rule, i, j);
-        
-        // add the type use entry to the type uses map
-        List<TypeUseEntry> typeUseList = typeUses.get(typeList[j]);
-        if (typeUseList == null)
+        Object type = entry.getKey();
+        Object[][] productions = entry.getValue().getRequirementTypeLists();
+        for (Object[] production : productions)
         {
-          typeUseList = new LinkedList<TypeUseEntry>();
-          typeUseList.add(entry);
-          typeUses.put(typeList[j], typeUseList);
+          boolean nullable = true;
+          for (Object subType : production)
+          {
+            if (!nullableTypes.contains(subType))
+            {
+              nullable = false;
+              break;
+            }
+          }
+          if (nullable)
+          {
+            if (nullableTypes.add(type))
+            {
+              changed = true;
+            }
+          }
         }
-        else
-        {
-          typeUseList.add(entry);
-        }
-        
       }
     }
-    
   }
-  
+
   /**
-   * Finds a list of each location in the grammar where the specified type is used (on the right hand side of a rule).
-   * @param type - the type to find the locations of
-   * @return a list of locations of uses of the specified type, or null if it is never used
+   * Finds whether the specified type is nullable.
+   * @param type - the type to check
+   * @return true if the specified type is nullable, false otherwise
    */
-  public List<TypeUseEntry> getTypeUses(Object type)
+  protected boolean isNullable(Object type)
   {
+    if (nullableTypes == null)
+    {
+      findNullableSet();
+    }
+    return nullableTypes.contains(type);
+  }
+
+  /**
+   * Finds the set of uses for each type on the right hand side of the rule.
+   */
+  private void findTypeUses()
+  {
+    typeUses = new HashMap<Object, Set<TypeUseEntry>>();
+
+    for (Rule rule : rules.values())
+    {
+      // add type uses for all of the right hand sides of the Rule
+      Object[][] typeLists = rule.getRequirementTypeLists();
+      for (int i = 0; i < typeLists.length; i++)
+      {
+        for (int j = 0; j < typeLists[i].length; j++)
+        {
+          Object type = typeLists[i][j];
+          Set<TypeUseEntry> uses = typeUses.get(type);
+          if (uses == null)
+          {
+            uses = new HashSet<TypeUseEntry>();
+            typeUses.put(type, uses);
+          }
+          uses.add(new TypeUseEntry(rule, i, j));
+        }
+      }
+    }
+  }
+
+  /**
+   * Finds the set of uses of the specified type.
+   * @param type - the type to find the uses of
+   * @return the set of uses of the specified type
+   */
+  protected Set<TypeUseEntry> getTypeUses(Object type)
+  {
+    if (typeUses == null)
+    {
+      findTypeUses();
+    }
     return typeUses.get(type);
   }
-  
+
   /**
-   * Finds the immediate follow set of the specified list of type uses.
-   * The immediate follow set of a type is the set of terminal types that can immediately follow the specified type as part of the same rule.
-   * Since the rule can contain non-terminals, any non-terminals are expanded and the first type(s) in the expanded rules are added to the immediate follow set.
-   * If the type use occurs at the end of a rule, the immediate follow set of the type from that rule is NOT added to the generated follow set.
-   * This method is guaranteed not to recurse indefinitely, as it keeps track of which rules it has applied and does not go into loops.
-   * @param uses - the list of uses of the type to generate the immediate follow set for
-   * @return the set of terminal types that could follow the specified type uses
+   * Finds the first set of the specified token type. The first set is defined according to the following rules:
+   * The first set for a terminal is the terminal itself.
+   * The first set for a nonterminal is the set of terminals that could start a derivation of it.
+   * The first set never contains an epsilon. Nullability is instead checked for using the isNullable() method.
+   * @param tokenType - the type of the token to find the first set of
+   * @return a set of token types that could start a derivation of the specified token type
    */
-  public Set<Object> getImmediateFollowSet(List<TypeUseEntry> uses)
+  public Set<Object> getFirstSet(Object tokenType)
   {
-    Set<Object> terminals = new HashSet<Object>();
-    if (uses == null || uses.isEmpty())
+    // check whether the result has already been cached
+    Set<Object> cachedResult = firstSets.get(tokenType);
+    if (cachedResult != null)
     {
-      // this type is never used, so return an empty set
-      return terminals;
+      return cachedResult;
     }
-    
-    LinkedList<Object> queue = new LinkedList<Object>();
-    
-    // find the immediate follow set including non-terminals
-    for (TypeUseEntry entry : uses)
-    {
-      Object[] rule = entry.getRule().getRequirementTypeLists()[entry.getTypeListNum()];
-      int index = entry.getOffset();
-      if (index + 1 == rule.length)
-      {
-        continue;
-      }
-      queue.offer(rule[index + 1]);
-    }
-    
+
+    Deque<Object> stack = new LinkedList<Object>();
+    stack.add(tokenType);
+
     Set<Object> visited = new HashSet<Object>();
-    
-    // reduce the non-terminals to terminals, and add the terminals to the set
-    while (!queue.isEmpty())
+
+    Set<Object> result = new HashSet<Object>();
+
+    while (!stack.isEmpty())
     {
-      Object followType = queue.poll();
-      visited.add(followType);
-      List<Object[]> followTypeRules = rules.get(followType);
-      if (followTypeRules == null || followTypeRules.isEmpty())
+      Object currentType = stack.pop();
+      // only visit each type once
+      if (visited.contains(currentType))
       {
-        terminals.add(followType);
         continue;
       }
-      for (Object[] rule : followTypeRules)
+      visited.add(currentType);
+
+      // find the productions for this type
+      Rule rule = rules.get(currentType);
+      if (rule == null)
       {
-        if (rule.length == 0)
+        // this is a terminal, so just add the terminal itself to the result
+        result.add(currentType);
+        continue;
+      }
+
+      Object[][] productions = rule.getRequirementTypeLists();
+
+      // for each production, add the applicable subtypes (from the RHS of the rule) to the stack
+      for (Object[] production : productions)
+      {
+        // iterate through the production in order, and break when a non-nullable type is reached
+        // this adds all reachable types to the stack, to be computed later on
+        for (Object type : production)
         {
-          // an empty rule is equivalent to no rule at all, so ignore it
-          continue;
-        }
-        // only add the rule if we have not already visited it, otherwise we could recurse infinitely for some rules
-        if (!visited.contains(rule[0]))
-        {
-          queue.offer(rule[0]);
+          stack.push(type);
+          if (!isNullable(type))
+          {
+            break;
+          }
         }
       }
     }
-    
-    return terminals;
+
+    // cache the result
+    firstSets.put(tokenType, result);
+
+    return result;
   }
-  
+
   /**
-   * Finds the full follow set of the specified type.
-   * The full follow set is the set of terminal types that can immediately follow the specified type.
-   * Since the rule can contain non-terminals, any non-terminals are expanded and the first type(s) in the expanded rules are added to the follow set.
-   * If the specified type occurs at the end of a rule, the full follow set of the terminal from that rule is added to the generated follow set.
-   * This method is guaranteed not to recurse indefinitely, as it keeps track of which rules it has applied and does not go into loops.
-   * Also, the result of this method contains the null element iff the specified type can be the last token. For this to work, the top level token must be passed into this method.
-   * NOTE: after this is called, add() should not be called again, as this caches results that depend on the rule set being in the current state.
-   * @param type - the type to generate the full follow set for
-   * @param topLevelType - the top level type that the parser is trying to reach, this type is assumed to have an extra follow entry: null
-   * @return the set of terminal types that could follow the specified type
+   * Finds the follow set of the specified token type. The follow set is the set of terminal types that can immediately follow the specified token type.
+   * @param tokenType - the token type to find the follow set of
+   * @return the set of terminals that can follow the specified token type
    */
-  public Set<Object> getFullFollowSet(Object type, Object topLevelType)
+  // TODO: find out whether this is used
+  public Set<Object> getFollowSet(Object tokenType)
   {
-    Set<Object> terminals = fullFollowSets.get(type);
-    if (terminals != null)
+    // check whether the result has already been cached
+    Set<Object> cachedResult = followSets.get(tokenType);
+    if (cachedResult != null)
     {
-      return terminals;
+      return cachedResult;
     }
-    
-    // the set of types that we need to calculate the follow set of
-    LinkedList<Object> queue = new LinkedList<Object>();
-    Set<Object> initialSet = new HashSet<Object>();
-    queue.add(type);
-    initialSet.add(type);
-    while (!queue.isEmpty())
+
+    Set<Object> result = new HashSet<Object>();
+
+    Set<Object> visited = new HashSet<Object>();
+
+    Deque<Object> stack = new LinkedList<Object>();
+    stack.add(tokenType);
+
+    while (!stack.isEmpty())
     {
-      Object currentType = queue.poll();
-      List<TypeUseEntry> uses = typeUses.get(currentType);
+      Object currentType = stack.pop();
+      if (visited.contains(currentType))
+      {
+        continue;
+      }
+      visited.add(currentType);
+
+      Set<TypeUseEntry> uses = typeUses.get(currentType);
+      // if a type has no uses, it cannot have follow set items, so ignore it
       if (uses == null)
       {
         continue;
       }
+
       for (TypeUseEntry entry : uses)
       {
-        Object[] rule = entry.getRule().getRequirementTypeLists()[entry.getTypeListNum()];
-        int index = entry.getOffset();
-        if (index + 1 != rule.length)
+        Object[] production = entry.getRule().getRequirementTypeLists()[entry.getTypeListIndex()];
+        if (entry.getOffset() >= production.length - 1)
         {
+          // the use is at the end of the rule, so add the LHS type of the rule to the stack
+          stack.push(entry.getRule().getType());
           continue;
         }
-        Object ruleType = entry.getRule().getType();
-        // if the rule type was not already in the set when we added it, then offer the rule type onto the queue
-        if (initialSet.add(ruleType))
+        for (int i = entry.getOffset() + 1; i < production.length; i++)
         {
-          queue.offer(ruleType);
+          // add all of the elements of the first set of the next element to the result
+          Set<Object> firstSet = getFirstSet(production[i]);
+          result.addAll(firstSet);
+          // if this element is not nullable, then stop looking through the rest of the rule
+          if (!isNullable(production[i]))
+          {
+            break;
+          }
         }
       }
     }
-    
-    // fill terminals with the immediate follow sets of all of the elements of the initial set
-    terminals = new HashSet<Object>();
-    for (Object currentType : initialSet)
-    {
-      terminals.addAll(getImmediateFollowSet(getTypeUses(currentType)));
-      if (currentType == topLevelType)
-      {
-        // add the null follow entry to represent the fact that it is possible for the specified type to be the last token
-        terminals.add(null);
-      }
-    }
-    return terminals;
+
+    // cache the result
+    followSets.put(tokenType, result);
+
+    return result;
   }
-  
+
 }
