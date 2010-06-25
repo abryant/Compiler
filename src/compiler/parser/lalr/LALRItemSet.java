@@ -1,6 +1,8 @@
 package compiler.parser.lalr;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /*
@@ -12,7 +14,7 @@ import java.util.Set;
  *
  * @author Anthony Bryant
  */
-public class LALRItemSet
+public final class LALRItemSet
 {
 
   private Set<LALRItem> kernelItems;
@@ -29,12 +31,31 @@ public class LALRItemSet
 
   /**
    * Adds the specified item to the kernel of the item set.
-   * After a kernel item is added, calculateClosureItems() should be called to recalculate the closure of the item set
+   * After a kernel item is added, calculateClosureItems() must be called to recalculate the closure of the item set
    * @param item - the item to add
    */
   public void addKernelItem(LALRItem item)
   {
     kernelItems.add(item);
+    closureItems = null;
+  }
+
+  /**
+   * @return all of the kernel items in this item set
+   */
+  public Set<LALRItem> getKernelItems()
+  {
+    return kernelItems;
+  }
+
+  /**
+   * @return a new Set containing all of the items in this LALRItemSet
+   */
+  public Set<LALRItem> getItems()
+  {
+    Set<LALRItem> items = new HashSet<LALRItem>(kernelItems);
+    items.addAll(closureItems);
+    return items;
   }
 
   /**
@@ -44,6 +65,33 @@ public class LALRItemSet
   public void calculateClosureItems(LALRRuleSet rules)
   {
     closureItems = rules.calculateClosureItems(kernelItems);
+  }
+
+  /**
+   * Adds the lookahead sets of the specified LALRItemSet's kernel items to this item set's items
+   * After the lookaheads are combined, calculateClosureItems() must be called to recalculate the closure of this item set
+   * @param other - the item set to combine the lookaheads from
+   */
+  public void combineLookaheads(LALRItemSet other)
+  {
+    if (!equals(other))
+    {
+      throw new IllegalArgumentException("Tried to combine lookaheads with an LALRItemSet with a different kernel set.");
+    }
+
+    // create a map from the other object's kernel items to themselves,
+    // so that the actual kernel items can be retrieved from the set later
+    Map<LALRItem, LALRItem> otherItems = new HashMap<LALRItem, LALRItem>();
+    for (LALRItem item : other.kernelItems)
+    {
+      otherItems.put(item, item);
+    }
+
+    for (LALRItem item : kernelItems)
+    {
+      LALRItem otherItem = otherItems.get(item);
+      item.addLookaheads(otherItem.getLookaheads());
+    }
   }
 
   /**

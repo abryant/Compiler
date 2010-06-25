@@ -13,19 +13,19 @@ package compiler.parser;
 public final class TypeUseEntry
 {
   private Rule rule;
-  private int typeListIndex;
+  private int productionIndex;
   private int offset;
 
   /**
    * Creates a new TypeUseEntry to store the specified values
    * @param rule - the rule to store
-   * @param typeListIndex - the index to store
+   * @param productionIndex - the index to store
    * @param offset - the offset to store
    */
-  public TypeUseEntry(Rule rule, int typeListIndex, int offset)
+  public TypeUseEntry(Rule rule, int productionIndex, int offset)
   {
     this.rule = rule;
-    this.typeListIndex = typeListIndex;
+    this.productionIndex = productionIndex;
     this.offset = offset;
   }
 
@@ -38,11 +38,11 @@ public final class TypeUseEntry
   }
 
   /**
-   * @return the typeListIndex
+   * @return the productionIndex
    */
-  public int getTypeListIndex()
+  public int getProductionIndex()
   {
-    return typeListIndex;
+    return productionIndex;
   }
 
   /**
@@ -65,7 +65,7 @@ public final class TypeUseEntry
     }
     TypeUseEntry other = (TypeUseEntry) o;
     return rule.equals(other.rule) &&
-           typeListIndex == other.typeListIndex &&
+           productionIndex == other.productionIndex &&
            offset == other.offset;
   }
 
@@ -75,6 +75,6 @@ public final class TypeUseEntry
   @Override
   public int hashCode()
   {
-    return (rule.hashCode() * 31 + typeListIndex) * 31 + offset;
+    return (rule.hashCode() * 31 + productionIndex) * 31 + offset;
   }
 }

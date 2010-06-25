@@ -41,22 +41,22 @@ public class MetaRule extends Rule
     {
       throw new IllegalArgumentException("MetaRule may only be created for two rules of the same type.");
     }
-    Object[][] firstTypeLists = first.getRequirementTypeLists();
-    Object[][] secondTypeLists = second.getRequirementTypeLists();
+    Object[][] firstProductions = first.getProductions();
+    Object[][] secondProductions = second.getProductions();
 
-    // make sure the two rules do not have any type lists in common
-    for (Object[] typeList : firstTypeLists)
+    // make sure the two rules do not have any productions in common
+    for (Object[] production : firstProductions)
     {
-      for (Object[] check : secondTypeLists)
+      for (Object[] check : secondProductions)
       {
-        if (typeList.length != check.length)
+        if (production.length != check.length)
         {
           continue;
         }
         boolean equal = true;
-        for (int i = 0; i < typeList.length; i++)
+        for (int i = 0; i < production.length; i++)
         {
-          if (typeList[i] != check[i])
+          if (production[i] != check[i])
           {
             equal = false;
             break;
@@ -64,14 +64,14 @@ public class MetaRule extends Rule
         }
         if (equal)
         {
-          throw new IllegalArgumentException("A MetaRule may not be created for rules that have a type list in common");
+          throw new IllegalArgumentException("A MetaRule may not be created for rules that have a production in common");
         }
       }
     }
 
-    Object[][] productions = new Object[firstTypeLists.length + secondTypeLists.length][];
-    System.arraycopy(firstTypeLists, 0, productions, 0, firstTypeLists.length);
-    System.arraycopy(secondTypeLists, 0, productions, firstTypeLists.length, secondTypeLists.length);
+    Object[][] productions = new Object[firstProductions.length + secondProductions.length][];
+    System.arraycopy(firstProductions, 0, productions, 0, firstProductions.length);
+    System.arraycopy(secondProductions, 0, productions, firstProductions.length, secondProductions.length);
     return productions;
   }
 
@@ -82,7 +82,7 @@ public class MetaRule extends Rule
   public Object match(Object[] types, Object[] args)
   {
     // find the index of the production we are using
-    Object[][] productions = getRequirementTypeLists();
+    Object[][] productions = getProductions();
     int index = -1;
     for (int i = 0; i < productions.length; i++)
     {
@@ -105,14 +105,14 @@ public class MetaRule extends Rule
         break;
       }
     }
-    // the production was not in any of this rule's requirement type lists
+    // the production was not in any of this rule's productions
     if (index == -1)
     {
-      throw new IllegalStateException("MetaRule.match() called with invalid type list");
+      throw new IllegalStateException("MetaRule.match() called with invalid production");
     }
 
-    // call either the first or the second rule's match() method depending on the index of the type list in this rule's productions
-    if (index < first.getRequirementTypeLists().length)
+    // call either the first or the second rule's match() method depending on the index of the production in this rule's productions
+    if (index < first.getProductions().length)
     {
       return first.match(types, args);
     }

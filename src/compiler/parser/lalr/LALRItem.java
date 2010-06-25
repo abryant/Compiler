@@ -14,25 +14,25 @@ import compiler.parser.Rule;
  *
  * @author Anthony Bryant
  */
-public class LALRItem
+public final class LALRItem
 {
 
   private Rule rule;
-  private int typeListIndex;
+  private int productionIndex;
   private int offset;
 
   private Set<Object> lookaheadTokens;
 
   /**
-   * Creates a new LALRItem with the specified rule, type list index and offset
+   * Creates a new LALRItem with the specified rule, production index and offset
    * @param rule - the rule that this item is for
-   * @param typeListIndex - the index of the type list in this rule
+   * @param productionIndex - the index of the production in this rule
    * @param offset - the current position in the rule
    */
-  public LALRItem(Rule rule, int typeListIndex, int offset)
+  public LALRItem(Rule rule, int productionIndex, int offset)
   {
     this.rule = rule;
-    this.typeListIndex = typeListIndex;
+    this.productionIndex = productionIndex;
     this.offset = offset;
     lookaheadTokens = new HashSet<Object>();
   }
@@ -64,11 +64,20 @@ public class LALRItem
   }
 
   /**
-   * @return the typeListIndex
+   * @return the productionIndex
    */
-  public int getTypeListIndex()
+  public int getProductionIndex()
   {
-    return typeListIndex;
+    return productionIndex;
+  }
+
+  /**
+   * A convenience method for <code>item.getRule().getProductions()[item.getProductionIndex()]</code>
+   * @return the production that this LALR item represents.
+   */
+  public Object[] getProduction()
+  {
+    return rule.getProductions()[productionIndex];
   }
 
   /**
@@ -108,7 +117,7 @@ public class LALRItem
       return false;
     }
     LALRItem item = (LALRItem) o;
-    return rule.equals(item.rule) && typeListIndex == item.typeListIndex && offset == item.offset;
+    return rule.equals(item.rule) && productionIndex == item.productionIndex && offset == item.offset;
   }
 
   /**
@@ -117,6 +126,6 @@ public class LALRItem
   @Override
   public int hashCode()
   {
-    return (rule.hashCode() * 31 + typeListIndex) * 31 + offset;
+    return (rule.hashCode() * 31 + productionIndex) * 31 + offset;
   }
 }

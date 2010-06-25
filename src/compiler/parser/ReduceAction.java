@@ -14,17 +14,17 @@ import java.util.Deque;
 public class ReduceAction extends Action
 {
   private Rule rule;
-  private int typeListIndex;
+  private int productionIndex;
 
   /**
    * Creates a new ReduceAction to reduce via the specified rule
    * @param rule - the rule to reduce with
-   * @param typeListIndex - the index of the type list within the rule to reduce with
+   * @param productionIndex - the index of the production within the rule to reduce with
    */
-  public ReduceAction(Rule rule, int typeListIndex)
+  public ReduceAction(Rule rule, int productionIndex)
   {
     this.rule = rule;
-    this.typeListIndex = typeListIndex;
+    this.productionIndex = productionIndex;
   }
 
   /**
@@ -33,7 +33,7 @@ public class ReduceAction extends Action
   @Override
   public boolean perform(Token token, Deque<IState> stateStack, Deque<Token> tokenStack)
   {
-    Object[] ruleElements = rule.getRequirementTypeLists()[typeListIndex];
+    Object[] ruleElements = rule.getProductions()[productionIndex];
     if (stateStack.size() <= ruleElements.length || tokenStack.size() < ruleElements.length)
     {
       throw new IllegalStateException("Bad reduction of rule, not enough elements");

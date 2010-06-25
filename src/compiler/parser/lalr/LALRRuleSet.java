@@ -64,7 +64,7 @@ public class LALRRuleSet extends RuleSet
       }
       visited.add(item);
 
-      Object[] production = item.getRule().getRequirementTypeLists()[item.getTypeListIndex()];
+      Object[] production = item.getProduction();
       int offset = item.getOffset();
       if (offset == production.length)
       {
@@ -77,7 +77,7 @@ public class LALRRuleSet extends RuleSet
         Rule rule = rules.get(production[i]);
 
         // we have reached an item that should be added to the result
-        LALRItem resultItem = new LALRItem(item.getRule(), item.getTypeListIndex(), i);
+        LALRItem resultItem = new LALRItem(item.getRule(), item.getProductionIndex(), i);
         LALRItem existing = result.get(resultItem);
         if (existing != null)
         {
@@ -92,7 +92,7 @@ public class LALRRuleSet extends RuleSet
         if (rule != null)
         {
           // this is a non-terminal, so add the productions of its rule to the stack for processing
-          Object[][] subProductions = rule.getRequirementTypeLists();
+          Object[][] subProductions = rule.getProductions();
           for (int j = 0; j < subProductions.length; j++)
           {
             LALRItem stackItem = new LALRItem(rule, j, 0);

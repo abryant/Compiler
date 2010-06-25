@@ -112,7 +112,7 @@ public class RuleSet
       for (Entry<Object, Rule> entry : rules.entrySet())
       {
         Object type = entry.getKey();
-        Object[][] productions = entry.getValue().getRequirementTypeLists();
+        Object[][] productions = entry.getValue().getProductions();
         for (Object[] production : productions)
         {
           boolean nullable = true;
@@ -160,12 +160,12 @@ public class RuleSet
     for (Rule rule : rules.values())
     {
       // add type uses for all of the right hand sides of the Rule
-      Object[][] typeLists = rule.getRequirementTypeLists();
-      for (int i = 0; i < typeLists.length; i++)
+      Object[][] productions = rule.getProductions();
+      for (int i = 0; i < productions.length; i++)
       {
-        for (int j = 0; j < typeLists[i].length; j++)
+        for (int j = 0; j < productions[i].length; j++)
         {
-          Object type = typeLists[i][j];
+          Object type = productions[i][j];
           Set<TypeUseEntry> uses = typeUses.get(type);
           if (uses == null)
           {
@@ -235,7 +235,7 @@ public class RuleSet
         continue;
       }
 
-      Object[][] productions = rule.getRequirementTypeLists();
+      Object[][] productions = rule.getProductions();
 
       // for each production, add the applicable subtypes (from the RHS of the rule) to the stack
       for (Object[] production : productions)
@@ -299,7 +299,7 @@ public class RuleSet
 
       for (TypeUseEntry entry : uses)
       {
-        Object[] production = entry.getRule().getRequirementTypeLists()[entry.getTypeListIndex()];
+        Object[] production = entry.getRule().getProductions()[entry.getProductionIndex()];
         if (entry.getOffset() >= production.length - 1)
         {
           // the use is at the end of the rule, so add the LHS type of the rule to the stack
