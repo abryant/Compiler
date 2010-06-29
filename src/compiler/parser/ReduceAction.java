@@ -28,6 +28,22 @@ public class ReduceAction extends Action
   }
 
   /**
+   * @return the rule that this ReduceAction will reduce through
+   */
+  public Rule getRule()
+  {
+    return rule;
+  }
+
+  /**
+   * @return the index of the production in the rule associated with this reduce action
+   */
+  public int getProductionIndex()
+  {
+    return productionIndex;
+  }
+
+  /**
    * @see compiler.parser.Action#perform(compiler.parser.Token, java.util.Deque, java.util.Deque)
    */
   @Override

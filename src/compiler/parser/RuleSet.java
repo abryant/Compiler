@@ -97,6 +97,16 @@ public class RuleSet
   }
 
   /**
+   * Checks whether the specified token type is a terminal. i.e. it does not have any rules that produce it.
+   * @param tokenType - the type to check
+   * @return true if the specified type is a terminal, false otherwise
+   */
+  public boolean isTerminal(Object tokenType)
+  {
+    return rules.get(tokenType) == null;
+  }
+
+  /**
    * Finds the set of types that can possibly have no types on their right hand side.
    * This includes all rules which are explicitly empty, and all rules that only have nullable rules on their right hand side.
    */

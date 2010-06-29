@@ -46,10 +46,6 @@ public class Parser
     {
       IState state = stateStack.peekFirst();
 
-      if (lookahead == null)
-      {
-        throw new ParseException("Unexpected end of input.");
-      }
       Action action = state.getAction(lookahead);
       if (action == null)
       {
@@ -64,7 +60,7 @@ public class Parser
             buffer.append(", ");
           }
         }
-        throw new ParseException("Unexpected token \"" + lookahead + "\". Expected one of: " + buffer.toString());
+        throw new ParseException("Unexpected token: " + lookahead + ". Expected one of: " + buffer.toString());
       }
 
       if (action.isAccept())
