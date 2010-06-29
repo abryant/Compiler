@@ -47,7 +47,7 @@ public class ReduceAction extends Action
    * @see compiler.parser.Action#perform(compiler.parser.Token, java.util.Deque, java.util.Deque)
    */
   @Override
-  public boolean perform(Token token, Deque<IState> stateStack, Deque<Token> tokenStack)
+  public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack)
   {
     Object[] ruleElements = rule.getProductions()[productionIndex];
     if (stateStack.size() <= ruleElements.length || tokenStack.size() < ruleElements.length)
@@ -73,8 +73,8 @@ public class ReduceAction extends Action
     Object result = rule.match(ruleElements, values);
     Token nonTerminal = new Token(rule.getType(), result);
 
-    IState topState = stateStack.peekFirst();
-    IState gotoState = topState.getGoto(nonTerminal);
+    State topState = stateStack.peekFirst();
+    State gotoState = topState.getGoto(nonTerminal);
 
     stateStack.addFirst(gotoState);
     tokenStack.addFirst(nonTerminal);

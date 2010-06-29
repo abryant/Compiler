@@ -31,5 +31,5 @@ public abstract class Action
    * @param tokenStack - the stack of tokens (including terminals and non-terminals)
    * @return true if the token was added to the token stack (or used in some other way), false otherwise
    */
-  public abstract boolean perform(Token token, Deque<IState> stateStack, Deque<Token> tokenStack);
+  public abstract boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack);
 }

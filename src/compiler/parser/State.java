@@ -9,7 +9,7 @@ package compiler.parser;
  *
  * @author Anthony Bryant
  */
-public interface IState
+public interface State
 {
 
   /**
@@ -29,6 +29,6 @@ public interface IState
    * @param nonTerminal - the non terminal token to get the goto rule for in this state
    * @return the state to go to
    */
-  public IState getGoto(Token nonTerminal);
+  public State getGoto(Token nonTerminal);
 
 }

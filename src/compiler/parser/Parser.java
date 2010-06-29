@@ -15,7 +15,7 @@ import java.util.LinkedList;
 public class Parser
 {
 
-  private IState startState;
+  private State startState;
   private Tokenizer tokenizer;
 
   /**
@@ -23,7 +23,7 @@ public class Parser
    * @param startState - the state to start the parser in
    * @param tokenizer - the tokenizer to read input from
    */
-  public Parser(IState startState, Tokenizer tokenizer)
+  public Parser(State startState, Tokenizer tokenizer)
   {
     this.startState = startState;
     this.tokenizer = tokenizer;
@@ -36,7 +36,7 @@ public class Parser
    */
   public Token parse() throws ParseException
   {
-    Deque<IState> stateStack = new LinkedList<IState>();
+    Deque<State> stateStack = new LinkedList<State>();
     Deque<Token> tokenStack = new LinkedList<Token>();
     stateStack.addFirst(startState);
 
@@ -44,7 +44,7 @@ public class Parser
 
     while (true)
     {
-      IState state = stateStack.peekFirst();
+      State state = stateStack.peekFirst();
 
       Action action = state.getAction(lookahead);
       if (action == null)

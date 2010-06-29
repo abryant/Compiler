@@ -26,7 +26,7 @@ public class AcceptAction extends Action
    * @see compiler.parser.Action#perform(compiler.parser.Token, java.util.Deque, java.util.Deque)
    */
   @Override
-  public boolean perform(Token token, Deque<IState> stateStack, Deque<Token> tokenStack)
+  public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack)
   {
     // an accept action does nothing
     return false;

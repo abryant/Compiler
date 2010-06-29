@@ -7,7 +7,7 @@ import java.util.Set;
 
 import compiler.parser.AcceptAction;
 import compiler.parser.Action;
-import compiler.parser.IState;
+import compiler.parser.State;
 import compiler.parser.ReduceAction;
 import compiler.parser.Rule;
 import compiler.parser.ShiftAction;
@@ -21,7 +21,7 @@ import compiler.parser.Token;
  * @author Anthony Bryant
  *
  */
-public class LALRState implements IState
+public class LALRState implements State
 {
 
   private Map<Object, LALRState> shiftRules;
@@ -133,7 +133,7 @@ public class LALRState implements IState
   }
 
   /**
-   * @see compiler.parser.IState#getAction(compiler.parser.Token)
+   * @see compiler.parser.State#getAction(compiler.parser.Token)
    */
   @Override
   public Action getAction(Token terminal)
@@ -160,7 +160,7 @@ public class LALRState implements IState
   }
 
   /**
-   * @see compiler.parser.IState#getExpectedTerminalTypes()
+   * @see compiler.parser.State#getExpectedTerminalTypes()
    */
   @Override
   public Object[] getExpectedTerminalTypes()
@@ -173,10 +173,10 @@ public class LALRState implements IState
   }
 
   /**
-   * @see compiler.parser.IState#getGoto(compiler.parser.Token)
+   * @see compiler.parser.State#getGoto(compiler.parser.Token)
    */
   @Override
-  public IState getGoto(Token nonTerminal)
+  public State getGoto(Token nonTerminal)
   {
     return gotoRules.get(nonTerminal);
   }

@@ -13,13 +13,13 @@ import java.util.Deque;
  */
 public class ShiftAction extends Action
 {
-  private IState state;
+  private State state;
 
   /**
    * Creates a new Shift action to shift to the specified state
    * @param state - the state to shift to
    */
-  public ShiftAction(IState state)
+  public ShiftAction(State state)
   {
     this.state = state;
   }
@@ -28,7 +28,7 @@ public class ShiftAction extends Action
    * @see compiler.parser.Action#perform(compiler.parser.Token, java.util.Deque, java.util.Deque)
    */
   @Override
-  public boolean perform(Token token, Deque<IState> stateStack, Deque<Token> tokenStack)
+  public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack)
   {
     // add the next state and the next token to their stacks
     stateStack.addFirst(state);
