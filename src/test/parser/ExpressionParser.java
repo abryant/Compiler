@@ -2,7 +2,10 @@ package test.parser;
 
 import compiler.parser.ParseException;
 import compiler.parser.Parser;
-import compiler.parser.RuleSet;
+import compiler.parser.Token;
+import compiler.parser.lalr.LALRParserGenerator;
+import compiler.parser.lalr.LALRRuleSet;
+import compiler.parser.lalr.LALRState;
 
 /*
  * Created on 7 Apr 2010
@@ -10,25 +13,36 @@ import compiler.parser.RuleSet;
 
 /**
  * @author Anthony Bryant
- * 
+ *
  */
 public class ExpressionParser
 {
-  
+
   public static void main(String[] args) throws ParseException
   {
-    RuleSet ruleSet = new RuleSet();
-    ruleSet.add(new ExpressionRule());
-    ruleSet.add(new SumRule());
-    ruleSet.add(new ProductRule());
-    ruleSet.add(new ValueRule());
-    
+    LALRRuleSet ruleSet = new LALRRuleSet();
+    ruleSet.addStartRule(new ExpressionRule());
+    ruleSet.addRule(new SumRule());
+    ruleSet.addRule(new ProductRule());
+    ruleSet.addRule(new ValueRule());
+
+    LALRParserGenerator generator = new LALRParserGenerator(ruleSet);
+    generator.generate();
+
+    LALRState startState = generator.getStartState();
+
     ExpressionTokenizer tokenizer = new ExpressionTokenizer();
-    
-    Parser parser = new Parser(ruleSet, tokenizer);
-    Expression expression = (Expression) parser.parse(ExpressionType.EXPRESSION);
+
+    Parser parser = new Parser(startState, tokenizer);
+    Token result = parser.parse();
+    if (result.getType() != ExpressionType.EXPRESSION)
+    {
+      System.err.println("Resulted in non-expression type: " + result.getType());
+      return;
+    }
+    Expression expression = (Expression) result.getValue();
     System.out.println("expression:" + expression);
     System.out.println("result = " + expression.evaluate());
   }
-  
+
 }

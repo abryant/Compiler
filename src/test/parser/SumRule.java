@@ -8,30 +8,32 @@ import compiler.parser.Rule;
 
 /**
  * @author Anthony Bryant
- * 
+ *
  */
 public class SumRule extends Rule
 {
-  
+
+  private static final Object[] PRODUCT_PRODUCTION = new Object[] {ExpressionType.PRODUCT};
+  private static final Object[] PLUS_PRODUCTION = new Object[] {ExpressionType.SUM, ExpressionType.PLUS, ExpressionType.PRODUCT};
+  private static final Object[] MINUS_PRODUCTION = new Object[] {ExpressionType.SUM, ExpressionType.MINUS, ExpressionType.PRODUCT};
+
   public SumRule()
   {
-    super(ExpressionType.SUM, new Object[] {ExpressionType.PRODUCT},
-                              new Object[] {ExpressionType.SUM, ExpressionType.PLUS, ExpressionType.PRODUCT},
-                              new Object[] {ExpressionType.SUM, ExpressionType.MINUS, ExpressionType.PRODUCT});
+    super(ExpressionType.SUM, PRODUCT_PRODUCTION, PLUS_PRODUCTION, MINUS_PRODUCTION);
   }
-  
+
   /**
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Object[] args)
+  public Object match(Object[] types, Object[] args)
   {
-    if (args.length == 1)
+    if (types == PRODUCT_PRODUCTION)
     {
       // just a product
       return new Sum(new Product[] {(Product) args[0]}, new boolean[] {true});
     }
-    if (args.length == 3)
+    if (types == PLUS_PRODUCTION || types == MINUS_PRODUCTION)
     {
       // Sum + Product or Sum - Product
       Sum old = (Sum) args[0];
@@ -42,10 +44,10 @@ public class SumRule extends Rule
       boolean[] oldSigns = old.getSigns();
       boolean[] newSigns = new boolean[oldSigns.length + 1];
       System.arraycopy(oldSigns, 0, newSigns, 0, oldSigns.length);
-      newSigns[oldSigns.length] = args[1] == ExpressionType.PLUS;
+      newSigns[oldSigns.length] = args[1] == ExpressionType.PLUS; // choose between PLUS_PRODUCTION and MINUS_PRODUCTION
       return new Sum(newProducts, newSigns);
     }
     throw new IllegalArgumentException();
   }
-  
+
 }

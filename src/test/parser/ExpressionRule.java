@@ -8,27 +8,29 @@ import compiler.parser.Rule;
 
 /**
  * @author Anthony Bryant
- * 
+ *
  */
 public class ExpressionRule extends Rule
 {
-  
+
+  private static final Object[] SUM_PRODUCTION = new Object[] {ExpressionType.SUM};
+
   public ExpressionRule()
   {
-    super(ExpressionType.EXPRESSION, new Object[] {ExpressionType.SUM});
+    super(ExpressionType.EXPRESSION, SUM_PRODUCTION);
   }
-  
+
   /**
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Object[] args)
+  public Object match(Object[] types, Object[] args)
   {
-    if (args.length == 1)
+    if (types == SUM_PRODUCTION)
     {
       return new Expression((Sum) args[0]);
     }
     throw new IllegalArgumentException();
   }
-  
+
 }

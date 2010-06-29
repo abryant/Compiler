@@ -8,29 +8,31 @@ import compiler.parser.Rule;
 
 /**
  * @author Anthony Bryant
- * 
+ *
  */
 public class ProductRule extends Rule
 {
-  
+
+  private static final Object[] VALUE_PRODUCTION = new Object[] {ExpressionType.VALUE};
+  private static final Object[] TIMES_PRODUCTION = new Object[] {ExpressionType.PRODUCT, ExpressionType.TIMES, ExpressionType.VALUE};
+
   public ProductRule()
   {
-    super(ExpressionType.PRODUCT, new Object[] {ExpressionType.VALUE},
-                                  new Object[] {ExpressionType.PRODUCT, ExpressionType.TIMES, ExpressionType.VALUE});
+    super(ExpressionType.PRODUCT, VALUE_PRODUCTION, TIMES_PRODUCTION);
   }
-  
+
   /**
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Object[] args)
+  public Object match(Object[] types, Object[] args)
   {
-    if (args.length == 1)
+    if (types == VALUE_PRODUCTION)
     {
       // just a value
       return new Product(new Value[] {(Value) args[0]});
     }
-    if (args.length == 3)
+    if (types == TIMES_PRODUCTION)
     {
       // Product * Value
       Value[] oldValues = ((Product) args[0]).getValues();
@@ -41,5 +43,5 @@ public class ProductRule extends Rule
     }
     throw new IllegalArgumentException();
   }
-  
+
 }
