@@ -1,9 +1,12 @@
 package compiler.parser.lalr;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import compiler.parser.TypeUseEntry;
 
 /*
  * Created on 21 Jun 2010
@@ -17,16 +20,21 @@ import java.util.Set;
 public final class LALRItemSet
 {
 
-  private Set<LALRItem> kernelItems;
-  private Set<LALRItem> closureItems;
+  // these are Maps from the key to itself, this is because LALRItem overrides
+  // equals() and hashCode() but does not take all information into account,
+  // which means that we have to be able to extract this information somehow
+  // and a Map from key to itself is much faster than iterating through
+  // the whole set for every lookup
+  private Map<TypeUseEntry, LALRItem> kernelItems;
+  private Map<TypeUseEntry, LALRItem> closureItems;
 
   /**
    * Creates a new empty LALR item set
    */
   public LALRItemSet()
   {
-    kernelItems = new HashSet<LALRItem>();
-    closureItems = new HashSet<LALRItem>();
+    kernelItems = new HashMap<TypeUseEntry, LALRItem>();
+    closureItems = new HashMap<TypeUseEntry, LALRItem>();
   }
 
   /**
@@ -36,16 +44,16 @@ public final class LALRItemSet
    */
   public void addKernelItem(LALRItem item)
   {
-    kernelItems.add(item);
+    kernelItems.put(item.getNextTypeUse(), item);
     closureItems = null;
   }
 
   /**
    * @return all of the kernel items in this item set
    */
-  public Set<LALRItem> getKernelItems()
+  public Collection<LALRItem> getKernelItems()
   {
-    return kernelItems;
+    return kernelItems.values();
   }
 
   /**
@@ -53,8 +61,8 @@ public final class LALRItemSet
    */
   public Set<LALRItem> getItems()
   {
-    Set<LALRItem> items = new HashSet<LALRItem>(kernelItems);
-    items.addAll(closureItems);
+    Set<LALRItem> items = new HashSet<LALRItem>(kernelItems.values());
+    items.addAll(closureItems.values());
     return items;
   }
 
@@ -64,7 +72,7 @@ public final class LALRItemSet
    */
   public void calculateClosureItems(LALRRuleSet rules)
   {
-    closureItems = rules.calculateClosureItems(kernelItems);
+    closureItems = rules.calculateClosureItems(getKernelItems());
   }
 
   /**
@@ -79,19 +87,41 @@ public final class LALRItemSet
       throw new IllegalArgumentException("Tried to combine lookaheads with an LALRItemSet with a different kernel set.");
     }
 
-    // create a map from the other object's kernel items to themselves,
-    // so that the actual kernel items can be retrieved from the set later
-    Map<LALRItem, LALRItem> otherItems = new HashMap<LALRItem, LALRItem>();
-    for (LALRItem item : other.kernelItems)
+    for (LALRItem item : kernelItems.values())
     {
-      otherItems.put(item, item);
-    }
-
-    for (LALRItem item : kernelItems)
-    {
-      LALRItem otherItem = otherItems.get(item);
+      LALRItem otherItem = other.kernelItems.get(item.getNextTypeUse());
       item.addLookaheads(otherItem.getLookaheads());
     }
+
+    closureItems = null;
+  }
+
+  /**
+   * Tests whether this LALR item set is identical to the specified other set.
+   * This will compare not only the kernel items, but the closure items and all of the items' associated lookaheads.
+   * @param other - the other item set to compare this LALRItemSet to
+   * @return true if the specified item sets are exactly identical, false otherwise
+   */
+  public boolean isIdentical(LALRItemSet other)
+  {
+    if (other == this)
+    {
+      return true;
+    }
+
+    if (kernelItems.size() != other.kernelItems.size() || closureItems.size() != other.closureItems.size())
+    {
+      return false;
+    }
+    for (LALRItem item : kernelItems.values())
+    {
+      LALRItem otherItem = other.kernelItems.get(item.getNextTypeUse());
+      if (!item.equalLookaheads(otherItem))
+      {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -111,9 +141,9 @@ public final class LALRItemSet
     {
       return false;
     }
-    for (LALRItem item : kernelItems)
+    for (TypeUseEntry typeUse : kernelItems.keySet())
     {
-      if (!other.kernelItems.contains(item))
+      if (!other.kernelItems.containsKey(typeUse))
       {
         return false;
       }
@@ -127,11 +157,11 @@ public final class LALRItemSet
   @Override
   public int hashCode()
   {
-    // sum the hash codes of all of the kernel items
+    // sum the hash codes of all of the kernel items' type use entries
     int hashCode = 0;
-    for (LALRItem item : kernelItems)
+    for (TypeUseEntry typeUse : kernelItems.keySet())
     {
-      hashCode += item.hashCode();
+      hashCode += typeUse.hashCode();
     }
     return hashCode;
   }

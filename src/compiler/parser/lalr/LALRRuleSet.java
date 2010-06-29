@@ -1,5 +1,6 @@
 package compiler.parser.lalr;
 
+import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 import compiler.parser.Rule;
 import compiler.parser.RuleSet;
+import compiler.parser.TypeUseEntry;
 
 /*
  * Created on 22 Jun 2010
@@ -44,14 +46,12 @@ public class LALRRuleSet extends RuleSet
    * @param startItems - the set of kernel items to calculate the closure of
    * @return the set of closure items that must be added to the kernel set to produce the closure
    */
-  public Set<LALRItem> calculateClosureItems(Set<LALRItem> startItems)
+  public Map<TypeUseEntry, LALRItem> calculateClosureItems(Collection<LALRItem> startItems)
   {
     Deque<LALRItem> stack = new LinkedList<LALRItem>();
     stack.addAll(startItems);
 
-    // a map from results to themselves, this is used similarly to a set
-    // except the previously added elements need to be retrieved
-    Map<LALRItem, LALRItem> result = new HashMap<LALRItem, LALRItem>();
+    Map<TypeUseEntry, LALRItem> result = new HashMap<TypeUseEntry, LALRItem>();
 
     Set<LALRItem> visited = new HashSet<LALRItem>();
 
@@ -86,7 +86,7 @@ public class LALRRuleSet extends RuleSet
         else
         {
           resultItem.addLookaheads(item.getLookaheads());
-          result.put(resultItem, resultItem);
+          result.put(resultItem.getNextTypeUse(), resultItem);
         }
 
         if (rule != null)
@@ -123,7 +123,7 @@ public class LALRRuleSet extends RuleSet
       }
     }
 
-    return result.keySet();
+    return result;
   }
 
 }

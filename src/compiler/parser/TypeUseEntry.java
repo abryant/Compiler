@@ -6,7 +6,7 @@ package compiler.parser;
  */
 
 /**
- * A value object which represents a use of a type in a rule set.
+ * A value object which represents a particular type in a production in a Rule.
  *
  * @author Anthony Bryant
  */

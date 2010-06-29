@@ -15,7 +15,7 @@ import compiler.parser.Token;
 public class LALRState implements IState
 {
 
-
+  // TODO: how should actions and gotos be stored?
 
   /**
    * @see compiler.parser.IState#getAction(compiler.parser.Token)

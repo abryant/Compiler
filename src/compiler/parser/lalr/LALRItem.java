@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import compiler.parser.Rule;
+import compiler.parser.TypeUseEntry;
 
 /*
  * Created on 21 Jun 2010
@@ -17,9 +18,19 @@ import compiler.parser.Rule;
 public final class LALRItem
 {
 
-  private Rule rule;
-  private int productionIndex;
-  private int offset;
+  // a TypeUseEntry representing the next token to be used
+  // e.g. if this item is A -> b.Ca
+  // then the next type would represent the C in this production
+  // for items of the form A -> bCa.
+  // the offset of the type use entry is equal to the length of the production
+  /**
+   * A TypeUseEntry representing the next token to be used
+   * e.g. if this item is <code>A -> b.Cd</code>
+   * then the next type would represent the C in this production.
+   * For items of the form <code>A -> bCd.</code>
+   * the offset of the type use entry is equal to the length of the production.
+   */
+  private TypeUseEntry nextTypeUse;
 
   private Set<Object> lookaheadTokens;
 
@@ -31,9 +42,7 @@ public final class LALRItem
    */
   public LALRItem(Rule rule, int productionIndex, int offset)
   {
-    this.rule = rule;
-    this.productionIndex = productionIndex;
-    this.offset = offset;
+    nextTypeUse = new TypeUseEntry(rule, productionIndex, offset);
     lookaheadTokens = new HashSet<Object>();
   }
 
@@ -60,7 +69,7 @@ public final class LALRItem
    */
   public Rule getRule()
   {
-    return rule;
+    return nextTypeUse.getRule();
   }
 
   /**
@@ -68,7 +77,7 @@ public final class LALRItem
    */
   public int getProductionIndex()
   {
-    return productionIndex;
+    return nextTypeUse.getProductionIndex();
   }
 
   /**
@@ -77,7 +86,7 @@ public final class LALRItem
    */
   public Object[] getProduction()
   {
-    return rule.getProductions()[productionIndex];
+    return getRule().getProductions()[getProductionIndex()];
   }
 
   /**
@@ -85,7 +94,16 @@ public final class LALRItem
    */
   public int getOffset()
   {
-    return offset;
+    return nextTypeUse.getOffset();
+  }
+
+  /**
+   * @return the next type use to be specified by the production associated with this item.
+   *         This should be used to index maps to LALRItems.
+   */
+  public TypeUseEntry getNextTypeUse()
+  {
+    return nextTypeUse;
   }
 
   /**
@@ -107,6 +125,32 @@ public final class LALRItem
   }
 
   /**
+   * Finds whether the specified LALRItem has exactly the same set of lookahead token types as this item.
+   * @param item - the item to compare the lookahead token types of
+   * @return true if the specified item has exactly the same set of lookahead token types as this item
+   */
+  public boolean equalLookaheads(LALRItem item)
+  {
+    if (item == this)
+    {
+      return true;
+    }
+
+    if (lookaheadTokens.size() != item.lookaheadTokens.size())
+    {
+      return false;
+    }
+    for (Object lookahead : lookaheadTokens)
+    {
+      if (!item.lookaheadTokens.contains(lookahead))
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
@@ -117,7 +161,7 @@ public final class LALRItem
       return false;
     }
     LALRItem item = (LALRItem) o;
-    return rule.equals(item.rule) && productionIndex == item.productionIndex && offset == item.offset;
+    return nextTypeUse.equals(item.nextTypeUse);
   }
 
   /**
@@ -126,6 +170,6 @@ public final class LALRItem
   @Override
   public int hashCode()
   {
-    return (rule.hashCode() * 31 + productionIndex) * 31 + offset;
+    return nextTypeUse.hashCode();
   }
 }
