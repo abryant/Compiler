@@ -119,11 +119,8 @@ public abstract class Rule
       {
         existingBuffer.append(", ");
       }
-      else
-      {
-        existingBuffer.append("]");
-      }
     }
+    existingBuffer.append("]");
     return existingBuffer.toString();
   }
 }
