@@ -68,68 +68,61 @@ public class LALRRuleSet extends RuleSet
       LALRItem itemCopy = new LALRItem(item);
       visited.put(itemCopy.getNextTypeUse(), itemCopy);
 
-      Object[] production = item.getProduction();
       int offset = item.getOffset();
+
+      // we have reached an item that should be added to the result
+      // (unless it is one of startItems, but in that case it will be removed later)
+      LALRItem resultItem = new LALRItem(item.getRule(), item.getProductionIndex(), offset);
+      LALRItem existing = result.get(resultItem.getNextTypeUse());
+      if (existing != null)
+      {
+        existing.addLookaheads(item.getLookaheads());
+        // if the lookaheads of an item are changed, it should be processed again by the queue
+        // NOTE: maintenance of the visited map depends on this
+        queue.addLast(existing);
+      }
+      else
+      {
+        resultItem.addLookaheads(item.getLookaheads());
+        result.put(resultItem.getNextTypeUse(), resultItem);
+      }
+
+      Object[] production = item.getProduction();
       if (offset == production.length)
       {
         // this item represents the end of a production, so it cannot generate any closure items
         continue;
       }
 
-      for (int i = offset; i < production.length; i++)
+      Rule rule = rules.get(production[offset]);
+      if (rule != null)
       {
-        // we have reached an item that should be added to the result
-        LALRItem resultItem = new LALRItem(item.getRule(), item.getProductionIndex(), i);
-        LALRItem existing = result.get(resultItem.getNextTypeUse());
-        if (existing != null)
+        // work out the lookahead set for the new stack items that are about to be generated
+        // this is the first set of the item after the current token,
+        // but advances on to the subsequent tokens in the list until a non-nullable one is found
+        Set<Object> lookaheads = new HashSet<Object>();
+        boolean nullable = true;
+        for (int lookahead = offset + 1; lookahead < production.length; lookahead++)
         {
-          existing.addLookaheads(item.getLookaheads());
-          // if the lookaheads of an item are changed, it should be processed again by the queue
-          // NOTE: maintenance of the visited map depends on this
-          queue.addLast(existing);
-        }
-        else
-        {
-          resultItem.addLookaheads(item.getLookaheads());
-          result.put(resultItem.getNextTypeUse(), resultItem);
-        }
-
-        Rule rule = rules.get(production[i]);
-        if (rule != null)
-        {
-          // work out the lookahead set for the new stack items that are about to be generated
-          // this is the first set of the item after the current token,
-          // but advances on to the subsequent tokens in the list until a non-nullable one is found
-          Set<Object> lookaheads = new HashSet<Object>();
-          boolean nullable = true;
-          for (int lookahead = i + 1; lookahead < production.length; lookahead++)
+          lookaheads.addAll(getFirstSet(production[lookahead]));
+          if (!isNullable(production[lookahead]))
           {
-            lookaheads.addAll(getFirstSet(production[lookahead]));
-            if (!isNullable(production[lookahead]))
-            {
-              nullable = false;
-              break;
-            }
-          }
-          if (nullable)
-          {
-            lookaheads.addAll(item.getLookaheads());
-          }
-
-          // this is a non-terminal, so add the productions of its rule to the stack for processing
-          Object[][] subProductions = rule.getProductions();
-          for (int j = 0; j < subProductions.length; j++)
-          {
-            LALRItem stackItem = new LALRItem(rule, j, 0);
-            stackItem.addLookaheads(lookaheads);
-            queue.addLast(stackItem);
+            nullable = false;
+            break;
           }
         }
-
-        // do not go onto the next type in the production unless the current type is nullable
-        if (!isNullable(production[i]))
+        if (nullable)
         {
-          break;
+          lookaheads.addAll(item.getLookaheads());
+        }
+
+        // this is a non-terminal, so add the productions of its rule to the stack for processing
+        Object[][] subProductions = rule.getProductions();
+        for (int j = 0; j < subProductions.length; j++)
+        {
+          LALRItem stackItem = new LALRItem(rule, j, 0);
+          stackItem.addLookaheads(lookaheads);
+          queue.addLast(stackItem);
         }
       }
     }
