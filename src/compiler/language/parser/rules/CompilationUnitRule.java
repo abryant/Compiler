@@ -37,7 +37,7 @@ public class CompilationUnitRule extends Rule
     {
       return new CompilationUnit((PackageDeclaration) args[0], (ImportDeclaration[]) args[1], (TypeDefinition[]) args[2]);
     }
-    throw new IllegalArgumentException("Invalid type list passed to match()");
+    throw badTypeList();
   }
 
 }

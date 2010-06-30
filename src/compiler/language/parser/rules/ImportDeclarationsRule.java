@@ -40,7 +40,7 @@ public class ImportDeclarationsRule extends Rule
       newDeclarations[oldDeclarations.length] = (ImportDeclaration) args[1];
       return newDeclarations;
     }
-    throw new IllegalArgumentException("Invalid type list passed to match()");
+    throw badTypeList();
   }
 
 }

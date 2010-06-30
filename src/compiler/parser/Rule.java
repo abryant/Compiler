@@ -123,4 +123,12 @@ public abstract class Rule
     existingBuffer.append("]");
     return existingBuffer.toString();
   }
+
+  /**
+   * @return an IllegalArgumentException representing a bad list of types passed to a match() method
+   */
+  public static IllegalArgumentException badTypeList()
+  {
+    return new IllegalArgumentException("Invalid type list passed to match()");
+  }
 }

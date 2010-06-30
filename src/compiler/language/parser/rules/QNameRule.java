@@ -37,7 +37,7 @@ public class QNameRule extends Rule
     {
       return new QName((QName) args[0], (Name) args[2]);
     }
-    throw new IllegalArgumentException("Invalid type list passed to match()");
+    throw badTypeList();
   }
 
 }

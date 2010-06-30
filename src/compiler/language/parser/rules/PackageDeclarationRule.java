@@ -38,7 +38,7 @@ public class PackageDeclarationRule extends Rule
     {
       return new PackageDeclaration((QName) args[1]);
     }
-    throw new IllegalArgumentException("Invalid type list passed to match()");
+    throw badTypeList();
   }
 
 }

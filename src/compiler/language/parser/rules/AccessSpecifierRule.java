@@ -14,6 +14,7 @@ import compiler.parser.Rule;
 public class AccessSpecifierRule extends Rule
 {
 
+  private static final Object[] EMPTY_PRODUCTION = new Object[] {};
   private static final Object[] PUBLIC_PRODUCTION = new Object[] {Type.PUBLIC_KEYWORD};
   private static final Object[] PACKAGE_PRODUCTION = new Object[] {Type.PACKAGE_KEYWORD};
   private static final Object[] PACKAGE_PROTECTED_PRODUCTION = new Object[] {Type.PACKAGE_KEYWORD, Type.PROTECTED_KEYWORD};
@@ -32,6 +33,10 @@ public class AccessSpecifierRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
+    if (types == EMPTY_PRODUCTION)
+    {
+      return null;
+    }
     if (types == PUBLIC_PRODUCTION)
     {
       return AccessSpecifier.PUBLIC;
@@ -52,7 +57,7 @@ public class AccessSpecifierRule extends Rule
     {
       return AccessSpecifier.PRIVATE;
     }
-    throw new IllegalArgumentException("Invalid type list passed to match()");
+    throw badTypeList();
   }
 
 }

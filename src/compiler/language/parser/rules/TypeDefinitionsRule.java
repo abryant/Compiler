@@ -40,7 +40,7 @@ public class TypeDefinitionsRule extends Rule
       newDefinitions[oldDefinitions.length] = (TypeDefinition) args[1];
       return newDefinitions;
     }
-    throw new IllegalArgumentException("Invalid type list passed to match()");
+    throw badTypeList();
   }
 
 }

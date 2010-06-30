@@ -47,7 +47,7 @@ public class ImportDeclarationRule extends Rule
     {
       return new ImportDeclaration((QName) args[1], true, true);
     }
-    throw new IllegalArgumentException("Invalid type list passed to match()");
+    throw badTypeList();
   }
 
 }
