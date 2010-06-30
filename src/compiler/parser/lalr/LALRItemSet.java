@@ -3,6 +3,7 @@ package compiler.parser.lalr;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -97,12 +98,12 @@ public final class LALRItemSet
   }
 
   /**
-   * Tests whether this LALR item set is identical to the specified other set.
-   * This will compare not only the kernel items, but the closure items and all of the items' associated lookaheads.
-   * @param other - the other item set to compare this LALRItemSet to
-   * @return true if the specified item sets are exactly identical, false otherwise
+   * Tests whether this LALR item set contains all of the lookaheads of the specified other set.
+   * This will compare lookahead not only from the kernel items, but also from the closure items.
+   * @param other - the other item set to compare the lookaheads of this LALRItemSet to
+   * @return true if this item set contains all of the specified other item set's lookaheads, false otherwise
    */
-  public boolean isIdentical(LALRItemSet other)
+  public boolean containsLookaheads(LALRItemSet other)
   {
     if (other == this)
     {
@@ -116,7 +117,15 @@ public final class LALRItemSet
     for (LALRItem item : kernelItems.values())
     {
       LALRItem otherItem = other.kernelItems.get(item.getNextTypeUse());
-      if (!item.equalLookaheads(otherItem))
+      if (otherItem == null || !item.containsLookaheads(otherItem))
+      {
+        return false;
+      }
+    }
+    for (LALRItem item : closureItems.values())
+    {
+      LALRItem otherItem = other.closureItems.get(item.getNextTypeUse());
+      if (otherItem == null || !item.containsLookaheads(otherItem))
       {
         return false;
       }
@@ -166,4 +175,24 @@ public final class LALRItemSet
     return hashCode;
   }
 
+  /**
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString()
+  {
+    StringBuffer buffer = new StringBuffer();
+    buffer.append("[");
+    Iterator<LALRItem> it = kernelItems.values().iterator();
+    while (it.hasNext())
+    {
+      buffer.append(it.next());
+      if (it.hasNext())
+      {
+        buffer.append(", ");
+      }
+    }
+    buffer.append("]");
+    return buffer.toString();
+  }
 }

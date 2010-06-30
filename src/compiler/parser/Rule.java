@@ -99,4 +99,31 @@ public abstract class Rule
     // rules for the same type
     return type.hashCode();
   }
+
+  /**
+   * Returns a string representation of a production.
+   * @param type - the type that the production reduces to
+   * @param production - the list of types in the production
+   * @return a string representation of the production
+   */
+  public static String getProductionString(Object type, Object[] production)
+  {
+    StringBuffer existingBuffer = new StringBuffer();
+    existingBuffer.append("[");
+    existingBuffer.append(type);
+    existingBuffer.append(" <- ");
+    for (int i = 0; i < production.length; i++)
+    {
+      existingBuffer.append(production[i]);
+      if (i != production.length - 1)
+      {
+        existingBuffer.append(", ");
+      }
+      else
+      {
+        existingBuffer.append("]");
+      }
+    }
+    return existingBuffer.toString();
+  }
 }

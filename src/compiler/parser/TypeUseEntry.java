@@ -6,7 +6,7 @@ package compiler.parser;
  */
 
 /**
- * A value object which represents a particular type in a production in a Rule.
+ * An immutable value object which represents a particular type in a production in a Rule.
  *
  * @author Anthony Bryant
  */

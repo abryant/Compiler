@@ -30,6 +30,7 @@ public class ShiftAction extends Action
   @Override
   public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack)
   {
+    System.out.println("Shifting on " + (token == null ? null : token.getType())); // TODO
     // add the next state and the next token to their stacks
     stateStack.addFirst(state);
     tokenStack.addFirst(token);

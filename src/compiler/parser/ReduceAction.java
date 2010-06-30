@@ -49,18 +49,19 @@ public class ReduceAction extends Action
   @Override
   public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack)
   {
-    Object[] ruleElements = rule.getProductions()[productionIndex];
-    if (stateStack.size() <= ruleElements.length || tokenStack.size() < ruleElements.length)
+    Object[] production = rule.getProductions()[productionIndex];
+    System.out.println("Reducing via production " + Rule.getProductionString(rule.getType(), production) + " (lookahead " + (token == null ? null : token.getType()) + ")"); // TODO
+    if (stateStack.size() <= production.length || tokenStack.size() < production.length)
     {
       throw new IllegalStateException("Bad reduction of rule, not enough elements");
     }
 
     // get the list of token values
-    Object[] values = new Object[ruleElements.length];
-    for (int i = 0; i < values.length; i++)
+    Object[] values = new Object[production.length];
+    for (int i = values.length - 1; i >= 0; i--)
     {
       Token t = tokenStack.removeFirst();
-      if (!t.getType().equals(ruleElements[i]))
+      if (!t.getType().equals(production[i]))
       {
         throw new IllegalStateException("Bad reduction of rule, invalid token type");
       }
@@ -70,7 +71,7 @@ public class ReduceAction extends Action
       stateStack.removeFirst();
     }
 
-    Object result = rule.match(ruleElements, values);
+    Object result = rule.match(production, values);
     Token nonTerminal = new Token(rule.getType(), result);
 
     State topState = stateStack.peekFirst();

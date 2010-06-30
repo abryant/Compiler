@@ -4,9 +4,11 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import compiler.parser.Rule;
 import compiler.parser.RuleSet;
@@ -48,21 +50,23 @@ public class LALRRuleSet extends RuleSet
    */
   public Map<TypeUseEntry, LALRItem> calculateClosureItems(Collection<LALRItem> startItems)
   {
-    Deque<LALRItem> stack = new LinkedList<LALRItem>();
-    stack.addAll(startItems);
+    Deque<LALRItem> queue = new LinkedList<LALRItem>();
+    queue.addAll(startItems);
 
     Map<TypeUseEntry, LALRItem> result = new HashMap<TypeUseEntry, LALRItem>();
 
-    Set<LALRItem> visited = new HashSet<LALRItem>();
+    Map<TypeUseEntry, LALRItem> visited = new HashMap<TypeUseEntry, LALRItem>();
 
-    while (!stack.isEmpty())
+    while (!queue.isEmpty())
     {
-      LALRItem item = stack.pop();
-      if (visited.contains(item))
+      LALRItem item = queue.pollFirst();
+      LALRItem visitedItem = visited.get(item.getNextTypeUse());
+      if (visitedItem != null && visitedItem.containsLookaheads(item))
       {
         continue;
       }
-      visited.add(item);
+      LALRItem itemCopy = new LALRItem(item);
+      visited.put(itemCopy.getNextTypeUse(), itemCopy);
 
       Object[] production = item.getProduction();
       int offset = item.getOffset();
@@ -72,16 +76,17 @@ public class LALRRuleSet extends RuleSet
         continue;
       }
 
-      for (int i = offset + 1; i < production.length; i++)
+      for (int i = offset; i < production.length; i++)
       {
-        Rule rule = rules.get(production[i]);
-
         // we have reached an item that should be added to the result
         LALRItem resultItem = new LALRItem(item.getRule(), item.getProductionIndex(), i);
-        LALRItem existing = result.get(resultItem);
+        LALRItem existing = result.get(resultItem.getNextTypeUse());
         if (existing != null)
         {
           existing.addLookaheads(item.getLookaheads());
+          // if the lookaheads of an item are changed, it should be processed again by the queue
+          // NOTE: maintenance of the visited map depends on this
+          queue.addLast(existing);
         }
         else
         {
@@ -89,29 +94,35 @@ public class LALRRuleSet extends RuleSet
           result.put(resultItem.getNextTypeUse(), resultItem);
         }
 
+        Rule rule = rules.get(production[i]);
         if (rule != null)
         {
+          // work out the lookahead set for the new stack items that are about to be generated
+          // this is the first set of the item after the current token,
+          // but advances on to the subsequent tokens in the list until a non-nullable one is found
+          Set<Object> lookaheads = new HashSet<Object>();
+          boolean nullable = true;
+          for (int lookahead = i + 1; lookahead < production.length; lookahead++)
+          {
+            lookaheads.addAll(getFirstSet(production[lookahead]));
+            if (!isNullable(production[lookahead]))
+            {
+              nullable = false;
+              break;
+            }
+          }
+          if (nullable)
+          {
+            lookaheads.addAll(item.getLookaheads());
+          }
+
           // this is a non-terminal, so add the productions of its rule to the stack for processing
           Object[][] subProductions = rule.getProductions();
           for (int j = 0; j < subProductions.length; j++)
           {
             LALRItem stackItem = new LALRItem(rule, j, 0);
-            // work out the lookahead set for the new stack item
-            boolean nullable = true;
-            for (int l = i + 1; l < production.length; l++)
-            {
-              stackItem.addLookaheads(getFirstSet(production[l]));
-              if (!isNullable(production[l]))
-              {
-                nullable = false;
-                break;
-              }
-            }
-            if (nullable)
-            {
-              stackItem.addLookaheads(item.getLookaheads());
-            }
-            stack.add(stackItem);
+            stackItem.addLookaheads(lookaheads);
+            queue.addLast(stackItem);
           }
         }
 
@@ -120,6 +131,17 @@ public class LALRRuleSet extends RuleSet
         {
           break;
         }
+      }
+    }
+
+    // remove all items that are already in startItems (they do not count as closure items)
+    Iterator<Entry<TypeUseEntry, LALRItem>> it = result.entrySet().iterator();
+    while (it.hasNext())
+    {
+      Entry<TypeUseEntry, LALRItem> entry = it.next();
+      if (startItems.contains(entry.getValue()))
+      {
+        it.remove();
       }
     }
 

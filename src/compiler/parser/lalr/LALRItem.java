@@ -1,6 +1,7 @@
 package compiler.parser.lalr;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import compiler.parser.Rule;
@@ -44,6 +45,18 @@ public final class LALRItem
   {
     nextTypeUse = new TypeUseEntry(rule, productionIndex, offset);
     lookaheadTokens = new HashSet<Object>();
+  }
+
+  /**
+   * Copy constructor. Copies all of the specified item's state into this new LALR item
+   * @param item - the item to copy the state from
+   */
+  public LALRItem(LALRItem item)
+  {
+    // TypeUseEntry is immutable, so we do not have to copy it's values out
+    nextTypeUse = item.nextTypeUse;
+    // copy all of the lookahead tokens from the original item
+    lookaheadTokens = new HashSet<Object>(item.lookaheadTokens);
   }
 
   /**
@@ -125,24 +138,26 @@ public final class LALRItem
   }
 
   /**
-   * Finds whether the specified LALRItem has exactly the same set of lookahead token types as this item.
+   * Finds whether this item has all of the specified lookahead types that the specified other item has
    * @param item - the item to compare the lookahead token types of
-   * @return true if the specified item has exactly the same set of lookahead token types as this item
+   * @return true if this item has all of the lookahead token types that the other item has, false otherwise
    */
-  public boolean equalLookaheads(LALRItem item)
+  public boolean containsLookaheads(LALRItem item)
   {
     if (item == this)
     {
       return true;
     }
 
-    if (lookaheadTokens.size() != item.lookaheadTokens.size())
+    // if the other one has more lookahead tokens than this one, we can skip the rest of the tests
+    if (lookaheadTokens.size() < item.lookaheadTokens.size())
     {
       return false;
     }
-    for (Object lookahead : lookaheadTokens)
+    // check that each lookahead in item.lookaheadTokens is also in lookaheadTokens
+    for (Object lookahead : item.lookaheadTokens)
     {
-      if (!item.lookaheadTokens.contains(lookahead))
+      if (!lookaheadTokens.contains(lookahead))
       {
         return false;
       }
@@ -171,5 +186,47 @@ public final class LALRItem
   public int hashCode()
   {
     return nextTypeUse.hashCode();
+  }
+
+  /**
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString()
+  {
+    StringBuffer buffer = new StringBuffer();
+    buffer.append("[");
+    buffer.append(nextTypeUse.getRule().getType());
+    buffer.append(" <- ");
+    Object[] production = nextTypeUse.getRule().getProductions()[nextTypeUse.getProductionIndex()];
+    int offset = nextTypeUse.getOffset();
+    for (int i = 0; i < production.length; i++)
+    {
+      if (offset == i)
+      {
+        buffer.append(". ");
+      }
+      buffer.append(production[i]);
+      if (i != production.length - 1)
+      {
+        buffer.append(" ");
+      }
+    }
+    if (offset == production.length)
+    {
+      buffer.append(" .");
+    }
+    buffer.append(" | ");
+    Iterator<Object> it = lookaheadTokens.iterator();
+    while (it.hasNext())
+    {
+      buffer.append(it.next());
+      if (it.hasNext())
+      {
+        buffer.append(" ");
+      }
+    }
+    buffer.append("]");
+    return buffer.toString();
   }
 }

@@ -49,22 +49,15 @@ public class Parser
       Action action = state.getAction(lookahead);
       if (action == null)
       {
-        // find the list of possible types, and throw an exception containing it
-        Object[] expectedTypes = state.getExpectedTerminalTypes();
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < expectedTypes.length; i++)
-        {
-          buffer.append(expectedTypes[i]);
-          if (i != expectedTypes.length - 1)
-          {
-            buffer.append(", ");
-          }
-        }
-        throw new ParseException("Unexpected token: " + lookahead + ". Expected one of: " + buffer.toString());
+        String expectedTypes = getTypesString(state.getExpectedTerminalTypes());
+        throw new ParseException("Unexpected token: " + lookahead + ". Expected one of: " + expectedTypes);
       }
 
       if (action.isAccept())
       {
+        System.out.println("Accepting on " + lookahead); // TODO
+        // perform the reduction that the accept action does
+        action.perform(lookahead, stateStack, tokenStack);
         return tokenStack.removeFirst();
       }
 
@@ -76,6 +69,25 @@ public class Parser
       }
     }
 
+  }
+
+  /**
+   * Finds the string representation of a list of types.
+   * @param types - the list of types to convert to a string
+   * @return the string representation of the specified list of types
+   */
+  private static String getTypesString(Object[] types)
+  {
+    StringBuffer buffer = new StringBuffer();
+    for (int i = 0; i < types.length; i++)
+    {
+      buffer.append(types[i]);
+      if (i != types.length - 1)
+      {
+        buffer.append(", ");
+      }
+    }
+    return buffer.toString();
   }
 
 }
