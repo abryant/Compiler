@@ -33,6 +33,7 @@ public enum Type
   // keywords (values do not matter for these, but should be null)
   ABSTRACT_KEYWORD,
   FINAL_KEYWORD,
+  IMMUTABLE_KEYWORD,
   IMPORT_KEYWORD,
   NATIVE_KEYWORD,
   PACKAGE_KEYWORD,

@@ -17,6 +17,7 @@ public class ModifierRule extends Rule
   private static final Object[] STATIC_PRODUCTION = new Object[] {Type.STATIC_KEYWORD};
   private static final Object[] ABSTRACT_PRODUCTION = new Object[] {Type.ABSTRACT_KEYWORD};
   private static final Object[] FINAL_PRODUCTION = new Object[] {Type.FINAL_KEYWORD};
+  private static final Object[] IMMUTABLE_PRODUCTION = new Object[] {Type.IMMUTABLE_KEYWORD};
   private static final Object[] SYNCHRONIZED_PRODUCTION = new Object[] {Type.SYNCHRONIZED_KEYWORD};
   private static final Object[] TRANSIENT_PRODUCTION = new Object[] {Type.TRANSIENT_KEYWORD};
   private static final Object[] VOLATILE_PRODUCTION = new Object[] {Type.VOLATILE_KEYWORD};
@@ -24,7 +25,8 @@ public class ModifierRule extends Rule
 
   public ModifierRule()
   {
-    super(Type.MODIFIER, STATIC_PRODUCTION, ABSTRACT_PRODUCTION, FINAL_PRODUCTION, SYNCHRONIZED_PRODUCTION, TRANSIENT_PRODUCTION, VOLATILE_PRODUCTION, NATIVE_SPECIFIER_PRODUCTION);
+    super(Type.MODIFIER, STATIC_PRODUCTION, ABSTRACT_PRODUCTION, FINAL_PRODUCTION, IMMUTABLE_PRODUCTION, SYNCHRONIZED_PRODUCTION,
+                         TRANSIENT_PRODUCTION, VOLATILE_PRODUCTION, NATIVE_SPECIFIER_PRODUCTION);
   }
 
   /**
@@ -44,6 +46,10 @@ public class ModifierRule extends Rule
     if (types == FINAL_PRODUCTION)
     {
       return Modifier.FINAL;
+    }
+    if (types == IMMUTABLE_PRODUCTION)
+    {
+      return Modifier.IMMUTABLE;
     }
     if (types == SYNCHRONIZED_PRODUCTION)
     {

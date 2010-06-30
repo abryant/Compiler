@@ -31,14 +31,11 @@ AccessSpecifier = PublicKeyword | PrivateKeyword | PackageKeyword | ProtectedKey
                 | PackageKeyword ProtectedKeyword | ProtectedKeyword PackageKeyword
 
 Modifiers = Modifiers Modifier | epsilon
-Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | SynchronizedKeyword
+Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | ImmutableKeyword | SynchronizedKeyword
          | NativeSpecification | TransientKeyword | VolatileKeyword
 NativeSpecification = NativeKeyword LParen StringLiteral RParen
 
 ClassDefinition = AccessSpecifier Modifiers ClassKeyword Name ClassRest
-                | AccessSpecifier ClassKeyword Name ClassRest
-                | Modifiers ClassKeyword Name ClassRest
-                | ClassKeyword Name ClassRest
 ClassRest = ExtendsKeyword QName ClassBody
           | ImplementsKeyword CommaSeparatedQNameList ClassBody
           | ExtendsKeyword QName ImplementsKeyword CommaSeparatedQNameList ClassBody
