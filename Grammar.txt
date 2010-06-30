@@ -30,6 +30,7 @@ TypeDefinition = ClassDefinition
 AccessSpecifier = PublicKeyword | PrivateKeyword | PackageKeyword | ProtectedKeyword
                 | PackageKeyword ProtectedKeyword | ProtectedKeyword PackageKeyword
 
+Modifiers = Modifiers Modifier | epsilon
 Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | SynchronizedKeyword
          | NativeSpecification | TransientKeyword | VolatileKeyword
 NativeSpecification = NativeKeyword LParen StringLiteral RParen
