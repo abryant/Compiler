@@ -26,6 +26,14 @@ TypeDefinition = ClassDefinition
   Class Stuff
 ###############
 
+
+AccessSpecifier = PublicKeyword | PrivateKeyword | PackageKeyword | ProtectedKeyword
+                | PackageKeyword ProtectedKeyword | ProtectedKeyword PackageKeyword
+
+Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | SynchronizedKeyword
+         | NativeSpecification | TransientKeyword | VolatileKeyword
+NativeSpecification = NativeKeyword LParen StringLiteral RParen
+
 ClassDefinition = AccessSpecifier Modifiers ClassKeyword Name ClassRest
                 | AccessSpecifier ClassKeyword Name ClassRest
                 | Modifiers ClassKeyword Name ClassRest
@@ -240,13 +248,6 @@ Type = PrimitiveType | ReferenceType | ArrayType
 ArrayType = Type LSquare RSquare
 PrimitiveType = // TODO: remember to include tuples
 ReferenceType = // TODO: remember to include immutability
-
-AccessSpecifier = PublicKeyword | PrivateKeyword | PackageKeyword | ProtectedKeyword
-                | PackageKeyword ProtectedKeyword | ProtectedKeyword PackageKeyword
-
-Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | SynchronizedKeyword
-         | NativeSpecification | TransientKeyword | VolatileKeyword
-NativeSpecification = NativeKeyword LParen StringLiteral RParen
 
 QName = Name | QName Dot Name
 CommaSeparatedQNameList = QName | CommaSeparatedQNameList Comma QName

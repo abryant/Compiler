@@ -22,6 +22,7 @@ public class LanguageRules
     new ImportDeclarationsRule(),
     new ImportDeclarationRule(),
     new TypeDefinitionsRule(),
+    new AccessSpecifierRule(),
     new QNameRule()
   };
 

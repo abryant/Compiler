@@ -19,6 +19,7 @@ public enum Type
 
   // common non-terminals
   QNAME,
+  ACCESS_SPECIFIER,
 
   // literals
   NAME,
@@ -26,6 +27,9 @@ public enum Type
   // keywords
   IMPORT_KEYWORD,
   PACKAGE_KEYWORD,
+  PRIVATE_KEYWORD,
+  PROTECTED_KEYWORD,
+  PUBLIC_KEYWORD,
   STATIC_KEYWORD,
 
   // symbols
