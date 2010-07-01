@@ -1,8 +1,11 @@
 package compiler.language.parser.rules;
 
+import static compiler.language.parser.ParseType.DOT;
+import static compiler.language.parser.ParseType.NAME;
+import static compiler.language.parser.ParseType.QNAME;
+
 import compiler.language.ast.Name;
 import compiler.language.ast.QName;
-import compiler.language.parser.Type;
 import compiler.parser.Rule;
 
 /*
@@ -15,12 +18,12 @@ import compiler.parser.Rule;
 public class QNameRule extends Rule
 {
 
-  private static final Object[] START_PRODUCTION = new Object[] {Type.NAME};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {Type.QNAME, Type.DOT, Type.NAME};
+  private static final Object[] START_PRODUCTION = new Object[] {NAME};
+  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {QNAME, DOT, NAME};
 
   public QNameRule()
   {
-    super(Type.QNAME, START_PRODUCTION, CONTINUATION_PRODUCTION);
+    super(QNAME, START_PRODUCTION, CONTINUATION_PRODUCTION);
   }
 
   /**

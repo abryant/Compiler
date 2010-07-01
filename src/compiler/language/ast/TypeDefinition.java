@@ -8,15 +8,7 @@ package compiler.language.ast;
  * @author Anthony Bryant
  *
  */
-public class TypeDefinition
+public abstract class TypeDefinition
 {
-
-  /**
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public String toString()
-  {
-    return "Generic Type Definition";
-  }
+  // no methods or fields, this is just an abstract base class for all type definitions
 }

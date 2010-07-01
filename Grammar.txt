@@ -35,20 +35,14 @@ Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | ImmutableKeyword | S
          | NativeSpecification | TransientKeyword | VolatileKeyword
 NativeSpecification = NativeKeyword LParen StringLiteral RParen
 
-ClassDefinition = AccessSpecifier Modifiers ClassKeyword Name ClassRest
-ClassRest = ExtendsKeyword QName ClassBody
-          | ImplementsKeyword CommaSeparatedQNameList ClassBody
-          | ExtendsKeyword QName ImplementsKeyword CommaSeparatedQNameList ClassBody
-          | ClassBody
-ClassBody = LBrace RBrace
-          | LBrace ClassMemberList RBrace
+ClassDefinition = AccessSpecifier Modifiers ClassKeyword Name ExtendsClause ImplementsClause LBrace ClassMemberList RBrace
 
-ClassMemberList = ConstructorDefinition | MethodDefinition | MemberVariableDefinition | StaticInitializer | TypeDefinition
-                | ClassMemberList ConstructorDefinition
-                | ClassMemberList MethodDefinition
-                | ClassMemberList MemberVariableDefinition
-                | ClassMemberList StaticInitializer
-                | ClassMemberList TypeDefinition
+ExtendsClause = ExtendsKeyword ReferenceType | epsilon
+ImplementsClause = ImplementsKeyword InterfaceList | epsilon
+InterfaceList = InterfaceList Comma ReferenceType | ReferenceType
+
+ClassMemberList = ClassMemberList ClassMember | epsilon
+ClassMember = ConstructorDefinition | MethodDefinition | MemberVariableDefinition | StaticInitializer | TypeDefinition
 
 ConstructorDefinition = AccessSpecifier Modifiers Name ParameterList ConstructorRest
                       | Modifiers Name ParameterList ConstructorRest

@@ -1,7 +1,12 @@
 package compiler.language.parser.rules;
 
+import static compiler.language.parser.ParseType.ACCESS_SPECIFIER;
+import static compiler.language.parser.ParseType.PACKAGE_KEYWORD;
+import static compiler.language.parser.ParseType.PRIVATE_KEYWORD;
+import static compiler.language.parser.ParseType.PROTECTED_KEYWORD;
+import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
+
 import compiler.language.ast.AccessSpecifier;
-import compiler.language.parser.Type;
 import compiler.parser.Rule;
 
 /*
@@ -15,16 +20,23 @@ public class AccessSpecifierRule extends Rule
 {
 
   private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] PUBLIC_PRODUCTION = new Object[] {Type.PUBLIC_KEYWORD};
-  private static final Object[] PACKAGE_PRODUCTION = new Object[] {Type.PACKAGE_KEYWORD};
-  private static final Object[] PACKAGE_PROTECTED_PRODUCTION = new Object[] {Type.PACKAGE_KEYWORD, Type.PROTECTED_KEYWORD};
-  private static final Object[] PROTECTED_PACKAGE_PRODUCTION = new Object[] {Type.PROTECTED_KEYWORD, Type.PACKAGE_KEYWORD};
-  private static final Object[] PROTECTED_PRODUCTION = new Object[] {Type.PROTECTED_KEYWORD};
-  private static final Object[] PRIVATE_PRODUCTION = new Object[] {Type.PRIVATE_KEYWORD};
+  private static final Object[] PUBLIC_PRODUCTION = new Object[] {PUBLIC_KEYWORD};
+  // FIXME: shift-reduce conflict because access specifier is at the start of a ClassDefinition:
+  // on no input at all, but with lookahead: package
+  // the parser does not know whether to shift to something like:
+  // package asdf;
+  // or reduce via [PACKAGE_DECLARATION <- ] and go on to:
+  // package class qwerty {}
+  // or should the lookaheads be different?
+  private static final Object[] PACKAGE_PRODUCTION = new Object[] {PACKAGE_KEYWORD};
+  private static final Object[] PACKAGE_PROTECTED_PRODUCTION = new Object[] {PACKAGE_KEYWORD, PROTECTED_KEYWORD};
+  private static final Object[] PROTECTED_PACKAGE_PRODUCTION = new Object[] {PROTECTED_KEYWORD, PACKAGE_KEYWORD};
+  private static final Object[] PROTECTED_PRODUCTION = new Object[] {PROTECTED_KEYWORD};
+  private static final Object[] PRIVATE_PRODUCTION = new Object[] {PRIVATE_KEYWORD};
 
   public AccessSpecifierRule()
   {
-    super(Type.ACCESS_SPECIFIER, PUBLIC_PRODUCTION, PACKAGE_PRODUCTION, PACKAGE_PROTECTED_PRODUCTION, PROTECTED_PACKAGE_PRODUCTION, PROTECTED_PRODUCTION, PRIVATE_PRODUCTION);
+    super(ACCESS_SPECIFIER, PUBLIC_PRODUCTION, PACKAGE_PRODUCTION, PACKAGE_PROTECTED_PRODUCTION, PROTECTED_PACKAGE_PRODUCTION, PROTECTED_PRODUCTION, PRIVATE_PRODUCTION);
   }
 
   /**

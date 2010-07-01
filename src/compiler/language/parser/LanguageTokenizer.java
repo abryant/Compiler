@@ -1,7 +1,6 @@
 package compiler.language.parser;
 
 import compiler.language.ast.Name;
-import compiler.language.ast.TypeDefinition;
 import compiler.parser.Token;
 import compiler.parser.Tokenizer;
 
@@ -19,21 +18,20 @@ public class LanguageTokenizer extends Tokenizer
 
   private static final Token[] TEST1 =
   {
-    new Token(Type.PACKAGE_KEYWORD, null),
-    new Token(Type.NAME, new Name("bryant")),
-    new Token(Type.DOT, null),
-    new Token(Type.NAME, new Name("anthony")),
-    new Token(Type.DOT, null),
-    new Token(Type.NAME, new Name("packageName")),
-    new Token(Type.SEMICOLON, null),
+    new Token(ParseType.PACKAGE_KEYWORD, null),
+    new Token(ParseType.NAME, new Name("bryant")),
+    new Token(ParseType.DOT, null),
+    new Token(ParseType.NAME, new Name("anthony")),
+    new Token(ParseType.DOT, null),
+    new Token(ParseType.NAME, new Name("packageName")),
+    new Token(ParseType.SEMICOLON, null),
 
-    new Token(Type.IMPORT_KEYWORD, null),
-    new Token(Type.NAME, new Name("test")),
-    new Token(Type.DOT, null),
-    new Token(Type.NAME, new Name("import")),
-    new Token(Type.SEMICOLON, null),
+    new Token(ParseType.IMPORT_KEYWORD, null),
+    new Token(ParseType.NAME, new Name("test")),
+    new Token(ParseType.DOT, null),
+    new Token(ParseType.NAME, new Name("import")),
+    new Token(ParseType.SEMICOLON, null),
 
-    new Token(Type.TYPE_DEFINITION, new TypeDefinition())
   };
 
   private Token[] tokens = TEST1;

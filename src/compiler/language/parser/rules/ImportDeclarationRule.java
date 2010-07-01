@@ -1,8 +1,15 @@
 package compiler.language.parser.rules;
 
+import static compiler.language.parser.ParseType.DOT;
+import static compiler.language.parser.ParseType.IMPORT_DECLARATION;
+import static compiler.language.parser.ParseType.IMPORT_KEYWORD;
+import static compiler.language.parser.ParseType.QNAME;
+import static compiler.language.parser.ParseType.SEMICOLON;
+import static compiler.language.parser.ParseType.STAR;
+import static compiler.language.parser.ParseType.STATIC_KEYWORD;
+
 import compiler.language.ast.ImportDeclaration;
 import compiler.language.ast.QName;
-import compiler.language.parser.Type;
 import compiler.parser.Rule;
 
 /*
@@ -15,14 +22,14 @@ import compiler.parser.Rule;
 public class ImportDeclarationRule extends Rule
 {
 
-  private static final Object[] NORMAL_PRODUCTION = new Object[] {Type.IMPORT_KEYWORD, Type.QNAME, Type.SEMICOLON};
-  private static final Object[] ALL_PRODUCTION = new Object[] {Type.IMPORT_KEYWORD, Type.QNAME, Type.DOT, Type.STAR, Type.SEMICOLON};
-  private static final Object[] STATIC_NORMAL_PRODUCTION = new Object[] {Type.IMPORT_KEYWORD, Type.STATIC_KEYWORD, Type.QNAME, Type.SEMICOLON};
-  private static final Object[] STATIC_ALL_PRODUCTION = new Object[] {Type.IMPORT_KEYWORD, Type.STATIC_KEYWORD, Type.QNAME, Type.DOT, Type.STAR, Type.SEMICOLON};
+  private static final Object[] NORMAL_PRODUCTION = new Object[] {IMPORT_KEYWORD, QNAME, SEMICOLON};
+  private static final Object[] ALL_PRODUCTION = new Object[] {IMPORT_KEYWORD, QNAME, DOT, STAR, SEMICOLON};
+  private static final Object[] STATIC_NORMAL_PRODUCTION = new Object[] {IMPORT_KEYWORD, STATIC_KEYWORD, QNAME, SEMICOLON};
+  private static final Object[] STATIC_ALL_PRODUCTION = new Object[] {IMPORT_KEYWORD, STATIC_KEYWORD, QNAME, DOT, STAR, SEMICOLON};
 
   public ImportDeclarationRule()
   {
-    super(Type.IMPORT_DECLARATION, NORMAL_PRODUCTION, ALL_PRODUCTION, STATIC_NORMAL_PRODUCTION, STATIC_ALL_PRODUCTION);
+    super(IMPORT_DECLARATION, NORMAL_PRODUCTION, ALL_PRODUCTION, STATIC_NORMAL_PRODUCTION, STATIC_ALL_PRODUCTION);
   }
 
   /**

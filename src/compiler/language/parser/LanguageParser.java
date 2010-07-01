@@ -1,6 +1,5 @@
 package compiler.language.parser;
 
-import compiler.language.parser.rules.LanguageRules;
 import compiler.parser.ParseException;
 import compiler.parser.Parser;
 import compiler.parser.Token;
@@ -29,7 +28,7 @@ public class LanguageParser
     try
     {
       Token result = parser.parse();
-      if (result.getType() != Type.COMPILATION_UNIT)
+      if (result.getType() != ParseType.COMPILATION_UNIT)
       {
         System.err.println("Invalid result type: " + result.getType());
       }

@@ -1,7 +1,9 @@
 package compiler.language.parser.rules;
 
+import static compiler.language.parser.ParseType.IMPORT_DECLARATION;
+import static compiler.language.parser.ParseType.IMPORT_DECLARATIONS;
+
 import compiler.language.ast.ImportDeclaration;
-import compiler.language.parser.Type;
 import compiler.parser.Rule;
 
 /*
@@ -15,11 +17,11 @@ public class ImportDeclarationsRule extends Rule
 {
 
   private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] PRODUCTION = new Object[] {Type.IMPORT_DECLARATIONS, Type.IMPORT_DECLARATION};
+  private static final Object[] PRODUCTION = new Object[] {IMPORT_DECLARATIONS, IMPORT_DECLARATION};
 
   public ImportDeclarationsRule()
   {
-    super(Type.IMPORT_DECLARATIONS, EMPTY_PRODUCTION, PRODUCTION);
+    super(IMPORT_DECLARATIONS, EMPTY_PRODUCTION, PRODUCTION);
   }
 
   /**

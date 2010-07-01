@@ -1,7 +1,16 @@
 package compiler.language.parser.rules;
 
+import static compiler.language.parser.ParseType.ABSTRACT_KEYWORD;
+import static compiler.language.parser.ParseType.FINAL_KEYWORD;
+import static compiler.language.parser.ParseType.IMMUTABLE_KEYWORD;
+import static compiler.language.parser.ParseType.MODIFIER;
+import static compiler.language.parser.ParseType.NATIVE_SPECIFIER;
+import static compiler.language.parser.ParseType.STATIC_KEYWORD;
+import static compiler.language.parser.ParseType.SYNCHRONIZED_KEYWORD;
+import static compiler.language.parser.ParseType.TRANSIENT_KEYWORD;
+import static compiler.language.parser.ParseType.VOLATILE_KEYWORD;
+
 import compiler.language.ast.Modifier;
-import compiler.language.parser.Type;
 import compiler.parser.Rule;
 
 /*
@@ -14,18 +23,18 @@ import compiler.parser.Rule;
 public class ModifierRule extends Rule
 {
 
-  private static final Object[] STATIC_PRODUCTION = new Object[] {Type.STATIC_KEYWORD};
-  private static final Object[] ABSTRACT_PRODUCTION = new Object[] {Type.ABSTRACT_KEYWORD};
-  private static final Object[] FINAL_PRODUCTION = new Object[] {Type.FINAL_KEYWORD};
-  private static final Object[] IMMUTABLE_PRODUCTION = new Object[] {Type.IMMUTABLE_KEYWORD};
-  private static final Object[] SYNCHRONIZED_PRODUCTION = new Object[] {Type.SYNCHRONIZED_KEYWORD};
-  private static final Object[] TRANSIENT_PRODUCTION = new Object[] {Type.TRANSIENT_KEYWORD};
-  private static final Object[] VOLATILE_PRODUCTION = new Object[] {Type.VOLATILE_KEYWORD};
-  private static final Object[] NATIVE_SPECIFIER_PRODUCTION = new Object[] {Type.NATIVE_SPECIFIER};
+  private static final Object[] STATIC_PRODUCTION = new Object[] {STATIC_KEYWORD};
+  private static final Object[] ABSTRACT_PRODUCTION = new Object[] {ABSTRACT_KEYWORD};
+  private static final Object[] FINAL_PRODUCTION = new Object[] {FINAL_KEYWORD};
+  private static final Object[] IMMUTABLE_PRODUCTION = new Object[] {IMMUTABLE_KEYWORD};
+  private static final Object[] SYNCHRONIZED_PRODUCTION = new Object[] {SYNCHRONIZED_KEYWORD};
+  private static final Object[] TRANSIENT_PRODUCTION = new Object[] {TRANSIENT_KEYWORD};
+  private static final Object[] VOLATILE_PRODUCTION = new Object[] {VOLATILE_KEYWORD};
+  private static final Object[] NATIVE_SPECIFIER_PRODUCTION = new Object[] {NATIVE_SPECIFIER};
 
   public ModifierRule()
   {
-    super(Type.MODIFIER, STATIC_PRODUCTION, ABSTRACT_PRODUCTION, FINAL_PRODUCTION, IMMUTABLE_PRODUCTION, SYNCHRONIZED_PRODUCTION,
+    super(MODIFIER, STATIC_PRODUCTION, ABSTRACT_PRODUCTION, FINAL_PRODUCTION, IMMUTABLE_PRODUCTION, SYNCHRONIZED_PRODUCTION,
                          TRANSIENT_PRODUCTION, VOLATILE_PRODUCTION, NATIVE_SPECIFIER_PRODUCTION);
   }
 

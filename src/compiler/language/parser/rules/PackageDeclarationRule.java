@@ -1,8 +1,12 @@
 package compiler.language.parser.rules;
 
+import static compiler.language.parser.ParseType.PACKAGE_DECLARATION;
+import static compiler.language.parser.ParseType.PACKAGE_KEYWORD;
+import static compiler.language.parser.ParseType.QNAME;
+import static compiler.language.parser.ParseType.SEMICOLON;
+
 import compiler.language.ast.PackageDeclaration;
 import compiler.language.ast.QName;
-import compiler.language.parser.Type;
 import compiler.parser.Rule;
 
 /*
@@ -16,11 +20,11 @@ public class PackageDeclarationRule extends Rule
 {
 
   private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] PRODUCTION = new Object[] {Type.PACKAGE_KEYWORD, Type.QNAME, Type.SEMICOLON};
+  private static final Object[] PRODUCTION = new Object[] {PACKAGE_KEYWORD, QNAME, SEMICOLON};
 
   public PackageDeclarationRule()
   {
-    super(Type.PACKAGE_DECLARATION, EMPTY_PRODUCTION, PRODUCTION);
+    super(PACKAGE_DECLARATION, EMPTY_PRODUCTION, PRODUCTION);
   }
 
   /**

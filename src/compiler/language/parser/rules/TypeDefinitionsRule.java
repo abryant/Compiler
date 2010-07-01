@@ -1,7 +1,9 @@
 package compiler.language.parser.rules;
 
+import static compiler.language.parser.ParseType.TYPE_DEFINITION;
+import static compiler.language.parser.ParseType.TYPE_DEFINITIONS;
+
 import compiler.language.ast.TypeDefinition;
-import compiler.language.parser.Type;
 import compiler.parser.Rule;
 
 /*
@@ -15,11 +17,11 @@ public class TypeDefinitionsRule extends Rule
 {
 
   private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] PRODUCTION = new Object[] {Type.TYPE_DEFINITIONS, Type.TYPE_DEFINITION};
+  private static final Object[] PRODUCTION = new Object[] {TYPE_DEFINITIONS, TYPE_DEFINITION};
 
   public TypeDefinitionsRule()
   {
-    super(Type.TYPE_DEFINITIONS, EMPTY_PRODUCTION, PRODUCTION);
+    super(TYPE_DEFINITIONS, EMPTY_PRODUCTION, PRODUCTION);
   }
 
   /**

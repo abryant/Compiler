@@ -1,7 +1,9 @@
 package compiler.language.parser.rules;
 
+import static compiler.language.parser.ParseType.MODIFIER;
+import static compiler.language.parser.ParseType.MODIFIERS;
+
 import compiler.language.ast.Modifier;
-import compiler.language.parser.Type;
 import compiler.parser.Rule;
 
 /*
@@ -15,11 +17,11 @@ public class ModifiersRule extends Rule
 {
 
   private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] PRODUCTION = new Object[] {Type.MODIFIERS, Type.MODIFIER};
+  private static final Object[] PRODUCTION = new Object[] {MODIFIERS, MODIFIER};
 
   public ModifiersRule()
   {
-    super(Type.MODIFIERS, EMPTY_PRODUCTION, PRODUCTION);
+    super(MODIFIERS, EMPTY_PRODUCTION, PRODUCTION);
   }
 
   /**

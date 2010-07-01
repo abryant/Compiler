@@ -6,7 +6,6 @@ package compiler.language.ast;
 
 /**
  * @author Anthony Bryant
- *
  */
 public class Name
 {
