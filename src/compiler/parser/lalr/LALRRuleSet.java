@@ -46,7 +46,7 @@ public class LALRRuleSet extends RuleSet
   /**
    * Finds the set of LALR Items that are in the epsilon-closure of the specified set of start items.
    * @param startItems - the set of kernel items to calculate the closure of
-   * @return the set of closure items that must be added to the kernel set to produce the closure
+   * @return the set of closure items that must be added to the kernel set to produce the closure. These will be updated with any additional lookaheads they require
    */
   public Map<TypeUseEntry, LALRItem> calculateClosureItems(Collection<LALRItem> startItems)
   {
@@ -54,6 +54,14 @@ public class LALRRuleSet extends RuleSet
     queue.addAll(startItems);
 
     Map<TypeUseEntry, LALRItem> result = new HashMap<TypeUseEntry, LALRItem>();
+    // add the kernel items to the result.
+    // they will be removed again at the end of this method, but they need to
+    // be added so that their lookaheads can be updated when an existing item
+    // is found in the result set
+    for (LALRItem startItem : startItems)
+    {
+      result.put(startItem.getNextTypeUse(), startItem);
+    }
 
     Map<TypeUseEntry, LALRItem> visited = new HashMap<TypeUseEntry, LALRItem>();
 
