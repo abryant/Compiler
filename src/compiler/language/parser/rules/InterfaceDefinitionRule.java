@@ -1,10 +1,9 @@
 package compiler.language.parser.rules;
 
 import static compiler.language.parser.ParseType.ACCESS_SPECIFIER;
-import static compiler.language.parser.ParseType.CLASS_DEFINITION;
-import static compiler.language.parser.ParseType.CLASS_KEYWORD;
-import static compiler.language.parser.ParseType.CLASS_EXTENDS_CLAUSE;
-import static compiler.language.parser.ParseType.IMPLEMENTS_CLAUSE;
+import static compiler.language.parser.ParseType.INTERFACE_DEFINITION;
+import static compiler.language.parser.ParseType.INTERFACE_EXTENDS_CLAUSE;
+import static compiler.language.parser.ParseType.INTERFACE_KEYWORD;
 import static compiler.language.parser.ParseType.LBRACE;
 import static compiler.language.parser.ParseType.MEMBER_LIST;
 import static compiler.language.parser.ParseType.MODIFIERS;
@@ -12,7 +11,7 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.RBRACE;
 
 import compiler.language.ast.AccessSpecifier;
-import compiler.language.ast.ClassDefinition;
+import compiler.language.ast.InterfaceDefinition;
 import compiler.language.ast.Member;
 import compiler.language.ast.Modifier;
 import compiler.language.ast.Name;
@@ -26,14 +25,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ClassDefinitionRule extends Rule
+public class InterfaceDefinitionRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, CLASS_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
+  private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, INTERFACE_KEYWORD, NAME, INTERFACE_EXTENDS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
 
-  public ClassDefinitionRule()
+  public InterfaceDefinitionRule()
   {
-    super(CLASS_DEFINITION, PRODUCTION);
+    super(INTERFACE_DEFINITION, PRODUCTION);
   }
 
   /**
@@ -44,7 +43,7 @@ public class ClassDefinitionRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new ClassDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], (ReferenceType) args[4], (ReferenceType[]) args[5], (Member[]) args[7]);
+      return new InterfaceDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], (ReferenceType[]) args[4], (Member[]) args[6]);
     }
     throw badTypeList();
   }

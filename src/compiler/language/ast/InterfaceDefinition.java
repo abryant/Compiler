@@ -7,31 +7,28 @@ package compiler.language.ast;
 /**
  * @author Anthony Bryant
  */
-public class ClassDefinition extends TypeDefinition
+public class InterfaceDefinition extends TypeDefinition
 {
   private AccessSpecifier access;
   private Modifier[] modifiers;
   private Name name;
-  private ReferenceType baseClass;
-  private ReferenceType[] interfaces;
+  private ReferenceType[] parentInterfaces;
   private Member[] members;
 
   /**
-   * Creates a new class definition with all of the specified properties
+   * Creates a new interface definition with all of the specified properties
    * @param access - the access specifier, or null for the default access specifier
    * @param modifiers - the list of modifiers for this class
    * @param name - the name of this class
-   * @param baseClass - the base class of this class
-   * @param interfaces - the list of interfaces that this class implements
+   * @param parentInterfaces - the list of interfaces that this class implements
    * @param members - the list of members of this class
    */
-  public ClassDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, ReferenceType baseClass, ReferenceType[] interfaces, Member[] members)
+  public InterfaceDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, ReferenceType[] parentInterfaces, Member[] members)
   {
     this.access = access;
     this.modifiers = modifiers;
     this.name = name;
-    this.baseClass = baseClass;
-    this.interfaces = interfaces;
+    this.parentInterfaces = parentInterfaces;
     this.members = members;
   }
 
@@ -60,19 +57,11 @@ public class ClassDefinition extends TypeDefinition
   }
 
   /**
-   * @return the base class
-   */
-  public ReferenceType getBaseClass()
-  {
-    return baseClass;
-  }
-
-  /**
-   * @return the interfaces
+   * @return the parent interfaces
    */
   public ReferenceType[] getInterfaces()
   {
-    return interfaces;
+    return parentInterfaces;
   }
 
   /**
@@ -100,22 +89,16 @@ public class ClassDefinition extends TypeDefinition
       buffer.append(modifiers[i]);
       buffer.append(" ");
     }
-    buffer.append("class ");
+    buffer.append("interface ");
     buffer.append(name);
     buffer.append(" ");
-    if (baseClass != null)
+    if (parentInterfaces != null)
     {
       buffer.append("extends ");
-      buffer.append(baseClass);
-      buffer.append(" ");
-    }
-    if (interfaces != null)
-    {
-      buffer.append("implements ");
-      for (int i = 0; i < interfaces.length; i++)
+      for (int i = 0; i < parentInterfaces.length; i++)
       {
-        buffer.append(interfaces[i]);
-        if (i != interfaces.length - 1)
+        buffer.append(parentInterfaces[i]);
+        if (i != parentInterfaces.length - 1)
         {
           buffer.append(", ");
         }

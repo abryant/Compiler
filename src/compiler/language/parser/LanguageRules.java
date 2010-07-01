@@ -2,10 +2,12 @@ package compiler.language.parser;
 
 import compiler.language.parser.rules.AccessSpecifierRule;
 import compiler.language.parser.rules.ClassDefinitionRule;
+import compiler.language.parser.rules.ClassExtendsClauseRule;
 import compiler.language.parser.rules.CompilationUnitRule;
-import compiler.language.parser.rules.ExtendsClauseRule;
 import compiler.language.parser.rules.ImplementsClauseRule;
 import compiler.language.parser.rules.ImportDeclarationRule;
+import compiler.language.parser.rules.InterfaceDefinitionRule;
+import compiler.language.parser.rules.InterfaceExtendsClauseRule;
 import compiler.language.parser.rules.InterfaceListRule;
 import compiler.language.parser.rules.ModifierRule;
 import compiler.language.parser.rules.ModifiersRule;
@@ -35,9 +37,11 @@ public class LanguageRules
     new AccessSpecifierRule(),
     new ClassDefinitionRule(),
     // startRule: new CompilationUnitRule(),
-    new ExtendsClauseRule(),
+    new ClassExtendsClauseRule(),
     new ImplementsClauseRule(),
     new ImportDeclarationRule(),
+    new InterfaceDefinitionRule(),
+    new InterfaceExtendsClauseRule(),
     new InterfaceListRule(),
     new ModifierRule(),
     new ModifiersRule(),

@@ -1,6 +1,6 @@
 package compiler.language.parser.rules;
 
-import static compiler.language.parser.ParseType.EXTENDS_CLAUSE;
+import static compiler.language.parser.ParseType.CLASS_EXTENDS_CLAUSE;
 import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
 import static compiler.language.parser.ParseType.REFERENCE_TYPE;
 
@@ -13,15 +13,15 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ExtendsClauseRule extends Rule
+public class ClassExtendsClauseRule extends Rule
 {
 
   private static final Object[] EMPTY_PRODUCTION = new Object[] {};
   private static final Object[] PRODUCTION = new Object[] {EXTENDS_KEYWORD, REFERENCE_TYPE};
 
-  public ExtendsClauseRule()
+  public ClassExtendsClauseRule()
   {
-    super(EXTENDS_CLAUSE, EMPTY_PRODUCTION, PRODUCTION);
+    super(CLASS_EXTENDS_CLAUSE, EMPTY_PRODUCTION, PRODUCTION);
   }
 
   /**

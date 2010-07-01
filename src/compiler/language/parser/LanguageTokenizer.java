@@ -5,8 +5,10 @@ import static compiler.language.parser.ParseType.CLASS_KEYWORD;
 import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.DOT;
 import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
+import static compiler.language.parser.ParseType.IMMUTABLE_KEYWORD;
 import static compiler.language.parser.ParseType.IMPLEMENTS_KEYWORD;
 import static compiler.language.parser.ParseType.IMPORT_KEYWORD;
+import static compiler.language.parser.ParseType.INTERFACE_KEYWORD;
 import static compiler.language.parser.ParseType.LBRACE;
 import static compiler.language.parser.ParseType.MEMBER_LIST;
 import static compiler.language.parser.ParseType.NAME;
@@ -69,6 +71,20 @@ public class LanguageTokenizer extends Tokenizer
     new Token(REFERENCE_TYPE, new ReferenceType(new QName(new QName(new Name("test")), new Name("Interface")), true)),
     new Token(COMMA, null),
     new Token(REFERENCE_TYPE, new ReferenceType(new QName(new QName(new Name("other")), new Name("Interface")), false)),
+    new Token(LBRACE, null),
+    new Token(MEMBER_LIST, new Member[] {}),
+    new Token(RBRACE, null),
+
+    new Token(PACKAGE_KEYWORD, null),
+    new Token(IMMUTABLE_KEYWORD, null),
+    new Token(INTERFACE_KEYWORD, null),
+    new Token(NAME, new Name("Test")),
+    new Token(EXTENDS_KEYWORD, null),
+    new Token(REFERENCE_TYPE, new ReferenceType(new QName(new Name("Base")), false)),
+    new Token(COMMA, null),
+    new Token(REFERENCE_TYPE, new ReferenceType(new QName(new QName(new Name("test")), new Name("Interface")), true)),
+    new Token(COMMA, null),
+    new Token(REFERENCE_TYPE, new ReferenceType(new QName(new QName(new Name("other")), new Name("Interface")), true)),
     new Token(LBRACE, null),
     new Token(MEMBER_LIST, new Member[] {}),
     new Token(RBRACE, null),

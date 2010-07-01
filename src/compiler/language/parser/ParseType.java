@@ -20,11 +20,13 @@ public enum ParseType
   TYPE_DEFINITION,     // TypeDefinition
 
   // classes, interfaces, enums
-  CLASS_DEFINITION,  // ClassDefinition
-  EXTENDS_CLAUSE,    // ReferenceType or null
-  INTERFACE_LIST,    // ReferenceType[] (length > 0)
-  IMPLEMENTS_CLAUSE, // ReferenceType[] (length > 0) or null
-  MEMBER_LIST,       // Member[] TODO: currently a terminal
+  CLASS_DEFINITION,         // ClassDefinition
+  INTERFACE_DEFINITION,     // InterfaceDefinition
+  CLASS_EXTENDS_CLAUSE,     // ReferenceType or null
+  INTERFACE_LIST,           // ReferenceType[] (length > 0)
+  IMPLEMENTS_CLAUSE,        // ReferenceType[] (length > 0) or null
+  INTERFACE_EXTENDS_CLAUSE, // ReferenceType[] (length > 0) or null
+  MEMBER_LIST,              // Member[] TODO: currently a terminal
 
   // common non-terminals
   ACCESS_SPECIFIER, // AccessSpecifier or null
@@ -47,6 +49,7 @@ public enum ParseType
   IMMUTABLE_KEYWORD,
   IMPLEMENTS_KEYWORD,
   IMPORT_KEYWORD,
+  INTERFACE_KEYWORD,
   NATIVE_KEYWORD,
   PACKAGE_KEYWORD,
   PRIVATE_KEYWORD,
