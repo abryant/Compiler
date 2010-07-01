@@ -41,6 +41,7 @@ public class InterfaceListRule extends Rule
       ReferenceType[] newList = new ReferenceType[oldList.length + 1];
       System.arraycopy(oldList, 0, newList, 0, oldList.length);
       newList[oldList.length] = (ReferenceType) args[2];
+      return newList;
     }
     throw badTypeList();
   }

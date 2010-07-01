@@ -40,4 +40,12 @@ public class ReferenceType extends Type
     return immutable;
   }
 
+  /**
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString()
+  {
+    return (immutable ? "#" : "") + typeName;
+  }
 }
