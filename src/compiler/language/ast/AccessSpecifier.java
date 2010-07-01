@@ -9,9 +9,25 @@ package compiler.language.ast;
  */
 public enum AccessSpecifier
 {
-  PUBLIC,
-  PACKAGE,
-  PACKAGE_PROTECTED,
-  PROTECTED,
-  PRIVATE
+  PUBLIC("public"),
+  PACKAGE("package"),
+  PACKAGE_PROTECTED("package protected"),
+  PROTECTED("protected"),
+  PRIVATE("private");
+
+  private final String stringRepresentation;
+
+  private AccessSpecifier(String stringRepresentation)
+  {
+    this.stringRepresentation = stringRepresentation;
+  }
+
+  /**
+   * @see java.lang.Enum#toString()
+   */
+  @Override
+  public String toString()
+  {
+    return stringRepresentation;
+  }
 }

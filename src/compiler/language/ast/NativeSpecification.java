@@ -18,6 +18,7 @@ public class NativeSpecification extends Modifier
    */
   public NativeSpecification(String nativeName)
   {
+    super("native(\"" + nativeName + "\")");
     this.nativeName = nativeName;
   }
 

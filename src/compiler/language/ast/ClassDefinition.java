@@ -82,4 +82,54 @@ public class ClassDefinition extends TypeDefinition
   {
     return members;
   }
+
+  /**
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString()
+  {
+    StringBuffer buffer = new StringBuffer();
+    if (access != null)
+    {
+      buffer.append(access);
+      buffer.append(" ");
+    }
+    for (int i = 0; i < modifiers.length; i++)
+    {
+      buffer.append(modifiers[i]);
+      buffer.append(" ");
+    }
+    buffer.append("class ");
+    buffer.append(name);
+    buffer.append(" ");
+    if (baseClass != null)
+    {
+      buffer.append("extends ");
+      buffer.append(baseClass);
+      buffer.append(" ");
+    }
+    if (interfaces != null)
+    {
+      buffer.append("implements ");
+      for (int i = 0; i < interfaces.length; i++)
+      {
+        buffer.append(interfaces[i]);
+        if (i != interfaces.length - 1)
+        {
+          buffer.append(", ");
+        }
+      }
+      buffer.append(" ");
+    }
+    buffer.append("\n{\n");
+    for (int i = 0; i < members.length; i++)
+    {
+      String memberStr = members[i].toString();
+      buffer.append(memberStr.replaceAll("^", "   "));
+      buffer.append("\n   ");
+    }
+    buffer.append("\n}\n");
+    return buffer.toString();
+  }
 }
