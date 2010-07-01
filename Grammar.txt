@@ -6,18 +6,18 @@ This is the unsimplified grammar, it will need to be simplified before use.
   Top Level Stuff
 ###################
 
-CompilationUnit = PackageDeclaration ImportDeclarations TypeDefinitions
+CompilationUnit = epsilon
+                | CompilationUnit PackageDeclaration
+                | CompilationUnit ImportDeclaration
+                | CompilationUnit TypeDefinition
 
-PackageDeclaration = PackageKeyword QName SemiColon | epsilon
+PackageDeclaration = PackageKeyword QName SemiColon
 
-ImportDeclarations = ImportDeclarations ImportDeclaration
-                   | epsilon
 ImportDeclaration  = ImportKeyword QName Semicolon
                    | ImportKeyword QName Dot Star Semicolon
                    | ImportKeyword StaticKeyword QName Semicolon
                    | ImportKeyword StaticKeyword QName Dot Star Semicolon
 
-TypeDefinitions = TypeDefinitions TypeDefinition | epsilon
 TypeDefinition = ClassDefinition
                | InterfaceDefinition
                | EnumDefinition

@@ -15,10 +15,8 @@ public enum ParseType
 
   // top level
   COMPILATION_UNIT,    // CompilationUnit
-  PACKAGE_DECLARATION, // PackageDeclaration or null
-  IMPORT_DECLARATIONS, // ImportDeclaration[]
+  PACKAGE_DECLARATION, // PackageDeclaration
   IMPORT_DECLARATION,  // ImportDeclaration
-  TYPE_DEFINITIONS,    // TypeDefinition[]
   TYPE_DEFINITION,     // TypeDefinition
 
   // classes, interfaces, enums

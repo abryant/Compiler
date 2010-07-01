@@ -6,7 +6,6 @@ import compiler.language.parser.rules.CompilationUnitRule;
 import compiler.language.parser.rules.ExtendsClauseRule;
 import compiler.language.parser.rules.ImplementsClauseRule;
 import compiler.language.parser.rules.ImportDeclarationRule;
-import compiler.language.parser.rules.ImportDeclarationsRule;
 import compiler.language.parser.rules.InterfaceListRule;
 import compiler.language.parser.rules.ModifierRule;
 import compiler.language.parser.rules.ModifiersRule;
@@ -14,7 +13,7 @@ import compiler.language.parser.rules.NativeSpecificationRule;
 import compiler.language.parser.rules.PackageDeclarationRule;
 import compiler.language.parser.rules.QNameRule;
 import compiler.language.parser.rules.TypeDefinitionRule;
-import compiler.language.parser.rules.TypeDefinitionsRule;
+import compiler.language.parser.rules.TypeRule;
 import compiler.parser.Rule;
 import compiler.parser.lalr.LALRRuleSet;
 
@@ -39,7 +38,6 @@ public class LanguageRules
     new ExtendsClauseRule(),
     new ImplementsClauseRule(),
     new ImportDeclarationRule(),
-    new ImportDeclarationsRule(),
     new InterfaceListRule(),
     new ModifierRule(),
     new ModifiersRule(),
@@ -47,7 +45,7 @@ public class LanguageRules
     new PackageDeclarationRule(),
     new QNameRule(),
     new TypeDefinitionRule(),
-    new TypeDefinitionsRule(),
+    new TypeRule(),
   };
 
   /**

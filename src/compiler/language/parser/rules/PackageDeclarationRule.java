@@ -19,12 +19,11 @@ import compiler.parser.Rule;
 public class PackageDeclarationRule extends Rule
 {
 
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {};
   private static final Object[] PRODUCTION = new Object[] {PACKAGE_KEYWORD, QNAME, SEMICOLON};
 
   public PackageDeclarationRule()
   {
-    super(PACKAGE_DECLARATION, EMPTY_PRODUCTION, PRODUCTION);
+    super(PACKAGE_DECLARATION, PRODUCTION);
   }
 
   /**
@@ -33,11 +32,6 @@ public class PackageDeclarationRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
-    if (types == EMPTY_PRODUCTION)
-    {
-      // there is no package declaration (this is an epsilon rule), so give null as the package declaration
-      return null;
-    }
     if (types == PRODUCTION)
     {
       return new PackageDeclaration((QName) args[1]);

@@ -1,6 +1,8 @@
 package compiler.language.parser.rules;
 
-import compiler.language.parser.ParseType;
+import static compiler.language.parser.ParseType.CLASS_DEFINITION;
+import static compiler.language.parser.ParseType.TYPE_DEFINITION;
+
 import compiler.parser.Rule;
 
 /*
@@ -13,11 +15,11 @@ import compiler.parser.Rule;
 public class TypeDefinitionRule extends Rule
 {
 
-  private static final Object[] CLASS_PRODUCTION = new Object[] {ParseType.CLASS_DEFINITION};
+  private static final Object[] CLASS_PRODUCTION = new Object[] {CLASS_DEFINITION};
 
   public TypeDefinitionRule()
   {
-    super(ParseType.TYPE_DEFINITION, CLASS_PRODUCTION);
+    super(TYPE_DEFINITION, CLASS_PRODUCTION);
   }
 
   /**
