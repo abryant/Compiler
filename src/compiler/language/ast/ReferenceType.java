@@ -7,6 +7,7 @@ package compiler.language.ast;
 /**
  * @author Anthony Bryant
  */
+// TODO: rename this to PointerType, as that is more descriptive when it applies to parameter passing
 public class ReferenceType extends Type
 {
 

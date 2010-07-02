@@ -29,19 +29,28 @@ TypeDefinition = ClassDefinition
 
 AccessSpecifier = PublicKeyword | PrivateKeyword | PackageKeyword | ProtectedKeyword
                 | PackageKeyword ProtectedKeyword | ProtectedKeyword PackageKeyword
+                | epsilon
 
 Modifiers = Modifiers Modifier | epsilon
 Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | ImmutableKeyword | SynchronizedKeyword
          | NativeSpecification | TransientKeyword | VolatileKeyword
 NativeSpecification = NativeKeyword LParen StringLiteral RParen
 
+TypeArgument = Name
+             | Name ExtendsKeyword PointerType
+             | QuestionMark ExtendsKeyword PointerType
+             | 
+// TODO: decide how type arguments should really work for types other than class/interface/enum pointer types
+TypeArgumentList = TypeArgumentList Comma TypeArgument | TypeArgument
+TypeArguments = LAngle TypeArgumentList RAngle
+
 ClassDefinition     = AccessSpecifier Modifiers ClassKeyword Name ClassExtendsClause ImplementsClause LBrace MemberList RBrace
 InterfaceDefinition = AccessSpecifier Modifiers InterfaceKeyword Name InterfaceExtendsClause LBrace MemberList RBrace
 
-ClassExtendsClause     = ExtendsKeyword ReferenceType | epsilon
+ClassExtendsClause     = ExtendsKeyword PointerType | epsilon
 ImplementsClause       = ImplementsKeyword InterfaceList | epsilon
 InterfaceExtendsClause = ExtendsKeyword InterfaceList | epsilon
-InterfaceList          = InterfaceList Comma ReferenceType | ReferenceType
+InterfaceList          = InterfaceList Comma PointerType | PointerType
 
 MemberList = MemberList Member | epsilon
 Member = ConstructorDefinition | MethodDefinition | MemberVariableDefinition | StaticInitializer | TypeDefinition
@@ -238,10 +247,10 @@ ComparisonOperator = EqualsEquals | NotEquals | RAngle | LAngle | MoreThanEquals
 #########
 
 ReturnType = Type | VoidKeyword
-Type = PrimitiveType | ReferenceType | ArrayType
+Type = PrimitiveType | PointerType | ArrayType
 ArrayType = Type LSquare RSquare
 PrimitiveType = // TODO: remember to include tuples
-ReferenceType = // TODO: remember to include immutability
+PointerType = // TODO: remember to include immutability
 
 QName = Name | QName Dot Name
 CommaSeparatedQNameList = QName | CommaSeparatedQNameList Comma QName
