@@ -2,7 +2,7 @@ package compiler.language.parser.rules;
 
 import static compiler.language.parser.ParseType.CLASS_EXTENDS_CLAUSE;
 import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
-import static compiler.language.parser.ParseType.REFERENCE_TYPE;
+import static compiler.language.parser.ParseType.POINTER_TYPE;
 
 import compiler.parser.Rule;
 
@@ -17,7 +17,7 @@ public class ClassExtendsClauseRule extends Rule
 {
 
   private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] PRODUCTION = new Object[] {EXTENDS_KEYWORD, REFERENCE_TYPE};
+  private static final Object[] PRODUCTION = new Object[] {EXTENDS_KEYWORD, POINTER_TYPE};
 
   public ClassExtendsClauseRule()
   {

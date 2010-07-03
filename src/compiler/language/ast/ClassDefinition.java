@@ -12,8 +12,8 @@ public class ClassDefinition extends TypeDefinition
   private AccessSpecifier access;
   private Modifier[] modifiers;
   private Name name;
-  private ReferenceType baseClass;
-  private ReferenceType[] interfaces;
+  private PointerType baseClass;
+  private PointerType[] interfaces;
   private Member[] members;
 
   /**
@@ -25,7 +25,7 @@ public class ClassDefinition extends TypeDefinition
    * @param interfaces - the list of interfaces that this class implements
    * @param members - the list of members of this class
    */
-  public ClassDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, ReferenceType baseClass, ReferenceType[] interfaces, Member[] members)
+  public ClassDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, PointerType baseClass, PointerType[] interfaces, Member[] members)
   {
     this.access = access;
     this.modifiers = modifiers;
@@ -62,7 +62,7 @@ public class ClassDefinition extends TypeDefinition
   /**
    * @return the base class
    */
-  public ReferenceType getBaseClass()
+  public PointerType getBaseClass()
   {
     return baseClass;
   }
@@ -70,7 +70,7 @@ public class ClassDefinition extends TypeDefinition
   /**
    * @return the interfaces
    */
-  public ReferenceType[] getInterfaces()
+  public PointerType[] getInterfaces()
   {
     return interfaces;
   }

@@ -1,6 +1,6 @@
 package compiler.language.parser.rules;
 
-import static compiler.language.parser.ParseType.REFERENCE_TYPE;
+import static compiler.language.parser.ParseType.POINTER_TYPE;
 import static compiler.language.parser.ParseType.TYPE;
 
 import compiler.parser.Rule;
@@ -15,7 +15,7 @@ import compiler.parser.Rule;
 public class TypeRule extends Rule
 {
 
-  private static final Object[] REFERENCE_TYPE_PRODUCTION = new Object[] {REFERENCE_TYPE};
+  private static final Object[] REFERENCE_TYPE_PRODUCTION = new Object[] {POINTER_TYPE};
 
   public TypeRule()
   {
@@ -30,7 +30,7 @@ public class TypeRule extends Rule
   {
     if (types == REFERENCE_TYPE_PRODUCTION)
     {
-      // ReferenceType is a subclass of Type, so just return the ReferenceType argument
+      // PointerType is a subclass of Type, so just return the PointerType argument
       return args[0];
     }
     throw badTypeList();

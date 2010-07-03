@@ -22,10 +22,10 @@ public enum ParseType
   // classes, interfaces, enums
   CLASS_DEFINITION,         // ClassDefinition
   INTERFACE_DEFINITION,     // InterfaceDefinition
-  CLASS_EXTENDS_CLAUSE,     // ReferenceType or null
-  INTERFACE_LIST,           // ReferenceType[] (length > 0)
-  IMPLEMENTS_CLAUSE,        // ReferenceType[] (length > 0) or null
-  INTERFACE_EXTENDS_CLAUSE, // ReferenceType[] (length > 0) or null
+  CLASS_EXTENDS_CLAUSE,     // PointerType or null
+  INTERFACE_LIST,           // PointerType[] (length > 0)
+  IMPLEMENTS_CLAUSE,        // PointerType[] (length > 0) or null
+  INTERFACE_EXTENDS_CLAUSE, // PointerType[] (length > 0) or null
   MEMBER_LIST,              // Member[] TODO: currently a terminal
 
   // common non-terminals
@@ -35,7 +35,7 @@ public enum ParseType
   NATIVE_SPECIFIER, // NativeSpecifier
   QNAME,            // QName
   TYPE,             // Type
-  REFERENCE_TYPE,   // ReferenceType
+  POINTER_TYPE,     // PointerType
 
   // literals
   NAME,           // Name

@@ -12,7 +12,7 @@ public class InterfaceDefinition extends TypeDefinition
   private AccessSpecifier access;
   private Modifier[] modifiers;
   private Name name;
-  private ReferenceType[] parentInterfaces;
+  private PointerType[] parentInterfaces;
   private Member[] members;
 
   /**
@@ -23,7 +23,7 @@ public class InterfaceDefinition extends TypeDefinition
    * @param parentInterfaces - the list of interfaces that this class implements
    * @param members - the list of members of this class
    */
-  public InterfaceDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, ReferenceType[] parentInterfaces, Member[] members)
+  public InterfaceDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, PointerType[] parentInterfaces, Member[] members)
   {
     this.access = access;
     this.modifiers = modifiers;
@@ -59,7 +59,7 @@ public class InterfaceDefinition extends TypeDefinition
   /**
    * @return the parent interfaces
    */
-  public ReferenceType[] getInterfaces()
+  public PointerType[] getInterfaces()
   {
     return parentInterfaces;
   }

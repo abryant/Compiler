@@ -15,7 +15,7 @@ import compiler.language.ast.InterfaceDefinition;
 import compiler.language.ast.Member;
 import compiler.language.ast.Modifier;
 import compiler.language.ast.Name;
-import compiler.language.ast.ReferenceType;
+import compiler.language.ast.PointerType;
 import compiler.parser.Rule;
 
 /*
@@ -43,7 +43,7 @@ public class InterfaceDefinitionRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new InterfaceDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], (ReferenceType[]) args[4], (Member[]) args[6]);
+      return new InterfaceDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], (PointerType[]) args[4], (Member[]) args[6]);
     }
     throw badTypeList();
   }

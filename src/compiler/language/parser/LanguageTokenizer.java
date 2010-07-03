@@ -15,13 +15,13 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PACKAGE_KEYWORD;
 import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
 import static compiler.language.parser.ParseType.RBRACE;
-import static compiler.language.parser.ParseType.REFERENCE_TYPE;
+import static compiler.language.parser.ParseType.POINTER_TYPE;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
 import compiler.language.ast.Member;
 import compiler.language.ast.Name;
 import compiler.language.ast.QName;
-import compiler.language.ast.ReferenceType;
+import compiler.language.ast.PointerType;
 import compiler.parser.Token;
 import compiler.parser.Tokenizer;
 
@@ -66,11 +66,11 @@ public class LanguageTokenizer extends Tokenizer
     new Token(CLASS_KEYWORD, null),
     new Token(NAME, new Name("Test")),
     new Token(EXTENDS_KEYWORD, null),
-    new Token(REFERENCE_TYPE, new ReferenceType(new QName(new Name("Base")), true)),
+    new Token(POINTER_TYPE, new PointerType(new QName(new Name("Base")), true)),
     new Token(IMPLEMENTS_KEYWORD, null),
-    new Token(REFERENCE_TYPE, new ReferenceType(new QName(new QName(new Name("test")), new Name("Interface")), true)),
+    new Token(POINTER_TYPE, new PointerType(new QName(new QName(new Name("test")), new Name("Interface")), true)),
     new Token(COMMA, null),
-    new Token(REFERENCE_TYPE, new ReferenceType(new QName(new QName(new Name("other")), new Name("Interface")), false)),
+    new Token(POINTER_TYPE, new PointerType(new QName(new QName(new Name("other")), new Name("Interface")), false)),
     new Token(LBRACE, null),
     new Token(MEMBER_LIST, new Member[] {}),
     new Token(RBRACE, null),
@@ -80,11 +80,11 @@ public class LanguageTokenizer extends Tokenizer
     new Token(INTERFACE_KEYWORD, null),
     new Token(NAME, new Name("Test")),
     new Token(EXTENDS_KEYWORD, null),
-    new Token(REFERENCE_TYPE, new ReferenceType(new QName(new Name("Base")), false)),
+    new Token(POINTER_TYPE, new PointerType(new QName(new Name("Base")), false)),
     new Token(COMMA, null),
-    new Token(REFERENCE_TYPE, new ReferenceType(new QName(new QName(new Name("test")), new Name("Interface")), true)),
+    new Token(POINTER_TYPE, new PointerType(new QName(new QName(new Name("test")), new Name("Interface")), true)),
     new Token(COMMA, null),
-    new Token(REFERENCE_TYPE, new ReferenceType(new QName(new QName(new Name("other")), new Name("Interface")), true)),
+    new Token(POINTER_TYPE, new PointerType(new QName(new QName(new Name("other")), new Name("Interface")), true)),
     new Token(LBRACE, null),
     new Token(MEMBER_LIST, new Member[] {}),
     new Token(RBRACE, null),

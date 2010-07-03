@@ -16,7 +16,7 @@ import compiler.language.ast.ClassDefinition;
 import compiler.language.ast.Member;
 import compiler.language.ast.Modifier;
 import compiler.language.ast.Name;
-import compiler.language.ast.ReferenceType;
+import compiler.language.ast.PointerType;
 import compiler.parser.Rule;
 
 /*
@@ -44,7 +44,7 @@ public class ClassDefinitionRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new ClassDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], (ReferenceType) args[4], (ReferenceType[]) args[5], (Member[]) args[7]);
+      return new ClassDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], (PointerType) args[4], (PointerType[]) args[5], (Member[]) args[7]);
     }
     throw badTypeList();
   }

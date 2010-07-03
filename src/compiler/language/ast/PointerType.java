@@ -7,19 +7,18 @@ package compiler.language.ast;
 /**
  * @author Anthony Bryant
  */
-// TODO: rename this to PointerType, as that is more descriptive when it applies to parameter passing
-public class ReferenceType extends Type
+public class PointerType extends Type
 {
 
   private QName typeName;
   private boolean immutable;
 
   /**
-   * Creates a new ReferenceType with the specified name and immutability
+   * Creates a new PointerType with the specified name and immutability
    * @param typeName - the name of the type
    * @param immutable - true if this type should be immutable, false otherwise
    */
-  public ReferenceType(QName typeName, boolean immutable)
+  public PointerType(QName typeName, boolean immutable)
   {
     this.typeName = typeName;
     this.immutable = immutable;

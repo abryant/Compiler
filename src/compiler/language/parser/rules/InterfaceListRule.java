@@ -2,9 +2,9 @@ package compiler.language.parser.rules;
 
 import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.INTERFACE_LIST;
-import static compiler.language.parser.ParseType.REFERENCE_TYPE;
+import static compiler.language.parser.ParseType.POINTER_TYPE;
 
-import compiler.language.ast.ReferenceType;
+import compiler.language.ast.PointerType;
 import compiler.parser.Rule;
 
 /*
@@ -17,8 +17,8 @@ import compiler.parser.Rule;
 public class InterfaceListRule extends Rule
 {
 
-  private static final Object[] START_PRODUCTION = new Object[] {REFERENCE_TYPE};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {INTERFACE_LIST, COMMA, REFERENCE_TYPE};
+  private static final Object[] START_PRODUCTION = new Object[] {POINTER_TYPE};
+  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {INTERFACE_LIST, COMMA, POINTER_TYPE};
 
   public InterfaceListRule()
   {
@@ -33,14 +33,14 @@ public class InterfaceListRule extends Rule
   {
     if (types == START_PRODUCTION)
     {
-      return new ReferenceType[] {(ReferenceType) args[0]};
+      return new PointerType[] {(PointerType) args[0]};
     }
     if (types == CONTINUATION_PRODUCTION)
     {
-      ReferenceType[] oldList = (ReferenceType[]) args[0];
-      ReferenceType[] newList = new ReferenceType[oldList.length + 1];
+      PointerType[] oldList = (PointerType[]) args[0];
+      PointerType[] newList = new PointerType[oldList.length + 1];
       System.arraycopy(oldList, 0, newList, 0, oldList.length);
-      newList[oldList.length] = (ReferenceType) args[2];
+      newList[oldList.length] = (PointerType) args[2];
       return newList;
     }
     throw badTypeList();
