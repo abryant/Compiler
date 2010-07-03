@@ -9,6 +9,7 @@ import static compiler.language.parser.ParseType.MEMBER_LIST;
 import static compiler.language.parser.ParseType.MODIFIERS;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.RBRACE;
+import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
 
 import compiler.language.ast.AccessSpecifier;
 import compiler.language.ast.InterfaceDefinition;
@@ -16,6 +17,7 @@ import compiler.language.ast.Member;
 import compiler.language.ast.Modifier;
 import compiler.language.ast.Name;
 import compiler.language.ast.PointerType;
+import compiler.language.ast.TypeArgument;
 import compiler.parser.Rule;
 
 /*
@@ -28,7 +30,7 @@ import compiler.parser.Rule;
 public class InterfaceDefinitionRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, INTERFACE_KEYWORD, NAME, INTERFACE_EXTENDS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
+  private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, INTERFACE_KEYWORD, NAME, TYPE_ARGUMENTS, INTERFACE_EXTENDS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
 
   public InterfaceDefinitionRule()
   {
@@ -43,7 +45,7 @@ public class InterfaceDefinitionRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new InterfaceDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], (PointerType[]) args[4], (Member[]) args[6]);
+      return new InterfaceDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], (TypeArgument[]) args[4], (PointerType[]) args[5], (Member[]) args[7]);
     }
     throw badTypeList();
   }

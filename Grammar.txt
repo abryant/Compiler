@@ -38,14 +38,15 @@ NativeSpecification = NativeKeyword LParen StringLiteral RParen
 
 TypeArgument = Name
              | Name ExtendsKeyword PointerType
-             | QuestionMark ExtendsKeyword PointerType
-             | 
-// TODO: decide how type arguments should really work for types other than class/interface/enum pointer types
-TypeArgumentList = TypeArgumentList Comma TypeArgument | TypeArgument
-TypeArguments = LAngle TypeArgumentList RAngle
+             | Name SuperKeyword PointerType
+             | Name ExtendsKeyword PointerType SuperKeyword PointerType
+             | Name SuperKeyword PointerType ExtendsKeyword PointerType
 
-ClassDefinition     = AccessSpecifier Modifiers ClassKeyword Name ClassExtendsClause ImplementsClause LBrace MemberList RBrace
-InterfaceDefinition = AccessSpecifier Modifiers InterfaceKeyword Name InterfaceExtendsClause LBrace MemberList RBrace
+TypeArgumentList = TypeArgumentList Comma TypeArgument | TypeArgument
+TypeArguments = LAngle TypeArgumentList RAngle | epsilon
+
+ClassDefinition     = AccessSpecifier Modifiers ClassKeyword Name TypeArguments ClassExtendsClause ImplementsClause LBrace MemberList RBrace
+InterfaceDefinition = AccessSpecifier Modifiers InterfaceKeyword Name TypeArguments InterfaceExtendsClause LBrace MemberList RBrace
 
 ClassExtendsClause     = ExtendsKeyword PointerType | epsilon
 ImplementsClause       = ImplementsKeyword InterfaceList | epsilon

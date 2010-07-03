@@ -12,22 +12,25 @@ public class InterfaceDefinition extends TypeDefinition
   private AccessSpecifier access;
   private Modifier[] modifiers;
   private Name name;
+  private TypeArgument[] typeArguments;
   private PointerType[] parentInterfaces;
   private Member[] members;
 
   /**
    * Creates a new interface definition with all of the specified properties
    * @param access - the access specifier, or null for the default access specifier
-   * @param modifiers - the list of modifiers for this class
-   * @param name - the name of this class
-   * @param parentInterfaces - the list of interfaces that this class implements
-   * @param members - the list of members of this class
+   * @param modifiers - the list of modifiers for this interface
+   * @param name - the name of this interface
+   * @param typeArguments - the type arguments to this interface
+   * @param parentInterfaces - the list of interfaces that this interface extends
+   * @param members - the list of members of this interface
    */
-  public InterfaceDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, PointerType[] parentInterfaces, Member[] members)
+  public InterfaceDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, TypeArgument[] typeArguments, PointerType[] parentInterfaces, Member[] members)
   {
     this.access = access;
     this.modifiers = modifiers;
     this.name = name;
+    this.typeArguments = typeArguments;
     this.parentInterfaces = parentInterfaces;
     this.members = members;
   }
@@ -54,6 +57,14 @@ public class InterfaceDefinition extends TypeDefinition
   public Name getName()
   {
     return name;
+  }
+
+  /**
+   * @return the type arguments
+   */
+  public TypeArgument[] getTypeArguments()
+  {
+    return typeArguments;
   }
 
   /**

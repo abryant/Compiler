@@ -12,6 +12,7 @@ public class ClassDefinition extends TypeDefinition
   private AccessSpecifier access;
   private Modifier[] modifiers;
   private Name name;
+  private TypeArgument[] typeArguments;
   private PointerType baseClass;
   private PointerType[] interfaces;
   private Member[] members;
@@ -21,15 +22,17 @@ public class ClassDefinition extends TypeDefinition
    * @param access - the access specifier, or null for the default access specifier
    * @param modifiers - the list of modifiers for this class
    * @param name - the name of this class
+   * @param typeArguments - the type arguments to this class
    * @param baseClass - the base class of this class
    * @param interfaces - the list of interfaces that this class implements
    * @param members - the list of members of this class
    */
-  public ClassDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, PointerType baseClass, PointerType[] interfaces, Member[] members)
+  public ClassDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, TypeArgument[] typeArguments, PointerType baseClass, PointerType[] interfaces, Member[] members)
   {
     this.access = access;
     this.modifiers = modifiers;
     this.name = name;
+    this.typeArguments = typeArguments;
     this.baseClass = baseClass;
     this.interfaces = interfaces;
     this.members = members;
@@ -57,6 +60,14 @@ public class ClassDefinition extends TypeDefinition
   public Name getName()
   {
     return name;
+  }
+
+  /**
+   * @return the type arguments
+   */
+  public TypeArgument[] getTypeArguments()
+  {
+    return typeArguments;
   }
 
   /**

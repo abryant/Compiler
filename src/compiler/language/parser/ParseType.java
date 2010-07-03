@@ -29,13 +29,16 @@ public enum ParseType
   MEMBER_LIST,              // Member[] TODO: currently a terminal
 
   // common non-terminals
-  ACCESS_SPECIFIER, // AccessSpecifier or null
-  MODIFIER,         // Modifier
-  MODIFIERS,        // Modifier[]
-  NATIVE_SPECIFIER, // NativeSpecifier
-  QNAME,            // QName
-  TYPE,             // Type
-  POINTER_TYPE,     // PointerType
+  ACCESS_SPECIFIER,   // AccessSpecifier or null
+  MODIFIER,           // Modifier
+  MODIFIERS,          // Modifier[]
+  NATIVE_SPECIFIER,   // NativeSpecifier
+  POINTER_TYPE,       // PointerType
+  QNAME,              // QName
+  TYPE,               // Type
+  TYPE_ARGUMENT,      // TypeArgument
+  TYPE_ARGUMENT_LIST, // TypeArgument[]
+  TYPE_ARGUMENTS,     // TypeArgument[] or null
 
   // literals
   NAME,           // Name
@@ -56,6 +59,7 @@ public enum ParseType
   PROTECTED_KEYWORD,
   PUBLIC_KEYWORD,
   STATIC_KEYWORD,
+  SUPER_KEYWORD,
   SYNCHRONIZED_KEYWORD,
   TRANSIENT_KEYWORD,
   VOLATILE_KEYWORD,
@@ -63,8 +67,10 @@ public enum ParseType
   // symbols (values do not matter for these, but should be null)
   COMMA,
   DOT,
+  LANGLE,
   LBRACE,
   LPAREN,
+  RANGLE,
   RBRACE,
   RPAREN,
   SEMICOLON,

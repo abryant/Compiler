@@ -14,6 +14,9 @@ import compiler.language.parser.rules.ModifiersRule;
 import compiler.language.parser.rules.NativeSpecificationRule;
 import compiler.language.parser.rules.PackageDeclarationRule;
 import compiler.language.parser.rules.QNameRule;
+import compiler.language.parser.rules.TypeArgumentListRule;
+import compiler.language.parser.rules.TypeArgumentRule;
+import compiler.language.parser.rules.TypeArgumentsRule;
 import compiler.language.parser.rules.TypeDefinitionRule;
 import compiler.language.parser.rules.TypeRule;
 import compiler.parser.Rule;
@@ -48,6 +51,9 @@ public class LanguageRules
     new NativeSpecificationRule(),
     new PackageDeclarationRule(),
     new QNameRule(),
+    new TypeArgumentListRule(),
+    new TypeArgumentRule(),
+    new TypeArgumentsRule(),
     new TypeDefinitionRule(),
     new TypeRule(),
   };
