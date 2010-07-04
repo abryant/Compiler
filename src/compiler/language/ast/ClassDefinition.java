@@ -150,7 +150,7 @@ public class ClassDefinition extends TypeDefinition
     for (int i = 0; i < members.length; i++)
     {
       String memberStr = members[i].toString();
-      buffer.append(memberStr.replaceAll("^", "   "));
+      buffer.append(memberStr.replaceAll("(?m)^", "   "));
       buffer.append("\n   ");
     }
     buffer.append("\n}");

@@ -11,7 +11,6 @@ import static compiler.language.parser.ParseType.IMPORT_KEYWORD;
 import static compiler.language.parser.ParseType.INTERFACE_KEYWORD;
 import static compiler.language.parser.ParseType.LANGLE;
 import static compiler.language.parser.ParseType.LBRACE;
-import static compiler.language.parser.ParseType.MEMBER_LIST;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PACKAGE_KEYWORD;
 import static compiler.language.parser.ParseType.POINTER_TYPE;
@@ -19,8 +18,8 @@ import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
 import static compiler.language.parser.ParseType.RANGLE;
 import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.SEMICOLON;
+import static compiler.language.parser.ParseType.STATIC_KEYWORD;
 
-import compiler.language.ast.Member;
 import compiler.language.ast.Name;
 import compiler.language.ast.PointerType;
 import compiler.language.ast.QName;
@@ -81,7 +80,16 @@ public class LanguageTokenizer extends Tokenizer
     new Token(COMMA, null),
     new Token(POINTER_TYPE, new PointerType(new QName(new QName(new Name("other")), new Name("Interface")), false)),
     new Token(LBRACE, null),
-    new Token(MEMBER_LIST, new Member[] {}),
+
+    new Token(PUBLIC_KEYWORD, null),
+    new Token(STATIC_KEYWORD, null),
+    new Token(CLASS_KEYWORD, null),
+    new Token(NAME, new Name("NestedTest")),
+    new Token(EXTENDS_KEYWORD, null),
+    new Token(POINTER_TYPE, new PointerType(new QName(new Name("SecondBase")), false)),
+    new Token(LBRACE, null),
+    new Token(RBRACE, null),
+
     new Token(RBRACE, null),
 
     new Token(PACKAGE_KEYWORD, null),
@@ -95,7 +103,7 @@ public class LanguageTokenizer extends Tokenizer
     new Token(COMMA, null),
     new Token(POINTER_TYPE, new PointerType(new QName(new QName(new Name("other")), new Name("Interface")), true)),
     new Token(LBRACE, null),
-    new Token(MEMBER_LIST, new Member[] {}),
+
     new Token(RBRACE, null),
   };
 

@@ -27,6 +27,7 @@ public enum ParseType
   IMPLEMENTS_CLAUSE,        // PointerType[] (length > 0) or null
   INTERFACE_EXTENDS_CLAUSE, // PointerType[] (length > 0) or null
   MEMBER_LIST,              // Member[] TODO: currently a terminal
+  MEMBER,                   // Member
 
   // common non-terminals
   ACCESS_SPECIFIER,   // AccessSpecifier or null

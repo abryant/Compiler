@@ -1,5 +1,6 @@
 package compiler.language.ast;
 
+
 /*
  * Created on 1 Jul 2010
  */
@@ -133,7 +134,7 @@ public class InterfaceDefinition extends TypeDefinition
     for (int i = 0; i < members.length; i++)
     {
       String memberStr = members[i].toString();
-      buffer.append(memberStr.replaceAll("^", "   "));
+      buffer.append(memberStr.replaceAll("(?m)^", "   "));
       buffer.append("\n   ");
     }
     buffer.append("\n}");

@@ -9,6 +9,8 @@ import compiler.language.parser.rules.ImportDeclarationRule;
 import compiler.language.parser.rules.InterfaceDefinitionRule;
 import compiler.language.parser.rules.InterfaceExtendsClauseRule;
 import compiler.language.parser.rules.InterfaceListRule;
+import compiler.language.parser.rules.MemberListRule;
+import compiler.language.parser.rules.MemberRule;
 import compiler.language.parser.rules.ModifierRule;
 import compiler.language.parser.rules.ModifiersRule;
 import compiler.language.parser.rules.NativeSpecificationRule;
@@ -46,6 +48,8 @@ public class LanguageRules
     new InterfaceDefinitionRule(),
     new InterfaceExtendsClauseRule(),
     new InterfaceListRule(),
+    new MemberListRule(),
+    new MemberRule(),
     new ModifierRule(),
     new ModifiersRule(),
     new NativeSpecificationRule(),

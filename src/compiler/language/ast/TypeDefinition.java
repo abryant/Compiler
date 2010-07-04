@@ -8,7 +8,7 @@ package compiler.language.ast;
  * @author Anthony Bryant
  *
  */
-public abstract class TypeDefinition
+public abstract class TypeDefinition extends Member
 {
   // no methods or fields, this is just an abstract base class for all type definitions
 }
