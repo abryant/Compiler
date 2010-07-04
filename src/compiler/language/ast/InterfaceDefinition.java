@@ -102,6 +102,19 @@ public class InterfaceDefinition extends TypeDefinition
     }
     buffer.append("interface ");
     buffer.append(name);
+    if (typeArguments != null)
+    {
+      buffer.append("<");
+      for (int i = 0; i < typeArguments.length; i++)
+      {
+        buffer.append(typeArguments[i]);
+        if (i != typeArguments.length - 1)
+        {
+          buffer.append(", ");
+        }
+      }
+      buffer.append(">");
+    }
     buffer.append(" ");
     if (parentInterfaces != null)
     {

@@ -9,19 +9,21 @@ import static compiler.language.parser.ParseType.IMMUTABLE_KEYWORD;
 import static compiler.language.parser.ParseType.IMPLEMENTS_KEYWORD;
 import static compiler.language.parser.ParseType.IMPORT_KEYWORD;
 import static compiler.language.parser.ParseType.INTERFACE_KEYWORD;
+import static compiler.language.parser.ParseType.LANGLE;
 import static compiler.language.parser.ParseType.LBRACE;
 import static compiler.language.parser.ParseType.MEMBER_LIST;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PACKAGE_KEYWORD;
-import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
-import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.POINTER_TYPE;
+import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
+import static compiler.language.parser.ParseType.RANGLE;
+import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
 import compiler.language.ast.Member;
 import compiler.language.ast.Name;
-import compiler.language.ast.QName;
 import compiler.language.ast.PointerType;
+import compiler.language.ast.QName;
 import compiler.parser.Token;
 import compiler.parser.Tokenizer;
 
@@ -65,6 +67,13 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ABSTRACT_KEYWORD, null),
     new Token(CLASS_KEYWORD, null),
     new Token(NAME, new Name("Test")),
+    new Token(LANGLE, null),
+    new Token(NAME, new Name("K")),
+    new Token(EXTENDS_KEYWORD, null),
+    new Token(POINTER_TYPE, new PointerType(new QName(new Name("Object")), false)),
+    new Token(COMMA, null),
+    new Token(NAME, new Name("V")),
+    new Token(RANGLE, null),
     new Token(EXTENDS_KEYWORD, null),
     new Token(POINTER_TYPE, new PointerType(new QName(new Name("Base")), true)),
     new Token(IMPLEMENTS_KEYWORD, null),

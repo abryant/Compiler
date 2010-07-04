@@ -51,4 +51,25 @@ public class TypeArgument
     return subType;
   }
 
+  /**
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString()
+  {
+    StringBuffer buffer = new StringBuffer();
+    buffer.append(name);
+    if (superType != null)
+    {
+      buffer.append(" extends ");
+      buffer.append(superType);
+    }
+    if (subType != null)
+    {
+      buffer.append(" super ");
+      buffer.append(subType);
+    }
+    return buffer.toString();
+  }
+
 }
