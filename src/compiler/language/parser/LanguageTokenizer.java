@@ -5,6 +5,7 @@ import static compiler.language.parser.ParseType.CLASS_KEYWORD;
 import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.DOT;
 import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
+import static compiler.language.parser.ParseType.HASH;
 import static compiler.language.parser.ParseType.IMMUTABLE_KEYWORD;
 import static compiler.language.parser.ParseType.IMPLEMENTS_KEYWORD;
 import static compiler.language.parser.ParseType.IMPORT_KEYWORD;
@@ -13,7 +14,6 @@ import static compiler.language.parser.ParseType.LANGLE;
 import static compiler.language.parser.ParseType.LBRACE;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PACKAGE_KEYWORD;
-import static compiler.language.parser.ParseType.POINTER_TYPE;
 import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
 import static compiler.language.parser.ParseType.RANGLE;
 import static compiler.language.parser.ParseType.RBRACE;
@@ -21,8 +21,6 @@ import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.STATIC_KEYWORD;
 
 import compiler.language.ast.Name;
-import compiler.language.ast.PointerType;
-import compiler.language.ast.QName;
 import compiler.parser.Token;
 import compiler.parser.Tokenizer;
 
@@ -69,16 +67,22 @@ public class LanguageTokenizer extends Tokenizer
     new Token(LANGLE, null),
     new Token(NAME, new Name("K")),
     new Token(EXTENDS_KEYWORD, null),
-    new Token(POINTER_TYPE, new PointerType(new QName(new Name("Object")), false)),
+    new Token(NAME, new Name("Object")),
     new Token(COMMA, null),
     new Token(NAME, new Name("V")),
     new Token(RANGLE, null),
     new Token(EXTENDS_KEYWORD, null),
-    new Token(POINTER_TYPE, new PointerType(new QName(new Name("Base")), true)),
+    new Token(HASH, null),
+    new Token(NAME, new Name("Object")),
     new Token(IMPLEMENTS_KEYWORD, null),
-    new Token(POINTER_TYPE, new PointerType(new QName(new QName(new Name("test")), new Name("Interface")), true)),
+    new Token(HASH, null),
+    new Token(NAME, new Name("test")),
+    new Token(DOT, null),
+    new Token(NAME, new Name("Interface")),
     new Token(COMMA, null),
-    new Token(POINTER_TYPE, new PointerType(new QName(new QName(new Name("other")), new Name("Interface")), false)),
+    new Token(NAME, new Name("other")),
+    new Token(DOT, null),
+    new Token(NAME, new Name("Interface")),
     new Token(LBRACE, null),
 
     new Token(PUBLIC_KEYWORD, null),
@@ -86,7 +90,7 @@ public class LanguageTokenizer extends Tokenizer
     new Token(CLASS_KEYWORD, null),
     new Token(NAME, new Name("NestedTest")),
     new Token(EXTENDS_KEYWORD, null),
-    new Token(POINTER_TYPE, new PointerType(new QName(new Name("SecondBase")), false)),
+    new Token(NAME, new Name("SecondBase")),
     new Token(LBRACE, null),
     new Token(RBRACE, null),
 
@@ -97,11 +101,17 @@ public class LanguageTokenizer extends Tokenizer
     new Token(INTERFACE_KEYWORD, null),
     new Token(NAME, new Name("Test")),
     new Token(EXTENDS_KEYWORD, null),
-    new Token(POINTER_TYPE, new PointerType(new QName(new Name("Base")), false)),
+    new Token(NAME, new Name("Base")),
     new Token(COMMA, null),
-    new Token(POINTER_TYPE, new PointerType(new QName(new QName(new Name("test")), new Name("Interface")), true)),
+    new Token(HASH, null),
+    new Token(NAME, new Name("test")),
+    new Token(DOT, null),
+    new Token(NAME, new Name("Interface")),
     new Token(COMMA, null),
-    new Token(POINTER_TYPE, new PointerType(new QName(new QName(new Name("other")), new Name("Interface")), true)),
+    new Token(HASH, null),
+    new Token(NAME, new Name("other")),
+    new Token(DOT, null),
+    new Token(NAME, new Name("Interface")),
     new Token(LBRACE, null),
 
     new Token(RBRACE, null),

@@ -26,7 +26,7 @@ public enum ParseType
   INTERFACE_LIST,           // PointerType[] (length > 0)
   IMPLEMENTS_CLAUSE,        // PointerType[] (length > 0) or null
   INTERFACE_EXTENDS_CLAUSE, // PointerType[] (length > 0) or null
-  MEMBER_LIST,              // Member[] TODO: currently a terminal
+  MEMBER_LIST,              // Member[]
   MEMBER,                   // Member
 
   // common non-terminals
@@ -68,6 +68,7 @@ public enum ParseType
   // symbols (values do not matter for these, but should be null)
   COMMA,
   DOT,
+  HASH,
   LANGLE,
   LBRACE,
   LPAREN,

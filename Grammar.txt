@@ -250,8 +250,9 @@ ComparisonOperator = EqualsEquals | NotEquals | RAngle | LAngle | MoreThanEquals
 ReturnType = Type | VoidKeyword
 Type = PrimitiveType | PointerType | ArrayType
 ArrayType = Type LSquare RSquare
-PrimitiveType = // TODO: remember to include tuples
-PointerType = // TODO: remember to include immutability
+PrimitiveType = // TODO
+// TODO: remember to include tuples
+PointerType = QName | Hash QName
 
 QName = Name | QName Dot Name
 CommaSeparatedQNameList = QName | CommaSeparatedQNameList Comma QName
