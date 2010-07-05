@@ -4,6 +4,8 @@ import static compiler.language.parser.ParseType.ABSTRACT_KEYWORD;
 import static compiler.language.parser.ParseType.CLASS_KEYWORD;
 import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.DOT;
+import static compiler.language.parser.ParseType.EQUALS;
+import static compiler.language.parser.ParseType.EXPRESSION;
 import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
 import static compiler.language.parser.ParseType.HASH;
 import static compiler.language.parser.ParseType.IMMUTABLE_KEYWORD;
@@ -14,12 +16,14 @@ import static compiler.language.parser.ParseType.LANGLE;
 import static compiler.language.parser.ParseType.LBRACE;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PACKAGE_KEYWORD;
+import static compiler.language.parser.ParseType.PRIVATE_KEYWORD;
 import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
 import static compiler.language.parser.ParseType.RANGLE;
 import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.STATIC_KEYWORD;
 
+import compiler.language.ast.Expression;
 import compiler.language.ast.Name;
 import compiler.parser.Token;
 import compiler.parser.Tokenizer;
@@ -113,6 +117,15 @@ public class LanguageTokenizer extends Tokenizer
     new Token(DOT, null),
     new Token(NAME, new Name("Interface")),
     new Token(LBRACE, null),
+
+    new Token(PRIVATE_KEYWORD, null),
+    new Token(NAME, new Name("TestType")),
+    new Token(NAME, new Name("variable")),
+    new Token(COMMA, null),
+    new Token(NAME, new Name("var2")),
+    new Token(EQUALS, null),
+    new Token(EXPRESSION, new Expression()),
+    new Token(SEMICOLON, null),
 
     new Token(RBRACE, null),
   };

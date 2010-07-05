@@ -1,5 +1,6 @@
 package compiler.language.parser.rules;
 
+import static compiler.language.parser.ParseType.FIELD;
 import static compiler.language.parser.ParseType.MEMBER;
 import static compiler.language.parser.ParseType.TYPE_DEFINITION;
 
@@ -15,11 +16,13 @@ import compiler.parser.Rule;
 public class MemberRule extends Rule
 {
 
+  private static final Object[] FIELD_PRODUCTION = new Object[] {FIELD};
   private static final Object[] TYPE_DEFINITION_PRODUCTION = new Object[] {TYPE_DEFINITION};
+
 
   public MemberRule()
   {
-    super(MEMBER, TYPE_DEFINITION_PRODUCTION);
+    super(MEMBER, FIELD_PRODUCTION, TYPE_DEFINITION_PRODUCTION);
   }
 
   /**
@@ -28,9 +31,9 @@ public class MemberRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
-    if (types == TYPE_DEFINITION_PRODUCTION)
+    if (types == FIELD_PRODUCTION || types == TYPE_DEFINITION_PRODUCTION)
     {
-      // TypeDefinition is a subclass of Member, so just return the TypeDefinition argument
+      // Field and TypeDefinition are both subclasses of Member, so just return the argument in either case
       return args[0];
     }
     throw badTypeList();

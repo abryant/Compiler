@@ -72,16 +72,10 @@ MethodRest = Semicolon
            | ThrowsClause Block
 ThrowsClause = ThrowsKeyword CommaSeparatedQNameList
 
-MemberVariableDefinition = AccessSpecifier Modifiers Type VariableDeclarators Semicolon
-                         | Modifiers Type VariableDeclarators Semicolon
-                         | AccessSpecifier Type VariableDeclarators Semicolon
-                         | Type VariableDeclarators Semicolon
-
-VariableDeclarators = VariableDeclarators Comma VariableDeclarator | VariableDeclarator
-VariableDeclarator  = Name Equals Expression | Name Equals ArrayInitializer
-
-ArrayInitializer = LBrace ArrayInitList RBrace | LBrace RBrace
-ArrayInitList = Expression | ArrayInitList Comma Expression
+Field = AccessSpecifier Modifiers Type AssigneeList Equals Expression Semicolon
+      | AccessSpecifier Modifiers Type AssigneeList Semicolon
+AssigneeList = Assignee | AssigneeList Comma Assignee
+Assignee = QName | Underscore
 
 StaticInitializer = StaticKeyword Block
 

@@ -26,11 +26,17 @@ public enum ParseType
   INTERFACE_LIST,           // PointerType[] (length > 0)
   IMPLEMENTS_CLAUSE,        // PointerType[] (length > 0) or null
   INTERFACE_EXTENDS_CLAUSE, // PointerType[] (length > 0) or null
-  MEMBER_LIST,              // Member[]
+  MEMBER_LIST,              // Member[] TODO: tidy this up into a Members object containing a list of each type of member? then get rid of Member completely
   MEMBER,                   // Member
+  FIELD,                    // Field
+
+  // expressions
+  EXPRESSION, // Expression
 
   // common non-terminals
   ACCESS_SPECIFIER,   // AccessSpecifier or null
+  ASSIGNEE,           // Assignee
+  ASSIGNEE_LIST,      // Assignee[]
   MODIFIER,           // Modifier
   MODIFIERS,          // Modifier[]
   NATIVE_SPECIFIER,   // NativeSpecifier
@@ -68,6 +74,7 @@ public enum ParseType
   // symbols (values do not matter for these, but should be null)
   COMMA,
   DOT,
+  EQUALS,
   HASH,
   LANGLE,
   LBRACE,
@@ -76,5 +83,6 @@ public enum ParseType
   RBRACE,
   RPAREN,
   SEMICOLON,
-  STAR
+  STAR,
+  UNDERSCORE,
 }
