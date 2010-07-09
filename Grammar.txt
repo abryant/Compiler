@@ -58,8 +58,8 @@ Member = Constructor | Method | Field | StaticInitializer | TypeDefinition
 
 Constructor = AccessSpecifier Modifiers Name ParameterList ConstructorRest ThrowsClause Block
 
-Method = AccessSpecifier Modifiers ReturnType Name ParameterList ThrowsClause Semicolon
-       | AccessSpecifier Modifiers ReturnType Name ParameterList ThrowsClause Block
+Method = AccessSpecifier Modifiers TypeArguments ReturnType Name ParameterList ThrowsClause Semicolon
+       | AccessSpecifier Modifiers TypeArguments ReturnType Name ParameterList ThrowsClause Block
 
 ThrowsClause = ThrowsKeyword ThrowsList | epsilon
 ThrowsList = PointerType | ThrowsList Comma PointerType
@@ -71,14 +71,14 @@ Assignee = QName | Underscore
 
 StaticInitializer = StaticKeyword Block
 
-ParameterList = LParen Params Comma DefaultParams RParen
-              | LParen Params RParen
-              | LParen DefaultParams RParen
+ParameterList = LParen Parameters Comma DefaultParameters RParen
+              | LParen Parameters RParen
+              | LParen DefaultParameters RParen
               | LParen RParen
-Params = Param | Params Comma Param
-Param  = Type Name
-DefaultParams = DefaultParams Comma DefaultParam | DefaultParam
-DefaultParam  = Type At Name Equals Expression
+Parameters = Parameter | Parameters Comma Parameter
+Parameter  = Type Name
+DefaultParameters = DefaultParameters Comma DefaultParameter | DefaultParameter
+DefaultParameter  = Type At Name Equals Expression
 
 ArgList = LParen Args Comma DefaultArgs RParen
         | LParen Args RParen
