@@ -20,6 +20,10 @@ public enum ParseType
   TYPE_DEFINITION,     // TypeDefinition
 
   // classes, interfaces, enums
+  ACCESS_SPECIFIER,         // AccessSpecifier or null
+  MODIFIER,                 // Modifier
+  MODIFIERS,                // Modifier[]
+  NATIVE_SPECIFIER,         // NativeSpecifier
   CLASS_DEFINITION,         // ClassDefinition
   INTERFACE_DEFINITION,     // InterfaceDefinition
   CLASS_EXTENDS_CLAUSE,     // PointerType or null
@@ -29,23 +33,29 @@ public enum ParseType
   MEMBER_LIST,              // Member[] TODO: tidy this up into a Members object containing a list of each type of member? then get rid of Member completely
   MEMBER,                   // Member
   FIELD,                    // Field
+  CONSTRUCTOR,              // Constructor TODO
+  METHOD,                   // Method TODO
+  STATIC_INITIALIZER,       // StaticInitializer TODO
+
+  // statements
+  BLOCK,              // Block
+  STATEMENTS,         // Statement[]
+  STATEMENT,          // Statement TODO: add a rule for this
 
   // expressions
-  EXPRESSION, // Expression
+  EXPRESSION, // Expression TODO: add a rule for this
 
   // common non-terminals
-  ACCESS_SPECIFIER,   // AccessSpecifier or null
   ASSIGNEE,           // Assignee
   ASSIGNEE_LIST,      // Assignee[]
-  MODIFIER,           // Modifier
-  MODIFIERS,          // Modifier[]
-  NATIVE_SPECIFIER,   // NativeSpecifier
   POINTER_TYPE,       // PointerType
   QNAME,              // QName
+  THROWS_LIST,        // PointerType[] (length > 0)
+  THROWS_CLAUSE,      // PointerType[] (length > 0) or null
   TYPE,               // Type
   TYPE_ARGUMENT,      // TypeArgument
-  TYPE_ARGUMENT_LIST, // TypeArgument[]
-  TYPE_ARGUMENTS,     // TypeArgument[] or null
+  TYPE_ARGUMENT_LIST, // TypeArgument[] (length > 0)
+  TYPE_ARGUMENTS,     // TypeArgument[] (length > 0) or null
 
   // literals
   NAME,           // Name
@@ -68,6 +78,7 @@ public enum ParseType
   STATIC_KEYWORD,
   SUPER_KEYWORD,
   SYNCHRONIZED_KEYWORD,
+  THROWS_KEYWORD,
   TRANSIENT_KEYWORD,
   VOLATILE_KEYWORD,
 

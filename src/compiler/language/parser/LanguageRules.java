@@ -3,6 +3,7 @@ package compiler.language.parser;
 import compiler.language.parser.rules.AccessSpecifierRule;
 import compiler.language.parser.rules.AssigneeListRule;
 import compiler.language.parser.rules.AssigneeRule;
+import compiler.language.parser.rules.BlockRule;
 import compiler.language.parser.rules.ClassDefinitionRule;
 import compiler.language.parser.rules.ClassExtendsClauseRule;
 import compiler.language.parser.rules.CompilationUnitRule;
@@ -20,6 +21,9 @@ import compiler.language.parser.rules.NativeSpecificationRule;
 import compiler.language.parser.rules.PackageDeclarationRule;
 import compiler.language.parser.rules.PointerTypeRule;
 import compiler.language.parser.rules.QNameRule;
+import compiler.language.parser.rules.StatementsRule;
+import compiler.language.parser.rules.ThrowsClauseRule;
+import compiler.language.parser.rules.ThrowsListRule;
 import compiler.language.parser.rules.TypeArgumentListRule;
 import compiler.language.parser.rules.TypeArgumentRule;
 import compiler.language.parser.rules.TypeArgumentsRule;
@@ -46,6 +50,7 @@ public class LanguageRules
     new AccessSpecifierRule(),
     new AssigneeListRule(),
     new AssigneeRule(),
+    new BlockRule(),
     new ClassDefinitionRule(),
     new ClassExtendsClauseRule(),
     // startRule: new CompilationUnitRule(),
@@ -63,6 +68,9 @@ public class LanguageRules
     new PackageDeclarationRule(),
     new PointerTypeRule(),
     new QNameRule(),
+    new StatementsRule(),
+    new ThrowsClauseRule(),
+    new ThrowsListRule(),
     new TypeArgumentListRule(),
     new TypeArgumentRule(),
     new TypeArgumentsRule(),

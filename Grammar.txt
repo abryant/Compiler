@@ -54,23 +54,15 @@ InterfaceExtendsClause = ExtendsKeyword InterfaceList | epsilon
 InterfaceList          = InterfaceList Comma PointerType | PointerType
 
 MemberList = MemberList Member | epsilon
-Member = ConstructorDefinition | MethodDefinition | MemberVariableDefinition | StaticInitializer | TypeDefinition
+Member = Constructor | Method | Field | StaticInitializer | TypeDefinition
 
-ConstructorDefinition = AccessSpecifier Modifiers Name ParameterList ConstructorRest
-                      | Modifiers Name ParameterList ConstructorRest
-                      | AccessSpecifier Name ParameterList ConstructorRest
-                      | Name ParameterList ConstructorRest
-ConstructorRest = Block | ThrowsClause Block
+Constructor = AccessSpecifier Modifiers Name ParameterList ConstructorRest ThrowsClause Block
 
-MethodDefinition = AccessSpecifier Modifiers ReturnType Name ParameterList MethodRest
-                 | AccessSpecifier ReturnType Name ParameterList MethodRest
-                 | Modifiers ReturnType Name ParameterList MethodRest
-                 | ReturnType Name ParameterList MethodRest
-MethodRest = Semicolon
-           | Block
-           | ThrowsClause Semicolon
-           | ThrowsClause Block
-ThrowsClause = ThrowsKeyword CommaSeparatedQNameList
+Method = AccessSpecifier Modifiers ReturnType Name ParameterList ThrowsClause Semicolon
+       | AccessSpecifier Modifiers ReturnType Name ParameterList ThrowsClause Block
+
+ThrowsClause = ThrowsKeyword ThrowsList | epsilon
+ThrowsList = PointerType | ThrowsList Comma PointerType
 
 Field = AccessSpecifier Modifiers Type AssigneeList Equals Expression Semicolon
       | AccessSpecifier Modifiers Type AssigneeList Semicolon
