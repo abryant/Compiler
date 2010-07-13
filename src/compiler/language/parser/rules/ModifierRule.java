@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.ABSTRACT_KEYWORD;
 import static compiler.language.parser.ParseType.FINAL_KEYWORD;
 import static compiler.language.parser.ParseType.IMMUTABLE_KEYWORD;
 import static compiler.language.parser.ParseType.MODIFIER;
+import static compiler.language.parser.ParseType.MUTABLE_KEYWORD;
 import static compiler.language.parser.ParseType.NATIVE_SPECIFIER;
 import static compiler.language.parser.ParseType.STATIC_KEYWORD;
 import static compiler.language.parser.ParseType.SYNCHRONIZED_KEYWORD;
@@ -26,6 +27,7 @@ public class ModifierRule extends Rule
   private static final Object[] STATIC_PRODUCTION = new Object[] {STATIC_KEYWORD};
   private static final Object[] ABSTRACT_PRODUCTION = new Object[] {ABSTRACT_KEYWORD};
   private static final Object[] FINAL_PRODUCTION = new Object[] {FINAL_KEYWORD};
+  private static final Object[] MUTABLE_PRODUCTION = new Object[] {MUTABLE_KEYWORD};
   private static final Object[] IMMUTABLE_PRODUCTION = new Object[] {IMMUTABLE_KEYWORD};
   private static final Object[] SYNCHRONIZED_PRODUCTION = new Object[] {SYNCHRONIZED_KEYWORD};
   private static final Object[] TRANSIENT_PRODUCTION = new Object[] {TRANSIENT_KEYWORD};
@@ -34,8 +36,8 @@ public class ModifierRule extends Rule
 
   public ModifierRule()
   {
-    super(MODIFIER, STATIC_PRODUCTION, ABSTRACT_PRODUCTION, FINAL_PRODUCTION, IMMUTABLE_PRODUCTION, SYNCHRONIZED_PRODUCTION,
-                         TRANSIENT_PRODUCTION, VOLATILE_PRODUCTION, NATIVE_SPECIFIER_PRODUCTION);
+    super(MODIFIER, STATIC_PRODUCTION, ABSTRACT_PRODUCTION, FINAL_PRODUCTION, MUTABLE_PRODUCTION, IMMUTABLE_PRODUCTION,
+                    SYNCHRONIZED_PRODUCTION, TRANSIENT_PRODUCTION, VOLATILE_PRODUCTION, NATIVE_SPECIFIER_PRODUCTION);
   }
 
   /**
@@ -55,6 +57,10 @@ public class ModifierRule extends Rule
     if (types == FINAL_PRODUCTION)
     {
       return Modifier.FINAL;
+    }
+    if (types == MUTABLE_PRODUCTION)
+    {
+      return Modifier.MUTABLE;
     }
     if (types == IMMUTABLE_PRODUCTION)
     {

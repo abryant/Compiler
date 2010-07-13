@@ -31,11 +31,12 @@ import compiler.parser.Rule;
 public class ClassDefinitionRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, CLASS_KEYWORD, NAME, TYPE_ARGUMENTS, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
+  private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, CLASS_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
+  private static final Object[] TYPE_ARGUMENTS_PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, CLASS_KEYWORD, NAME, TYPE_ARGUMENTS, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
 
   public ClassDefinitionRule()
   {
-    super(CLASS_DEFINITION, PRODUCTION);
+    super(CLASS_DEFINITION, PRODUCTION, TYPE_ARGUMENTS_PRODUCTION);
   }
 
   /**
@@ -45,6 +46,10 @@ public class ClassDefinitionRule extends Rule
   public Object match(Object[] types, Object[] args)
   {
     if (types == PRODUCTION)
+    {
+      return new ClassDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], new TypeArgument[0], (PointerType) args[4], (PointerType[]) args[5], (Member[]) args[7]);
+    }
+    if (types == TYPE_ARGUMENTS_PRODUCTION)
     {
       return new ClassDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], (TypeArgument[]) args[4], (PointerType) args[5], (PointerType[]) args[6], (Member[]) args[8]);
     }

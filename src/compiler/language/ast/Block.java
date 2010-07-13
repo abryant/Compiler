@@ -36,14 +36,14 @@ public class Block
   public String toString()
   {
     StringBuffer buffer = new StringBuffer();
-    buffer.append("{\n");
+    buffer.append("{");
     for (Statement statement : statements)
     {
+      buffer.append("\n");
       String statementStr = String.valueOf(statement);
       buffer.append(statementStr.replaceAll("(?m)^", "   "));
-      buffer.append("\n");
     }
-    buffer.append("}\n");
+    buffer.append("\n}");
     return buffer.toString();
   }
 

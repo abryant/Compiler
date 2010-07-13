@@ -30,7 +30,8 @@ import compiler.parser.Rule;
 public class InterfaceDefinitionRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, INTERFACE_KEYWORD, NAME, TYPE_ARGUMENTS, INTERFACE_EXTENDS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
+  private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, INTERFACE_KEYWORD, NAME, INTERFACE_EXTENDS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
+  private static final Object[] TYPE_ARGUMENTS_PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, INTERFACE_KEYWORD, NAME, TYPE_ARGUMENTS, INTERFACE_EXTENDS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
 
   public InterfaceDefinitionRule()
   {
@@ -44,6 +45,10 @@ public class InterfaceDefinitionRule extends Rule
   public Object match(Object[] types, Object[] args)
   {
     if (types == PRODUCTION)
+    {
+      return new InterfaceDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], new TypeArgument[0], (PointerType[]) args[4], (Member[]) args[6]);
+    }
+    if (types == TYPE_ARGUMENTS_PRODUCTION)
     {
       return new InterfaceDefinition((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[3], (TypeArgument[]) args[4], (PointerType[]) args[5], (Member[]) args[7]);
     }

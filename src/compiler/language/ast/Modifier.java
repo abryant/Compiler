@@ -17,6 +17,7 @@ public class Modifier
   public static final Modifier STATIC = new Modifier("static");
   public static final Modifier ABSTRACT = new Modifier("abstract");
   public static final Modifier FINAL = new Modifier("final");
+  public static final Modifier MUTABLE = new Modifier("mutable");
   public static final Modifier IMMUTABLE = new Modifier("immutable");
   public static final Modifier SYNCHRONIZED = new Modifier("synchronized");
   public static final Modifier TRANSIENT = new Modifier("transient");

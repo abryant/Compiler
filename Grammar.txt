@@ -32,8 +32,8 @@ AccessSpecifier = PublicKeyword | PrivateKeyword | PackageKeyword | ProtectedKey
                 | epsilon
 
 Modifiers = Modifiers Modifier | epsilon
-Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | ImmutableKeyword | SynchronizedKeyword
-         | NativeSpecification | TransientKeyword | VolatileKeyword
+Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | ImmutableKeyword | MutableKeyword
+         | SynchronizedKeyword | NativeSpecification | TransientKeyword | VolatileKeyword
 NativeSpecification = NativeKeyword LParen StringLiteral RParen
 
 TypeArgument = Name
@@ -43,9 +43,10 @@ TypeArgument = Name
              | Name SuperKeyword PointerType ExtendsKeyword PointerType
 
 TypeArgumentList = TypeArgumentList Comma TypeArgument | TypeArgument
-TypeArguments = LAngle TypeArgumentList RAngle | epsilon
+TypeArguments = LAngle TypeArgumentList RAngle
 
-ClassDefinition     = AccessSpecifier Modifiers ClassKeyword Name TypeArguments ClassExtendsClause ImplementsClause LBrace MemberList RBrace
+ClassDefinition     = AccessSpecifier Modifiers ClassKeyword Name ClassExtendsClause ImplementsClause LBrace MemberList RBrace
+                    | AccessSpecifier Modifiers ClassKeyword Name TypeArguments ClassExtendsClause ImplementsClause LBrace MemberList RBrace
 InterfaceDefinition = AccessSpecifier Modifiers InterfaceKeyword Name TypeArguments InterfaceExtendsClause LBrace MemberList RBrace
 
 ClassExtendsClause     = ExtendsKeyword PointerType | epsilon
@@ -56,10 +57,16 @@ InterfaceList          = InterfaceList Comma PointerType | PointerType
 MemberList = MemberList Member | epsilon
 Member = Constructor | Method | Field | StaticInitializer | TypeDefinition
 
-Constructor = AccessSpecifier Modifiers Name ParameterList ConstructorRest ThrowsClause Block
+Constructor = AccessSpecifier Modifiers Name Arguments ThrowsClause Block
 
-Method = AccessSpecifier Modifiers TypeArguments ReturnType Name ParameterList ThrowsClause Semicolon
-       | AccessSpecifier Modifiers TypeArguments ReturnType Name ParameterList ThrowsClause Block
+Method = AccessSpecifier Modifiers TypeArguments VoidKeyword Name Arguments ThrowsClause Semicolon
+       | AccessSpecifier Modifiers TypeArguments VoidKeyword Name Arguments ThrowsClause Block
+       | AccessSpecifier Modifiers TypeArguments Type        Name Arguments ThrowsClause Semicolon
+       | AccessSpecifier Modifiers TypeArguments Type        Name Arguments ThrowsClause Block
+       | AccessSpecifier Modifiers               VoidKeyword Name Arguments ThrowsClause Semicolon
+       | AccessSpecifier Modifiers               VoidKeyword Name Arguments ThrowsClause Block
+       | AccessSpecifier Modifiers               Type        Name Arguments ThrowsClause Semicolon
+       | AccessSpecifier Modifiers               Type        Name Arguments ThrowsClause Block
 
 ThrowsClause = ThrowsKeyword ThrowsList | epsilon
 ThrowsList = PointerType | ThrowsList Comma PointerType
@@ -71,14 +78,11 @@ Assignee = QName | Underscore
 
 StaticInitializer = StaticKeyword Block
 
-ParameterList = LParen Parameters Comma DefaultParameters RParen
-              | LParen Parameters RParen
-              | LParen DefaultParameters RParen
-              | LParen RParen
-Parameters = Parameter | Parameters Comma Parameter
-Parameter  = Type Name
-DefaultParameters = DefaultParameters Comma DefaultParameter | DefaultParameter
-DefaultParameter  = Type At Name Equals Expression
+Arguments = LParen ArgumentList RParen | LParen RParen
+ArgumentList = Argument | ArgumentList Comma Argument
+Argument = Type Name
+         | Type At Name Equals Expression
+         | Arguments
 
 ArgList = LParen Args Comma DefaultArgs RParen
         | LParen Args RParen
@@ -233,12 +237,32 @@ ComparisonOperator = EqualsEquals | NotEquals | RAngle | LAngle | MoreThanEquals
   Types
 #########
 
-ReturnType = Type | VoidKeyword
-Type = PrimitiveType | PointerType | ArrayType
+Type = PrimitiveType | PointerType | ArrayType | TupleType | VoidType
+
+TupleType = LParen TypeList RParen
+TypeList = Type | TypeList Comma Type
+
 ArrayType = Type LSquare RSquare
-PrimitiveType = // TODO
-// TODO: remember to include tuples
-PointerType = QName | Hash QName
+
+PrimitiveType = BooleanType | IntegerType | CharacterType | FloatingType
+BooleanType = BooleanKeyword
+IntegerType = SignedKeyword IntegerLength | UnsignedKeyword IntegerLength | IntegerLength
+CharacterType = CharacterKeyword
+FloatingType = SignedKeyword FloatLength | UnsignedKeyword FloatLength | FloatLength
+IntegerLength = ByteKeyword | ShortKeyword | IntKeyword | LongKeyword
+FloatingLength = FloatKeyword | DoubleKeyword
+
+PointerType = QName | Hash QName | QName TypeParameters | Hash QName TypeParameters
+TypeParameters = LAngle TypeParameterList RAngle
+TypeParameterList = TypeParameter | TypeParameterList Comma TypeParameter
+TypeParameter = NormalTypeParameter | WildcardTypeParameter
+NormalTypeParameter = Type
+WildcardTypeParameter = QuestionMark ExtendsKeyword PointerType SuperKeyword PointerType
+                      | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerType
+                      | QuestionMark ExtendsKeyword PointerType
+                      | QuestionMark SuperKeyword PointerType
+
+VoidType = VoidKeyword
 
 QName = Name | QName Dot Name
 CommaSeparatedQNameList = QName | CommaSeparatedQNameList Comma QName

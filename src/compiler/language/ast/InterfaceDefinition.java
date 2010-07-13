@@ -103,7 +103,7 @@ public class InterfaceDefinition extends TypeDefinition
     }
     buffer.append("interface ");
     buffer.append(name);
-    if (typeArguments != null)
+    if (typeArguments.length > 0)
     {
       buffer.append("<");
       for (int i = 0; i < typeArguments.length; i++)
@@ -130,9 +130,10 @@ public class InterfaceDefinition extends TypeDefinition
       }
       buffer.append(" ");
     }
-    buffer.append("\n{\n");
+    buffer.append("\n{");
     for (int i = 0; i < members.length; i++)
     {
+      buffer.append("\n");
       String memberStr = members[i].toString();
       buffer.append(memberStr.replaceAll("(?m)^", "   "));
       buffer.append("\n   ");

@@ -113,7 +113,7 @@ public class ClassDefinition extends TypeDefinition
     }
     buffer.append("class ");
     buffer.append(name);
-    if (typeArguments != null)
+    if (typeArguments.length > 0)
     {
       buffer.append("<");
       for (int i = 0; i < typeArguments.length; i++)
@@ -133,7 +133,7 @@ public class ClassDefinition extends TypeDefinition
       buffer.append(baseClass);
       buffer.append(" ");
     }
-    if (interfaces != null)
+    if (interfaces.length > 0)
     {
       buffer.append("implements ");
       for (int i = 0; i < interfaces.length; i++)

@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.IMPLEMENTS_CLAUSE;
 import static compiler.language.parser.ParseType.IMPLEMENTS_KEYWORD;
 import static compiler.language.parser.ParseType.INTERFACE_LIST;
 
+import compiler.language.ast.PointerType;
 import compiler.parser.Rule;
 
 /*
@@ -32,7 +33,7 @@ public class ImplementsClauseRule extends Rule
   {
     if (types == EMPTY_PRODUCTION)
     {
-      return null;
+      return new PointerType[0];
     }
     if (types == PRODUCTION)
     {

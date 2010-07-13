@@ -2,26 +2,26 @@ package compiler.language.parser.rules;
 
 import static compiler.language.parser.ParseType.LANGLE;
 import static compiler.language.parser.ParseType.RANGLE;
-import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
-import static compiler.language.parser.ParseType.TYPE_ARGUMENT_LIST;
+import static compiler.language.parser.ParseType.TYPE_PARAMETERS;
+import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST;
 
 import compiler.parser.Rule;
 
 /*
- * Created on 3 Jul 2010
+ * Created on 13 Jul 2010
  */
 
 /**
  * @author Anthony Bryant
  */
-public class TypeArgumentsRule extends Rule
+public class TypeParametersRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {LANGLE, TYPE_ARGUMENT_LIST, RANGLE};
+  private static final Object[] PRODUCTION = new Object[] {LANGLE, TYPE_PARAMETER_LIST, RANGLE};
 
-  public TypeArgumentsRule()
+  public TypeParametersRule()
   {
-    super(TYPE_ARGUMENTS, PRODUCTION);
+    super(TYPE_PARAMETERS, PRODUCTION);
   }
 
   /**
@@ -32,7 +32,7 @@ public class TypeArgumentsRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      // just return the result of the TYPE_ARGUMENT_LIST argument, as it has already built the list we need here
+      // the TypeParameter[] result has already been built by the rule for TYPE_PARAMETER_LIST, so just return it
       return args[1];
     }
     throw badTypeList();
