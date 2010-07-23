@@ -4,8 +4,8 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import compiler.parser.Rule;
 
@@ -50,18 +50,36 @@ public class LALRParserGenerator
    */
   public void generate()
   {
-    Rule startRule = rules.getStartRule();
+    final Rule startRule = rules.getStartRule();
+
+    // create a new start rule to replace the user's start rule
+    Object generatedStartRuleType = new Object()
+    {
+      @Override
+      public String toString()
+      {
+        return "<Generated Start Rule>";
+      }
+    };
+    Rule newStartRule = new Rule(generatedStartRuleType, new Object[] {startRule.getType()})
+    {
+      @Override
+      public Object match(Object[] types, Object[] args)
+      {
+        if (types.length == 1 && types[0] == startRule.getType())
+        {
+          return args[0];
+        }
+        throw badTypeList();
+      }
+    };
+    rules.addStartRule(newStartRule);
 
     // create the initial item set
     LALRItemSet initialSet = new LALRItemSet();
-    int productionCount = startRule.getProductions().length;
-    for (int i = 0; i < productionCount; i++)
-    {
-      LALRItem startItem = new LALRItem(startRule, i, 0);
-      // add a lookahead item for the end of input, so that an accept rule will be generated for the end of this item
-      startItem.addLookahead(null);
-      initialSet.addKernelItem(startItem);
-    }
+    LALRItem startItem = new LALRItem(newStartRule, 0, 0);
+    startItem.addLookahead(null);
+    initialSet.addKernelItem(startItem);
     initialSet.calculateClosureItems(rules);
 
     // a map from the item set to itself, to ease searching for a particular item set

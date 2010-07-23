@@ -50,7 +50,7 @@ public class ReduceAction extends Action
   public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack)
   {
     Object[] production = rule.getProductions()[productionIndex];
-    System.out.println("Reducing via production " + Rule.getProductionString(rule.getType(), production) + " (lookahead " + (token == null ? null : token.getType()) + ")"); // TODO
+    System.out.println("Reducing via production " + Rule.getProductionString(rule.getType(), production) + " (lookahead " + (token == null ? null : token.getType()) + ")"); // TODO: remove debug output
     if (stateStack.size() <= production.length || tokenStack.size() < production.length)
     {
       throw new IllegalStateException("Bad reduction of rule, not enough elements");

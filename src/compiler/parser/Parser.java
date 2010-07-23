@@ -55,7 +55,7 @@ public class Parser
 
       if (action.isAccept())
       {
-        System.out.println("Accepting on " + lookahead); // TODO
+        System.out.println("Accepting on " + lookahead); // TODO: remove debug output
         // perform the reduction that the accept action does
         action.perform(lookahead, stateStack, tokenStack);
         return tokenStack.removeFirst();
