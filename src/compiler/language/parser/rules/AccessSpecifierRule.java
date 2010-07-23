@@ -29,7 +29,7 @@ public class AccessSpecifierRule extends Rule
 
   public AccessSpecifierRule()
   {
-    super(ACCESS_SPECIFIER, PUBLIC_PRODUCTION, PACKAGE_PRODUCTION, PACKAGE_PROTECTED_PRODUCTION, PROTECTED_PACKAGE_PRODUCTION, PROTECTED_PRODUCTION, PRIVATE_PRODUCTION);
+    super(ACCESS_SPECIFIER, EMPTY_PRODUCTION, PUBLIC_PRODUCTION, PACKAGE_PRODUCTION, PACKAGE_PROTECTED_PRODUCTION, PROTECTED_PACKAGE_PRODUCTION, PROTECTED_PRODUCTION, PRIVATE_PRODUCTION);
   }
 
   /**
@@ -38,6 +38,7 @@ public class AccessSpecifierRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
+
     if (types == EMPTY_PRODUCTION)
     {
       return null;

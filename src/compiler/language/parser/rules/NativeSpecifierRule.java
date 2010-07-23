@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.NATIVE_SPECIFIER;
 import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.STRING_LITERAL;
 
-import compiler.language.ast.NativeSpecification;
+import compiler.language.ast.NativeSpecifier;
 import compiler.parser.Rule;
 
 /*
@@ -16,12 +16,12 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class NativeSpecificationRule extends Rule
+public class NativeSpecifierRule extends Rule
 {
 
   private static final Object[] PRODUCTION = new Object[] {NATIVE_KEYWORD, LPAREN, STRING_LITERAL, RPAREN};
 
-  public NativeSpecificationRule()
+  public NativeSpecifierRule()
   {
     super(NATIVE_SPECIFIER, PRODUCTION);
   }
@@ -34,7 +34,7 @@ public class NativeSpecificationRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new NativeSpecification((String) args[2]);
+      return new NativeSpecifier((String) args[2]);
     }
     throw badTypeList();
   }

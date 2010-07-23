@@ -33,8 +33,12 @@ AccessSpecifier = PublicKeyword | PrivateKeyword | PackageKeyword | ProtectedKey
 
 Modifiers = Modifiers Modifier | epsilon
 Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | ImmutableKeyword | MutableKeyword
-         | SynchronizedKeyword | NativeSpecification | TransientKeyword | VolatileKeyword
-NativeSpecification = NativeKeyword LParen StringLiteral RParen
+         | SynchronizedKeyword | NativeSpecifier | SinceSpecifier | TransientKeyword | VolatileKeyword
+NativeSpecifier = NativeKeyword LParen StringLiteral RParen
+SinceSpecifier = SinceKeyword LParen VersionNumber RParen
+VersionNumber = IntegerLiteral | VersionNumber Dot IntegerLiteral
+
+MemberHeader = AccessSpecifier Modifiers | AccessSpecifier | Modifiers | epsilon
 
 TypeArgument = Name
              | Name ExtendsKeyword PointerType
@@ -45,9 +49,17 @@ TypeArgument = Name
 TypeArgumentList = TypeArgumentList Comma TypeArgument | TypeArgument
 TypeArguments = LAngle TypeArgumentList RAngle
 
-ClassDefinition     = AccessSpecifier Modifiers ClassKeyword Name ClassExtendsClause ImplementsClause LBrace MemberList RBrace
-                    | AccessSpecifier Modifiers ClassKeyword Name TypeArguments ClassExtendsClause ImplementsClause LBrace MemberList RBrace
-InterfaceDefinition = AccessSpecifier Modifiers InterfaceKeyword Name TypeArguments InterfaceExtendsClause LBrace MemberList RBrace
+ClassDefinition     = MemberHeader ClassKeyword Name ClassExtendsClause ImplementsClause LBrace MemberList RBrace
+                    | MemberHeader ClassKeyword Name TypeArguments ClassExtendsClause ImplementsClause LBrace MemberList RBrace
+InterfaceDefinition = MemberHeader InterfaceKeyword Name TypeArguments InterfaceExtendsClause LBrace MemberList RBrace
+
+EnumDefinition = MemberHeader EnumKeyword Name ClassExtendsClause ImplementsClause LBrace EnumConstants Semicolon MemberList RBrace
+               | MemberHeader EnumKeyword Name ClassExtendsClause ImplementsClause LBrace EnumConstants RBrace
+
+EnumConstants = EnumConstantList Comma | EnumConstantList | epsilon
+EnumConstantList = EnumConstantList Comma EnumConstant
+                 | EnumConstant
+EnumConstant = Name | Name Parameters
 
 ClassExtendsClause     = ExtendsKeyword PointerType | epsilon
 ImplementsClause       = ImplementsKeyword InterfaceList | epsilon
@@ -57,32 +69,52 @@ InterfaceList          = InterfaceList Comma PointerType | PointerType
 MemberList = MemberList Member | epsilon
 Member = Constructor | Method | Field | StaticInitializer | TypeDefinition
 
-Constructor = AccessSpecifier Modifiers Name Arguments ThrowsClause Block
+Constructor = MemberHeader Name Arguments ThrowsClause Block
 
-Method = AccessSpecifier Modifiers TypeArguments VoidKeyword Name Arguments ThrowsClause Semicolon
-       | AccessSpecifier Modifiers TypeArguments VoidKeyword Name Arguments ThrowsClause Block
-       | AccessSpecifier Modifiers TypeArguments Type        Name Arguments ThrowsClause Semicolon
-       | AccessSpecifier Modifiers TypeArguments Type        Name Arguments ThrowsClause Block
-       | AccessSpecifier Modifiers               VoidKeyword Name Arguments ThrowsClause Semicolon
-       | AccessSpecifier Modifiers               VoidKeyword Name Arguments ThrowsClause Block
-       | AccessSpecifier Modifiers               Type        Name Arguments ThrowsClause Semicolon
-       | AccessSpecifier Modifiers               Type        Name Arguments ThrowsClause Block
+Method = MemberHeader TypeArguments Type Name Arguments ThrowsClause Semicolon
+       | MemberHeader TypeArguments Type Name Arguments ThrowsClause Block
+       | MemberHeader               Type Name Arguments ThrowsClause Semicolon
+       | MemberHeader               Type Name Arguments ThrowsClause Block
 
 ThrowsClause = ThrowsKeyword ThrowsList | epsilon
 ThrowsList = PointerType | ThrowsList Comma PointerType
 
-Field = AccessSpecifier Modifiers Type AssigneeList Equals Expression Semicolon
-      | AccessSpecifier Modifiers Type AssigneeList Semicolon
+Field = MemberHeader Type AssigneeList Equals Expression Semicolon
+      | MemberHeader Type AssigneeList Semicolon
 AssigneeList = Assignee | AssigneeList Comma Assignee
 Assignee = QName | Underscore
 
-StaticInitializer = StaticKeyword Block
+Property = MemberHeader PropertyKeyword Type Name Semicolon
+         | MemberHeader PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name Equals Expression Semicolon
+         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
+
+OptionalBlock = Block | epsilon
+
+// MemberHeader is used here instead of StaticKeyword to avoid shift-reduce conflicts with "static"
+// for example: static {int -> void} foo;
+// since this should normally shift with a static initializer and reduce to a MemberHeader for Field
+StaticInitializer = MemberHeader Block
 
 Arguments = LParen ArgumentList RParen | LParen RParen
 ArgumentList = Argument | ArgumentList Comma Argument
 Argument = Type Name
          | Type At Name Equals Expression
          | Arguments
+
+Parameters = LParen ParameterList RParen
+           | LParen RParen
+ParameterList = Parameter | ParameterList Comma Parameter
+Parameter = NormalParameter | DefaultParameter
+DefaultParameter = At Name Equals Expression
+NormalParameter = Expression
+
 
 ArgList = LParen Args Comma DefaultArgs RParen
         | LParen Args RParen
@@ -241,6 +273,8 @@ Type = PrimitiveType | PointerType | ArrayType | TupleType | VoidType
 
 TupleType = LParen TypeList RParen
 TypeList = Type | TypeList Comma Type
+
+ClosureType = LBrace TypeList Arrow TypeList ThrowsClause RBrace
 
 ArrayType = Type LSquare RSquare
 

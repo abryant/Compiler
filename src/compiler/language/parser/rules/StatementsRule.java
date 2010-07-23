@@ -16,12 +16,12 @@ import compiler.parser.Rule;
 public class StatementsRule extends Rule
 {
 
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] PRODUCTION = new Object[] {STATEMENTS, STATEMENT};
+  private static final Object[] START_PRODUCTION = new Object[] {STATEMENT};
+  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {STATEMENTS, STATEMENT};
 
   public StatementsRule()
   {
-    super(STATEMENTS, EMPTY_PRODUCTION, PRODUCTION);
+    super(STATEMENTS, START_PRODUCTION, CONTINUATION_PRODUCTION);
   }
 
   /**
@@ -30,11 +30,11 @@ public class StatementsRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
-    if (types == EMPTY_PRODUCTION)
+    if (types == START_PRODUCTION)
     {
-      return new Statement[0];
+      return new Statement[] {(Statement) args[0]};
     }
-    if (types == PRODUCTION)
+    if (types == CONTINUATION_PRODUCTION)
     {
       Statement[] oldList = (Statement[]) args[0];
       Statement[] newList = new Statement[oldList.length + 1];

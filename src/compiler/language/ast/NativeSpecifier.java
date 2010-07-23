@@ -7,16 +7,16 @@ package compiler.language.ast;
 /**
  * @author Anthony Bryant
  */
-public class NativeSpecification extends Modifier
+public class NativeSpecifier extends Modifier
 {
 
   private String nativeName;
 
   /**
    * Creates a new native specification with the specified native name.
-   * @param nativeName - the native name associated with this NativeSpecification
+   * @param nativeName - the native name associated with this NativeSpecifier
    */
-  public NativeSpecification(String nativeName)
+  public NativeSpecifier(String nativeName)
   {
     super("native(\"" + nativeName + "\")");
     this.nativeName = nativeName;

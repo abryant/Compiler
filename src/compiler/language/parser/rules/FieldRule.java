@@ -1,19 +1,17 @@
 package compiler.language.parser.rules;
 
-import static compiler.language.parser.ParseType.ACCESS_SPECIFIER;
 import static compiler.language.parser.ParseType.ASSIGNEE_LIST;
 import static compiler.language.parser.ParseType.EQUALS;
 import static compiler.language.parser.ParseType.EXPRESSION;
 import static compiler.language.parser.ParseType.FIELD;
-import static compiler.language.parser.ParseType.MODIFIERS;
+import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.TYPE;
 
-import compiler.language.ast.AccessSpecifier;
 import compiler.language.ast.Assignee;
 import compiler.language.ast.Expression;
 import compiler.language.ast.Field;
-import compiler.language.ast.Modifier;
+import compiler.language.ast.MemberHeader;
 import compiler.language.ast.Type;
 import compiler.parser.Rule;
 
@@ -27,8 +25,8 @@ import compiler.parser.Rule;
 public class FieldRule extends Rule
 {
 
-  private static final Object[] DECLARE_PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, TYPE, ASSIGNEE_LIST, SEMICOLON};
-  private static final Object[] ASSIGN_PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, TYPE, ASSIGNEE_LIST, EQUALS, EXPRESSION, SEMICOLON};
+  private static final Object[] DECLARE_PRODUCTION = new Object[] {MEMBER_HEADER, TYPE, ASSIGNEE_LIST, SEMICOLON};
+  private static final Object[] ASSIGN_PRODUCTION = new Object[] {MEMBER_HEADER, TYPE, ASSIGNEE_LIST, EQUALS, EXPRESSION, SEMICOLON};
 
   public FieldRule()
   {
@@ -43,11 +41,13 @@ public class FieldRule extends Rule
   {
     if (types == DECLARE_PRODUCTION)
     {
-      return new Field((AccessSpecifier) args[0], (Modifier[]) args[1], (Type) args[2], (Assignee[]) args[3]);
+      MemberHeader header = (MemberHeader) args[0];
+      return new Field(header.getAccessSpecifier(), header.getModifiers(), (Type) args[1], (Assignee[]) args[2]);
     }
     if (types == ASSIGN_PRODUCTION)
     {
-      return new Field((AccessSpecifier) args[0], (Modifier[]) args[1], (Type) args[2], (Assignee[]) args[3], (Expression) args[5]);
+      MemberHeader header = (MemberHeader) args[0];
+      return new Field(header.getAccessSpecifier(), header.getModifiers(), (Type) args[1], (Assignee[]) args[2], (Expression) args[4]);
     }
     throw badTypeList();
   }

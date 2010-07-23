@@ -1,18 +1,16 @@
 package compiler.language.parser.rules;
 
-import static compiler.language.parser.ParseType.ACCESS_SPECIFIER;
 import static compiler.language.parser.ParseType.ARGUMENTS;
 import static compiler.language.parser.ParseType.BLOCK;
 import static compiler.language.parser.ParseType.CONSTRUCTOR;
-import static compiler.language.parser.ParseType.MODIFIERS;
+import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.THROWS_CLAUSE;
 
-import compiler.language.ast.AccessSpecifier;
 import compiler.language.ast.ArgumentList;
 import compiler.language.ast.Block;
 import compiler.language.ast.Constructor;
-import compiler.language.ast.Modifier;
+import compiler.language.ast.MemberHeader;
 import compiler.language.ast.Name;
 import compiler.language.ast.PointerType;
 import compiler.parser.Rule;
@@ -27,7 +25,7 @@ import compiler.parser.Rule;
 public class ConstructorRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS, NAME, ARGUMENTS, THROWS_CLAUSE, BLOCK};
+  private static final Object[] PRODUCTION = new Object[] {MEMBER_HEADER, NAME, ARGUMENTS, THROWS_CLAUSE, BLOCK};
 
   public ConstructorRule()
   {
@@ -42,7 +40,8 @@ public class ConstructorRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new Constructor((AccessSpecifier) args[0], (Modifier[]) args[1], (Name) args[2], (ArgumentList) args[3], (PointerType[]) args[4], (Block) args[5]);
+      MemberHeader header = (MemberHeader) args[0];
+      return new Constructor(header.getAccessSpecifier(), header.getModifiers(), (Name) args[1], (ArgumentList) args[2], (PointerType[]) args[3], (Block) args[4]);
     }
     throw badTypeList();
   }

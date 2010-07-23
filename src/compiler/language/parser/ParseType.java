@@ -24,24 +24,31 @@ public enum ParseType
   MODIFIER,                 // Modifier
   MODIFIERS,                // Modifier[]
   NATIVE_SPECIFIER,         // NativeSpecifier
+  SINCE_SPECIFIER,          // SinceSpecifier
   CLASS_DEFINITION,         // ClassDefinition
   INTERFACE_DEFINITION,     // InterfaceDefinition
   CLASS_EXTENDS_CLAUSE,     // PointerType or null
   INTERFACE_LIST,           // PointerType[] (length > 0)
   IMPLEMENTS_CLAUSE,        // PointerType[] (length == 0 if not specified)
   INTERFACE_EXTENDS_CLAUSE, // PointerType[] (length == 0 if not specified)
+  MEMBER_HEADER,            // MemberHeader
   MEMBER_LIST,              // Member[] TODO: tidy this up into a Members object containing a list of each type of member? then get rid of Member completely
   MEMBER,                   // Member
   FIELD,                    // Field
   CONSTRUCTOR,              // Constructor
   METHOD,                   // Method
-  PROPERTY,                 // Property TODO
+  PROPERTY,                 // Property
   STATIC_INITIALIZER,       // StaticInitializer
 
-  // statements
+  // blocks and top level statements
   BLOCK,              // Block
+  OPTIONAL_BLOCK,     // Block or null
   STATEMENTS,         // Statement[]
   STATEMENT,          // Statement TODO: add a rule for this
+
+  // statements
+  EMPTY_STATEMENT, // EmptyStatement
+
 
   // expressions
   EXPRESSION, // Expression TODO: add a rule for this
@@ -49,6 +56,7 @@ public enum ParseType
   // types
   BOOLEAN_TYPE,            // BooleanType
   CHARACTER_TYPE,          // CharacterType
+  CLOSURE_TYPE,            // ClosureType
   FLOATING_TYPE_LENGTH,    // FloatingTypeLength
   FLOATING_TYPE,           // FloatingType
   INTEGER_TYPE_LENGTH,     // IntegerTypeLength
@@ -56,7 +64,7 @@ public enum ParseType
   PRIMITIVE_TYPE,          // PrimitiveType
   POINTER_TYPE,            // PointerType
   TUPLE_TYPE,              // TupleType
-  TYPE_LIST,               // Type[]
+  TYPE_LIST,               // Type[] (length > 0)
   TYPE,                    // Type
   TYPE_ARGUMENTS,          // TypeArgument[] (length > 0)
   TYPE_ARGUMENT_LIST,      // TypeArgument[] (length > 0)
@@ -77,13 +85,16 @@ public enum ParseType
   QNAME,              // QName
   THROWS_LIST,        // PointerType[] (length > 0)
   THROWS_CLAUSE,      // PointerType[] (length == 0 if none are specified)
+  VERSION_NUMBER,     // VersionNumber
 
   // literals
-  NAME,           // Name
-  STRING_LITERAL, // String
+  NAME,            // Name
+  INTEGER_LITERAL, // IntegerLiteral
+  STRING_LITERAL,  // String
 
   // keywords (values do not matter for these, but should be null)
   ABSTRACT_KEYWORD,
+  ASSIGN_KEYWORD,
   BOOLEAN_KEYWORD,
   BYTE_KEYWORD,
   CHARACTER_KEYWORD,
@@ -102,10 +113,13 @@ public enum ParseType
   NATIVE_KEYWORD,
   PACKAGE_KEYWORD,
   PRIVATE_KEYWORD,
+  PROPERTY_KEYWORD,
   PROTECTED_KEYWORD,
   PUBLIC_KEYWORD,
+  RETRIEVE_KEYWORD,
   SHORT_KEYWORD,
   SIGNED_KEYWORD,
+  SINCE_KEYWORD,
   STATIC_KEYWORD,
   SUPER_KEYWORD,
   SYNCHRONIZED_KEYWORD,
@@ -116,6 +130,7 @@ public enum ParseType
   VOLATILE_KEYWORD,
 
   // symbols (values do not matter for these, but should be null)
+  ARROW, // "->", same as MINUS RANGLE, but without any whitespace between them
   AT,
   COMMA,
   DOT,

@@ -1,6 +1,7 @@
 package compiler.language.parser;
 
 import compiler.language.ast.Expression;
+import compiler.language.ast.IntegerLiteral;
 import compiler.language.ast.Name;
 import compiler.parser.Token;
 import compiler.parser.Tokenizer;
@@ -123,7 +124,26 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.NAME, new Name("b")),
     new Token(ParseType.SEMICOLON, null),
 
+    new Token(ParseType.STATIC_KEYWORD, null),
+    new Token(ParseType.LBRACE, null),
+    new Token(ParseType.INT_KEYWORD, null),
+    new Token(ParseType.COMMA, null),
+    new Token(ParseType.NAME, new Name("String")),
+    new Token(ParseType.ARROW, null),
+    new Token(ParseType.VOID_KEYWORD, null),
+    new Token(ParseType.THROWS_KEYWORD, null),
+    new Token(ParseType.NAME, new Name("IOException")),
+    new Token(ParseType.RBRACE, null),
+    new Token(ParseType.NAME, new Name("someClosure")),
+    new Token(ParseType.SEMICOLON, null),
+
     new Token(ParseType.PRIVATE_KEYWORD, null),
+    new Token(ParseType.SINCE_KEYWORD, null),
+    new Token(ParseType.LPAREN, null),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("1")),
+    new Token(ParseType.DOT, null),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("2")),
+    new Token(ParseType.RPAREN, null),
     new Token(ParseType.VOID_KEYWORD, null),
     new Token(ParseType.NAME, new Name("method")),
     new Token(ParseType.LPAREN, null),
@@ -137,6 +157,35 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.RBRACE, null),
 
     new Token(ParseType.STATIC_KEYWORD, null),
+    new Token(ParseType.LBRACE, null),
+    new Token(ParseType.RBRACE, null),
+
+    new Token(ParseType.PROPERTY_KEYWORD, null),
+    new Token(ParseType.LBRACE, null),
+    new Token(ParseType.NAME, new Name("String")),
+    new Token(ParseType.ARROW, null),
+    new Token(ParseType.VOID_KEYWORD, null),
+    new Token(ParseType.RBRACE, null),
+    new Token(ParseType.NAME, new Name("test")),
+    new Token(ParseType.EQUALS, null),
+    new Token(ParseType.EXPRESSION, new Expression()),
+    new Token(ParseType.PACKAGE_KEYWORD, null),
+    new Token(ParseType.ASSIGN_KEYWORD, null),
+    new Token(ParseType.LBRACE, null),
+    new Token(ParseType.RBRACE, null),
+    new Token(ParseType.PROTECTED_KEYWORD, null),
+    new Token(ParseType.RETRIEVE_KEYWORD, null),
+    new Token(ParseType.LBRACE, null),
+    new Token(ParseType.SEMICOLON, null),
+    new Token(ParseType.RBRACE, null),
+    new Token(ParseType.SEMICOLON, null),
+
+    new Token(ParseType.PRIVATE_KEYWORD, null),
+    new Token(ParseType.NAME, new Name("Constructor")),
+    new Token(ParseType.LPAREN, null),
+    new Token(ParseType.RPAREN, null),
+    new Token(ParseType.THROWS_KEYWORD, null),
+    new Token(ParseType.NAME, new Name("Exception")),
     new Token(ParseType.LBRACE, null),
     new Token(ParseType.RBRACE, null),
 

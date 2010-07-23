@@ -7,7 +7,7 @@ package compiler.language.ast;
 /**
  * @author Anthony Bryant
  */
-public class Block
+public class Block extends Statement
 {
 
   private Statement[] statements;

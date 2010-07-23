@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.IMMUTABLE_KEYWORD;
 import static compiler.language.parser.ParseType.MODIFIER;
 import static compiler.language.parser.ParseType.MUTABLE_KEYWORD;
 import static compiler.language.parser.ParseType.NATIVE_SPECIFIER;
+import static compiler.language.parser.ParseType.SINCE_SPECIFIER;
 import static compiler.language.parser.ParseType.STATIC_KEYWORD;
 import static compiler.language.parser.ParseType.SYNCHRONIZED_KEYWORD;
 import static compiler.language.parser.ParseType.TRANSIENT_KEYWORD;
@@ -33,11 +34,12 @@ public class ModifierRule extends Rule
   private static final Object[] TRANSIENT_PRODUCTION = new Object[] {TRANSIENT_KEYWORD};
   private static final Object[] VOLATILE_PRODUCTION = new Object[] {VOLATILE_KEYWORD};
   private static final Object[] NATIVE_SPECIFIER_PRODUCTION = new Object[] {NATIVE_SPECIFIER};
+  private static final Object[] SINCE_SPECIFIER_PRODUCTION = new Object[] {SINCE_SPECIFIER};
 
   public ModifierRule()
   {
     super(MODIFIER, STATIC_PRODUCTION, ABSTRACT_PRODUCTION, FINAL_PRODUCTION, MUTABLE_PRODUCTION, IMMUTABLE_PRODUCTION,
-                    SYNCHRONIZED_PRODUCTION, TRANSIENT_PRODUCTION, VOLATILE_PRODUCTION, NATIVE_SPECIFIER_PRODUCTION);
+                    SYNCHRONIZED_PRODUCTION, TRANSIENT_PRODUCTION, VOLATILE_PRODUCTION, NATIVE_SPECIFIER_PRODUCTION, SINCE_SPECIFIER_PRODUCTION);
   }
 
   /**
@@ -78,9 +80,9 @@ public class ModifierRule extends Rule
     {
       return Modifier.VOLATILE;
     }
-    if (types == NATIVE_SPECIFIER_PRODUCTION)
+    if (types == NATIVE_SPECIFIER_PRODUCTION || types == SINCE_SPECIFIER_PRODUCTION)
     {
-      // NativeSpecification is a subclass of Modifier, so we can just return the NativeSpecification directly
+      // NativeSpecifier and SinceSpecifier are subclasses of Modifier, so we can just return them directly
       return args[0];
     }
     return null;

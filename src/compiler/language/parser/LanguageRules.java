@@ -11,8 +11,10 @@ import compiler.language.parser.rules.BooleanTypeRule;
 import compiler.language.parser.rules.CharacterTypeRule;
 import compiler.language.parser.rules.ClassDefinitionRule;
 import compiler.language.parser.rules.ClassExtendsClauseRule;
+import compiler.language.parser.rules.ClosureTypeRule;
 import compiler.language.parser.rules.CompilationUnitRule;
 import compiler.language.parser.rules.ConstructorRule;
+import compiler.language.parser.rules.EmptyStatementRule;
 import compiler.language.parser.rules.FieldRule;
 import compiler.language.parser.rules.FloatingTypeLengthRule;
 import compiler.language.parser.rules.FloatingTypeRule;
@@ -23,17 +25,22 @@ import compiler.language.parser.rules.IntegerTypeRule;
 import compiler.language.parser.rules.InterfaceDefinitionRule;
 import compiler.language.parser.rules.InterfaceExtendsClauseRule;
 import compiler.language.parser.rules.InterfaceListRule;
+import compiler.language.parser.rules.MemberHeaderRule;
 import compiler.language.parser.rules.MemberListRule;
 import compiler.language.parser.rules.MemberRule;
 import compiler.language.parser.rules.MethodRule;
 import compiler.language.parser.rules.ModifierRule;
 import compiler.language.parser.rules.ModifiersRule;
-import compiler.language.parser.rules.NativeSpecificationRule;
+import compiler.language.parser.rules.NativeSpecifierRule;
 import compiler.language.parser.rules.NormalTypeParameterRule;
+import compiler.language.parser.rules.OptionalBlockRule;
 import compiler.language.parser.rules.PackageDeclarationRule;
 import compiler.language.parser.rules.PointerTypeRule;
 import compiler.language.parser.rules.PrimitiveTypeRule;
+import compiler.language.parser.rules.PropertyRule;
 import compiler.language.parser.rules.QNameRule;
+import compiler.language.parser.rules.SinceSpecifierRule;
+import compiler.language.parser.rules.StatementRule;
 import compiler.language.parser.rules.StatementsRule;
 import compiler.language.parser.rules.StaticInitializerRule;
 import compiler.language.parser.rules.ThrowsClauseRule;
@@ -48,6 +55,7 @@ import compiler.language.parser.rules.TypeParameterListRule;
 import compiler.language.parser.rules.TypeParameterRule;
 import compiler.language.parser.rules.TypeParametersRule;
 import compiler.language.parser.rules.TypeRule;
+import compiler.language.parser.rules.VersionNumberRule;
 import compiler.language.parser.rules.VoidTypeRule;
 import compiler.language.parser.rules.WildcardTypeParameterRule;
 import compiler.parser.Rule;
@@ -80,8 +88,10 @@ public class LanguageRules
     new CharacterTypeRule(),
     new ClassDefinitionRule(),
     new ClassExtendsClauseRule(),
+    new ClosureTypeRule(),
     // startRule (does not need to be included here): new CompilationUnitRule(),
     new ConstructorRule(),
+    new EmptyStatementRule(),
     new FieldRule(),
     new FloatingTypeLengthRule(),
     new FloatingTypeRule(),
@@ -92,17 +102,22 @@ public class LanguageRules
     new InterfaceDefinitionRule(),
     new InterfaceExtendsClauseRule(),
     new InterfaceListRule(),
+    new MemberHeaderRule(),
     new MemberListRule(),
     new MemberRule(),
     new MethodRule(),
     new ModifierRule(),
     new ModifiersRule(),
-    new NativeSpecificationRule(),
+    new NativeSpecifierRule(),
     new NormalTypeParameterRule(),
+    new OptionalBlockRule(),
     new PackageDeclarationRule(),
     new PointerTypeRule(),
     new PrimitiveTypeRule(),
+    new PropertyRule(),
     new QNameRule(),
+    new SinceSpecifierRule(),
+    new StatementRule(),
     new StatementsRule(),
     new StaticInitializerRule(),
     new ThrowsClauseRule(),
@@ -117,6 +132,7 @@ public class LanguageRules
     new TypeParameterRule(),
     new TypeParametersRule(),
     new TypeRule(),
+    new VersionNumberRule(),
     new VoidTypeRule(),
     new WildcardTypeParameterRule(),
   };

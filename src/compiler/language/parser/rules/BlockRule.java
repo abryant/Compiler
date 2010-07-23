@@ -19,11 +19,12 @@ import compiler.parser.Rule;
 public class BlockRule extends Rule
 {
 
+  private static final Object[] EMPTY_PRODUCTION = new Object[] {LBRACE, RBRACE};
   private static final Object[] PRODUCTION = new Object[] {LBRACE, STATEMENTS, RBRACE};
 
   public BlockRule()
   {
-    super(BLOCK, PRODUCTION);
+    super(BLOCK, EMPTY_PRODUCTION, PRODUCTION);
   }
 
   /**
@@ -32,6 +33,10 @@ public class BlockRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
+    if (types == EMPTY_PRODUCTION)
+    {
+      return new Block(new Statement[0]);
+    }
     if (types == PRODUCTION)
     {
       return new Block((Statement[]) args[1]);

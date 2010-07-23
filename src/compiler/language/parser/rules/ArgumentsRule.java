@@ -1,8 +1,12 @@
 package compiler.language.parser.rules;
 
+import static compiler.language.parser.ParseType.ARGUMENTS;
+import static compiler.language.parser.ParseType.ARGUMENT_LIST;
+import static compiler.language.parser.ParseType.LPAREN;
+import static compiler.language.parser.ParseType.RPAREN;
+
 import compiler.language.ast.Argument;
 import compiler.language.ast.ArgumentList;
-import compiler.language.parser.ParseType;
 import compiler.parser.Rule;
 
 /*
@@ -15,12 +19,12 @@ import compiler.parser.Rule;
 public class ArgumentsRule extends Rule
 {
 
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {ParseType.LPAREN, ParseType.RPAREN};
-  private static final Object[] PRODUCTION = new Object[] {ParseType.LPAREN, ParseType.ARGUMENT_LIST, ParseType.RPAREN};
+  private static final Object[] EMPTY_PRODUCTION = new Object[] {LPAREN, RPAREN};
+  private static final Object[] PRODUCTION = new Object[] {LPAREN, ARGUMENT_LIST, RPAREN};
 
   public ArgumentsRule()
   {
-    super(ParseType.ARGUMENTS, EMPTY_PRODUCTION, PRODUCTION);
+    super(ARGUMENTS, EMPTY_PRODUCTION, PRODUCTION);
   }
 
   /**
