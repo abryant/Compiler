@@ -1,5 +1,4 @@
 The grammar for language X
-This is the unsimplified grammar, it will need to be simplified before use.
 ===================================================================================================
 
 ###################
@@ -38,7 +37,7 @@ NativeSpecifier = NativeKeyword LParen StringLiteral RParen
 SinceSpecifier = SinceKeyword LParen VersionNumber RParen
 VersionNumber = IntegerLiteral | VersionNumber Dot IntegerLiteral
 
-MemberHeader = AccessSpecifier Modifiers | AccessSpecifier | Modifiers | epsilon
+MemberHeader = AccessSpecifier Modifiers
 
 TypeArgument = Name
              | Name ExtendsKeyword PointerType
@@ -81,7 +80,10 @@ ThrowsList = PointerType | ThrowsList Comma PointerType
 
 Field = MemberHeader Type AssigneeList Equals Expression Semicolon
       | MemberHeader Type AssigneeList Semicolon
-AssigneeList = Assignee | AssigneeList Comma Assignee
+
+// right-recursive list, so that the symbol after the list can be
+// used to decide between TypeList and AssigneeList
+AssigneeList = Assignee | Assignee Comma AssigneeList
 Assignee = QName | Underscore
 
 Property = MemberHeader PropertyKeyword Type Name Semicolon
@@ -105,24 +107,16 @@ StaticInitializer = MemberHeader Block
 Arguments = LParen ArgumentList RParen | LParen RParen
 ArgumentList = Argument | ArgumentList Comma Argument
 Argument = Type Name
-         | Type At Name Equals Expression
+         | Type At Name Equals ExpressionNoTuple
+         | Type Ellipsis Name
          | Arguments
 
 Parameters = LParen ParameterList RParen
            | LParen RParen
 ParameterList = Parameter | ParameterList Comma Parameter
 Parameter = NormalParameter | DefaultParameter
-DefaultParameter = At Name Equals Expression
-NormalParameter = Expression
-
-
-ArgList = LParen Args Comma DefaultArgs RParen
-        | LParen Args RParen
-        | LParen DefaultArgs RParen
-        | LParen RParen
-Args = Expression | Args Comma Expression
-DefaultArgs = DefaultArg | DefaultArgs Comma DefaultArg
-DefaultArg = At Name Equals Expression
+DefaultParameter = At Name Equals ExpressionNoTuple
+NormalParameter = ExpressionNoTuple
 
 
 #########################
@@ -131,10 +125,10 @@ DefaultArg = At Name Equals Expression
 
 Block = LBrace RBrace
       | LBrace Statements RBrace
-Statements = Statements Statement | Statement
+Statements = Statement | Statements Statement
 
 Statement = Block
-          | Semicolon
+          | EmptyStatement
           | ConstructorInvocationStatement
           | LocalDeclarationStatement
           | ExpressionStatement Semicolon
@@ -153,15 +147,20 @@ Statement = Block
           | IncrementStatement
           | DecrementStatement
 
-// should only be used in constructors - check after parsing
-ConstructorInvocationStatement = ThisKeyword ArgList Semicolon | SuperKeyword ArgList Semicolon
+EmptyStatement = Semicolon
 
-LocalDeclaration = Type VariableDeclarators
+// should only be used in constructors - check after parsing
+ConstructorInvocationStatement = ThisKeyword Parameters Semicolon
+                               | SuperKeyword Parameters Semicolon
+
+LocalDeclaration = Type AssigneeList // check that underscore is not declared after parsing
+                 | Type AssigneeList Equals Expression
 LocalDeclarationStatement = LocalDeclaration Semicolon
 
-IfStatement = IfKeyword Expression Block
-            | IfStatement ElseKeyword IfKeyword Expression Block
-            | IfStatement ElseKeyword Block
+IfStatement = IfKeyword Expression Block ElseIfClauses ElseClause
+ElseIfClauses = epsilon | ElseIfClauses ElseIfClause
+ElseIfClause = ElseKeyword IfKeyword Expression Block
+ElseClause = epsilon | ElseKeyword Block
 
 WhileStatement = WhileKeyword Expression Block
 
@@ -169,87 +168,143 @@ DoStatement = DoKeyword Block WhileKeyword Expression Semicolon
 
 ForStatement = ForKeyword LParen ForHeader RParen Block
              | ForKeyword ForHeader Block
-ForHeader = LocalDeclaration Semicolon Expression Semicolon ForUpdate
-          | LocalDeclaration Semicolon Expression Semicolon
-          | LocalDeclaration Semicolon            Semicolon ForUpdate
-          | LocalDeclaration Semicolon            Semicolon
-          |                  Semicolon Expression Semicolon ForUpdate
-          |                  Semicolon Expression Semicolon
-          |                  Semicolon            Semicolon ForUpdate
-          |                  Semicolon            Semicolon
+ForHeader = ForInit Semicolon Expression Semicolon ForUpdate
+          | ForInit Semicolon            Semicolon ForUpdate
+          | Type Name Colon Expression
 
-ForUpdate = ExpressionStatement | IncrementExpression | DecrementExpression
-          | ForUpdate Semicolon ExpressionStatement
-          | ForUpdate Semicolon IncrementExpression
-          | ForUpdate Semicolon DecrementExpression
+ForInit = LocalDeclaration | ExpressionStatement | epsilon
+ForUpdate = ExpressionStatement | Increment | Decrement | epsilon
 
 SwitchStatement = SwitchKeyword Expression SwitchBlock
                 | SwitchKeyword SwitchBlock
 SwitchBlock = LBrace SwitchCases RBrace
-            | LBrace RBrace
-SwitchCases = SwitchCase | SwitchCases SwitchCase
-SwitchCase = DefaultKeyword Colon Statements
-           | CaseKeyword Expression Colon Statements
+SwitchCases = epsilon | SwitchCases SwitchCase
+SwitchCase = SwitchLabel | SwitchLabel Statements
+SwitchLabel = DefaultKeyword Colon
+            | CaseKeyword Expression Colon
 
-BreakStatement = BreakKeyword LParen IntegerLiteral RParen Semicolon
+BreakStatement = BreakKeyword IntegerLiteral Semicolon
                | BreakKeyword Semicolon
-ContinueStatement = ContinueKeyword LParen IntegerLiteral RParen Semicolon
+ContinueStatement = ContinueKeyword IntegerLiteral Semicolon
                   | ContinueKeyword Semicolon
-FallthroughStatement = FallthroughKeyword LParen IntegerLiteral RParen Semicolon
+FallthroughStatement = FallthroughKeyword IntegerLiteral Semicolon
                      | FallthroughKeyword Semicolon
 
 ReturnStatement = Return Expression Semicolon | Return Semicolon
 
+ThrowStatement = ThrowKeyword Expression Semicolon
+
 SynchronizedStatement = SynchronizedKeyword Expression Block
                       | SynchronizedKeyword Block
 
-ThrowStatement = ThrowKeyword Expression Semicolon
-
-TryStatement = TryKeyword Block
-             | TryStatement CatchKeyword CatchDeclaration Block
-             | TryStatement FinallyKeyword Block
+TryStatement = TryKeyword Block CatchClauses FinallyClause
+CatchClauses = epsilon | CatchClauses CatchClause
+CatchClause = CatchKeyword CatchDeclaration Block
 CatchDeclaration = LParen QName Name RParen
                  | QName Name
+FinallyClause = FinallyKeyword Block | epsilon
 
-IncrementStatement = QName Plus Plus Semicolon   | Plus Plus QName Semicolon
-DecrementStatement = QName Minus Minus Semicolon | Minus Minus QName Semicolon
+Increment = QName Plus Plus   | Plus Plus QName
+Decrement = QName Minus Minus | Minus Minus QName
+IncrementStatement = Increment Semicolon
+DecrementStatement = Decrement Semicolon
 
 ###############
   Expressions
 ###############
 
-Expression = 
+ExpressionStatement = AssignExpression | MethodCallExpression | InstanciationExpression
+ExpressionStatementNoTuple = AssignExpressionNoTuple | MethodCallExpression | InstanciationExpression
+
+Expression = TupleExpression | AssignExpression
+AssignExpression = AssigneeList AssignmentOperator Expression
+TupleExpression = InlineIfExpression | TupleExpession Comma InlineIfExpression
+
+ExpressionNoTuple = InlineIfExpression | AssignExpressionNoTuple
+AssignExpressionNoTuple = QName AssignmentOperator ExpressionNoTuple
+
+InlineIfExpression = BooleanOrExpression | BooleanOrExpression QuestionMark Expression Colon InlineIfExpression
+
+BooleanOrExpression = BooleanXorExpression | BooleanOrExpression DoublePipe BooleanXorExpression
+BooleanXorExpression = BooleanAndExpression | BooleanXorExpression DoubleCaret BooleanAndExpression
+BooleanAndExpression = BitwiseOrExpression | BooleanAndExpression DoubleAmpersand BitwiseOrExpression
+BitwiseOrExpression = BitwiseXorExpression | BitwiseOrExpression Pipe BitwiseXorExpression 
+BitwiseXorExpression = BitwiseAndExpression | BitwiseXorExpression Caret BitwiseAndExpression 
+BitwiseAndExpression = EqualityExpression | BitwiseAndExpression Ampersand EqualityExpression 
+
+EqualityExpression = RelationalExpression
+                   | EqualityExpression DoubleEquals RelationalExpression
+                   | EqualityExpression ExclaimationMarkEquals RelationalExpression
+
+RelationalExpression = ShiftExpression
+                     | RelationalExpression LAngle ShiftExpression
+                     | RelationalExpression RAngle ShiftExpression
+                     | RelationalExpression LessThanEquals ShiftExpression
+                     | RelationalExpression MoreThanEquals ShiftExpression
+                     | RelationalExpression InstanceOfKeyword Type // TODO: should this be PointerType?
+
+ShiftExpression = AdditiveExpression
+                | ShiftExpression LeftShift AdditiveExpression
+                | ShiftExpression ArithmeticRightShift AdditiveExpression
+                | ShiftExpression LogicalRightShift AdditiveExpression
+
+AdditiveExpression = MultiplicativeExpression
+                   | AdditiveExpression Plus MultiplicativeExpression
+                   | AdditiveExpression Minus MultiplicativeExpression
+
+MultiplicativeExpression = TupleIndexExpression
+                         | MultiplicativeExpression Star TupleIndexExpression
+                         | MultiplicativeExpression ForwardSlash TupleIndexExpression
+                         | MultiplicativeExpression Percent TupleIndexExpression
+
+TupleIndexExpression = UnaryExpression
+                     | TupleIndexExpression ExclaimationMark IntegerLiteral
+// TODO: should this be a constant expression instead of an integer literal?
+
+UnaryExpression = Primary | BooleanNotExpression | BitwiseNotExpression | CastExpression | PlusExpression | MinusExpression
+BooleanNotExpression = ExclaimationMark UnaryExpression
+BitwiseNotExpression = Tilde UnaryExpression
+CastExpression = CastKeyword LAngle Type RAngle UnaryExpression
+PlusExpression = Plus UnaryExpression
+MinusExpression = Minus UnaryExpression
 
 Primary = PrimaryNoNewArray | ArrayInstanciationExpression
 
 PrimaryNoNewArray = LParen Expression RParen
                   | IntegerLiteral | FloatingLiteral | CharacterLiteral | StringLiteral | NilLiteral
                   | FieldAccessExpression
-                  | ExpressionStatement
-                  | InstanciationExpression
+                  | MethodCallExpression
+                  | ThisAccessExpression
+                  | SuperAccessExpression
                   | ArrayAccessExpression
+                  | InstanciationExpression
+                  | ClosureCreationExpression
 
-ExpressionStatement = AssignExpression | MethodCallExpression
-AssignExpression = QName AssignmentOperator Expression
-MethodCallExpression = FieldAccessExpression Dot Name ArgList
-                     | Name ArgList
+MethodCallExpression = QName Parameters | Primary Dot Name Parameters
 
-// TODO: FieldAccessExpression very probably needs redoing, go over it and see what can be simplified
 FieldAccessExpression = QName
-                      | ThisKeyword
-                      | QName Dot ThisKeyword
-                      | SuperKeyword
-                      | QName Dot SuperKeyword
                       | Primary Dot Name
 
-InstanciationExpression = NewKeyword QName ArgList
-                        | NewKeyword QName ArgList ClassBody
+ThisAccessExpression = ThisKeyword
+                     | QName Dot ThisKeyword
+SuperAccessExpression = SuperKeyword
+                      | QName Dot SuperKeyword
+
+ArrayAccessExpression = PrimaryNoNewArray DimensionExpression
+
+InstanciationExpression = NewKeyword QName Parameters
+                        | NewKeyword QName Parameters LBrace MemberList RBrace
+
+ClosureCreationExpression = Type ClosureKeyword Arguments Block
 
 ArrayInstanciationExpression = NewKeyword QName DimensionExpressions Dimensions ArrayInitializer
                              | NewKeyword QName DimensionExpressions ArrayInitializer
                              | NewKeyword QName Dimensions ArrayInitializer
                              | NewKeyword QName DimensionExpressions Dimensions
                              | NewKeyword QName DimensionExpressions
+
+ArrayInitializer = LBrace ExpressionList RBrace
+ExpressionList = ExpressionNoTuple | ExpressionList Comma ExpressionNoTuple | ExpressionList Comma
 
 DimensionExpressions = DimensionExpression | DimensionExpressions DimensionExpression
 DimensionExpression = LSquare Expression RSquare
@@ -262,21 +317,24 @@ AssignmentOperator = Equals | PlusEquals | MinusEquals | TimesEquals | DivideEqu
                    | BooleanAndEquals | BooleanOrEquals | BitwiseAndEquals | BitwiseOrEquals | BitwiseXorEquals
                    | LeftShiftEquals | ArithmeticRightShiftEquals | LogicalRightShiftEquals
 
-ComparisonOperator = EqualsEquals | NotEquals | RAngle | LAngle | MoreThanEquals | LessThanEquals
-
-
 #########
   Types
 #########
 
 Type = PrimitiveType | PointerType | ArrayType | TupleType | VoidType
+TypeNotQName = PrimitiveType | PointerTypeNotQName | ArrayType | TupleType | VoidType
 
 TupleType = LParen TypeList RParen
-TypeList = Type | TypeList Comma Type
+TypeList = Type | Type Comma TypeList
+// right-recursive list, so that the symbol after the list can be
+// used to decide between TypeList and AssigneeList
 
 ClosureType = LBrace TypeList Arrow TypeList ThrowsClause RBrace
 
-ArrayType = Type LSquare RSquare
+// QNames are separated out so that ArrayType and ArrayAccess can be disambiguated
+// on partial input: class A { int method() { foo[
+// where the lookahead token is the final [
+ArrayType = TypeNotQName LSquare RSquare | QName LSquare RSquare
 
 PrimitiveType = BooleanType | IntegerType | CharacterType | FloatingType
 BooleanType = BooleanKeyword
@@ -286,7 +344,8 @@ FloatingType = SignedKeyword FloatLength | UnsignedKeyword FloatLength | FloatLe
 IntegerLength = ByteKeyword | ShortKeyword | IntKeyword | LongKeyword
 FloatingLength = FloatKeyword | DoubleKeyword
 
-PointerType = QName | Hash QName | QName TypeParameters | Hash QName TypeParameters
+PointerType = QName | PointerTypeNotQName
+PointerTypeNotQName = Hash QName | QName TypeParameters | Hash QName TypeParameters
 TypeParameters = LAngle TypeParameterList RAngle
 TypeParameterList = TypeParameter | TypeParameterList Comma TypeParameter
 TypeParameter = NormalTypeParameter | WildcardTypeParameter
@@ -299,7 +358,6 @@ WildcardTypeParameter = QuestionMark ExtendsKeyword PointerType SuperKeyword Poi
 VoidType = VoidKeyword
 
 QName = Name | QName Dot Name
-CommaSeparatedQNameList = QName | CommaSeparatedQNameList Comma QName
 
 
 ################################
