@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.INT_KEYWORD;
 import static compiler.language.parser.ParseType.LONG_KEYWORD;
 import static compiler.language.parser.ParseType.SHORT_KEYWORD;
 
-import compiler.language.ast.IntegerTypeLength;
+import compiler.language.ast.type.IntegerTypeLength;
 import compiler.parser.Rule;
 
 /*

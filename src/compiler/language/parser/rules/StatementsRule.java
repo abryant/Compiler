@@ -3,7 +3,7 @@ package compiler.language.parser.rules;
 import static compiler.language.parser.ParseType.STATEMENT;
 import static compiler.language.parser.ParseType.STATEMENTS;
 
-import compiler.language.ast.Statement;
+import compiler.language.ast.statement.Statement;
 import compiler.parser.Rule;
 
 /*

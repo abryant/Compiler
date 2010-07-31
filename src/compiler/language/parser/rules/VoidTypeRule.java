@@ -3,7 +3,7 @@ package compiler.language.parser.rules;
 import static compiler.language.parser.ParseType.VOID_KEYWORD;
 import static compiler.language.parser.ParseType.VOID_TYPE;
 
-import compiler.language.ast.VoidType;
+import compiler.language.ast.type.VoidType;
 import compiler.parser.Rule;
 
 /*

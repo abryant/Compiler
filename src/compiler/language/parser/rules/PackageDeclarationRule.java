@@ -5,8 +5,8 @@ import static compiler.language.parser.ParseType.PACKAGE_KEYWORD;
 import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
-import compiler.language.ast.PackageDeclaration;
-import compiler.language.ast.QName;
+import compiler.language.ast.misc.QName;
+import compiler.language.ast.topLevel.PackageDeclaration;
 import compiler.parser.Rule;
 
 /*

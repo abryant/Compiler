@@ -1,7 +1,7 @@
 package compiler.language.parser.rules;
 
-import compiler.language.ast.IntegerType;
-import compiler.language.ast.IntegerTypeLength;
+import compiler.language.ast.type.IntegerType;
+import compiler.language.ast.type.IntegerTypeLength;
 import compiler.language.parser.ParseType;
 import compiler.parser.Rule;
 

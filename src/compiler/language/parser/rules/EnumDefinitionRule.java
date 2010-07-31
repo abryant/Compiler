@@ -12,12 +12,12 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
-import compiler.language.ast.EnumConstant;
-import compiler.language.ast.EnumDefinition;
-import compiler.language.ast.Member;
-import compiler.language.ast.MemberHeader;
-import compiler.language.ast.Name;
-import compiler.language.ast.PointerType;
+import compiler.language.ast.member.Member;
+import compiler.language.ast.member.MemberHeader;
+import compiler.language.ast.terminal.Name;
+import compiler.language.ast.type.PointerType;
+import compiler.language.ast.typeDefinition.EnumConstant;
+import compiler.language.ast.typeDefinition.EnumDefinition;
 import compiler.parser.Rule;
 
 /*

@@ -11,12 +11,12 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
 
-import compiler.language.ast.ClassDefinition;
-import compiler.language.ast.Member;
-import compiler.language.ast.MemberHeader;
-import compiler.language.ast.Name;
-import compiler.language.ast.PointerType;
-import compiler.language.ast.TypeArgument;
+import compiler.language.ast.member.Member;
+import compiler.language.ast.member.MemberHeader;
+import compiler.language.ast.terminal.Name;
+import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.TypeArgument;
+import compiler.language.ast.typeDefinition.ClassDefinition;
 import compiler.parser.Rule;
 
 /*

@@ -14,17 +14,12 @@ public enum ParseType
   // non-terminals
 
   // top level
-  COMPILATION_UNIT,    // CompilationUnit
-  PACKAGE_DECLARATION, // PackageDeclaration
-  IMPORT_DECLARATION,  // ImportDeclaration
-  TYPE_DEFINITION,     // TypeDefinition
+  COMPILATION_UNIT,         // CompilationUnit
+  PACKAGE_DECLARATION,      // PackageDeclaration
+  IMPORT_DECLARATION,       // ImportDeclaration
+  TYPE_DEFINITION,          // TypeDefinition
 
   // classes, interfaces, enums
-  ACCESS_SPECIFIER,         // AccessSpecifier or null
-  MODIFIER,                 // Modifier
-  MODIFIERS,                // Modifier[] (length > 0)
-  NATIVE_SPECIFIER,         // NativeSpecifier
-  SINCE_SPECIFIER,          // SinceSpecifier
   CLASS_DEFINITION,         // ClassDefinition
   INTERFACE_DEFINITION,     // InterfaceDefinition
   ENUM_DEFINITION,          // EnumDefinition
@@ -35,6 +30,13 @@ public enum ParseType
   ENUM_CONSTANTS,           // EnumConstant[] (length == 0 if not specified)
   ENUM_CONSTANT_LIST,       // EnumConstant[] (length > 0)
   ENUM_CONSTANT,            // EnumConstant
+
+  // members
+  ACCESS_SPECIFIER,         // AccessSpecifier or null
+  MODIFIER,                 // Modifier
+  MODIFIERS,                // Modifier[] (length > 0)
+  NATIVE_SPECIFIER,         // NativeSpecifier
+  SINCE_SPECIFIER,          // SinceSpecifier
   MEMBER_HEADER,            // MemberHeader
   MEMBER_LIST,              // Member[] TODO: tidy this up into a Members object containing a list of each type of member? then get rid of Member completely
   MEMBER,                   // Member
@@ -44,61 +46,58 @@ public enum ParseType
   PROPERTY,                 // Property
   STATIC_INITIALIZER,       // StaticInitializer
 
-  // blocks and top level statements
-  BLOCK,              // Block
-  OPTIONAL_BLOCK,     // Block or null
-  STATEMENTS,         // Statement[]
-  STATEMENT,          // Statement TODO: add a rule for this
-
   // statements
-  EMPTY_STATEMENT, // EmptyStatement
-
+  BLOCK,                    // Block
+  OPTIONAL_BLOCK,           // Block or null
+  STATEMENTS,               // Statement[]
+  STATEMENT,                // Statement TODO: add a rule for this
+  EMPTY_STATEMENT,          // EmptyStatement
 
   // expressions
-  EXPRESSION,          // Expression TODO: add a rule for this
-  EXPRESSION_NO_TUPLE, // Expression TODO: add a rule for this
+  EXPRESSION,               // Expression TODO: add a rule for this
+  EXPRESSION_NO_TUPLE,      // Expression TODO: add a rule for this
 
   // types
-  BOOLEAN_TYPE,            // BooleanType
-  CHARACTER_TYPE,          // CharacterType
-  CLOSURE_TYPE,            // ClosureType
-  FLOATING_TYPE_LENGTH,    // FloatingTypeLength
-  FLOATING_TYPE,           // FloatingType
-  INTEGER_TYPE_LENGTH,     // IntegerTypeLength
-  INTEGER_TYPE,            // IntegerType
-  PRIMITIVE_TYPE,          // PrimitiveType
-  POINTER_TYPE,            // PointerType
-  TUPLE_TYPE,              // TupleType
-  TYPE_LIST,               // Type[] (length > 0)
-  TYPE,                    // Type
-  TYPE_ARGUMENTS,          // TypeArgument[] (length > 0)
-  TYPE_ARGUMENT_LIST,      // TypeArgument[] (length > 0)
-  TYPE_ARGUMENT,           // TypeArgument
-  TYPE_PARAMETERS,         // TypeParameter[] (length > 0)
-  TYPE_PARAMETER_LIST,     // TypeParameter[] (length > 0)
-  TYPE_PARAMETER,          // TypeParameter
-  NORMAL_TYPE_PARAMETER,   // NormalTypeParameter
-  WILDCARD_TYPE_PARAMETER, // WildcardTypeParameter
-  VOID_TYPE,               // VoidType
+  BOOLEAN_TYPE,             // BooleanType
+  CHARACTER_TYPE,           // CharacterType
+  CLOSURE_TYPE,             // ClosureType
+  FLOATING_TYPE_LENGTH,     // FloatingTypeLength
+  FLOATING_TYPE,            // FloatingType
+  INTEGER_TYPE_LENGTH,      // IntegerTypeLength
+  INTEGER_TYPE,             // IntegerType
+  PRIMITIVE_TYPE,           // PrimitiveType
+  POINTER_TYPE,             // PointerType
+  TUPLE_TYPE,               // TupleType
+  TYPE_LIST,                // Type[] (length > 0)
+  TYPE,                     // Type
+  TYPE_ARGUMENTS,           // TypeArgument[] (length > 0)
+  TYPE_ARGUMENT_LIST,       // TypeArgument[] (length > 0)
+  TYPE_ARGUMENT,            // TypeArgument
+  TYPE_PARAMETERS,          // TypeParameter[] (length > 0)
+  TYPE_PARAMETER_LIST,      // TypeParameter[] (length > 0)
+  TYPE_PARAMETER,           // TypeParameter
+  NORMAL_TYPE_PARAMETER,    // NormalTypeParameter
+  WILDCARD_TYPE_PARAMETER,  // WildcardTypeParameter
+  VOID_TYPE,                // VoidType
 
-  // common non-terminals
-  ARGUMENT,           // Argument
-  ARGUMENT_LIST,      // Argument[]
-  ARGUMENTS,          // ArgumentList
-  ASSIGNEE,           // Assignee
-  ASSIGNEE_LIST,      // Assignee[]
-  PARAMETER,          // Parameter
-  PARAMETER_LIST,     // Parameter[] (length > 0)
-  PARAMETERS,         // Parameter[]
-  QNAME,              // QName
-  THROWS_LIST,        // PointerType[] (length > 0)
-  THROWS_CLAUSE,      // PointerType[] (length == 0 if none are specified)
-  VERSION_NUMBER,     // VersionNumber
+  // miscellaneous non-terminals
+  ARGUMENT,                 // Argument
+  ARGUMENT_LIST,            // Argument[]
+  ARGUMENTS,                // ArgumentList
+  ASSIGNEE,                 // Assignee
+  ASSIGNEE_LIST,            // Assignee[]
+  PARAMETER,                // Parameter
+  PARAMETER_LIST,           // Parameter[] (length > 0)
+  PARAMETERS,               // Parameter[]
+  QNAME,                    // QName
+  THROWS_LIST,              // PointerType[] (length > 0)
+  THROWS_CLAUSE,            // PointerType[] (length == 0 if none are specified)
+  VERSION_NUMBER,           // VersionNumber
 
   // literals
-  NAME,            // Name
-  INTEGER_LITERAL, // IntegerLiteral
-  STRING_LITERAL,  // String
+  NAME,                     // Name
+  INTEGER_LITERAL,          // IntegerLiteral
+  STRING_LITERAL,           // String
 
   // keywords (values do not matter for these, but should be null)
   ABSTRACT_KEYWORD,

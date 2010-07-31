@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.DOUBLE_KEYWORD;
 import static compiler.language.parser.ParseType.FLOATING_TYPE_LENGTH;
 import static compiler.language.parser.ParseType.FLOAT_KEYWORD;
 
-import compiler.language.ast.FloatingTypeLength;
+import compiler.language.ast.type.FloatingTypeLength;
 import compiler.parser.Rule;
 
 /*

@@ -6,9 +6,9 @@ import static compiler.language.parser.ParseType.POINTER_TYPE;
 import static compiler.language.parser.ParseType.SUPER_KEYWORD;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENT;
 
-import compiler.language.ast.Name;
-import compiler.language.ast.PointerType;
-import compiler.language.ast.TypeArgument;
+import compiler.language.ast.terminal.Name;
+import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.TypeArgument;
 import compiler.parser.Rule;
 
 /*

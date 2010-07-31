@@ -3,7 +3,7 @@ package compiler.language.parser.rules;
 import static compiler.language.parser.ParseType.MODIFIER;
 import static compiler.language.parser.ParseType.MODIFIERS;
 
-import compiler.language.ast.Modifier;
+import compiler.language.ast.member.Modifier;
 import compiler.parser.Rule;
 
 /*

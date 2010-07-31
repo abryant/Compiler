@@ -5,8 +5,8 @@ import static compiler.language.parser.ParseType.LBRACE;
 import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.STATEMENTS;
 
-import compiler.language.ast.Block;
-import compiler.language.ast.Statement;
+import compiler.language.ast.statement.Block;
+import compiler.language.ast.statement.Statement;
 import compiler.parser.Rule;
 
 /*

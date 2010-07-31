@@ -5,10 +5,10 @@ import static compiler.language.parser.ParseType.IMPORT_DECLARATION;
 import static compiler.language.parser.ParseType.PACKAGE_DECLARATION;
 import static compiler.language.parser.ParseType.TYPE_DEFINITION;
 
-import compiler.language.ast.CompilationUnit;
-import compiler.language.ast.ImportDeclaration;
-import compiler.language.ast.PackageDeclaration;
-import compiler.language.ast.TypeDefinition;
+import compiler.language.ast.topLevel.CompilationUnit;
+import compiler.language.ast.topLevel.ImportDeclaration;
+import compiler.language.ast.topLevel.PackageDeclaration;
+import compiler.language.ast.topLevel.TypeDefinition;
 import compiler.parser.Rule;
 
 /*

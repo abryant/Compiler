@@ -4,8 +4,8 @@ import static compiler.language.parser.ParseType.DOT;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.QNAME;
 
-import compiler.language.ast.Name;
-import compiler.language.ast.QName;
+import compiler.language.ast.misc.QName;
+import compiler.language.ast.terminal.Name;
 import compiler.parser.Rule;
 
 /*

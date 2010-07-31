@@ -4,9 +4,9 @@ import static compiler.language.parser.ParseType.ACCESS_SPECIFIER;
 import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.MODIFIERS;
 
-import compiler.language.ast.AccessSpecifier;
-import compiler.language.ast.MemberHeader;
-import compiler.language.ast.Modifier;
+import compiler.language.ast.member.AccessSpecifier;
+import compiler.language.ast.member.MemberHeader;
+import compiler.language.ast.member.Modifier;
 import compiler.parser.Rule;
 
 /*

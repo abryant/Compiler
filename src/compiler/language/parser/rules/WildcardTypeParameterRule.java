@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.QUESTION_MARK;
 import static compiler.language.parser.ParseType.SUPER_KEYWORD;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER;
 
-import compiler.language.ast.PointerType;
-import compiler.language.ast.WildcardTypeParameter;
+import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.WildcardTypeParameter;
 import compiler.parser.Rule;
 
 /*

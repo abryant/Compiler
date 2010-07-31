@@ -8,8 +8,8 @@ import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.STAR;
 import static compiler.language.parser.ParseType.STATIC_KEYWORD;
 
-import compiler.language.ast.ImportDeclaration;
-import compiler.language.ast.QName;
+import compiler.language.ast.misc.QName;
+import compiler.language.ast.topLevel.ImportDeclaration;
 import compiler.parser.Rule;
 
 /*

@@ -3,7 +3,7 @@ package compiler.language.parser.rules;
 import static compiler.language.parser.ParseType.MEMBER;
 import static compiler.language.parser.ParseType.MEMBER_LIST;
 
-import compiler.language.ast.Member;
+import compiler.language.ast.member.Member;
 import compiler.parser.Rule;
 
 /*

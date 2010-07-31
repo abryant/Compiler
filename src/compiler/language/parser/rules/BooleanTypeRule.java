@@ -3,7 +3,7 @@ package compiler.language.parser.rules;
 import static compiler.language.parser.ParseType.BOOLEAN_KEYWORD;
 import static compiler.language.parser.ParseType.BOOLEAN_TYPE;
 
-import compiler.language.ast.BooleanType;
+import compiler.language.ast.type.BooleanType;
 import compiler.parser.Rule;
 
 /*

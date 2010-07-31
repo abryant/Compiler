@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.TYPE;
 import static compiler.language.parser.ParseType.TYPE_LIST;
 
-import compiler.language.ast.Type;
+import compiler.language.ast.type.Type;
 import compiler.parser.Rule;
 
 /*

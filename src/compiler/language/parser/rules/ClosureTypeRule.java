@@ -7,9 +7,9 @@ import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.THROWS_CLAUSE;
 import static compiler.language.parser.ParseType.TYPE_LIST;
 
-import compiler.language.ast.ClosureType;
-import compiler.language.ast.PointerType;
-import compiler.language.ast.Type;
+import compiler.language.ast.type.ClosureType;
+import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.Type;
 import compiler.parser.Rule;
 
 /*

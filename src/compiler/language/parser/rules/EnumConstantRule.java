@@ -4,9 +4,9 @@ import static compiler.language.parser.ParseType.ENUM_CONSTANT;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PARAMETERS;
 
-import compiler.language.ast.EnumConstant;
-import compiler.language.ast.Name;
-import compiler.language.ast.Parameter;
+import compiler.language.ast.misc.Parameter;
+import compiler.language.ast.terminal.Name;
+import compiler.language.ast.typeDefinition.EnumConstant;
 import compiler.parser.Rule;
 
 /*

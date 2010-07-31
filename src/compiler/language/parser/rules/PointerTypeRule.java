@@ -5,9 +5,9 @@ import static compiler.language.parser.ParseType.POINTER_TYPE;
 import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.TYPE_PARAMETERS;
 
-import compiler.language.ast.PointerType;
-import compiler.language.ast.QName;
-import compiler.language.ast.TypeParameter;
+import compiler.language.ast.misc.QName;
+import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.TypeParameter;
 import compiler.parser.Rule;
 
 /*

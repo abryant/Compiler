@@ -1,8 +1,8 @@
 package compiler.language.parser;
 
-import compiler.language.ast.Expression;
-import compiler.language.ast.IntegerLiteral;
-import compiler.language.ast.Name;
+import compiler.language.ast.expression.Expression;
+import compiler.language.ast.terminal.IntegerLiteral;
+import compiler.language.ast.terminal.Name;
 import compiler.parser.Token;
 import compiler.parser.Tokenizer;
 

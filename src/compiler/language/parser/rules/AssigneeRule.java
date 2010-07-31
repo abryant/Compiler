@@ -4,8 +4,8 @@ import static compiler.language.parser.ParseType.ASSIGNEE;
 import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.UNDERSCORE;
 
-import compiler.language.ast.Assignee;
-import compiler.language.ast.QName;
+import compiler.language.ast.misc.Assignee;
+import compiler.language.ast.misc.QName;
 import compiler.parser.Rule;
 
 /*

@@ -3,8 +3,8 @@ package compiler.language.parser.rules;
 import static compiler.language.parser.ParseType.FLOATING_TYPE;
 import static compiler.language.parser.ParseType.FLOATING_TYPE_LENGTH;
 
-import compiler.language.ast.FloatingType;
-import compiler.language.ast.FloatingTypeLength;
+import compiler.language.ast.type.FloatingType;
+import compiler.language.ast.type.FloatingTypeLength;
 import compiler.parser.Rule;
 
 /*

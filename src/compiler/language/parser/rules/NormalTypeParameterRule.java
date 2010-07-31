@@ -3,8 +3,8 @@ package compiler.language.parser.rules;
 import static compiler.language.parser.ParseType.NORMAL_TYPE_PARAMETER;
 import static compiler.language.parser.ParseType.TYPE;
 
-import compiler.language.ast.NormalTypeParameter;
-import compiler.language.ast.Type;
+import compiler.language.ast.type.NormalTypeParameter;
+import compiler.language.ast.type.Type;
 import compiler.parser.Rule;
 
 /*

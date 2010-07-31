@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.ASSIGNEE;
 import static compiler.language.parser.ParseType.ASSIGNEE_LIST;
 import static compiler.language.parser.ParseType.COMMA;
 
-import compiler.language.ast.Assignee;
+import compiler.language.ast.misc.Assignee;
 import compiler.parser.Rule;
 
 /*

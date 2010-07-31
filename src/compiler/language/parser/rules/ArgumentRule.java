@@ -10,13 +10,13 @@ import static compiler.language.parser.ParseType.MODIFIERS;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.TYPE;
 
-import compiler.language.ast.DefaultArgument;
-import compiler.language.ast.Expression;
-import compiler.language.ast.Modifier;
-import compiler.language.ast.Name;
-import compiler.language.ast.SingleArgument;
-import compiler.language.ast.Type;
-import compiler.language.ast.VariadicArgument;
+import compiler.language.ast.expression.Expression;
+import compiler.language.ast.member.Modifier;
+import compiler.language.ast.misc.DefaultArgument;
+import compiler.language.ast.misc.SingleArgument;
+import compiler.language.ast.misc.VariadicArgument;
+import compiler.language.ast.terminal.Name;
+import compiler.language.ast.type.Type;
 import compiler.parser.Rule;
 
 /*

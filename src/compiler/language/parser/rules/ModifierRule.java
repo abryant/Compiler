@@ -12,7 +12,7 @@ import static compiler.language.parser.ParseType.SYNCHRONIZED_KEYWORD;
 import static compiler.language.parser.ParseType.TRANSIENT_KEYWORD;
 import static compiler.language.parser.ParseType.VOLATILE_KEYWORD;
 
-import compiler.language.ast.Modifier;
+import compiler.language.ast.member.Modifier;
 import compiler.parser.Rule;
 
 /*

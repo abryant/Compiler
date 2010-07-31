@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
 import static compiler.language.parser.ParseType.INTERFACE_EXTENDS_CLAUSE;
 import static compiler.language.parser.ParseType.INTERFACE_LIST;
 
-import compiler.language.ast.PointerType;
+import compiler.language.ast.type.PointerType;
 import compiler.parser.Rule;
 
 /*

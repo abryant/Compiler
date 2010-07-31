@@ -5,8 +5,8 @@ import static compiler.language.parser.ParseType.ARGUMENT_LIST;
 import static compiler.language.parser.ParseType.LPAREN;
 import static compiler.language.parser.ParseType.RPAREN;
 
-import compiler.language.ast.Argument;
-import compiler.language.ast.ArgumentList;
+import compiler.language.ast.misc.Argument;
+import compiler.language.ast.misc.ArgumentList;
 import compiler.parser.Rule;
 
 /*

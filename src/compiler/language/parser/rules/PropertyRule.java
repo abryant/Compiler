@@ -12,12 +12,12 @@ import static compiler.language.parser.ParseType.RETRIEVE_KEYWORD;
 import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.TYPE;
 
-import compiler.language.ast.AccessSpecifier;
-import compiler.language.ast.Block;
-import compiler.language.ast.Expression;
-import compiler.language.ast.Name;
-import compiler.language.ast.Property;
-import compiler.language.ast.Type;
+import compiler.language.ast.expression.Expression;
+import compiler.language.ast.member.AccessSpecifier;
+import compiler.language.ast.member.Property;
+import compiler.language.ast.statement.Block;
+import compiler.language.ast.terminal.Name;
+import compiler.language.ast.type.Type;
 import compiler.parser.Rule;
 
 /*

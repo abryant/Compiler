@@ -3,7 +3,7 @@ package compiler.language.parser.rules;
 import static compiler.language.parser.ParseType.EMPTY_STATEMENT;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
-import compiler.language.ast.EmptyStatement;
+import compiler.language.ast.statement.EmptyStatement;
 import compiler.parser.Rule;
 
 /*

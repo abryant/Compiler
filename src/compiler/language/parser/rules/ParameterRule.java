@@ -6,10 +6,10 @@ import static compiler.language.parser.ParseType.EXPRESSION_NO_TUPLE;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PARAMETER;
 
-import compiler.language.ast.DefaultParameter;
-import compiler.language.ast.Expression;
-import compiler.language.ast.Name;
-import compiler.language.ast.NormalParameter;
+import compiler.language.ast.expression.Expression;
+import compiler.language.ast.misc.DefaultParameter;
+import compiler.language.ast.misc.NormalParameter;
+import compiler.language.ast.terminal.Name;
 import compiler.parser.Rule;
 
 /*

@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.NATIVE_SPECIFIER;
 import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.STRING_LITERAL;
 
-import compiler.language.ast.NativeSpecifier;
+import compiler.language.ast.member.NativeSpecifier;
 import compiler.parser.Rule;
 
 /*

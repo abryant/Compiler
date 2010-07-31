@@ -5,8 +5,8 @@ import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.TUPLE_TYPE;
 import static compiler.language.parser.ParseType.TYPE_LIST;
 
-import compiler.language.ast.TupleType;
-import compiler.language.ast.Type;
+import compiler.language.ast.type.TupleType;
+import compiler.language.ast.type.Type;
 import compiler.parser.Rule;
 
 /*

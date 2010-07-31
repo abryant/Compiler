@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.PRIVATE_KEYWORD;
 import static compiler.language.parser.ParseType.PROTECTED_KEYWORD;
 import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
 
-import compiler.language.ast.AccessSpecifier;
+import compiler.language.ast.member.AccessSpecifier;
 import compiler.parser.Rule;
 
 /*

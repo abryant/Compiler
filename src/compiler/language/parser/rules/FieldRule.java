@@ -8,11 +8,11 @@ import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.TYPE;
 
-import compiler.language.ast.Assignee;
-import compiler.language.ast.Expression;
-import compiler.language.ast.Field;
-import compiler.language.ast.MemberHeader;
-import compiler.language.ast.Type;
+import compiler.language.ast.expression.Expression;
+import compiler.language.ast.member.Field;
+import compiler.language.ast.member.MemberHeader;
+import compiler.language.ast.misc.Assignee;
+import compiler.language.ast.type.Type;
 import compiler.parser.Rule;
 
 /*

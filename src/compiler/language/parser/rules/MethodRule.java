@@ -10,14 +10,14 @@ import static compiler.language.parser.ParseType.THROWS_CLAUSE;
 import static compiler.language.parser.ParseType.TYPE;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
 
-import compiler.language.ast.ArgumentList;
-import compiler.language.ast.Block;
-import compiler.language.ast.MemberHeader;
-import compiler.language.ast.Method;
-import compiler.language.ast.Name;
-import compiler.language.ast.PointerType;
-import compiler.language.ast.Type;
-import compiler.language.ast.TypeArgument;
+import compiler.language.ast.member.MemberHeader;
+import compiler.language.ast.member.Method;
+import compiler.language.ast.misc.ArgumentList;
+import compiler.language.ast.statement.Block;
+import compiler.language.ast.terminal.Name;
+import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.Type;
+import compiler.language.ast.type.TypeArgument;
 import compiler.parser.Rule;
 
 /*

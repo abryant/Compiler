@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.PARAMETERS;
 import static compiler.language.parser.ParseType.PARAMETER_LIST;
 import static compiler.language.parser.ParseType.RPAREN;
 
-import compiler.language.ast.Parameter;
+import compiler.language.ast.misc.Parameter;
 import compiler.parser.Rule;
 
 /*

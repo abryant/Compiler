@@ -3,7 +3,7 @@ package compiler.language.parser.rules;
 import static compiler.language.parser.ParseType.CHARACTER_KEYWORD;
 import static compiler.language.parser.ParseType.CHARACTER_TYPE;
 
-import compiler.language.ast.CharacterType;
+import compiler.language.ast.type.CharacterType;
 import compiler.parser.Rule;
 
 /*

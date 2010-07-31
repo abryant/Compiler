@@ -7,12 +7,12 @@ import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.THROWS_CLAUSE;
 
-import compiler.language.ast.ArgumentList;
-import compiler.language.ast.Block;
-import compiler.language.ast.Constructor;
-import compiler.language.ast.MemberHeader;
-import compiler.language.ast.Name;
-import compiler.language.ast.PointerType;
+import compiler.language.ast.member.Constructor;
+import compiler.language.ast.member.MemberHeader;
+import compiler.language.ast.misc.ArgumentList;
+import compiler.language.ast.statement.Block;
+import compiler.language.ast.terminal.Name;
+import compiler.language.ast.type.PointerType;
 import compiler.parser.Rule;
 
 /*

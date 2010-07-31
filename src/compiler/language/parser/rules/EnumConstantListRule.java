@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.ENUM_CONSTANT;
 import static compiler.language.parser.ParseType.ENUM_CONSTANT_LIST;
 
-import compiler.language.ast.EnumConstant;
+import compiler.language.ast.typeDefinition.EnumConstant;
 import compiler.parser.Rule;
 
 /*

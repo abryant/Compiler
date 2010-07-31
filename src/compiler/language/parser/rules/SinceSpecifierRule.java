@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.SINCE_KEYWORD;
 import static compiler.language.parser.ParseType.SINCE_SPECIFIER;
 import static compiler.language.parser.ParseType.VERSION_NUMBER;
 
-import compiler.language.ast.SinceSpecifier;
-import compiler.language.ast.VersionNumber;
+import compiler.language.ast.member.SinceSpecifier;
+import compiler.language.ast.misc.VersionNumber;
 import compiler.parser.Rule;
 
 /*

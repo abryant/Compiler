@@ -4,8 +4,8 @@ import static compiler.language.parser.ParseType.DOT;
 import static compiler.language.parser.ParseType.INTEGER_LITERAL;
 import static compiler.language.parser.ParseType.VERSION_NUMBER;
 
-import compiler.language.ast.IntegerLiteral;
-import compiler.language.ast.VersionNumber;
+import compiler.language.ast.misc.VersionNumber;
+import compiler.language.ast.terminal.IntegerLiteral;
 import compiler.parser.Rule;
 
 /*

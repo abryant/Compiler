@@ -4,10 +4,10 @@ import static compiler.language.parser.ParseType.BLOCK;
 import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.STATIC_INITIALIZER;
 
-import compiler.language.ast.Block;
-import compiler.language.ast.MemberHeader;
-import compiler.language.ast.Modifier;
-import compiler.language.ast.StaticInitializer;
+import compiler.language.ast.member.MemberHeader;
+import compiler.language.ast.member.Modifier;
+import compiler.language.ast.member.StaticInitializer;
+import compiler.language.ast.statement.Block;
 import compiler.parser.Rule;
 
 /*
