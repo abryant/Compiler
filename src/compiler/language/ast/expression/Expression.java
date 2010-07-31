@@ -5,9 +5,10 @@ package compiler.language.ast.expression;
  */
 
 /**
+ * The abstract base class for all expressions.
  * @author Anthony Bryant
  */
-public class Expression
+public abstract class Expression
 {
-  // TODO: implement
+  // no methods or fields
 }

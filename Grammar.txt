@@ -128,7 +128,7 @@ Statement = Block
           | EmptyStatement
           | ConstructorInvocationStatement
           | LocalDeclarationStatement
-          | ExpressionStatement Semicolon
+          | StatementExpression Semicolon
           | AssignStatement
           | IfStatement
           | WhileStatement
@@ -179,8 +179,8 @@ ForHeader = ForInit Semicolon Expression Semicolon ForUpdate
           | ForInit Semicolon            Semicolon ForUpdate
           | Type Name Colon Expression
 
-ForInit = LocalDeclaration | ExpressionStatement | epsilon
-ForUpdate = ExpressionStatement | Increment | Decrement | epsilon
+ForInit = LocalDeclaration | StatementExpression | epsilon
+ForUpdate = StatementExpression | Increment | Decrement | epsilon
 
 SwitchStatement = SwitchKeyword Expression SwitchBlock
                 | SwitchKeyword SwitchBlock
@@ -220,7 +220,7 @@ DecrementStatement = Decrement Semicolon
   Expressions
 ###############
 
-ExpressionStatement = MethodCallExpression | InstanciationExpression
+StatementExpression = MethodCallExpression | InstanciationExpression
 
 Expression = TupleExpression
 TupleExpression = InlineIfExpression | TupleExpession Comma InlineIfExpression
@@ -277,11 +277,10 @@ Primary = PrimaryNoNewArray | ArrayInstanciationExpression
 PrimaryNoNewArray = LParen Expression RParen
                   | IntegerLiteral | FloatingLiteral | CharacterLiteral | StringLiteral | NilLiteral
                   | FieldAccessExpression
-                  | MethodCallExpression
+                  | StatementExpression
                   | ThisAccessExpression
                   | SuperAccessExpression
                   | ArrayAccessExpression
-                  | InstanciationExpression
                   | ClosureCreationExpression
 
 MethodCallExpression = QName Parameters | Primary Dot Name Parameters
@@ -307,15 +306,13 @@ ArrayInstanciationExpression = NewKeyword QName DimensionExpressions Dimensions 
                              | NewKeyword QName DimensionExpressions Dimensions
                              | NewKeyword QName DimensionExpressions
 
-ArrayInitializer = LBrace ExpressionList RBrace
+ArrayInitializer = LBrace ExpressionList RBrace | LBrace RBrace
 ExpressionList = ExpressionNoTuple | ExpressionList Comma ExpressionNoTuple | ExpressionList Comma
 
 DimensionExpressions = DimensionExpression | DimensionExpressions DimensionExpression
 DimensionExpression = LSquare Expression RSquare
 
 Dimensions = LSquare RSquare | Dimensions LSquare RSquare
-
-ArrayAccessExpression = PrimaryNoNewArray DimensionExpressions
 
 AssignmentOperator = Equals | PlusEquals | MinusEquals | TimesEquals | DivideEquals | ModEquals
                    | BooleanAndEquals | BooleanOrEquals | BitwiseAndEquals | BitwiseOrEquals | BitwiseXorEquals
