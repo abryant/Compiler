@@ -157,6 +157,8 @@ ConstructorInvocationStatement = ThisKeyword Parameters Semicolon
 
 LocalDeclaration = Type AssigneeList // check that underscore is not declared after parsing
                  | Type AssigneeList Equals Expression
+                 | Modifiers Type AssigneeList
+                 | Modifiers Type AssigneeList Equals Expression
 LocalDeclarationStatement = LocalDeclaration Semicolon
 
 IfStatement = IfKeyword Expression Block ElseIfClauses ElseClause
