@@ -112,7 +112,7 @@ public class EnumDefinition extends TypeDefinition
       buffer.append(modifiers[i]);
       buffer.append(" ");
     }
-    buffer.append("class ");
+    buffer.append("enum ");
     buffer.append(name);
     buffer.append(" ");
     if (baseClass != null)
@@ -135,10 +135,6 @@ public class EnumDefinition extends TypeDefinition
       buffer.append(" ");
     }
     buffer.append("\n{\n");
-    if (constants.length == 0)
-    {
-      buffer.append("   ");
-    }
     for (int i = 0; i < constants.length; i++)
     {
       buffer.append("   ");
@@ -148,7 +144,15 @@ public class EnumDefinition extends TypeDefinition
         buffer.append(",\n");
       }
     }
-    buffer.append(";\n");
+    if (constants.length == 0)
+    {
+      buffer.append("   ");
+    }
+    buffer.append(";");
+    if (members.length > 0)
+    {
+      buffer.append("\n   \n");
+    }
     for (int i = 0; i < members.length; i++)
     {
       String memberStr = members[i].toString();

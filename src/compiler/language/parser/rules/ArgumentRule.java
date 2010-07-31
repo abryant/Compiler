@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.ARGUMENTS;
 import static compiler.language.parser.ParseType.AT;
 import static compiler.language.parser.ParseType.ELLIPSIS;
 import static compiler.language.parser.ParseType.EQUALS;
-import static compiler.language.parser.ParseType.EXPRESSION;
+import static compiler.language.parser.ParseType.EXPRESSION_NO_TUPLE;
 import static compiler.language.parser.ParseType.MODIFIERS;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.TYPE;
@@ -30,10 +30,10 @@ public class ArgumentRule extends Rule
 {
 
   private static final Object[] SINGLE_PRODUCTION = new Object[] {MODIFIERS, TYPE, NAME};
-  private static final Object[] DEFAULT_PRODUCTION = new Object[] {MODIFIERS, TYPE, AT, NAME, EQUALS, EXPRESSION};
+  private static final Object[] DEFAULT_PRODUCTION = new Object[] {MODIFIERS, TYPE, AT, NAME, EQUALS, EXPRESSION_NO_TUPLE};
   private static final Object[] VARIADIC_PRODUCTION = new Object[] {MODIFIERS, TYPE, ELLIPSIS, NAME};
   private static final Object[] SINGLE_NO_MODIFIERS_PRODUCTION = new Object[] {TYPE, NAME};
-  private static final Object[] DEFAULT_NO_MODIFIERS_PRODUCTION = new Object[] {TYPE, AT, NAME, EQUALS, EXPRESSION};
+  private static final Object[] DEFAULT_NO_MODIFIERS_PRODUCTION = new Object[] {TYPE, AT, NAME, EQUALS, EXPRESSION_NO_TUPLE};
   private static final Object[] VARIADIC_NO_MODIFIERS_PRODUCTION = new Object[] {TYPE, ELLIPSIS, NAME};
   private static final Object[] MULTIPLE_PRODUCTION = new Object[] {ARGUMENTS};
 

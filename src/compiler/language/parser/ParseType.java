@@ -55,7 +55,8 @@ public enum ParseType
 
 
   // expressions
-  EXPRESSION, // Expression TODO: add a rule for this
+  EXPRESSION,          // Expression TODO: add a rule for this
+  EXPRESSION_NO_TUPLE, // Expression TODO: add a rule for this
 
   // types
   BOOLEAN_TYPE,            // BooleanType
@@ -86,6 +87,9 @@ public enum ParseType
   ARGUMENTS,          // ArgumentList
   ASSIGNEE,           // Assignee
   ASSIGNEE_LIST,      // Assignee[]
+  PARAMETER,          // Parameter
+  PARAMETER_LIST,     // Parameter[] (length > 0)
+  PARAMETERS,         // Parameter[]
   QNAME,              // QName
   THROWS_LIST,        // PointerType[] (length > 0)
   THROWS_CLAUSE,      // PointerType[] (length == 0 if none are specified)
@@ -104,6 +108,7 @@ public enum ParseType
   CHARACTER_KEYWORD,
   CLASS_KEYWORD,
   DOUBLE_KEYWORD,
+  ENUM_KEYWORD,
   EXTENDS_KEYWORD,
   FINAL_KEYWORD,
   FLOAT_KEYWORD,

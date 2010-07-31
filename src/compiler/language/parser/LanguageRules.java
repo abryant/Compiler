@@ -15,6 +15,10 @@ import compiler.language.parser.rules.ClosureTypeRule;
 import compiler.language.parser.rules.CompilationUnitRule;
 import compiler.language.parser.rules.ConstructorRule;
 import compiler.language.parser.rules.EmptyStatementRule;
+import compiler.language.parser.rules.EnumConstantListRule;
+import compiler.language.parser.rules.EnumConstantRule;
+import compiler.language.parser.rules.EnumConstantsRule;
+import compiler.language.parser.rules.EnumDefinitionRule;
 import compiler.language.parser.rules.FieldRule;
 import compiler.language.parser.rules.FloatingTypeLengthRule;
 import compiler.language.parser.rules.FloatingTypeRule;
@@ -35,6 +39,9 @@ import compiler.language.parser.rules.NativeSpecifierRule;
 import compiler.language.parser.rules.NormalTypeParameterRule;
 import compiler.language.parser.rules.OptionalBlockRule;
 import compiler.language.parser.rules.PackageDeclarationRule;
+import compiler.language.parser.rules.ParameterListRule;
+import compiler.language.parser.rules.ParameterRule;
+import compiler.language.parser.rules.ParametersRule;
 import compiler.language.parser.rules.PointerTypeRule;
 import compiler.language.parser.rules.PrimitiveTypeRule;
 import compiler.language.parser.rules.PropertyRule;
@@ -92,6 +99,10 @@ public class LanguageRules
     // startRule (does not need to be included here): new CompilationUnitRule(),
     new ConstructorRule(),
     new EmptyStatementRule(),
+    new EnumConstantListRule(),
+    new EnumConstantRule(),
+    new EnumConstantsRule(),
+    new EnumDefinitionRule(),
     new FieldRule(),
     new FloatingTypeLengthRule(),
     new FloatingTypeRule(),
@@ -112,6 +123,9 @@ public class LanguageRules
     new NormalTypeParameterRule(),
     new OptionalBlockRule(),
     new PackageDeclarationRule(),
+    new ParameterListRule(),
+    new ParameterRule(),
+    new ParametersRule(),
     new PointerTypeRule(),
     new PrimitiveTypeRule(),
     new PropertyRule(),

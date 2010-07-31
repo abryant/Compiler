@@ -29,4 +29,12 @@ public class NormalParameter extends Parameter
     return expression;
   }
 
+  /**
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString()
+  {
+    return String.valueOf(expression);
+  }
 }

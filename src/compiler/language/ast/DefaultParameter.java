@@ -40,4 +40,12 @@ public class DefaultParameter extends Parameter
     return expression;
   }
 
+  /**
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString()
+  {
+    return "@" + name + " = " + expression;
+  }
 }
