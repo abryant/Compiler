@@ -3,6 +3,7 @@ package compiler.language.parser.rules;
 import static compiler.language.parser.ParseType.ARGUMENT;
 import static compiler.language.parser.ParseType.ARGUMENTS;
 import static compiler.language.parser.ParseType.AT;
+import static compiler.language.parser.ParseType.ELLIPSIS;
 import static compiler.language.parser.ParseType.EQUALS;
 import static compiler.language.parser.ParseType.EXPRESSION;
 import static compiler.language.parser.ParseType.NAME;
@@ -13,6 +14,7 @@ import compiler.language.ast.Expression;
 import compiler.language.ast.Name;
 import compiler.language.ast.SingleArgument;
 import compiler.language.ast.Type;
+import compiler.language.ast.VariadicArgument;
 import compiler.parser.Rule;
 
 /*
@@ -27,11 +29,12 @@ public class ArgumentRule extends Rule
 
   private static final Object[] SINGLE_PRODUCTION = new Object[] {TYPE, NAME};
   private static final Object[] DEFAULT_PRODUCTION = new Object[] {TYPE, AT, NAME, EQUALS, EXPRESSION};
+  private static final Object[] VARIADIC_PRODUCTION = new Object[] {TYPE, ELLIPSIS, NAME};
   private static final Object[] MULTIPLE_PRODUCTION = new Object[] {ARGUMENTS};
 
   public ArgumentRule()
   {
-    super(ARGUMENT, SINGLE_PRODUCTION, DEFAULT_PRODUCTION, MULTIPLE_PRODUCTION);
+    super(ARGUMENT, SINGLE_PRODUCTION, DEFAULT_PRODUCTION, VARIADIC_PRODUCTION, MULTIPLE_PRODUCTION);
   }
 
   /**
@@ -47,6 +50,10 @@ public class ArgumentRule extends Rule
     if (types == DEFAULT_PRODUCTION)
     {
       return new DefaultArgument((Type) args[0], (Name) args[2], (Expression) args[4]);
+    }
+    if (types == VARIADIC_PRODUCTION)
+    {
+      return new VariadicArgument((Type) args[0], (Name) args[2]);
     }
     if (types == MULTIPLE_PRODUCTION)
     {

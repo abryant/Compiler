@@ -27,10 +27,14 @@ public enum ParseType
   SINCE_SPECIFIER,          // SinceSpecifier
   CLASS_DEFINITION,         // ClassDefinition
   INTERFACE_DEFINITION,     // InterfaceDefinition
+  ENUM_DEFINITION,          // EnumDefinition
   CLASS_EXTENDS_CLAUSE,     // PointerType or null
   INTERFACE_LIST,           // PointerType[] (length > 0)
   IMPLEMENTS_CLAUSE,        // PointerType[] (length == 0 if not specified)
   INTERFACE_EXTENDS_CLAUSE, // PointerType[] (length == 0 if not specified)
+  ENUM_CONSTANTS,           // EnumConstant[] (length == 0 if not specified)
+  ENUM_CONSTANT_LIST,       // EnumConstant[] (length > 0)
+  ENUM_CONSTANT,            // EnumConstant
   MEMBER_HEADER,            // MemberHeader
   MEMBER_LIST,              // Member[] TODO: tidy this up into a Members object containing a list of each type of member? then get rid of Member completely
   MEMBER,                   // Member
@@ -134,6 +138,7 @@ public enum ParseType
   AT,
   COMMA,
   DOT,
+  ELLIPSIS,
   EQUALS,
   HASH,
   LANGLE,

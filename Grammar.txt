@@ -114,9 +114,8 @@ Argument = Type Name
 Parameters = LParen ParameterList RParen
            | LParen RParen
 ParameterList = Parameter | ParameterList Comma Parameter
-Parameter = NormalParameter | DefaultParameter
-DefaultParameter = At Name Equals ExpressionNoTuple
-NormalParameter = ExpressionNoTuple
+Parameter = At Name Equals ExpressionNoTuple
+          | ExpressionNoTuple
 
 
 #########################
