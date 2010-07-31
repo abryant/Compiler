@@ -19,7 +19,7 @@ public class AssigneeRule extends Rule
 {
 
   private static final Object[] BLANK_PRODUCTION = new Object[] {UNDERSCORE};
-  private static final Object[] PRODUCTION = new Object[] {QNAME};
+  private static final Object[] PRODUCTION = new Object[] {QNAME}; // TODO: change this to FieldAccessExpression, and add another for ArrayAccessExpression
 
   public AssigneeRule()
   {

@@ -17,8 +17,10 @@ import compiler.parser.Rule;
 public class AssigneeListRule extends Rule
 {
 
+  // this is a right-recursive list, so that the symbol after the list can be
+  // used to decide between TypeList and AssigneeList
   private static final Object[] START_PRODUCTION = new Object[] {ASSIGNEE};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {ASSIGNEE_LIST, COMMA, ASSIGNEE};
+  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {ASSIGNEE, COMMA, ASSIGNEE_LIST};
 
   public AssigneeListRule()
   {
@@ -37,10 +39,10 @@ public class AssigneeListRule extends Rule
     }
     if (types == CONTINUATION_PRODUCTION)
     {
-      Assignee[] oldList = (Assignee[]) args[0];
+      Assignee[] oldList = (Assignee[]) args[2];
       Assignee[] newList = new Assignee[oldList.length + 1];
-      System.arraycopy(oldList, 0, newList, 0, oldList.length);
-      newList[oldList.length] = (Assignee) args[2];
+      System.arraycopy(oldList, 0, newList, 1, oldList.length);
+      newList[0] = (Assignee) args[0];
       return newList;
     }
     throw badTypeList();

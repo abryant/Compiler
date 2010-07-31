@@ -81,11 +81,6 @@ ThrowsList = PointerType | ThrowsList Comma PointerType
 Field = MemberHeader Type AssigneeList Equals Expression Semicolon
       | MemberHeader Type AssigneeList Semicolon
 
-// right-recursive list, so that the symbol after the list can be
-// used to decide between TypeList and AssigneeList
-AssigneeList = Assignee | Assignee Comma AssigneeList
-Assignee = QName | Underscore
-
 Property = MemberHeader PropertyKeyword Type Name Semicolon
          | MemberHeader PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock Semicolon
          | MemberHeader PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
@@ -134,6 +129,7 @@ Statement = Block
           | ConstructorInvocationStatement
           | LocalDeclarationStatement
           | ExpressionStatement Semicolon
+          | AssignStatement
           | IfStatement
           | WhileStatement
           | DoStatement
@@ -160,6 +156,13 @@ LocalDeclaration = Type AssigneeList // check that underscore is not declared af
                  | Modifiers Type AssigneeList
                  | Modifiers Type AssigneeList Equals Expression
 LocalDeclarationStatement = LocalDeclaration Semicolon
+
+AssignStatement = AssigneeList AssignmentOperator Expression Semicolon
+
+// right-recursive list, so that the symbol after the list can be
+// used to decide between TypeList and AssigneeList
+AssigneeList = Assignee | Assignee Comma AssigneeList
+Assignee = FieldAccessExpression | ArrayAccessExpression | Underscore
 
 IfStatement = IfKeyword Expression Block ElseIfClauses ElseClause
 ElseIfClauses = epsilon | ElseIfClauses ElseIfClause
@@ -208,8 +211,8 @@ CatchDeclaration = LParen QName Name RParen
                  | QName Name
 FinallyClause = FinallyKeyword Block | epsilon
 
-Increment = QName Plus Plus   | Plus Plus QName
-Decrement = QName Minus Minus | Minus Minus QName
+Increment = FieldAccessExpression Plus Plus   | Plus Plus FieldAccessExpression
+Decrement = FieldAccessExpression Minus Minus | Minus Minus FieldAccessExpression
 IncrementStatement = Increment Semicolon
 DecrementStatement = Decrement Semicolon
 
@@ -217,15 +220,12 @@ DecrementStatement = Decrement Semicolon
   Expressions
 ###############
 
-ExpressionStatement = AssignExpression | MethodCallExpression | InstanciationExpression
-ExpressionStatementNoTuple = AssignExpressionNoTuple | MethodCallExpression | InstanciationExpression
+ExpressionStatement = MethodCallExpression | InstanciationExpression
 
-Expression = TupleExpression | AssignExpression
-AssignExpression = AssigneeList AssignmentOperator Expression
+Expression = TupleExpression
 TupleExpression = InlineIfExpression | TupleExpession Comma InlineIfExpression
 
-ExpressionNoTuple = InlineIfExpression | AssignExpressionNoTuple
-AssignExpressionNoTuple = QName AssignmentOperator ExpressionNoTuple
+ExpressionNoTuple = InlineIfExpression
 
 InlineIfExpression = BooleanOrExpression | BooleanOrExpression QuestionMark Expression Colon InlineIfExpression
 
