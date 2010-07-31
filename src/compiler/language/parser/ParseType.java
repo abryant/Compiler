@@ -11,7 +11,9 @@ package compiler.language.parser;
  */
 public enum ParseType
 {
-  // non-terminals
+  // =================
+  //   NON-TERMINALS
+  // =================
 
   // top level
   COMPILATION_UNIT,         // CompilationUnit
@@ -19,7 +21,7 @@ public enum ParseType
   IMPORT_DECLARATION,       // ImportDeclaration
   TYPE_DEFINITION,          // TypeDefinition
 
-  // classes, interfaces, enums
+  // type definitions
   CLASS_DEFINITION,         // ClassDefinition
   INTERFACE_DEFINITION,     // InterfaceDefinition
   ENUM_DEFINITION,          // EnumDefinition
@@ -50,7 +52,7 @@ public enum ParseType
   BLOCK,                    // Block
   OPTIONAL_BLOCK,           // Block or null
   STATEMENTS,               // Statement[]
-  STATEMENT,                // Statement TODO: add a rule for this
+  STATEMENT,                // Statement
   EMPTY_STATEMENT,          // EmptyStatement
 
   // expressions
@@ -93,6 +95,10 @@ public enum ParseType
   THROWS_LIST,              // PointerType[] (length > 0)
   THROWS_CLAUSE,            // PointerType[] (length == 0 if none are specified)
   VERSION_NUMBER,           // VersionNumber
+
+  // =============
+  //   TERMINALS
+  // =============
 
   // literals
   NAME,                     // Name
