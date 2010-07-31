@@ -22,7 +22,7 @@ public enum ParseType
   // classes, interfaces, enums
   ACCESS_SPECIFIER,         // AccessSpecifier or null
   MODIFIER,                 // Modifier
-  MODIFIERS,                // Modifier[]
+  MODIFIERS,                // Modifier[] (length > 0)
   NATIVE_SPECIFIER,         // NativeSpecifier
   SINCE_SPECIFIER,          // SinceSpecifier
   CLASS_DEFINITION,         // ClassDefinition

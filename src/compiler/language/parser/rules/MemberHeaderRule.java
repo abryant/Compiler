@@ -20,10 +20,11 @@ public class MemberHeaderRule extends Rule
 {
 
   private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS};
+  private static final Object[] NO_MODIFIERS_PRODUCTION = new Object[] {ACCESS_SPECIFIER};
 
   public MemberHeaderRule()
   {
-    super(MEMBER_HEADER, PRODUCTION);
+    super(MEMBER_HEADER, PRODUCTION, NO_MODIFIERS_PRODUCTION);
   }
 
   /**
@@ -35,6 +36,10 @@ public class MemberHeaderRule extends Rule
     if (types == PRODUCTION)
     {
       return new MemberHeader((AccessSpecifier) args[0], (Modifier[]) args[1]);
+    }
+    if (types == NO_MODIFIERS_PRODUCTION)
+    {
+      return new MemberHeader((AccessSpecifier) args[0], new Modifier[0]);
     }
     throw badTypeList();
   }

@@ -9,17 +9,19 @@ package compiler.language.ast;
  */
 public class DefaultArgument extends SingleArgument
 {
+
   private Expression defaultExpression;
 
   /**
-   * Creates a new Default Argument with the specified type, name and default expresion.
+   * Creates a new Default Argument with the specified modifiers, type, name and default expresion.
+   * @param modifiers - the modifiers of this default argument
    * @param type - the type of this default argument
    * @param name - the name of this default argument
    * @param defaultExpression - the default expression for this default argument
    */
-  public DefaultArgument(Type type, Name name, Expression defaultExpression)
+  public DefaultArgument(Modifier[] modifiers, Type type, Name name, Expression defaultExpression)
   {
-    super(type, name);
+    super(modifiers, type, name);
     this.defaultExpression = defaultExpression;
   }
 
@@ -37,7 +39,18 @@ public class DefaultArgument extends SingleArgument
   @Override
   public String toString()
   {
-    return type + " @" + name + " = " + defaultExpression;
+    StringBuffer buffer = new StringBuffer();
+    for (Modifier modifier : modifiers)
+    {
+      buffer.append(modifier);
+      buffer.append(" ");
+    }
+    buffer.append(type);
+    buffer.append(" @");
+    buffer.append(name);
+    buffer.append(" = ");
+    buffer.append(defaultExpression);
+    return buffer.toString();
   }
 
 }

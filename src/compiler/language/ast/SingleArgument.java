@@ -10,18 +10,29 @@ package compiler.language.ast;
 public class SingleArgument extends Argument
 {
 
+  protected Modifier[] modifiers;
   protected Type type;
   protected Name name;
 
   /**
-   * Creates a new single argument with the specified type and name.
+   * Creates a new single argument with the specified modifiers, type and name.
+   * @param modifiers - the modifiers of this argument
    * @param type - the type of this argument
    * @param name - the name of this argument
    */
-  public SingleArgument(Type type, Name name)
+  public SingleArgument(Modifier[] modifiers, Type type, Name name)
   {
+    this.modifiers = modifiers;
     this.type = type;
     this.name = name;
+  }
+
+  /**
+   * @return the modifiers
+   */
+  public Modifier[] getModifiers()
+  {
+    return modifiers;
   }
 
   /**
@@ -46,6 +57,15 @@ public class SingleArgument extends Argument
   @Override
   public String toString()
   {
-    return type + " " + name;
+    StringBuffer buffer = new StringBuffer();
+    for (Modifier modifier : modifiers)
+    {
+      buffer.append(modifier);
+      buffer.append(" ");
+    }
+    buffer.append(type);
+    buffer.append(" ");
+    buffer.append(name);
+    return buffer.toString();
   }
 }

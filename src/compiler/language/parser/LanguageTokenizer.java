@@ -147,6 +147,7 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.VOID_KEYWORD, null),
     new Token(ParseType.NAME, new Name("method")),
     new Token(ParseType.LPAREN, null),
+    new Token(ParseType.FINAL_KEYWORD, null),
     new Token(ParseType.NAME, new Name("String")),
     new Token(ParseType.AT, null),
     new Token(ParseType.NAME, new Name("defaultArg")),

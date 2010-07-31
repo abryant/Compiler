@@ -16,12 +16,12 @@ import compiler.parser.Rule;
 public class ModifiersRule extends Rule
 {
 
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] PRODUCTION = new Object[] {MODIFIERS, MODIFIER};
+  private static final Object[] START_PRODUCTION = new Object[] {MODIFIER};
+  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {MODIFIERS, MODIFIER};
 
   public ModifiersRule()
   {
-    super(MODIFIERS, EMPTY_PRODUCTION, PRODUCTION);
+    super(MODIFIERS, START_PRODUCTION, CONTINUATION_PRODUCTION);
   }
 
   /**
@@ -30,11 +30,11 @@ public class ModifiersRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
-    if (types == EMPTY_PRODUCTION)
+    if (types == START_PRODUCTION)
     {
-      return new Modifier[0];
+      return new Modifier[] {(Modifier) args[0]};
     }
-    if (types == PRODUCTION)
+    if (types == CONTINUATION_PRODUCTION)
     {
       Modifier[] oldModifiers = (Modifier[]) args[0];
       Modifier[] newModifiers = new Modifier[oldModifiers.length + 1];

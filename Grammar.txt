@@ -30,14 +30,14 @@ AccessSpecifier = PublicKeyword | PrivateKeyword | PackageKeyword | ProtectedKey
                 | PackageKeyword ProtectedKeyword | ProtectedKeyword PackageKeyword
                 | epsilon
 
-Modifiers = Modifiers Modifier | epsilon
+Modifiers = Modifier | Modifiers Modifier
 Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | ImmutableKeyword | MutableKeyword
          | SynchronizedKeyword | NativeSpecifier | SinceSpecifier | TransientKeyword | VolatileKeyword
 NativeSpecifier = NativeKeyword LParen StringLiteral RParen
 SinceSpecifier = SinceKeyword LParen VersionNumber RParen
 VersionNumber = IntegerLiteral | VersionNumber Dot IntegerLiteral
 
-MemberHeader = AccessSpecifier Modifiers
+MemberHeader = AccessSpecifier Modifiers | AccessSpecifier
 
 TypeArgument = Name
              | Name ExtendsKeyword PointerType
@@ -106,7 +106,10 @@ StaticInitializer = MemberHeader Block
 
 Arguments = LParen ArgumentList RParen | LParen RParen
 ArgumentList = Argument | ArgumentList Comma Argument
-Argument = Type Name
+Argument = Modifiers Type Name
+         | Modifiers Type At Name Equals ExpressionNoTuple
+         | Modifiers Type Ellipsis Name
+         | Type Name
          | Type At Name Equals ExpressionNoTuple
          | Type Ellipsis Name
          | Arguments
