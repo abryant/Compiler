@@ -1,0 +1,27 @@
+package compiler.language.ast.expression;
+
+/*
+ * Created on 3 Aug 2010
+ */
+
+/**
+ * @author Anthony Bryant
+ */
+public enum AssignmentOperator
+{
+  EQUALS,
+  PLUS_EQUALS,
+  MINUS_EQUALS,
+  TIMES_EQUALS,
+  DIVIDE_EQUALS,
+  MOD_EQUALS,
+  BOOLEAN_AND_EQUALS,
+  BOOLEAN_OR_EQUALS,
+  BOOLEAN_XOR_EQUALS,
+  BITWISE_AND_EQUALS,
+  BITWISE_OR_EQUALS,
+  BITWISE_XOR_EQUALS,
+  LEFT_SHIFT_EQUALS,
+  ARITHMETIC_RIGHT_SHIFT_EQUALS,
+  LOGICAL_RIGHT_SHIFT_EQUALS
+}
