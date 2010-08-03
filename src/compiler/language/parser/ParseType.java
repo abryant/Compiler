@@ -56,45 +56,45 @@ public enum ParseType
   EMPTY_STATEMENT,          // EmptyStatement
 
   // expressions
-  // the return types that are Expression (AnotherExpression) mean that if that
+  // the return types that are Expression (AnotherExpression) mean that if the
   // rule's main production is used (e.g. for additive: a + b) then the type in
   // brackets will be returned but otherwise some other subclass of Expression
   // will be returned (e.g. BracketedExpression)
   // This is handled in the rules by checking for their created type via
   // 'instanceof', so Bracketed expressions must not just return their argument
-  EXPRESSION,               // Expression TODO: add a rule for this
-  STATEMENT_EXPRESSION,     // StatementExpression
-  TUPLE_EXPRESSION,         // Expression (TupleExpression)
-  EXPRESSION_NO_TUPLE,      // Expression TODO: add a rule for this
-  INLINE_IF_EXPRESSION,     // Expression (InlineIfExpression)
-  BOOLEAN_OR_EXPRESSION,    // Expression (BooleanOrExpression)
-  BOOLEAN_XOR_EXPRESSION,   // Expression (BooleanXorExpression)
-  BOOLEAN_AND_EXPRESSION,   // Expression (BooleanAndExpression)
-  BITWISE_OR_EXPRESSION,    // Expression (BitwiseOrExpression)
-  BITWISE_XOR_EXPRESSION,   // Expression (BitwiseXorExpression)
-  BITWISE_AND_EXPRESSION,   // Expression (BitwiseAndExpression)
-  EQUALITY_EXPRESSION,      // Expression (EqualityExpression)
-  RELATIONAL_EXPRESSION,    // Expression (RelationalExpression)
-  SHIFT_EXPRESSION,         // Expression (ShiftExpression)
-  ADDITIVE_EXPRESSION,      // Expression (AdditiveExpression)
-  MULTIPLICATIVE_EXPRESSION, // Expression (MultiplicativeExpression)
-  TUPLE_INDEX_EXPRESSION,    // Expression (TupleIndexExpression)
-  UNARY_EXPRESSION,          // Expression (UnaryExpression)
-  BOOLEAN_NOT_EXPRESSION,    // BooleanNotExpression
-  BITWISE_NOT_EXPRESSION,    // BitwiseNotExpression
-  CAST_EXPRESSION,           // CastExpression
-  PLUS_EXPRESSION,           // PlusExpression
-  MINUS_EXPRESSION,          // MinusExpression
-  PRIMARY,                   // Expression
-  PRIMARY_NO_NEW_ARRAY,      // Expression
-  METHOD_CALL_EXPRESSION,    // MethodCallExpression
-  FIELD_ACCESS_EXPRESSION,   // FieldAccessExpression
-  THIS_ACCESS_EXPRESSION,    // ThisAccessExpression
-  SUPER_ACCESS_EXPRESSION,   // SuperAccessExpression
-  ARRAY_ACCESS_EXPRESSION,   // ArrayAccessExpression
-  INSTANCIATION_EXPRESSION,  // InstanciationExpression
-  CLOSURE_CREATION_EXPRESSION, // ClosureCreationExpression
-  ARRAY_INSTANCIATION_EXPRESSION, // ArrayInstanciationExpression
+  EXPRESSION,                     // Expression TODO: add a rule for this
+  STATEMENT_EXPRESSION,           // StatementExpression
+  TUPLE_EXPRESSION,               // Expression (TupleExpression)
+  EXPRESSION_NO_TUPLE,            // Expression TODO: add a rule for this
+  INLINE_IF_EXPRESSION,           // Expression (InlineIfExpression)
+  BOOLEAN_OR_EXPRESSION,          // Expression (BooleanOrExpression)
+  BOOLEAN_XOR_EXPRESSION,         // Expression (BooleanXorExpression)
+  BOOLEAN_AND_EXPRESSION,         // Expression (BooleanAndExpression)
+  BITWISE_OR_EXPRESSION,          // Expression (BitwiseOrExpression)
+  BITWISE_XOR_EXPRESSION,         // Expression (BitwiseXorExpression)
+  BITWISE_AND_EXPRESSION,         // Expression (BitwiseAndExpression)
+  EQUALITY_EXPRESSION,            // Expression (EqualityExpression)
+  RELATIONAL_EXPRESSION,          // Expression (RelationalExpression)
+  SHIFT_EXPRESSION,               // Expression (ShiftExpression)
+  ADDITIVE_EXPRESSION,            // Expression (AdditiveExpression)
+  MULTIPLICATIVE_EXPRESSION,      // Expression (MultiplicativeExpression)
+  TUPLE_INDEX_EXPRESSION,         // Expression (TupleIndexExpression)
+  UNARY_EXPRESSION,               // Expression
+  BOOLEAN_NOT_EXPRESSION,         // BooleanNotExpression
+  BITWISE_NOT_EXPRESSION,         // BitwiseNotExpression
+  CAST_EXPRESSION,                // CastExpression
+  UNARY_PLUS_EXPRESSION,          // UnaryPlusExpression
+  UNARY_MINUS_EXPRESSION,         // UnaryMinusExpression
+  PRIMARY,                        // Expression
+  PRIMARY_NO_TRAILING_DIMENSIONS, // Expression
+  METHOD_CALL_EXPRESSION,         // MethodCallExpression
+  FIELD_ACCESS_EXPRESSION,        // FieldAccessExpression
+  THIS_ACCESS_EXPRESSION,         // ThisAccessExpression
+  ARRAY_ACCESS_EXPRESSION,        // ArrayAccessExpression
+  INSTANCIATION_EXPRESSION,       // InstanciationExpression
+  CLOSURE_CREATION_EXPRESSION,    // ClosureCreationExpression
+  ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER, // ArrayInstanciationExpression
+  ARRAY_INSTANCIATION_EXPRESSION_NO_INITIALIZER,   // ArrayInstanciationExpression
   ARRAY_INITIALIZER,              // Expression[]
   EXPRESSION_LIST,                // Expression[]
   DIMENSION_EXPRESSIONS,          // Expression[]

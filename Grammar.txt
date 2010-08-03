@@ -272,39 +272,44 @@ CastExpression = CastKeyword LAngle Type RAngle UnaryExpression
 PlusExpression = Plus UnaryExpression
 MinusExpression = Minus UnaryExpression
 
-Primary = PrimaryNoNewArray | ArrayInstanciationExpression
+Primary = PrimaryNoTrailingDimensions | ArrayInstanciationExpressionNoInitializer
 
-PrimaryNoNewArray = LParen Expression RParen
-                  | IntegerLiteral | FloatingLiteral | CharacterLiteral | StringLiteral | NilLiteral
-                  | FieldAccessExpression
-                  | StatementExpression
-                  | ThisAccessExpression
-                  | SuperAccessExpression
-                  | ArrayAccessExpression
-                  | ClosureCreationExpression
+PrimaryNoTrailingDimensions = LParen Expression RParen
+                            | IntegerLiteral | FloatingLiteral | CharacterLiteral | StringLiteral | NilLiteral
+                            | FieldAccessExpression
+                            | StatementExpression
+                            | ThisAccessExpression
+                            | SuperAccessExpression
+                            | ArrayAccessExpression
+                            | ClosureCreationExpression
+                            | ArrayInstanciationExpressionWithInitializer
 
-MethodCallExpression = QName Parameters | Primary Dot Name Parameters
+MethodCallExpression = QName Parameters
+                     | Primary Dot Name Parameters
+                     | SuperKeyword Dot Name Parameters
+                     | QName Dot SuperKeyword Dot Name Parameters
 
 FieldAccessExpression = QName
                       | Primary Dot Name
+                      | SuperKeyword Dot Name
+                      | QName Dot SuperKeyword Dot Name
 
 ThisAccessExpression = ThisKeyword
                      | QName Dot ThisKeyword
-SuperAccessExpression = SuperKeyword
-                      | QName Dot SuperKeyword
 
-ArrayAccessExpression = PrimaryNoNewArray DimensionExpression
+ArrayAccessExpression = PrimaryNoTrailingDimensions DimensionExpression
 
 InstanciationExpression = NewKeyword QName Parameters
                         | NewKeyword QName Parameters LBrace MemberList RBrace
 
 ClosureCreationExpression = Type ClosureKeyword Arguments Block
 
-ArrayInstanciationExpression = NewKeyword QName DimensionExpressions Dimensions ArrayInitializer
-                             | NewKeyword QName DimensionExpressions ArrayInitializer
-                             | NewKeyword QName Dimensions ArrayInitializer
-                             | NewKeyword QName DimensionExpressions Dimensions
-                             | NewKeyword QName DimensionExpressions
+ArrayInstanciationExpressionWithInitializer = NewKeyword Type DimensionExpressions Dimensions ArrayInitializer
+                                            | NewKeyword Type DimensionExpressions ArrayInitializer
+                                            | NewKeyword Type Dimensions ArrayInitializer
+
+ArrayInstanciationExpressionNoInitializer = NewKeyword Type DimensionExpressions Dimensions
+                                          | NewKeyword Type DimensionExpressions
 
 ArrayInitializer = LBrace ExpressionList RBrace | LBrace RBrace
 ExpressionList = ExpressionNoTuple | ExpressionList Comma ExpressionNoTuple | ExpressionList Comma
