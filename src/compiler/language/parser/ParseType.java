@@ -71,7 +71,7 @@ public enum ParseType
   BOOLEAN_XOR_EXPRESSION,         // Expression (BooleanXorExpression)
   BOOLEAN_AND_EXPRESSION,         // Expression (BooleanAndExpression)
   EQUALITY_EXPRESSION,            // Expression (EqualityExpression)
-  RELATIONAL_EXPRESSION,          // Expression (RelationalExpression)
+  RELATIONAL_EXPRESSION,          // Expression (RelationalExpression or InstanceOfExpression)
   BITWISE_OR_EXPRESSION,          // Expression (BitwiseOrExpression)
   BITWISE_XOR_EXPRESSION,         // Expression (BitwiseXorExpression)
   BITWISE_AND_EXPRESSION,         // Expression (BitwiseAndExpression)
@@ -145,9 +145,9 @@ public enum ParseType
   // literals
   NAME,                     // Name
   INTEGER_LITERAL,          // IntegerLiteral
-  STRING_LITERAL,           // String
+  STRING_LITERAL,           // StringLiteral
 
-  // keywords (values do not matter for these, but should be null)
+  // keywords (values for these should all be Terminal)
   ABSTRACT_KEYWORD,
   ASSIGN_KEYWORD,
   BOOLEAN_KEYWORD,
@@ -186,7 +186,7 @@ public enum ParseType
   VOID_KEYWORD,
   VOLATILE_KEYWORD,
 
-  // symbols (values do not matter for these, but should be null)
+  // symbols (values for these should all be Terminal)
   AMPERSAND,
   ARROW, // "->", same as MINUS RANGLE, but without any whitespace between them
   AT,

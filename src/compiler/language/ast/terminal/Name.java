@@ -7,13 +7,21 @@ package compiler.language.ast.terminal;
 /**
  * @author Anthony Bryant
  */
-public class Name
+public class Name extends Terminal
 {
 
   private String name;
 
-  public Name(String name)
+  /**
+   * Creates a Name with the specified text and position in the file
+   * @param name - the text of the name
+   * @param line - the line number
+   * @param startPos - the starting position of the Name on the specified line
+   * @param length - the length of the name
+   */
+  public Name(String name, int line, int startPos, int length)
   {
+    super(line, startPos, length);
     this.name = name;
   }
 

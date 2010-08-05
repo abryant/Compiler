@@ -7,7 +7,7 @@ package compiler.language.ast.terminal;
 /**
  * @author Anthony Bryant
  */
-public class IntegerLiteral
+public class IntegerLiteral extends Terminal
 {
 
   private String stringRepresentation;
@@ -15,9 +15,13 @@ public class IntegerLiteral
   /**
    * Creates a new integer literal with the specified string representation.
    * @param stringRepresentation - the string representation of the integer literal
+   * @param line - the line number
+   * @param startPos - the starting position of the terminal on the specified line
+   * @param length - the length of the terminal
    */
-  public IntegerLiteral(String stringRepresentation)
+  public IntegerLiteral(String stringRepresentation, int line, int startPos, int length)
   {
+    super(line, startPos, length);
     this.stringRepresentation = stringRepresentation;
   }
 
