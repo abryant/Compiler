@@ -285,10 +285,7 @@ PrimaryNoTrailingDimensions = LParen Expression RParen
                             | ClosureCreationExpression
                             | ArrayInstanciationExpressionWithInitializer
 
-MethodCallExpression = QName Parameters
-                     | Primary Dot Name Parameters
-                     | SuperKeyword Dot Name Parameters
-                     | QName Dot SuperKeyword Dot Name Parameters
+MethodCallExpression = Primary Parameters
 
 FieldAccessExpression = QName
                       | Primary Dot Name
