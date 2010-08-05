@@ -7,55 +7,58 @@ package compiler.language.ast.expression;
 /**
  * @author Anthony Bryant
  */
-public class RelationalExpression extends LeftRecursiveExpression
+public class RelationalExpression
 {
 
-  private RelationalExpressionType[] separatorTypes;
+  private Expression firstExpression;
+  private Expression secondExpression;
+  private RelationalExpressionType type;
 
-  public RelationalExpression(Expression firstExpression, RelationalExpressionType separator, Expression secondExpression)
+  /**
+   * Creates a new relational expression with the specified first and second expressions and type
+   * @param firstExpression - the first expression to compare
+   * @param type - the relational expression type
+   * @param secondExpression - the second expression to compare
+   */
+  public RelationalExpression(Expression firstExpression, RelationalExpressionType type, Expression secondExpression)
   {
-    super(firstExpression, secondExpression);
-    separatorTypes = new RelationalExpressionType[] {separator};
+    this.firstExpression = firstExpression;
+    this.secondExpression = secondExpression;
+    this.type = type;
   }
 
-  public RelationalExpression(RelationalExpression startExpression, RelationalExpressionType separator, Expression subExpression)
+  /**
+   * @return the firstExpression
+   */
+  public Expression getFirstExpression()
   {
-    super(startExpression, subExpression);
-    RelationalExpressionType[] oldList = startExpression.getSeparatorTypes();
-    separatorTypes = new RelationalExpressionType[oldList.length];
-    System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);
-    separatorTypes[oldList.length] = separator;
+    return firstExpression;
+  }
+
+  /**
+   * @return the secondExpression
+   */
+  public Expression getSecondExpression()
+  {
+    return secondExpression;
+  }
+
+  /**
+   * @return the type
+   */
+  public RelationalExpressionType getType()
+  {
+    return type;
   }
 
   /**
    * {@inheritDoc}
-   * @see compiler.language.ast.expression.LeftRecursiveExpression#getSeparator(int)
+   * @see java.lang.Object#toString()
    */
   @Override
-  protected String getSeparator(int index)
+  public String toString()
   {
-    switch (separatorTypes[index])
-    {
-    case LESS_THAN:
-      return " < ";
-    case GREATER_THAN:
-      return " > ";
-    case LESS_THAN_EQUAL:
-      return " <= ";
-    case GREATER_THAN_EQUAL:
-      return " >= ";
-    case INSTANCEOF:
-      return " instanceof ";
-    }
-    return null;
-  }
-
-  /**
-   * @return the separatorTypes
-   */
-  public RelationalExpressionType[] getSeparatorTypes()
-  {
-    return separatorTypes;
+    return "" + firstExpression + type.getOperatorString() + secondExpression;
   }
 
 }

@@ -231,26 +231,27 @@ InlineIfExpression = BooleanOrExpression | BooleanOrExpression QuestionMark Expr
 
 BooleanOrExpression = BooleanXorExpression | BooleanOrExpression DoublePipe BooleanXorExpression
 BooleanXorExpression = BooleanAndExpression | BooleanXorExpression DoubleCaret BooleanAndExpression
-BooleanAndExpression = BitwiseOrExpression | BooleanAndExpression DoubleAmpersand BitwiseOrExpression
-BitwiseOrExpression = BitwiseXorExpression | BitwiseOrExpression Pipe BitwiseXorExpression 
-BitwiseXorExpression = BitwiseAndExpression | BitwiseXorExpression Caret BitwiseAndExpression 
-BitwiseAndExpression = EqualityExpression | BitwiseAndExpression Ampersand EqualityExpression 
+BooleanAndExpression = EqualityExpression | BooleanAndExpression DoubleAmpersand EqualityExpression
 
 EqualityExpression = RelationalExpression
                    | EqualityExpression DoubleEquals RelationalExpression
                    | EqualityExpression ExclaimationMarkEquals RelationalExpression
 
-RelationalExpression = ShiftExpression
-                     | RelationalExpression LAngle ShiftExpression
-                     | RelationalExpression RAngle ShiftExpression
-                     | RelationalExpression LessThanEquals ShiftExpression
-                     | RelationalExpression MoreThanEquals ShiftExpression
-                     | RelationalExpression InstanceOfKeyword Type // TODO: should this be PointerType?
+RelationalExpression = BitwiseOrExpression
+                     | BitwiseOrExpression LAngle BitwiseOrExpression
+                     | BitwiseOrExpression RAngle BitwiseOrExpression
+                     | BitwiseOrExpression LAngleEquals BitwiseOrExpression
+                     | BitwiseOrExpression RAngleEquals BitwiseOrExpression
+                     | BitwiseOrExpression InstanceOfKeyword Type
+
+BitwiseOrExpression = BitwiseXorExpression  | BitwiseOrExpression Pipe BitwiseXorExpression 
+BitwiseXorExpression = BitwiseAndExpression | BitwiseXorExpression Caret BitwiseAndExpression 
+BitwiseAndExpression = ShiftExpression      | BitwiseAndExpression Ampersand ShiftExpression 
 
 ShiftExpression = AdditiveExpression
-                | ShiftExpression LeftShift AdditiveExpression
-                | ShiftExpression ArithmeticRightShift AdditiveExpression
-                | ShiftExpression LogicalRightShift AdditiveExpression
+                | ShiftExpression DoubleLAngle AdditiveExpression
+                | ShiftExpression RAngle RAngle AdditiveExpression        // check while matching this production that the RAngles are directly next to each other
+                | ShiftExpression RAngle RAngle RAngle AdditiveExpression // and again for this production
 
 AdditiveExpression = MultiplicativeExpression
                    | AdditiveExpression Plus MultiplicativeExpression
@@ -327,8 +328,8 @@ AssignmentOperator = Equals | PlusEquals | MinusEquals | TimesEquals | DivideEqu
   Types
 #########
 
-Type = PrimitiveType | PointerType | ArrayType | TupleType | VoidType
-TypeNotQName = PrimitiveType | PointerTypeNotQName | ArrayType | TupleType | VoidType
+Type = PrimitiveType | PointerType | ArrayType | TupleType | ClosureType | VoidType
+TypeNotQName = PrimitiveType | PointerTypeNotQName | ArrayType | TupleType | ClosureType | VoidType
 
 TupleType = LParen TypeList RParen
 TypeList = Type | Type Comma TypeList
@@ -351,7 +352,10 @@ IntegerLength = ByteKeyword | ShortKeyword | IntKeyword | LongKeyword
 FloatingLength = FloatKeyword | DoubleKeyword
 
 PointerType = QName | PointerTypeNotQName
-PointerTypeNotQName = Hash QName | QName TypeParameters | Hash QName TypeParameters
+PointerTypeNotQName = Hash QName
+                    | QName TypeParameters
+                    | Hash QName TypeParameters
+                    | PointerTypeNotQName Dot Name TypeParameters // the following should be valid: #a.b.C<W, X<Y>>.D<Z>
 TypeParameters = LAngle TypeParameterList RAngle
 TypeParameterList = TypeParameter | TypeParameterList Comma TypeParameter
 TypeParameter = NormalTypeParameter | WildcardTypeParameter
@@ -372,35 +376,8 @@ QName = Name | QName Dot Name
 
 Name
 
-IntegerLiteral
-FloatingLiteral
-CharacterLiteral
-StringLiteral
-NilLiteral
+*Literal // anything ending in "Literal" is a terminal which stores a value
 
-PackageKeyword
-ImportKeyword
-ClassKeyword
-ExtendsKeyword
-ImplementsKeyword
-PublicKeyword
-PrivateKeyword
-ProtectedKeyword
-AbstractKeyword
-StaticKeyword
-FinalKeyword
-VoidKeyword
-NativeKeyword
+*Keyword // anything ending in "Keyword" is a terminal which does not store a value
 
-LParen
-RParen
-Semicolon
-Dot
-Star
-LBrace
-RBrace
-Comma
-At
-Equals
-LSquare
-RSquare
+// any names which sound like a symbol (or DoubleX where X is a symbol) are terminals which do not store values

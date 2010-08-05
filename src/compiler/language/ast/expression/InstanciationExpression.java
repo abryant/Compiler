@@ -11,7 +11,7 @@ import compiler.language.ast.misc.QName;
 /**
  * @author Anthony Bryant
  */
-public class InstanciationExpression extends Expression
+public class InstanciationExpression extends StatementExpression
 {
 
   private QName qualifiedName;

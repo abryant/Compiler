@@ -1,5 +1,18 @@
 package compiler.language.parser;
 
+import compiler.language.parser.rules.expression.BitwiseAndExpressionRule;
+import compiler.language.parser.rules.expression.BitwiseOrExpressionRule;
+import compiler.language.parser.rules.expression.BitwiseXorExpressionRule;
+import compiler.language.parser.rules.expression.BooleanAndExpressionRule;
+import compiler.language.parser.rules.expression.BooleanOrExpressionRule;
+import compiler.language.parser.rules.expression.BooleanXorExpressionRule;
+import compiler.language.parser.rules.expression.EqualityExpressionRule;
+import compiler.language.parser.rules.expression.ExpressionNoTupleRule;
+import compiler.language.parser.rules.expression.ExpressionRule;
+import compiler.language.parser.rules.expression.InlineIfExpressionRule;
+import compiler.language.parser.rules.expression.RelationalExpressionRule;
+import compiler.language.parser.rules.expression.StatementExpressionRule;
+import compiler.language.parser.rules.expression.TupleExpressionRule;
 import compiler.language.parser.rules.member.AccessSpecifierRule;
 import compiler.language.parser.rules.member.ConstructorRule;
 import compiler.language.parser.rules.member.FieldRule;
@@ -124,6 +137,19 @@ public class LanguageRules
     new StatementsRule(),
 
     // expressions
+    new BitwiseAndExpressionRule(),
+    new BitwiseOrExpressionRule(),
+    new BitwiseXorExpressionRule(),
+    new BooleanAndExpressionRule(),
+    new BooleanOrExpressionRule(),
+    new BooleanXorExpressionRule(),
+    new EqualityExpressionRule(),
+    new ExpressionNoTupleRule(),
+    new ExpressionRule(),
+    new InlineIfExpressionRule(),
+    new RelationalExpressionRule(),
+    new StatementExpressionRule(),
+    new TupleExpressionRule(),
 
     // types
     new BooleanTypeRule(),

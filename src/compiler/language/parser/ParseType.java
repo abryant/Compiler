@@ -70,11 +70,11 @@ public enum ParseType
   BOOLEAN_OR_EXPRESSION,          // Expression (BooleanOrExpression)
   BOOLEAN_XOR_EXPRESSION,         // Expression (BooleanXorExpression)
   BOOLEAN_AND_EXPRESSION,         // Expression (BooleanAndExpression)
+  EQUALITY_EXPRESSION,            // Expression (EqualityExpression)
+  RELATIONAL_EXPRESSION,          // Expression (RelationalExpression)
   BITWISE_OR_EXPRESSION,          // Expression (BitwiseOrExpression)
   BITWISE_XOR_EXPRESSION,         // Expression (BitwiseXorExpression)
   BITWISE_AND_EXPRESSION,         // Expression (BitwiseAndExpression)
-  EQUALITY_EXPRESSION,            // Expression (EqualityExpression)
-  RELATIONAL_EXPRESSION,          // Expression (RelationalExpression)
   SHIFT_EXPRESSION,               // Expression (ShiftExpression)
   ADDITIVE_EXPRESSION,            // Expression (AdditiveExpression)
   MULTIPLICATIVE_EXPRESSION,      // Expression (MultiplicativeExpression)
@@ -110,7 +110,7 @@ public enum ParseType
   INTEGER_TYPE_LENGTH,      // IntegerTypeLength
   INTEGER_TYPE,             // IntegerType
   PRIMITIVE_TYPE,           // PrimitiveType
-  POINTER_TYPE,             // PointerType
+  POINTER_TYPE,             // PointerType TODO: this needs redoing from Grammar.txt
   TUPLE_TYPE,               // TupleType
   TYPE_LIST,                // Type[] (length > 0)
   TYPE,                     // Type
@@ -162,6 +162,7 @@ public enum ParseType
   IMMUTABLE_KEYWORD,
   IMPLEMENTS_KEYWORD,
   IMPORT_KEYWORD,
+  INSTANCEOF_KEYWORD,
   INT_KEYWORD,
   INTERFACE_KEYWORD,
   LONG_KEYWORD,
@@ -186,18 +187,30 @@ public enum ParseType
   VOLATILE_KEYWORD,
 
   // symbols (values do not matter for these, but should be null)
+  AMPERSAND,
   ARROW, // "->", same as MINUS RANGLE, but without any whitespace between them
   AT,
+  CARET,
+  COLON,
   COMMA,
   DOT,
+  DOUBLE_AMPERSAND,
+  DOUBLE_CARET,
+  DOUBLE_EQUALS,
+  DOUBLE_PIPE,
   ELLIPSIS,
   EQUALS,
+  EXCLAIMATION_MARK,
+  EXCLAIMATION_MARK_EQUALS,
   HASH,
   LANGLE,
+  LANGLE_EQUALS,
   LBRACE,
   LPAREN,
+  PIPE,
   QUESTION_MARK,
   RANGLE,
+  RANGLE_EQUALS,
   RBRACE,
   RPAREN,
   SEMICOLON,
