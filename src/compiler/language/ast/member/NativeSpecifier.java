@@ -1,5 +1,7 @@
 package compiler.language.ast.member;
 
+import compiler.language.ast.terminal.StringLiteral;
+
 
 /*
  * Created on 30 Jun 2010
@@ -11,13 +13,13 @@ package compiler.language.ast.member;
 public class NativeSpecifier extends Modifier
 {
 
-  private String nativeName;
+  private StringLiteral nativeName;
 
   /**
    * Creates a new native specification with the specified native name.
    * @param nativeName - the native name associated with this NativeSpecifier
    */
-  public NativeSpecifier(String nativeName)
+  public NativeSpecifier(StringLiteral nativeName)
   {
     super("native(\"" + nativeName + "\")");
     this.nativeName = nativeName;
@@ -26,7 +28,7 @@ public class NativeSpecifier extends Modifier
   /**
    * @return the nativeName
    */
-  public String getNativeName()
+  public StringLiteral getNativeName()
   {
     return nativeName;
   }

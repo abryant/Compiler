@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.STRING_LITERAL;
 
 import compiler.language.ast.member.NativeSpecifier;
+import compiler.language.ast.terminal.StringLiteral;
 import compiler.parser.Rule;
 
 /*
@@ -34,7 +35,7 @@ public class NativeSpecifierRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new NativeSpecifier((String) args[2]);
+      return new NativeSpecifier((StringLiteral) args[2]);
     }
     throw badTypeList();
   }
