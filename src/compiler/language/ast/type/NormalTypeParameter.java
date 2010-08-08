@@ -1,5 +1,7 @@
 package compiler.language.ast.type;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 12 Jul 2010
@@ -16,9 +18,11 @@ public class NormalTypeParameter extends TypeParameter
   /**
    * Creates a new normal type parameter with the specified type.
    * @param type - the type assigned to this type parameter
+   * @param parseInfo - the parsing information
    */
-  public NormalTypeParameter(Type type)
+  public NormalTypeParameter(Type type, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.type = type;
   }
 

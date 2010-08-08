@@ -1,5 +1,7 @@
 package compiler.language.ast.type;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 11 Jul 2010
@@ -10,7 +12,15 @@ package compiler.language.ast.type;
  */
 public class CharacterType extends PrimitiveType
 {
-  // stores nothing (yet), but instances represent the char type
+
+  /**
+   * Creates a new CharacterType with the specified ParseInfo
+   * @param parseInfo - the parsing information
+   */
+  public CharacterType(ParseInfo parseInfo)
+  {
+    super(parseInfo);
+  }
 
   /**
    * @see java.lang.Object#toString()

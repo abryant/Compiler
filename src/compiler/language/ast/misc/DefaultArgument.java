@@ -1,5 +1,6 @@
 package compiler.language.ast.misc;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.member.Modifier;
 import compiler.language.ast.terminal.Name;
@@ -23,10 +24,11 @@ public class DefaultArgument extends SingleArgument
    * @param type - the type of this default argument
    * @param name - the name of this default argument
    * @param defaultExpression - the default expression for this default argument
+   * @param parseInfo - the parsing information
    */
-  public DefaultArgument(Modifier[] modifiers, Type type, Name name, Expression defaultExpression)
+  public DefaultArgument(Modifier[] modifiers, Type type, Name name, Expression defaultExpression, ParseInfo parseInfo)
   {
-    super(modifiers, type, name);
+    super(modifiers, type, name, parseInfo);
     this.defaultExpression = defaultExpression;
   }
 

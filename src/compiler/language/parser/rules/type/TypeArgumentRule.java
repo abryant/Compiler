@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.POINTER_TYPE;
 import static compiler.language.parser.ParseType.SUPER_KEYWORD;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENT;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeArgument;
@@ -38,25 +39,34 @@ public class TypeArgumentRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
+    // all productions have the first argument as a Name, so we can cast it early
+    // (this assumes that we have the correct type list, and that the NAME type is only ever associated with a Name object)
+    Name name = (Name) args[0];
     if (types == NAME_PRODUCTION)
     {
-      return new TypeArgument((Name) args[0], null, null);
+      return new TypeArgument(name, null, null, name.getParseInfo());
     }
     if (types == EXTENDS_PRODUCTION)
     {
-      return new TypeArgument((Name) args[0], (PointerType) args[2], null);
+      PointerType superType = (PointerType) args[2];
+      return new TypeArgument(name, superType, null, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superType.getParseInfo()));
     }
     if (types == SUPER_PRODUCTION)
     {
-      return new TypeArgument((Name) args[0], null, (PointerType) args[2]);
+      PointerType subType = (PointerType) args[2];
+      return new TypeArgument(name, null, subType, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subType.getParseInfo()));
     }
     if (types == EXTENDS_SUPER_PRODUCTION)
     {
-      return new TypeArgument((Name) args[0], (PointerType) args[2], (PointerType) args[4]);
+      PointerType superType = (PointerType) args[2];
+      PointerType subType = (PointerType) args[4];
+      return new TypeArgument(name, superType, subType, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superType.getParseInfo(), (ParseInfo) args[3], subType.getParseInfo()));
     }
     if (types == SUPER_EXTENDS_PRODUCTION)
     {
-      return new TypeArgument((Name) args[0], (PointerType) args[4], (PointerType) args[2]);
+      PointerType subType = (PointerType) args[2];
+      PointerType superType = (PointerType) args[4];
+      return new TypeArgument(name, superType, subType, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subType.getParseInfo(), (ParseInfo) args[3], superType.getParseInfo()));
     }
     throw badTypeList();
   }

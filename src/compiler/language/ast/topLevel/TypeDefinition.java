@@ -1,5 +1,6 @@
 package compiler.language.ast.topLevel;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.Member;
 
 /*
@@ -12,5 +13,14 @@ import compiler.language.ast.member.Member;
  */
 public abstract class TypeDefinition extends Member
 {
-  // no methods or fields, this is just an abstract base class for all type definitions
+
+  /**
+   * Creates a new TypeDefinition with the specified ParseInfo
+   * @param parseInfo - the parsing information
+   */
+  public TypeDefinition(ParseInfo parseInfo)
+  {
+    super(parseInfo);
+  }
+
 }

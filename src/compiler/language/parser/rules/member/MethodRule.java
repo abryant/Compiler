@@ -10,6 +10,8 @@ import static compiler.language.parser.ParseType.THROWS_CLAUSE;
 import static compiler.language.parser.ParseType.TYPE;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.member.MemberHeader;
 import compiler.language.ast.member.Method;
 import compiler.language.ast.misc.ArgumentList;
@@ -55,22 +57,52 @@ public class MethodRule extends Rule
     if (types == DECLARATION_PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new Method(header.getAccessSpecifier(), header.getModifiers(), new TypeArgument[0], (Type) args[1], (Name) args[2], (ArgumentList) args[3], (PointerType[]) args[4], null);
+      Type type = (Type) args[1];
+      Name name = (Name) args[2];
+      ArgumentList arguments = (ArgumentList) args[3];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> throwsClause = (ParseList<PointerType>) args[4];
+      return new Method(header.getAccessSpecifier(), header.getModifiers(), new TypeArgument[0], type, name, arguments, throwsClause.toArray(new PointerType[0]), null,
+                        ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), name.getParseInfo(), arguments.getParseInfo(), throwsClause.getParseInfo(), (ParseInfo) args[5]));
     }
     if (types == DEFINITION_PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new Method(header.getAccessSpecifier(), header.getModifiers(), new TypeArgument[0], (Type) args[1], (Name) args[2], (ArgumentList) args[3], (PointerType[]) args[4], (Block) args[5]);
+      Type type = (Type) args[1];
+      Name name = (Name) args[2];
+      ArgumentList arguments = (ArgumentList) args[3];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> throwsClause = (ParseList<PointerType>) args[4];
+      Block block = (Block) args[5];
+      return new Method(header.getAccessSpecifier(), header.getModifiers(), new TypeArgument[0], type, name, arguments, throwsClause.toArray(new PointerType[0]), block,
+                        ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), name.getParseInfo(), arguments.getParseInfo(), throwsClause.getParseInfo(), block.getParseInfo()));
     }
     if (types == TYPE_ARGUMENTS_DECLARATION_PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new Method(header.getAccessSpecifier(), header.getModifiers(), (TypeArgument[]) args[1], (Type) args[2], (Name) args[3], (ArgumentList) args[4], (PointerType[]) args[5], null);
+      @SuppressWarnings("unchecked")
+      ParseList<TypeArgument> typeArguments = (ParseList<TypeArgument>) args[1];
+      Type type = (Type) args[2];
+      Name name = (Name) args[3];
+      ArgumentList arguments = (ArgumentList) args[4];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> throwsClause = (ParseList<PointerType>) args[5];
+      return new Method(header.getAccessSpecifier(), header.getModifiers(), typeArguments.toArray(new TypeArgument[0]), type, name, arguments, throwsClause.toArray(new PointerType[0]), null,
+                        ParseInfo.combine(header.getParseInfo(), typeArguments.getParseInfo(), type.getParseInfo(), name.getParseInfo(), arguments.getParseInfo(), throwsClause.getParseInfo(), (ParseInfo) args[6]));
     }
     if (types == TYPE_ARGUMENTS_DEFINITION_PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new Method(header.getAccessSpecifier(), header.getModifiers(), (TypeArgument[]) args[1], (Type) args[2], (Name) args[3], (ArgumentList) args[4], (PointerType[]) args[5], (Block) args[6]);
+      @SuppressWarnings("unchecked")
+      ParseList<TypeArgument> typeArguments = (ParseList<TypeArgument>) args[1];
+      Type type = (Type) args[2];
+      Name name = (Name) args[3];
+      ArgumentList arguments = (ArgumentList) args[4];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> throwsClause = (ParseList<PointerType>) args[5];
+      Block block = (Block) args[6];
+      return new Method(header.getAccessSpecifier(), header.getModifiers(), typeArguments.toArray(new TypeArgument[0]), type, name, arguments, throwsClause.toArray(new PointerType[0]), block,
+                        ParseInfo.combine(header.getParseInfo(), typeArguments.getParseInfo(), type.getParseInfo(), name.getParseInfo(), arguments.getParseInfo(), throwsClause.getParseInfo(), block.getParseInfo()));
     }
     throw badTypeList();
   }

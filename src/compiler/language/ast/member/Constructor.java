@@ -1,5 +1,6 @@
 package compiler.language.ast.member;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.ArgumentList;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.terminal.Name;
@@ -16,6 +17,7 @@ import compiler.language.ast.type.PointerType;
  */
 public class Constructor extends Member
 {
+
   private AccessSpecifier accessSpecifier;
   private Modifier[] modifiers;
   private Name name; // to be checked against the class name later in compilation
@@ -31,9 +33,11 @@ public class Constructor extends Member
    * @param arguments - the constructor's arguments
    * @param thrownTypes - the list of types that the constructor is declared to throw
    * @param block - the block that will be executed when calling the constructor
+   * @param parseInfo - the parsing information
    */
-  public Constructor(AccessSpecifier accessSpecifier, Modifier[] modifiers, Name name, ArgumentList arguments, PointerType[] thrownTypes, Block block)
+  public Constructor(AccessSpecifier accessSpecifier, Modifier[] modifiers, Name name, ArgumentList arguments, PointerType[] thrownTypes, Block block, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
     this.name = name;

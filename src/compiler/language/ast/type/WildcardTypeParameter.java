@@ -1,5 +1,7 @@
 package compiler.language.ast.type;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 12 Jul 2010
@@ -18,9 +20,11 @@ public class WildcardTypeParameter extends TypeParameter
    * Creates a new wildcard type parameter that bounds its type to the specified range of values.
    * @param superType - the super type of this type parameter
    * @param subType - the sub type of this type parameter
+   * @param parseInfo - the parsing information
    */
-  public WildcardTypeParameter(PointerType superType, PointerType subType)
+  public WildcardTypeParameter(PointerType superType, PointerType subType, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.superType = superType;
     this.subType = subType;
   }

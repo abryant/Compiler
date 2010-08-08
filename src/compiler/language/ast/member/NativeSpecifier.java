@@ -1,5 +1,6 @@
 package compiler.language.ast.member;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.StringLiteral;
 
 
@@ -18,10 +19,11 @@ public class NativeSpecifier extends Modifier
   /**
    * Creates a new native specification with the specified native name.
    * @param nativeName - the native name associated with this NativeSpecifier
+   * @param parseInfo - the parsing information
    */
-  public NativeSpecifier(StringLiteral nativeName)
+  public NativeSpecifier(StringLiteral nativeName, ParseInfo parseInfo)
   {
-    super("native(\"" + nativeName + "\")");
+    super(ModifierType.NATIVE_SPECIFIER, parseInfo);
     this.nativeName = nativeName;
   }
 
@@ -31,6 +33,16 @@ public class NativeSpecifier extends Modifier
   public StringLiteral getNativeName()
   {
     return nativeName;
+  }
+
+  /**
+   * {@inheritDoc}
+   * @see compiler.language.ast.member.Modifier#toString()
+   */
+  @Override
+  public String toString()
+  {
+    return "native(\"" + nativeName + "\")";
   }
 
 }

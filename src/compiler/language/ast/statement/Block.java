@@ -1,5 +1,7 @@
 package compiler.language.ast.statement;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 8 Jul 2010
@@ -16,9 +18,11 @@ public class Block extends Statement
   /**
    * Creates a new Block with the specified list of statements.
    * @param statements - the statements in this block
+   * @param parseInfo - the parsing information
    */
-  public Block(Statement[] statements)
+  public Block(Statement[] statements, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.statements = statements;
   }
 

@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.INLINE_IF_EXPRESSION;
 import static compiler.language.parser.ParseType.TUPLE_EXPRESSION;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.TupleExpression;
 import compiler.parser.Rule;
@@ -40,12 +41,16 @@ public class TupleExpressionRule extends Rule
     }
     if (types == CONTINUATION_PRODUCTION)
     {
+      Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof TupleExpression)
       {
-        // continue the existing tuple if we've already started one
-        return new TupleExpression((TupleExpression) args[0], (Expression) args[2]);
+        // continue the existing TupleExpression if we've already started one
+        TupleExpression startExpression = (TupleExpression) args[0];
+        return new TupleExpression(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
       }
-      return new TupleExpression((Expression) args[0], (Expression) args[2]);
+
+      Expression firstExpression = (Expression) args[0];
+      return new TupleExpression(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     throw badTypeList();
   }

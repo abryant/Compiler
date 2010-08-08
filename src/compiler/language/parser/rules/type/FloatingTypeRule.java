@@ -1,8 +1,10 @@
 package compiler.language.parser.rules.type;
 
+import static compiler.language.parser.ParseType.DOUBLE_KEYWORD;
 import static compiler.language.parser.ParseType.FLOATING_TYPE;
-import static compiler.language.parser.ParseType.FLOATING_TYPE_LENGTH;
+import static compiler.language.parser.ParseType.FLOAT_KEYWORD;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.FloatingType;
 import compiler.language.ast.type.FloatingTypeLength;
 import compiler.parser.Rule;
@@ -17,11 +19,12 @@ import compiler.parser.Rule;
 public class FloatingTypeRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {FLOATING_TYPE_LENGTH};
+  private static final Object[] FLOAT_PRODUCTION = new Object[] {FLOAT_KEYWORD};
+  private static final Object[] DOUBLE_PRODUCTION = new Object[] {DOUBLE_KEYWORD};
 
   public FloatingTypeRule()
   {
-    super(FLOATING_TYPE, PRODUCTION);
+    super(FLOATING_TYPE, FLOAT_PRODUCTION, DOUBLE_PRODUCTION);
   }
 
   /**
@@ -30,9 +33,13 @@ public class FloatingTypeRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
-    if (types == PRODUCTION)
+    if (types == FLOAT_PRODUCTION)
     {
-      return new FloatingType((FloatingTypeLength) args[0]);
+      return new FloatingType(FloatingTypeLength.FLOAT, (ParseInfo) args[0]);
+    }
+    if (types == DOUBLE_PRODUCTION)
+    {
+      return new FloatingType(FloatingTypeLength.DOUBLE, (ParseInfo) args[0]);
     }
     throw badTypeList();
   }

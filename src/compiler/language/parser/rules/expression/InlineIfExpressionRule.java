@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.EXPRESSION;
 import static compiler.language.parser.ParseType.INLINE_IF_EXPRESSION;
 import static compiler.language.parser.ParseType.QUESTION_MARK;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.InlineIfExpression;
 import compiler.parser.Rule;
@@ -42,7 +43,11 @@ public class InlineIfExpressionRule extends Rule
     }
     if (types == PRODUCTION)
     {
-      return new InlineIfExpression((Expression) args[0], (Expression) args[2], (Expression) args[4]);
+      Expression firstExpression = (Expression) args[0];
+      Expression secondExpression = (Expression) args[2];
+      Expression lastExpression = (Expression) args[4];
+      return new InlineIfExpression(firstExpression, secondExpression, lastExpression,
+                                    ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo(), (ParseInfo) args[3], lastExpression.getParseInfo()));
     }
     throw badTypeList();
   }

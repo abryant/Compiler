@@ -1,5 +1,6 @@
 package compiler.language.parser.rules.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BooleanOrExpression;
 import compiler.language.ast.expression.Expression;
 import compiler.language.parser.ParseType;
@@ -37,12 +38,15 @@ public class BooleanOrExpressionRule extends Rule
     }
     if (types == CONTINUATION_PRODUCTION)
     {
+      Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BooleanOrExpression)
       {
-        // continue the existing boolean or if we've already started one
-        return new BooleanOrExpression((BooleanOrExpression) args[0], (Expression) args[2]);
+        // continue the existing BooleanOrExpression if we've already started one
+        BooleanOrExpression startExpression = (BooleanOrExpression) args[0];
+        return new BooleanOrExpression(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
       }
-      return new BooleanOrExpression((Expression) args[0], (Expression) args[2]);
+      Expression firstExpression = (Expression) args[0];
+      return new BooleanOrExpression(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     throw badTypeList();
   }

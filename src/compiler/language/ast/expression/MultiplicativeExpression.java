@@ -1,5 +1,7 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 3 Aug 2010
  */
@@ -12,15 +14,15 @@ public class MultiplicativeExpression extends LeftRecursiveExpression
 
   private MultiplicativeExpressionType[] separatorTypes;
 
-  public MultiplicativeExpression(Expression firstExpression, MultiplicativeExpressionType separator, Expression secondExpression)
+  public MultiplicativeExpression(Expression firstExpression, MultiplicativeExpressionType separator, Expression secondExpression, ParseInfo parseInfo)
   {
-    super(firstExpression, secondExpression);
+    super(firstExpression, secondExpression, parseInfo);
     separatorTypes = new MultiplicativeExpressionType[] {separator};
   }
 
-  public MultiplicativeExpression(MultiplicativeExpression startExpression, MultiplicativeExpressionType separator, Expression subExpression)
+  public MultiplicativeExpression(MultiplicativeExpression startExpression, MultiplicativeExpressionType separator, Expression subExpression, ParseInfo parseInfo)
   {
-    super(startExpression, subExpression);
+    super(startExpression, subExpression, parseInfo);
     MultiplicativeExpressionType[] oldList = startExpression.getSeparatorTypes();
     separatorTypes = new MultiplicativeExpressionType[oldList.length];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);

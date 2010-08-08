@@ -8,6 +8,7 @@ import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.STAR;
 import static compiler.language.parser.ParseType.STATIC_KEYWORD;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.topLevel.ImportDeclaration;
 import compiler.parser.Rule;
@@ -40,19 +41,23 @@ public class ImportDeclarationRule extends Rule
   {
     if (types == NORMAL_PRODUCTION)
     {
-      return new ImportDeclaration((QName) args[1], false, false);
+      QName qname = (QName) args[1];
+      return new ImportDeclaration(qname, false, false, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2]));
     }
     if (types == ALL_PRODUCTION)
     {
-      return new ImportDeclaration((QName) args[1], true, false);
+      QName qname = (QName) args[1];
+      return new ImportDeclaration(qname, true, false, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], (ParseInfo) args[3], (ParseInfo) args[4]));
     }
     if (types == STATIC_NORMAL_PRODUCTION)
     {
-      return new ImportDeclaration((QName) args[1], false, true);
+      QName qname = (QName) args[2];
+      return new ImportDeclaration(qname, false, true, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3]));
     }
     if (types == STATIC_ALL_PRODUCTION)
     {
-      return new ImportDeclaration((QName) args[1], true, true);
+      QName qname = (QName) args[2];
+      return new ImportDeclaration(qname, true, true, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3], (ParseInfo) args[4], (ParseInfo) args[5]));
     }
     throw badTypeList();
   }

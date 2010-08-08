@@ -1,5 +1,6 @@
 package compiler.language.ast.member;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.ArgumentList;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.terminal.Name;
@@ -37,9 +38,11 @@ public class Method extends Member
    * @param arguments - the arguments that the method takes
    * @param thrownTypes - the list of types that the method throws
    * @param body - the body of the method
+   * @param parseInfo - the parsing information
    */
-  public Method(AccessSpecifier accessSpecifier, Modifier[] modifiers, TypeArgument[] typeArguments, Type returnType, Name name, ArgumentList arguments, PointerType[] thrownTypes, Block body)
+  public Method(AccessSpecifier accessSpecifier, Modifier[] modifiers, TypeArgument[] typeArguments, Type returnType, Name name, ArgumentList arguments, PointerType[] thrownTypes, Block body, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
     this.typeArguments = typeArguments;

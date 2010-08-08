@@ -50,9 +50,7 @@ import compiler.language.parser.rules.topLevel.TypeDefinitionRule;
 import compiler.language.parser.rules.type.BooleanTypeRule;
 import compiler.language.parser.rules.type.CharacterTypeRule;
 import compiler.language.parser.rules.type.ClosureTypeRule;
-import compiler.language.parser.rules.type.FloatingTypeLengthRule;
 import compiler.language.parser.rules.type.FloatingTypeRule;
-import compiler.language.parser.rules.type.IntegerTypeLengthRule;
 import compiler.language.parser.rules.type.IntegerTypeRule;
 import compiler.language.parser.rules.type.NormalTypeParameterRule;
 import compiler.language.parser.rules.type.PointerTypeRule;
@@ -155,9 +153,7 @@ public class LanguageRules
     new BooleanTypeRule(),
     new CharacterTypeRule(),
     new ClosureTypeRule(),
-    new FloatingTypeLengthRule(),
     new FloatingTypeRule(),
-    new IntegerTypeLengthRule(),
     new IntegerTypeRule(),
     new NormalTypeParameterRule(),
     new PointerTypeRule(),

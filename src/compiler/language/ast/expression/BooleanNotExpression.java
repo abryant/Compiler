@@ -1,5 +1,7 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 3 Aug 2010
  */
@@ -15,9 +17,11 @@ public class BooleanNotExpression extends Expression
   /**
    * Creates a new BooleanNotExpression with the specified subExpression
    * @param subExpression - the expression that will have the boolean not operation performed on it
+   * @param parseInfo - the parsing information
    */
-  public BooleanNotExpression(Expression subExpression)
+  public BooleanNotExpression(Expression subExpression, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.subExpression = subExpression;
   }
 

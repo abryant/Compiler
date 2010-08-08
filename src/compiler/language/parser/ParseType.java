@@ -26,21 +26,21 @@ public enum ParseType
   INTERFACE_DEFINITION,     // InterfaceDefinition
   ENUM_DEFINITION,          // EnumDefinition
   CLASS_EXTENDS_CLAUSE,     // PointerType or null
-  INTERFACE_LIST,           // PointerType[] (length > 0)
-  IMPLEMENTS_CLAUSE,        // PointerType[] (length == 0 if not specified)
-  INTERFACE_EXTENDS_CLAUSE, // PointerType[] (length == 0 if not specified)
-  ENUM_CONSTANTS,           // EnumConstant[] (length == 0 if not specified)
-  ENUM_CONSTANT_LIST,       // EnumConstant[] (length > 0)
+  INTERFACE_LIST,           // ParseList<PointerType> (length > 0)
+  IMPLEMENTS_CLAUSE,        // ParseList<PointerType> (length == 0 if not specified)
+  INTERFACE_EXTENDS_CLAUSE, // ParseList<PointerType> (length == 0 if not specified)
+  ENUM_CONSTANTS,           // ParseList<EnumConstant> (length == 0 if not specified)
+  ENUM_CONSTANT_LIST,       // ParseList<EnumConstant> (length > 0)
   ENUM_CONSTANT,            // EnumConstant
 
   // members
   ACCESS_SPECIFIER,         // AccessSpecifier or null
   MODIFIER,                 // Modifier
-  MODIFIERS,                // Modifier[] (length > 0)
+  MODIFIERS,                // ParseList<Modifier> (length > 0) TODO
   NATIVE_SPECIFIER,         // NativeSpecifier
   SINCE_SPECIFIER,          // SinceSpecifier
   MEMBER_HEADER,            // MemberHeader
-  MEMBER_LIST,              // Member[] TODO: tidy this up into a Members object containing a list of each type of member? then get rid of Member completely
+  MEMBER_LIST,              // ParseList<Member>
   MEMBER,                   // Member
   FIELD,                    // Field
   CONSTRUCTOR,              // Constructor
@@ -51,7 +51,7 @@ public enum ParseType
   // statements
   BLOCK,                    // Block
   OPTIONAL_BLOCK,           // Block or null
-  STATEMENTS,               // Statement[]
+  STATEMENTS,               // ParseList<Statement>
   STATEMENT,                // Statement
   EMPTY_STATEMENT,          // EmptyStatement
 
@@ -95,30 +95,28 @@ public enum ParseType
   CLOSURE_CREATION_EXPRESSION,    // ClosureCreationExpression
   ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER, // ArrayInstanciationExpression
   ARRAY_INSTANCIATION_EXPRESSION_NO_INITIALIZER,   // ArrayInstanciationExpression
-  ARRAY_INITIALIZER,              // Expression[]
-  EXPRESSION_LIST,                // Expression[]
-  DIMENSION_EXPRESSIONS,          // Expression[]
-  DIMENSIONS,                     // Integer
+  ARRAY_INITIALIZER,              // ParseList<Expression>
+  EXPRESSION_LIST,                // ParseList<Expression>
+  DIMENSION_EXPRESSIONS,          // ParseList<Expression>
+  DIMENSIONS,                     // TODO: decide on something, should store ParseInfo and an integer
   ASSIGNMENT_OPERATOR,            // AssignmentOperator
 
   // types
   BOOLEAN_TYPE,             // BooleanType
   CHARACTER_TYPE,           // CharacterType
   CLOSURE_TYPE,             // ClosureType
-  FLOATING_TYPE_LENGTH,     // FloatingTypeLength
   FLOATING_TYPE,            // FloatingType
-  INTEGER_TYPE_LENGTH,      // IntegerTypeLength
   INTEGER_TYPE,             // IntegerType
   PRIMITIVE_TYPE,           // PrimitiveType
   POINTER_TYPE,             // PointerType TODO: this needs redoing from Grammar.txt
   TUPLE_TYPE,               // TupleType
-  TYPE_LIST,                // Type[] (length > 0)
+  TYPE_LIST,                // ParseList<Type> (length > 0)
   TYPE,                     // Type
-  TYPE_ARGUMENTS,           // TypeArgument[] (length > 0)
-  TYPE_ARGUMENT_LIST,       // TypeArgument[] (length > 0)
+  TYPE_ARGUMENTS,           // ParseList<TypeArgument> (length > 0)
+  TYPE_ARGUMENT_LIST,       // ParseList<TypeArgument> (length > 0)
   TYPE_ARGUMENT,            // TypeArgument
-  TYPE_PARAMETERS,          // TypeParameter[] (length > 0)
-  TYPE_PARAMETER_LIST,      // TypeParameter[] (length > 0)
+  TYPE_PARAMETERS,          // ParseList<TypeParameter> (length > 0)
+  TYPE_PARAMETER_LIST,      // ParseList<TypeParameter> (length > 0)
   TYPE_PARAMETER,           // TypeParameter
   NORMAL_TYPE_PARAMETER,    // NormalTypeParameter
   WILDCARD_TYPE_PARAMETER,  // WildcardTypeParameter
@@ -126,16 +124,16 @@ public enum ParseType
 
   // miscellaneous non-terminals
   ARGUMENT,                 // Argument
-  ARGUMENT_LIST,            // Argument[]
+  ARGUMENT_LIST,            // ParseList<Argument>
   ARGUMENTS,                // ArgumentList
   ASSIGNEE,                 // Assignee
-  ASSIGNEE_LIST,            // Assignee[]
+  ASSIGNEE_LIST,            // ParseList<Assignee>
   PARAMETER,                // Parameter
-  PARAMETER_LIST,           // Parameter[] (length > 0)
-  PARAMETERS,               // Parameter[]
+  PARAMETER_LIST,           // ParseList<Parameter> (length > 0)
+  PARAMETERS,               // ParseList<Parameter>
   QNAME,                    // QName
-  THROWS_LIST,              // PointerType[] (length > 0)
-  THROWS_CLAUSE,            // PointerType[] (length == 0 if none are specified)
+  THROWS_LIST,              // ParseList<PointerType> (length > 0)
+  THROWS_CLAUSE,            // ParseList<PointerType> (length == 0 if none are specified)
   VERSION_NUMBER,           // VersionNumber
 
   // =============
@@ -147,7 +145,7 @@ public enum ParseType
   INTEGER_LITERAL,          // IntegerLiteral
   STRING_LITERAL,           // StringLiteral
 
-  // keywords (values for these should all be Terminal)
+  // keywords (values for these should all be ParseInfo)
   ABSTRACT_KEYWORD,
   ASSIGN_KEYWORD,
   BOOLEAN_KEYWORD,
@@ -186,7 +184,7 @@ public enum ParseType
   VOID_KEYWORD,
   VOLATILE_KEYWORD,
 
-  // symbols (values for these should all be Terminal)
+  // symbols (values for these should all be ParseInfo)
   AMPERSAND,
   ARROW, // "->", same as MINUS RANGLE, but without any whitespace between them
   AT,

@@ -4,6 +4,8 @@ import static compiler.language.parser.ParseType.ASSIGNEE;
 import static compiler.language.parser.ParseType.ASSIGNEE_LIST;
 import static compiler.language.parser.ParseType.COMMA;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.Assignee;
 import compiler.parser.Rule;
 
@@ -35,15 +37,16 @@ public class AssigneeListRule extends Rule
   {
     if (types == START_PRODUCTION)
     {
-      return new Assignee[] {(Assignee) args[0]};
+      Assignee assignee = (Assignee) args[0];
+      return new ParseList<Assignee>(assignee, assignee.getParseInfo());
     }
     if (types == CONTINUATION_PRODUCTION)
     {
-      Assignee[] oldList = (Assignee[]) args[2];
-      Assignee[] newList = new Assignee[oldList.length + 1];
-      System.arraycopy(oldList, 0, newList, 1, oldList.length);
-      newList[0] = (Assignee) args[0];
-      return newList;
+      @SuppressWarnings("unchecked")
+      ParseList<Assignee> list = (ParseList<Assignee>) args[2];
+      Assignee assignee = (Assignee) args[0];
+      list.addFirst(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      return list;
     }
     throw badTypeList();
   }

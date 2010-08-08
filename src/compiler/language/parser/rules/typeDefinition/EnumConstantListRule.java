@@ -4,6 +4,8 @@ import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.ENUM_CONSTANT;
 import static compiler.language.parser.ParseType.ENUM_CONSTANT_LIST;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.typeDefinition.EnumConstant;
 import compiler.parser.Rule;
 
@@ -33,15 +35,16 @@ public class EnumConstantListRule extends Rule
   {
     if (types == START_PRODUCTION)
     {
-      return new EnumConstant[] {(EnumConstant) args[0]};
+      EnumConstant enumConstant = (EnumConstant) args[0];
+      return new ParseList<EnumConstant>(enumConstant, enumConstant.getParseInfo());
     }
     if (types == CONTINUATION_PRODUCTION)
     {
-      EnumConstant[] oldList = (EnumConstant[]) args[0];
-      EnumConstant[] newList = new EnumConstant[oldList.length + 1];
-      System.arraycopy(oldList, 0, newList, 0, oldList.length);
-      newList[oldList.length] = (EnumConstant) args[2];
-      return newList;
+      @SuppressWarnings("unchecked")
+      ParseList<EnumConstant> list = (ParseList<EnumConstant>) args[0];
+      EnumConstant newEnumConstant = (EnumConstant) args[2];
+      list.addLast(newEnumConstant, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], newEnumConstant.getParseInfo()));
+      return list;
     }
     throw badTypeList();
   }

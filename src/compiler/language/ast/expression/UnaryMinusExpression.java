@@ -1,5 +1,7 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 3 Aug 2010
  */
@@ -15,9 +17,11 @@ public class UnaryMinusExpression extends Expression
   /**
    * Creates a new UnaryMinusExpression with the specified subExpression
    * @param subExpression - the subExpression of this UnaryMinusExpression
+   * @param parseInfo - the parsing information
    */
-  public UnaryMinusExpression(Expression subExpression)
+  public UnaryMinusExpression(Expression subExpression, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.subExpression = subExpression;
   }
 

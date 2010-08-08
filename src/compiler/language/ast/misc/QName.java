@@ -1,5 +1,6 @@
 package compiler.language.ast.misc;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.Name;
 
 /*
@@ -13,24 +14,30 @@ import compiler.language.ast.terminal.Name;
 public class QName
 {
 
+  private ParseInfo parseInfo;
+
   private Name[] names;
 
   /**
    * Creates a new QName containing only one name
    * @param startName - the name to start the QName with
+   * @param parseInfo - the parsing information
    */
-  public QName(Name startName)
+  public QName(Name startName, ParseInfo parseInfo)
   {
-    this.names = new Name[] {startName};
+    this.parseInfo = parseInfo;
+    names = new Name[] {startName};
   }
 
   /**
    * Creates a new QName based on an old QName, but with an additional name
    * @param original - the QName to base this QName on
    * @param additional - the extra name to add
+   * @param parseInfo - the parsing information
    */
-  public QName(QName original, Name additional)
+  public QName(QName original, Name additional, ParseInfo parseInfo)
   {
+    this.parseInfo = parseInfo;
     Name[] origNames = original.names;
     names = new Name[origNames.length + 1];
     System.arraycopy(origNames, 0, names, 0, origNames.length);
@@ -43,6 +50,14 @@ public class QName
   public Name[] getNames()
   {
     return names;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
   }
 
   /**

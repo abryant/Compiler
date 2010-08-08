@@ -1,5 +1,7 @@
 package compiler.language.ast.statement;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 14 Jul 2010
@@ -10,7 +12,15 @@ package compiler.language.ast.statement;
  */
 public class EmptyStatement extends Statement
 {
-  // this class stores nothing, but represents an empty statement
+
+  /**
+   * Creates a new EmptyStatement with the specified ParseInfo
+   * @param parseInfo - the parsing information
+   */
+  public EmptyStatement(ParseInfo parseInfo)
+  {
+    super(parseInfo);
+  }
 
   /**
    * @see java.lang.Object#toString()

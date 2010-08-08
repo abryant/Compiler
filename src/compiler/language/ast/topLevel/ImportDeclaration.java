@@ -1,5 +1,6 @@
 package compiler.language.ast.topLevel;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
 
 /*
@@ -12,6 +13,8 @@ import compiler.language.ast.misc.QName;
 public class ImportDeclaration
 {
 
+  private ParseInfo parseInfo;
+
   private QName name;
   private boolean all;
   private boolean staticImport;
@@ -21,9 +24,11 @@ public class ImportDeclaration
    * @param name - the name to import
    * @param all - true to import all names under this one, false otherwise
    * @param staticImport - true if this should represent a static import, false otherwise
+   * @param parseInfo - the parsing information
    */
-  public ImportDeclaration(QName name, boolean all, boolean staticImport)
+  public ImportDeclaration(QName name, boolean all, boolean staticImport, ParseInfo parseInfo)
   {
+    this.parseInfo = parseInfo;
     this.name = name;
     this.all = all;
     this.staticImport = staticImport;
@@ -51,6 +56,14 @@ public class ImportDeclaration
   public boolean isStaticImport()
   {
     return staticImport;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
   }
 
   /**

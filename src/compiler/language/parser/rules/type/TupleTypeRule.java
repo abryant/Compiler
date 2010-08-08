@@ -5,6 +5,8 @@ import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.TUPLE_TYPE;
 import static compiler.language.parser.ParseType.TYPE_LIST;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.type.TupleType;
 import compiler.language.ast.type.Type;
 import compiler.parser.Rule;
@@ -34,7 +36,9 @@ public class TupleTypeRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new TupleType((Type[]) args[1]);
+      @SuppressWarnings("unchecked")
+      ParseList<Type> typeList = (ParseList<Type>) args[1];
+      return new TupleType(typeList.toArray(new Type[0]), ParseInfo.combine((ParseInfo) args[0], typeList.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

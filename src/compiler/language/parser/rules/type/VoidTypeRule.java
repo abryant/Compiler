@@ -3,6 +3,7 @@ package compiler.language.parser.rules.type;
 import static compiler.language.parser.ParseType.VOID_KEYWORD;
 import static compiler.language.parser.ParseType.VOID_TYPE;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.VoidType;
 import compiler.parser.Rule;
 
@@ -31,7 +32,7 @@ public class VoidTypeRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new VoidType();
+      return new VoidType((ParseInfo) args[0]);
     }
     throw badTypeList();
   }

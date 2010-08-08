@@ -3,6 +3,7 @@ package compiler.language.parser.rules.statement;
 import static compiler.language.parser.ParseType.EMPTY_STATEMENT;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.statement.EmptyStatement;
 import compiler.parser.Rule;
 
@@ -31,7 +32,7 @@ public class EmptyStatementRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new EmptyStatement();
+      return new EmptyStatement((ParseInfo) args[0]);
     }
     throw badTypeList();
   }

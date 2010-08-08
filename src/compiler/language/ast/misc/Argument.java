@@ -1,5 +1,7 @@
 package compiler.language.ast.misc;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 10 Jul 2010
  */
@@ -10,5 +12,24 @@ package compiler.language.ast.misc;
  */
 public abstract class Argument
 {
-  // no methods or fields
+
+  private ParseInfo parseInfo;
+
+  /**
+   * Creates a new Argument with the specified ParseInfo
+   * @param parseInfo - the parsing information
+   */
+  public Argument(ParseInfo parseInfo)
+  {
+    this.parseInfo = parseInfo;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
+  }
+
 }

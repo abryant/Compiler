@@ -4,6 +4,8 @@ import static compiler.language.parser.ParseType.IMPLEMENTS_CLAUSE;
 import static compiler.language.parser.ParseType.IMPLEMENTS_KEYWORD;
 import static compiler.language.parser.ParseType.INTERFACE_LIST;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerType;
 import compiler.parser.Rule;
 
@@ -33,12 +35,14 @@ public class ImplementsClauseRule extends Rule
   {
     if (types == EMPTY_PRODUCTION)
     {
-      return new PointerType[0];
+      return new ParseList<PointerType>(null);
     }
     if (types == PRODUCTION)
     {
-      // just return the result of the interface list argument, as it has already built the list we need here
-      return args[1];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> list = (ParseList<PointerType>) args[1];
+      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo()));
+      return list;
     }
     throw badTypeList();
   }

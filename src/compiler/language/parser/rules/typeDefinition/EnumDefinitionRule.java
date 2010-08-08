@@ -12,6 +12,8 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.member.Member;
 import compiler.language.ast.member.MemberHeader;
 import compiler.language.ast.terminal.Name;
@@ -47,12 +49,34 @@ public class EnumDefinitionRule extends Rule
     if (types == PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new EnumDefinition(header.getAccessSpecifier(), header.getModifiers(), (Name) args[2], (PointerType) args[3], (PointerType[]) args[4], (EnumConstant[]) args[6], new Member[0]);
+      Name name = (Name) args[2];
+      PointerType superType = (PointerType) args[3];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> interfaces = (ParseList<PointerType>) args[4];
+      @SuppressWarnings("unchecked")
+      ParseList<EnumConstant> enumConstants = (ParseList<EnumConstant>) args[6];
+      return new EnumDefinition(header.getAccessSpecifier(), header.getModifiers(), name, superType, interfaces.toArray(new PointerType[0]), enumConstants.toArray(new EnumConstant[0]), new Member[0],
+                                ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(),
+                                                  superType != null ? superType.getParseInfo() : null,
+                                                  interfaces.getParseInfo(),
+                                                  (ParseInfo) args[5], enumConstants.getParseInfo(), (ParseInfo) args[7]));
     }
     if (types == MEMBERS_PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new EnumDefinition(header.getAccessSpecifier(), header.getModifiers(), (Name) args[2], (PointerType) args[3], (PointerType[]) args[4], (EnumConstant[]) args[6], (Member[]) args[8]);
+      Name name = (Name) args[2];
+      PointerType superType = (PointerType) args[3];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> interfaces = (ParseList<PointerType>) args[4];
+      @SuppressWarnings("unchecked")
+      ParseList<EnumConstant> enumConstants = (ParseList<EnumConstant>) args[6];
+      @SuppressWarnings("unchecked")
+      ParseList<Member> members = (ParseList<Member>) args[8];
+      return new EnumDefinition(header.getAccessSpecifier(), header.getModifiers(), name, superType, interfaces.toArray(new PointerType[0]), enumConstants.toArray(new EnumConstant[0]), members.toArray(new Member[0]),
+                                ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(),
+                                                  superType != null ? superType.getParseInfo() : null,
+                                                  interfaces.getParseInfo(),
+                                                  (ParseInfo) args[5], enumConstants.getParseInfo(), (ParseInfo) args[7], members.getParseInfo(), (ParseInfo) args[9]));
     }
     throw badTypeList();
   }

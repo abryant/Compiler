@@ -1,5 +1,6 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.Member;
 import compiler.language.ast.misc.Parameter;
 import compiler.language.ast.misc.QName;
@@ -23,9 +24,11 @@ public class InstanciationExpression extends StatementExpression
    * @param qualifiedName - the qualified name of the class to create
    * @param parameters - the parameters for the constructor call
    * @param members - the list of members for the class, or null if no class body was specified
+   * @param parseInfo - the parsing information
    */
-  public InstanciationExpression(QName qualifiedName, Parameter[] parameters, Member[] members)
+  public InstanciationExpression(QName qualifiedName, Parameter[] parameters, Member[] members, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.qualifiedName = qualifiedName;
     this.parameters = parameters;
     this.members = members;

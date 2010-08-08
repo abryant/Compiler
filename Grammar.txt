@@ -342,11 +342,12 @@ ArrayType = TypeNotQName LSquare RSquare | QName LSquare RSquare
 
 PrimitiveType = BooleanType | IntegerType | CharacterType | FloatingType
 BooleanType = BooleanKeyword
-IntegerType = SignedKeyword IntegerLength | UnsignedKeyword IntegerLength | IntegerLength
+IntegerType = SignedKeyword ByteKeyword  | UnsignedKeyword ByteKeyword  | ByteKeyword
+            | SignedKeyword ShortKeyword | UnsignedKeyword ShortKeyword | ShortKeyword
+            | SignedKeyword IntKeyword   | UnsignedKeyword IntKeyword   | IntKeyword
+            | SignedKeyword LongKeyword  | UnsignedKeyword LongKeyword  | LongKeyword
 CharacterType = CharacterKeyword
-FloatingType = SignedKeyword FloatLength | UnsignedKeyword FloatLength | FloatLength
-IntegerLength = ByteKeyword | ShortKeyword | IntKeyword | LongKeyword
-FloatingLength = FloatKeyword | DoubleKeyword
+FloatingType = FloatKeyword | DoubleKeyword
 
 PointerType = QName | PointerTypeNotQName
 PointerTypeNotQName = Hash QName

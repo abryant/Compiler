@@ -1,5 +1,7 @@
 package compiler.language.ast.misc;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 10 Jul 2010
@@ -16,9 +18,11 @@ public class ArgumentList extends Argument
   /**
    * Creates a new ArgumentList with the specified arguments.
    * @param arguments - the arguments to store
+   * @param parseInfo - the parsing information
    */
-  public ArgumentList(Argument[] arguments)
+  public ArgumentList(Argument[] arguments, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.arguments = arguments;
   }
 

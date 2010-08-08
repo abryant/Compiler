@@ -1,5 +1,6 @@
 package compiler.language.ast.misc;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.IntegerLiteral;
 
 /*
@@ -11,15 +12,36 @@ import compiler.language.ast.terminal.IntegerLiteral;
  */
 public class VersionNumber
 {
+
+  private ParseInfo parseInfo;
+
   private IntegerLiteral[] versionParts;
 
   /**
    * Creates a new version number with the specified version parts
    * @param versionParts - the integer literals representing the parts of this version number
+   * @param parseInfo - the parsing information
    */
-  public VersionNumber(IntegerLiteral[] versionParts)
+  public VersionNumber(IntegerLiteral[] versionParts, ParseInfo parseInfo)
   {
+    this.parseInfo = parseInfo;
     this.versionParts = versionParts;
+  }
+
+  /**
+   * @return the individual parts of the version number
+   */
+  public IntegerLiteral[] getVersionParts()
+  {
+    return versionParts;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
   }
 
   /**
@@ -40,11 +62,4 @@ public class VersionNumber
     return buffer.toString();
   }
 
-  /**
-   * @return the individual parts of the version number
-   */
-  public IntegerLiteral[] getVersionParts()
-  {
-    return versionParts;
-  }
 }

@@ -1,5 +1,7 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 3 Aug 2010
  */
@@ -10,5 +12,14 @@ package compiler.language.ast.expression;
  */
 public abstract class StatementExpression extends Expression
 {
-  // no methods or fields
+
+  /**
+   * Creates a new StatementExpression with the specified ParseInfo
+   * @param parseInfo - the parsing information
+   */
+  public StatementExpression(ParseInfo parseInfo)
+  {
+    super(parseInfo);
+  }
+
 }

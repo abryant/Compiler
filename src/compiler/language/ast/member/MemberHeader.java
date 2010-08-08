@@ -1,5 +1,8 @@
 package compiler.language.ast.member;
 
+import compiler.language.ast.ParseInfo;
+
+
 
 /*
  * Created on 13 Jul 2010
@@ -10,6 +13,9 @@ package compiler.language.ast.member;
  */
 public class MemberHeader
 {
+
+  private ParseInfo parseInfo;
+
   private AccessSpecifier accessSpecifier;
   private Modifier[] modifiers;
 
@@ -17,9 +23,11 @@ public class MemberHeader
    * Creates a new MemberHeader with the specified access specifier and modifiers
    * @param accessSpecifier - the access specifier of this member header
    * @param modifiers - the modifiers of this member header
+   * @param parseInfo - the parsing information
    */
-  public MemberHeader(AccessSpecifier accessSpecifier, Modifier[] modifiers)
+  public MemberHeader(AccessSpecifier accessSpecifier, Modifier[] modifiers, ParseInfo parseInfo)
   {
+    this.parseInfo = parseInfo;
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
   }
@@ -38,6 +46,14 @@ public class MemberHeader
   public Modifier[] getModifiers()
   {
     return modifiers;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
   }
 
 }

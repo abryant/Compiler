@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.NATIVE_SPECIFIER;
 import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.STRING_LITERAL;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.NativeSpecifier;
 import compiler.language.ast.terminal.StringLiteral;
 import compiler.parser.Rule;
@@ -35,7 +36,8 @@ public class NativeSpecifierRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new NativeSpecifier((StringLiteral) args[2]);
+      StringLiteral literal = (StringLiteral) args[2];
+      return new NativeSpecifier(literal, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], literal.getParseInfo(), (ParseInfo) args[3]));
     }
     throw badTypeList();
   }

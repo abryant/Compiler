@@ -5,6 +5,8 @@ import static compiler.language.parser.ParseType.POINTER_TYPE;
 import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.TYPE_PARAMETERS;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
@@ -38,19 +40,27 @@ public class PointerTypeRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new PointerType((QName) args[0], false, new TypeParameter[0]);
+      QName qname = (QName) args[0];
+      return new PointerType(qname, false, new TypeParameter[0], qname.getParseInfo());
     }
     if (types == IMMUTABLE_PRODUCTION)
     {
-      return new PointerType((QName) args[1], true, new TypeParameter[0]);
+      QName qname = (QName) args[1];
+      return new PointerType(qname, true, new TypeParameter[0], ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo()));
     }
     if (types == TYPE_PARAMETERS_PRODUCTION)
     {
-      return new PointerType((QName) args[0], false, (TypeParameter[]) args[1]);
+      QName qname = (QName) args[0];
+      @SuppressWarnings("unchecked")
+      ParseList<TypeParameter> typeParameters = (ParseList<TypeParameter>) args[1];
+      return new PointerType(qname, false, typeParameters.toArray(new TypeParameter[0]), ParseInfo.combine(qname.getParseInfo(), typeParameters.getParseInfo()));
     }
     if (types == IMMUTABLE_TYPE_PARAMETERS_PRODUCTION)
     {
-      return new PointerType((QName) args[1], true, (TypeParameter[]) args[2]);
+      QName qname = (QName) args[1];
+      @SuppressWarnings("unchecked")
+      ParseList<TypeParameter> typeParameters = (ParseList<TypeParameter>) args[2];
+      return new PointerType(qname, true, typeParameters.toArray(new TypeParameter[0]), ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), typeParameters.getParseInfo()));
     }
     throw badTypeList();
   }

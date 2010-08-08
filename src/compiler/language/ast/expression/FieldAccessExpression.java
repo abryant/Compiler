@@ -1,5 +1,6 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.terminal.Name;
 
@@ -24,9 +25,11 @@ public class FieldAccessExpression extends Expression
    * @param qualifier - the qualifier for the field
    * @param superQualifier - true if the qualifier is of the form A.B.super, false otherwise
    * @param name - the name of the field
+   * @param parseInfo - the parsing information
    */
-  public FieldAccessExpression(QName qualifier, boolean superQualifier, Name name)
+  public FieldAccessExpression(QName qualifier, boolean superQualifier, Name name, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.qualifier = qualifier;
     this.superQualifier = superQualifier;
     this.name = name;
@@ -36,9 +39,11 @@ public class FieldAccessExpression extends Expression
    * Creates a new FieldAccessExpression with the specified qualifier and name
    * @param superQualifier - true if the qualifier is super, false if there is no qualifier
    * @param name - the name of the field to access
+   * @param parseInfo - the parsing information
    */
-  public FieldAccessExpression(boolean superQualifier, Name name)
+  public FieldAccessExpression(boolean superQualifier, Name name, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.superQualifier = superQualifier;
     this.name = name;
   }
@@ -47,9 +52,11 @@ public class FieldAccessExpression extends Expression
    * Creates a new FieldAccessExpression with the specified expressionQualifier and name
    * @param expressionQualifier - the expression qualifier for the field
    * @param name - the name of the field
+   * @param parseInfo - the parsing information
    */
-  public FieldAccessExpression(Expression expressionQualifier, Name name)
+  public FieldAccessExpression(Expression expressionQualifier, Name name, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.expressionQualifier = expressionQualifier;
     this.name = name;
   }

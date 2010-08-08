@@ -1,5 +1,7 @@
 package compiler.language.ast.topLevel;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 30 Jun 2010
@@ -12,6 +14,8 @@ package compiler.language.ast.topLevel;
 public class CompilationUnit
 {
 
+  private ParseInfo parseInfo;
+
   private PackageDeclaration packageDeclaration;
   private ImportDeclaration[] imports;
   private TypeDefinition[] types;
@@ -21,9 +25,11 @@ public class CompilationUnit
    * @param packageDeclaration - the package declaration of the compilation unit
    * @param imports - the list of imports of the compilation unit
    * @param types - the list of types declared by the compilation unit
+   * @param parseInfo - the parsing information
    */
-  public CompilationUnit(PackageDeclaration packageDeclaration, ImportDeclaration[] imports, TypeDefinition[] types)
+  public CompilationUnit(PackageDeclaration packageDeclaration, ImportDeclaration[] imports, TypeDefinition[] types, ParseInfo parseInfo)
   {
+    this.parseInfo = parseInfo;
     this.packageDeclaration = packageDeclaration;
     this.imports = imports;
     this.types = types;
@@ -51,6 +57,14 @@ public class CompilationUnit
   public TypeDefinition[] getTypes()
   {
     return types;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
   }
 
   /**

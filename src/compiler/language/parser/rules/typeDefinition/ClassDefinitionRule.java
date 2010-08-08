@@ -11,6 +11,8 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.member.Member;
 import compiler.language.ast.member.MemberHeader;
 import compiler.language.ast.terminal.Name;
@@ -46,12 +48,34 @@ public class ClassDefinitionRule extends Rule
     if (types == PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new ClassDefinition(header.getAccessSpecifier(), header.getModifiers(), (Name) args[2], new TypeArgument[0], (PointerType) args[3], (PointerType[]) args[4], (Member[]) args[6]);
+      Name name = (Name) args[2];
+      PointerType superType = (PointerType) args[3];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> interfaces = (ParseList<PointerType>) args[4];
+      @SuppressWarnings("unchecked")
+      ParseList<Member> members = (ParseList<Member>) args[6];
+      return new ClassDefinition(header.getAccessSpecifier(), header.getModifiers(), name, new TypeArgument[0], superType, interfaces.toArray(new PointerType[0]), members.toArray(new Member[0]),
+                                 ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(),
+                                                   superType != null ? superType.getParseInfo() : null,
+                                                   interfaces.getParseInfo(),
+                                                   (ParseInfo) args[5], members.getParseInfo(), (ParseInfo) args[7]));
     }
     if (types == TYPE_ARGUMENTS_PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new ClassDefinition(header.getAccessSpecifier(), header.getModifiers(), (Name) args[2], (TypeArgument[]) args[3], (PointerType) args[4], (PointerType[]) args[5], (Member[]) args[7]);
+      Name name = (Name) args[2];
+      @SuppressWarnings("unchecked")
+      ParseList<TypeArgument> typeArguments = (ParseList<TypeArgument>) args[3];
+      PointerType superType = (PointerType) args[4];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> interfaces = (ParseList<PointerType>) args[5];
+      @SuppressWarnings("unchecked")
+      ParseList<Member> members = (ParseList<Member>) args[7];
+      return new ClassDefinition(header.getAccessSpecifier(), header.getModifiers(), name, typeArguments.toArray(new TypeArgument[0]), superType, interfaces.toArray(new PointerType[0]), members.toArray(new Member[0]),
+                                 ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(), typeArguments.getParseInfo(),
+                                                   superType != null ? superType.getParseInfo() : null,
+                                                   interfaces.getParseInfo(),
+                                                   (ParseInfo) args[6], members.getParseInfo(), (ParseInfo) args[8]));
     }
     throw badTypeList();
   }

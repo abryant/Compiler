@@ -1,5 +1,7 @@
 package compiler.language.ast.type;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 13 Jul 2010
@@ -16,9 +18,11 @@ public class TupleType extends Type
   /**
    * Creates a new Tuple Type with the specified list of types
    * @param types - the types contained in this tuple type
+   * @param parseInfo - the parsing information
    */
-  public TupleType(Type[] types)
+  public TupleType(Type[] types, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.types = types;
   }
 

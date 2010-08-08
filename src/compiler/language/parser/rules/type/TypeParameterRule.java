@@ -1,6 +1,9 @@
 package compiler.language.parser.rules.type;
 
-import compiler.language.parser.ParseType;
+import static compiler.language.parser.ParseType.NORMAL_TYPE_PARAMETER;
+import static compiler.language.parser.ParseType.TYPE_PARAMETER;
+import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER;
+
 import compiler.parser.Rule;
 
 /*
@@ -13,12 +16,12 @@ import compiler.parser.Rule;
 public class TypeParameterRule extends Rule
 {
 
-  private static final Object[] NORMAL_PRODUCTION = new Object[] {ParseType.NORMAL_TYPE_PARAMETER};
-  private static final Object[] WILDCARD_PRODUCTION = new Object[] {ParseType.WILDCARD_TYPE_PARAMETER};
+  private static final Object[] NORMAL_PRODUCTION = new Object[] {NORMAL_TYPE_PARAMETER};
+  private static final Object[] WILDCARD_PRODUCTION = new Object[] {WILDCARD_TYPE_PARAMETER};
 
   public TypeParameterRule()
   {
-    super(ParseType.TYPE_PARAMETER, NORMAL_PRODUCTION, WILDCARD_PRODUCTION);
+    super(TYPE_PARAMETER, NORMAL_PRODUCTION, WILDCARD_PRODUCTION);
   }
 
   /**

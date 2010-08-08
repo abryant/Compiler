@@ -1,5 +1,6 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
 
 /*
@@ -17,9 +18,11 @@ public class ThisAccessExpression extends Expression
   /**
    * Creates a new ThisAccessExpression with the specified qualifier.
    * @param qualifier - the qualifier for the this expression, or null if no qualifier is specified
+   * @param parseInfo - the parsing information
    */
-  public ThisAccessExpression(QName qualifier)
+  public ThisAccessExpression(QName qualifier, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.qualifier = qualifier;
   }
 

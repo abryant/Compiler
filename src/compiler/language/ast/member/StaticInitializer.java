@@ -1,5 +1,6 @@
 package compiler.language.ast.member;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.statement.Block;
 
 /*
@@ -16,9 +17,11 @@ public class StaticInitializer extends Member
   /**
    * Creates a new static initializer which contains the specified block
    * @param block - the block for this static initializer
+   * @param parseInfo - the parsing information
    */
-  public StaticInitializer(Block block)
+  public StaticInitializer(Block block, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.block = block;
   }
 

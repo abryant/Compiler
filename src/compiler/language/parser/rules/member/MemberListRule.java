@@ -3,6 +3,8 @@ package compiler.language.parser.rules.member;
 import static compiler.language.parser.ParseType.MEMBER;
 import static compiler.language.parser.ParseType.MEMBER_LIST;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.member.Member;
 import compiler.parser.Rule;
 
@@ -32,15 +34,15 @@ public class MemberListRule extends Rule
   {
     if (types == EMPTY_PRODUCTION)
     {
-      return new Member[0];
+      return new ParseList<Member>(null);
     }
     if (types == PRODUCTION)
     {
-      Member[] oldList = (Member[]) args[0];
-      Member[] newList = new Member[oldList.length + 1];
-      System.arraycopy(oldList, 0, newList, 0, oldList.length);
-      newList[oldList.length] = (Member) args[1];
-      return newList;
+      @SuppressWarnings("unchecked")
+      ParseList<Member> list = (ParseList<Member>) args[0];
+      Member member = (Member) args[1];
+      list.addLast(member, ParseInfo.combine(list.getParseInfo(), member.getParseInfo()));
+      return list;
     }
     throw badTypeList();
   }

@@ -1,5 +1,6 @@
 package compiler.language.ast.misc;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.Modifier;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.Type;
@@ -23,9 +24,11 @@ public class SingleArgument extends Argument
    * @param modifiers - the modifiers of this argument
    * @param type - the type of this argument
    * @param name - the name of this argument
+   * @param parseInfo - the parsing information
    */
-  public SingleArgument(Modifier[] modifiers, Type type, Name name)
+  public SingleArgument(Modifier[] modifiers, Type type, Name name, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.modifiers = modifiers;
     this.type = type;
     this.name = name;

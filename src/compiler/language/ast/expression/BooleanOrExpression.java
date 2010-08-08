@@ -1,5 +1,7 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 3 Aug 2010
  */
@@ -10,14 +12,14 @@ package compiler.language.ast.expression;
 public class BooleanOrExpression extends LeftRecursiveExpression
 {
 
-  public BooleanOrExpression(Expression firstExpression, Expression secondExpression)
+  public BooleanOrExpression(Expression firstExpression, Expression secondExpression, ParseInfo parseInfo)
   {
-    super(firstExpression, secondExpression);
+    super(firstExpression, secondExpression, parseInfo);
   }
 
-  public BooleanOrExpression(BooleanOrExpression startExpression, Expression subExpression)
+  public BooleanOrExpression(BooleanOrExpression startExpression, Expression subExpression, ParseInfo parseInfo)
   {
-    super(startExpression, subExpression);
+    super(startExpression, subExpression, parseInfo);
   }
 
   /**

@@ -1,5 +1,7 @@
 package compiler.language.ast.type;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 11 Jul 2010
@@ -18,9 +20,11 @@ public class IntegerType extends PrimitiveType
    * Creates a new integer type with the specified signedness and type length
    * @param signed - whether or not the type was specified to be signed, or null if the signedness was not specified
    * @param typeLength - the length of this integer type
+   * @param parseInfo - the parsing information
    */
-  public IntegerType(Boolean signed, IntegerTypeLength typeLength)
+  public IntegerType(Boolean signed, IntegerTypeLength typeLength, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.signed = signed;
     this.typeLength = typeLength;
   }

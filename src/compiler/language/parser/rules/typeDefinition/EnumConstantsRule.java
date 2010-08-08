@@ -4,6 +4,8 @@ import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.ENUM_CONSTANTS;
 import static compiler.language.parser.ParseType.ENUM_CONSTANT_LIST;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.typeDefinition.EnumConstant;
 import compiler.parser.Rule;
 
@@ -34,12 +36,19 @@ public class EnumConstantsRule extends Rule
   {
     if (types == EMPTY_PRODUCTION)
     {
-      return new EnumConstant[0];
+      return new ParseList<EnumConstant>(null);
     }
-    if (types == PRODUCTION || types == TRAILING_COMMA_PRODUCTION)
+    if (types == PRODUCTION)
     {
-      // in both of these cases the first argument contains an already-build list, so return it
+      // the first argument contains an already-build list, so return it
       return args[0];
+    }
+    if (types == TRAILING_COMMA_PRODUCTION)
+    {
+      @SuppressWarnings("unchecked")
+      ParseList<EnumConstant> list = (ParseList<EnumConstant>) args[0];
+      list.setParseInfo(ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[2]));
+      return list;
     }
     throw badTypeList();
   }

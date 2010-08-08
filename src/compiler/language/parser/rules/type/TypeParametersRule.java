@@ -5,6 +5,9 @@ import static compiler.language.parser.ParseType.RANGLE;
 import static compiler.language.parser.ParseType.TYPE_PARAMETERS;
 import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
+import compiler.language.ast.type.TypeParameter;
 import compiler.parser.Rule;
 
 /*
@@ -32,8 +35,10 @@ public class TypeParametersRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      // the TypeParameter[] result has already been built by the rule for TYPE_PARAMETER_LIST, so just return it
-      return args[1];
+      @SuppressWarnings("unchecked")
+      ParseList<TypeParameter> list = (ParseList<TypeParameter>) args[1];
+      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
+      return list;
     }
     throw badTypeList();
   }

@@ -1,5 +1,7 @@
 package compiler.language.ast.type;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 11 Jul 2010
@@ -16,9 +18,11 @@ public class FloatingType extends PrimitiveType
   /**
    * Creates a new Floating type with the specified length
    * @param typeLength - the length of the type
+   * @param parseInfo - the parsing information
    */
-  public FloatingType(FloatingTypeLength typeLength)
+  public FloatingType(FloatingTypeLength typeLength, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.typeLength = typeLength;
   }
 

@@ -7,6 +7,8 @@ import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.THROWS_CLAUSE;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.member.Constructor;
 import compiler.language.ast.member.MemberHeader;
 import compiler.language.ast.misc.ArgumentList;
@@ -41,7 +43,14 @@ public class ConstructorRule extends Rule
     if (types == PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new Constructor(header.getAccessSpecifier(), header.getModifiers(), (Name) args[1], (ArgumentList) args[2], (PointerType[]) args[3], (Block) args[4]);
+      Name name = (Name) args[1];
+      ArgumentList arguments = (ArgumentList) args[2];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> throwsClause = (ParseList<PointerType>) args[3];
+      Block block = (Block) args[4];
+      return new Constructor(header.getAccessSpecifier(), header.getModifiers(),
+                             name, arguments, throwsClause.toArray(new PointerType[0]), block,
+                             ParseInfo.combine(header.getParseInfo(), name.getParseInfo(), arguments.getParseInfo(), throwsClause.getParseInfo(), block.getParseInfo()));
     }
     throw badTypeList();
   }

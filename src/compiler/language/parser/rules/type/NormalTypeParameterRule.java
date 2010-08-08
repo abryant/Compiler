@@ -32,7 +32,8 @@ public class NormalTypeParameterRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new NormalTypeParameter((Type) args[0]);
+      Type type = (Type) args[0];
+      return new NormalTypeParameter(type, type.getParseInfo());
     }
     throw badTypeList();
   }

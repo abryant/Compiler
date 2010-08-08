@@ -4,6 +4,8 @@ import static compiler.language.parser.ParseType.CLASS_EXTENDS_CLAUSE;
 import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
 import static compiler.language.parser.ParseType.POINTER_TYPE;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.type.PointerType;
 import compiler.parser.Rule;
 
 /*
@@ -36,7 +38,9 @@ public class ClassExtendsClauseRule extends Rule
     }
     if (types == PRODUCTION)
     {
-      return args[1];
+      PointerType type = (PointerType) args[1];
+      type.setParseInfo(ParseInfo.combine((ParseInfo) args[0], type.getParseInfo()));
+      return type;
     }
     throw badTypeList();
   }

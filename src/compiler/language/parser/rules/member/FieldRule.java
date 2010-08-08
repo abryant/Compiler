@@ -8,6 +8,8 @@ import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.TYPE;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.member.Field;
 import compiler.language.ast.member.MemberHeader;
@@ -42,12 +44,21 @@ public class FieldRule extends Rule
     if (types == DECLARE_PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new Field(header.getAccessSpecifier(), header.getModifiers(), (Type) args[1], (Assignee[]) args[2]);
+      Type type = (Type) args[1];
+      @SuppressWarnings("unchecked")
+      ParseList<Assignee> assignees = (ParseList<Assignee>) args[2];
+      return new Field(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new Assignee[0]),
+                       ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[3]));
     }
     if (types == ASSIGN_PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
-      return new Field(header.getAccessSpecifier(), header.getModifiers(), (Type) args[1], (Assignee[]) args[2], (Expression) args[4]);
+      Type type = (Type) args[1];
+      @SuppressWarnings("unchecked")
+      ParseList<Assignee> assignees = (ParseList<Assignee>) args[2];
+      Expression expression = (Expression) args[4];
+      return new Field(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new Assignee[0]), expression,
+                       ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[3], expression.getParseInfo(), (ParseInfo) args[5]));
     }
     throw badTypeList();
   }

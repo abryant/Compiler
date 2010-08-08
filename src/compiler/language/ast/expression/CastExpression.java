@@ -1,5 +1,6 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.Type;
 
 /*
@@ -19,9 +20,11 @@ public class CastExpression extends Expression
    * Creates a new CastExpression to cast the specified subExpression to the specified type
    * @param type - the type to case the subExpression to
    * @param subExpression - the subExpression to cast to the specified type
+   * @param parseInfo - the parsing information
    */
-  public CastExpression(Type type, Expression subExpression)
+  public CastExpression(Type type, Expression subExpression, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.type = type;
     this.subExpression = subExpression;
   }

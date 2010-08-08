@@ -5,6 +5,7 @@ import static compiler.language.parser.ParseType.IMPORT_DECLARATION;
 import static compiler.language.parser.ParseType.PACKAGE_DECLARATION;
 import static compiler.language.parser.ParseType.TYPE_DEFINITION;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.topLevel.CompilationUnit;
 import compiler.language.ast.topLevel.ImportDeclaration;
 import compiler.language.ast.topLevel.PackageDeclaration;
@@ -38,7 +39,7 @@ public class CompilationUnitRule extends Rule
   {
     if (types == EMPTY_PRODUCTION)
     {
-      return new CompilationUnit(null, new ImportDeclaration[0], new TypeDefinition[0]);
+      return new CompilationUnit(null, new ImportDeclaration[0], new TypeDefinition[0], null);
     }
     if (types == PACKAGE_PRODUCTION)
     {
@@ -57,7 +58,8 @@ public class CompilationUnitRule extends Rule
       {
         throw new IllegalStateException("Package must be specified before types.");
       }
-      return new CompilationUnit((PackageDeclaration) args[1], imports, typeDefinitions);
+      PackageDeclaration packageDeclaration = (PackageDeclaration) args[1];
+      return new CompilationUnit(packageDeclaration, imports, typeDefinitions, ParseInfo.combine(oldUnit.getParseInfo(), packageDeclaration.getParseInfo()));
     }
     if (types == IMPORT_PRODUCTION)
     {
@@ -70,8 +72,9 @@ public class CompilationUnitRule extends Rule
       ImportDeclaration[] oldImports = oldUnit.getImports();
       ImportDeclaration[] newImports = new ImportDeclaration[oldImports.length + 1];
       System.arraycopy(oldImports, 0, newImports, 0, oldImports.length);
-      newImports[oldImports.length] = (ImportDeclaration) args[1];
-      return new CompilationUnit(oldUnit.getPackageDeclaration(), newImports, typeDefinitions);
+      ImportDeclaration newImport = (ImportDeclaration) args[1];
+      newImports[oldImports.length] = newImport;
+      return new CompilationUnit(oldUnit.getPackageDeclaration(), newImports, typeDefinitions, ParseInfo.combine(oldUnit.getParseInfo(), newImport.getParseInfo()));
     }
     if (types == TYPE_DEFINITION_PRODUCTION)
     {
@@ -79,8 +82,9 @@ public class CompilationUnitRule extends Rule
       TypeDefinition[] oldTypes = oldUnit.getTypes();
       TypeDefinition[] newTypes = new TypeDefinition[oldTypes.length + 1];
       System.arraycopy(oldTypes, 0, newTypes, 0, oldTypes.length);
-      newTypes[oldTypes.length] = (TypeDefinition) args[1];
-      return new CompilationUnit(oldUnit.getPackageDeclaration(), oldUnit.getImports(), newTypes);
+      TypeDefinition newType = (TypeDefinition) args[1];
+      newTypes[oldTypes.length] = newType;
+      return new CompilationUnit(oldUnit.getPackageDeclaration(), oldUnit.getImports(), newTypes, ParseInfo.combine(oldUnit.getParseInfo(), newType.getParseInfo()));
     }
     throw badTypeList();
   }

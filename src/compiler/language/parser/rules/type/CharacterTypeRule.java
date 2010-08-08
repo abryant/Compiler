@@ -3,6 +3,7 @@ package compiler.language.parser.rules.type;
 import static compiler.language.parser.ParseType.CHARACTER_KEYWORD;
 import static compiler.language.parser.ParseType.CHARACTER_TYPE;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.CharacterType;
 import compiler.parser.Rule;
 
@@ -31,7 +32,7 @@ public class CharacterTypeRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new CharacterType();
+      return new CharacterType((ParseInfo) args[0]);
     }
     throw badTypeList();
   }

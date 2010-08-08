@@ -4,6 +4,8 @@ import static compiler.language.parser.ParseType.ENUM_CONSTANT;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PARAMETERS;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.Parameter;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.typeDefinition.EnumConstant;
@@ -35,11 +37,15 @@ public class EnumConstantRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new EnumConstant((Name) args[0], new Parameter[0]);
+      Name name = (Name) args[0];
+      return new EnumConstant(name, new Parameter[0], name.getParseInfo());
     }
     if (types == PARAMETERS_PRODUCTION)
     {
-      return new EnumConstant((Name) args[0], (Parameter[]) args[1]);
+      Name name = (Name) args[0];
+      @SuppressWarnings("unchecked")
+      ParseList<Parameter> parameters = (ParseList<Parameter>) args[1];
+      return new EnumConstant(name, parameters.toArray(new Parameter[0]), ParseInfo.combine(name.getParseInfo(), parameters.getParseInfo()));
     }
     throw badTypeList();
   }

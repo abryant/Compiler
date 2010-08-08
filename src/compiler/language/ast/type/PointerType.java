@@ -1,5 +1,6 @@
 package compiler.language.ast.type;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
 
 /*
@@ -21,9 +22,11 @@ public class PointerType extends Type
    * @param typeName - the name of the type
    * @param immutable - true if this type should be immutable, false otherwise
    * @param typeParameters - the type parameters for this pointer type
+   * @param parseInfo - the parsing information
    */
-  public PointerType(QName typeName, boolean immutable, TypeParameter[] typeParameters)
+  public PointerType(QName typeName, boolean immutable, TypeParameter[] typeParameters, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.typeName = typeName;
     this.immutable = immutable;
     this.typeParameters = typeParameters;

@@ -1,5 +1,6 @@
 package compiler.language.ast.typeDefinition;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.Parameter;
 import compiler.language.ast.terminal.Name;
 
@@ -13,6 +14,8 @@ import compiler.language.ast.terminal.Name;
 public class EnumConstant
 {
 
+  private ParseInfo parseInfo;
+
   private Name name;
   private Parameter[] parameters;
 
@@ -20,9 +23,11 @@ public class EnumConstant
    * Creates a new Enum Constant with the specified name and parameters
    * @param name - the name of the constant
    * @param parameters - the parameters to be passed into the enum's constructor
+   * @param parseInfo - the parsing information
    */
-  public EnumConstant(Name name, Parameter[] parameters)
+  public EnumConstant(Name name, Parameter[] parameters, ParseInfo parseInfo)
   {
+    this.parseInfo = parseInfo;
     this.name = name;
     this.parameters = parameters;
   }
@@ -41,6 +46,14 @@ public class EnumConstant
   public Parameter[] getParameters()
   {
     return parameters;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
   }
 
   /**

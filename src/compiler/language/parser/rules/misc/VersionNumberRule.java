@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.DOT;
 import static compiler.language.parser.ParseType.INTEGER_LITERAL;
 import static compiler.language.parser.ParseType.VERSION_NUMBER;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.VersionNumber;
 import compiler.language.ast.terminal.IntegerLiteral;
 import compiler.parser.Rule;
@@ -34,15 +35,18 @@ public class VersionNumberRule extends Rule
   {
     if (types == START_PRODUCTION)
     {
-      return new VersionNumber(new IntegerLiteral[] {(IntegerLiteral) args[0]});
+      IntegerLiteral literal = (IntegerLiteral) args[0];
+      return new VersionNumber(new IntegerLiteral[] {literal}, literal.getParseInfo());
     }
     if (types == CONTINUATION_PRODUCTION)
     {
-      IntegerLiteral[] oldList = ((VersionNumber) args[0]).getVersionParts();
+      VersionNumber oldNumber = (VersionNumber) args[0];
+      IntegerLiteral[] oldList = oldNumber.getVersionParts();
       IntegerLiteral[] newList = new IntegerLiteral[oldList.length + 1];
       System.arraycopy(oldList, 0, newList, 0, oldList.length);
-      newList[oldList.length] = (IntegerLiteral) args[2];
-      return new VersionNumber(newList);
+      IntegerLiteral literal = (IntegerLiteral) args[2];
+      newList[oldList.length] = literal;
+      return new VersionNumber(newList, ParseInfo.combine(oldNumber.getParseInfo(), (ParseInfo) args[1], literal.getParseInfo()));
     }
     throw badTypeList();
   }

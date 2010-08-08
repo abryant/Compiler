@@ -12,7 +12,9 @@ import static compiler.language.parser.ParseType.SYNCHRONIZED_KEYWORD;
 import static compiler.language.parser.ParseType.TRANSIENT_KEYWORD;
 import static compiler.language.parser.ParseType.VOLATILE_KEYWORD;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.Modifier;
+import compiler.language.ast.member.ModifierType;
 import compiler.parser.Rule;
 
 /*
@@ -50,35 +52,35 @@ public class ModifierRule extends Rule
   {
     if (types == STATIC_PRODUCTION)
     {
-      return Modifier.STATIC;
+      return new Modifier(ModifierType.STATIC, (ParseInfo) args[0]);
     }
     if (types == ABSTRACT_PRODUCTION)
     {
-      return Modifier.ABSTRACT;
+      return new Modifier(ModifierType.ABSTRACT, (ParseInfo) args[0]);
     }
     if (types == FINAL_PRODUCTION)
     {
-      return Modifier.FINAL;
+      return new Modifier(ModifierType.FINAL, (ParseInfo) args[0]);
     }
     if (types == MUTABLE_PRODUCTION)
     {
-      return Modifier.MUTABLE;
+      return new Modifier(ModifierType.MUTABLE, (ParseInfo) args[0]);
     }
     if (types == IMMUTABLE_PRODUCTION)
     {
-      return Modifier.IMMUTABLE;
+      return new Modifier(ModifierType.IMMUTABLE, (ParseInfo) args[0]);
     }
     if (types == SYNCHRONIZED_PRODUCTION)
     {
-      return Modifier.SYNCHRONIZED;
+      return new Modifier(ModifierType.SYNCHRONIZED, (ParseInfo) args[0]);
     }
     if (types == TRANSIENT_PRODUCTION)
     {
-      return Modifier.TRANSIENT;
+      return new Modifier(ModifierType.TRANSIENT, (ParseInfo) args[0]);
     }
     if (types == VOLATILE_PRODUCTION)
     {
-      return Modifier.VOLATILE;
+      return new Modifier(ModifierType.VOLATILE, (ParseInfo) args[0]);
     }
     if (types == NATIVE_SPECIFIER_PRODUCTION || types == SINCE_SPECIFIER_PRODUCTION)
     {

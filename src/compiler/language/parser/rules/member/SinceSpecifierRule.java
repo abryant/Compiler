@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.SINCE_KEYWORD;
 import static compiler.language.parser.ParseType.SINCE_SPECIFIER;
 import static compiler.language.parser.ParseType.VERSION_NUMBER;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.SinceSpecifier;
 import compiler.language.ast.misc.VersionNumber;
 import compiler.parser.Rule;
@@ -35,7 +36,8 @@ public class SinceSpecifierRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new SinceSpecifier((VersionNumber) args[2]);
+      VersionNumber version = (VersionNumber) args[2];
+      return new SinceSpecifier(version, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], version.getParseInfo(), (ParseInfo) args[3]));
     }
     throw badTypeList();
   }

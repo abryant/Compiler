@@ -1,5 +1,6 @@
 package compiler.language.ast.member;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.terminal.Name;
@@ -32,9 +33,11 @@ public class Property extends Member
    * @param assignBlock - the assigner block for the property
    * @param retrieveAccess - the access specifier of the retriever
    * @param retrieveBlock - the retriever block for the property
+   * @param parseInfo - the parsing information
    */
-  public Property(Type type, Name name, Expression expression, AccessSpecifier assignAccess, Block assignBlock, AccessSpecifier retrieveAccess, Block retrieveBlock)
+  public Property(Type type, Name name, Expression expression, AccessSpecifier assignAccess, Block assignBlock, AccessSpecifier retrieveAccess, Block retrieveBlock, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.type = type;
     this.name = name;
     this.expression = expression;

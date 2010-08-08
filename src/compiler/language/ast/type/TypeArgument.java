@@ -1,5 +1,6 @@
 package compiler.language.ast.type;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.Name;
 
 /*
@@ -12,6 +13,8 @@ import compiler.language.ast.terminal.Name;
 public class TypeArgument
 {
 
+  private ParseInfo parseInfo;
+
   private Name name;
   private PointerType superType; // the type that this type argument extends
   private PointerType subType;   // the type that this type argument is a superclass of
@@ -21,9 +24,11 @@ public class TypeArgument
    * @param name - the name of this type argument
    * @param superType - the type that this argument must extend
    * @param subType - the type that this argument must be a superclass of
+   * @param parseInfo - the parsing information
    */
-  public TypeArgument(Name name, PointerType superType, PointerType subType)
+  public TypeArgument(Name name, PointerType superType, PointerType subType, ParseInfo parseInfo)
   {
+    this.parseInfo = parseInfo;
     this.name = name;
     this.superType = superType;
     this.subType = subType;
@@ -51,6 +56,14 @@ public class TypeArgument
   public PointerType getSubType()
   {
     return subType;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
   }
 
   /**

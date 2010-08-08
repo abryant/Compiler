@@ -5,6 +5,8 @@ import static compiler.language.parser.ParseType.PARAMETERS;
 import static compiler.language.parser.ParseType.PARAMETER_LIST;
 import static compiler.language.parser.ParseType.RPAREN;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.Parameter;
 import compiler.parser.Rule;
 
@@ -34,12 +36,14 @@ public class ParametersRule extends Rule
   {
     if (types == EMPTY_PRODUCTION)
     {
-      return new Parameter[0];
+      return new ParseList<Parameter>(ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (types == PRODUCTION)
     {
-      // the list of parameters has already been built for us by the PARAMETER_LIST rule, so return it
-      return args[1];
+      @SuppressWarnings("unchecked")
+      ParseList<Parameter> list = (ParseList<Parameter>) args[1];
+      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
+      return list;
     }
     throw badTypeList();
   }

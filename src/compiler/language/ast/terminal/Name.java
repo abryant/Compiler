@@ -1,5 +1,7 @@
 package compiler.language.ast.terminal;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 30 Jun 2010
  */
@@ -7,21 +9,21 @@ package compiler.language.ast.terminal;
 /**
  * @author Anthony Bryant
  */
-public class Name extends Terminal
+public class Name
 {
+
+  private ParseInfo parseInfo;
 
   private String name;
 
   /**
    * Creates a Name with the specified text and position in the file
    * @param name - the text of the name
-   * @param line - the line number
-   * @param startPos - the starting position of the Name on the specified line
-   * @param length - the length of the name
+   * @param parseInfo - the parsing information
    */
-  public Name(String name, int line, int startPos, int length)
+  public Name(String name, ParseInfo parseInfo)
   {
-    super(line, startPos, length);
+    this.parseInfo = parseInfo;
     this.name = name;
   }
 
@@ -31,6 +33,14 @@ public class Name extends Terminal
   public String getName()
   {
     return name;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
   }
 
   /**

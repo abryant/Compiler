@@ -5,6 +5,7 @@ import static compiler.language.parser.ParseType.PACKAGE_KEYWORD;
 import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.topLevel.PackageDeclaration;
 import compiler.parser.Rule;
@@ -34,7 +35,8 @@ public class PackageDeclarationRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new PackageDeclaration((QName) args[1]);
+      QName qname = (QName) args[1];
+      return new PackageDeclaration(qname, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

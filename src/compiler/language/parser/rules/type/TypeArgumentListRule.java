@@ -4,6 +4,8 @@ import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENT;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENT_LIST;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.type.TypeArgument;
 import compiler.parser.Rule;
 
@@ -33,15 +35,16 @@ public class TypeArgumentListRule extends Rule
   {
     if (types == START_PRODUCTION)
     {
-      return new TypeArgument[] {(TypeArgument) args[0]};
+      TypeArgument typeArgument = (TypeArgument) args[0];
+      return new ParseList<TypeArgument>(typeArgument, typeArgument.getParseInfo());
     }
     if (types == CONTINUATION_PRODUCTION)
     {
-      TypeArgument[] oldList = (TypeArgument[]) args[0];
-      TypeArgument[] newList = new TypeArgument[oldList.length + 1];
-      System.arraycopy(oldList, 0, newList, 0, oldList.length);
-      newList[oldList.length] = (TypeArgument) args[2];
-      return newList;
+      @SuppressWarnings("unchecked")
+      ParseList<TypeArgument> list = (ParseList<TypeArgument>) args[0];
+      TypeArgument newTypeArgument = (TypeArgument) args[2];
+      list.addLast(newTypeArgument, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], newTypeArgument.getParseInfo()));
+      return list;
     }
     throw badTypeList();
   }

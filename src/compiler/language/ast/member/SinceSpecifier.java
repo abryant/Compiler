@@ -1,5 +1,6 @@
 package compiler.language.ast.member;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.VersionNumber;
 
 /*
@@ -17,10 +18,11 @@ public class SinceSpecifier extends Modifier
   /**
    * Creates a new SinceSpecifier with the specified parts of the version number.
    * @param version - the version number associated with this since specifier
+   * @param parseInfo - the parsing information
    */
-  public SinceSpecifier(VersionNumber version)
+  public SinceSpecifier(VersionNumber version, ParseInfo parseInfo)
   {
-    super("since(" + version + ")");
+    super(ModifierType.SINCE_SPECIFIER, parseInfo);
     this.version = version;
   }
 
@@ -30,6 +32,16 @@ public class SinceSpecifier extends Modifier
   public VersionNumber getVersion()
   {
     return version;
+  }
+
+  /**
+   * {@inheritDoc}
+   * @see compiler.language.ast.member.Modifier#toString()
+   */
+  @Override
+  public String toString()
+  {
+    return "since(" + version + ")";
   }
 
 }

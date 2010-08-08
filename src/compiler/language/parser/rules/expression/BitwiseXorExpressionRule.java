@@ -1,5 +1,6 @@
 package compiler.language.parser.rules.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BitwiseXorExpression;
 import compiler.language.ast.expression.Expression;
 import compiler.language.parser.ParseType;
@@ -37,12 +38,15 @@ public class BitwiseXorExpressionRule extends Rule
     }
     if (types == CONTINUATION_PRODUCTION)
     {
+      Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BitwiseXorExpression)
       {
-        // continue the current bitwise xor if we've already started one
-        return new BitwiseXorExpression((BitwiseXorExpression) args[0], (Expression) args[2]);
+        // continue the current BitwiseXorExpression if we've already started one
+        BitwiseXorExpression startExpression = (BitwiseXorExpression) args[0];
+        return new BitwiseXorExpression(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
       }
-      return new BitwiseXorExpression((Expression) args[0], (Expression) args[2]);
+      Expression firstExpression = (Expression) args[0];
+      return new BitwiseXorExpression(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     throw badTypeList();
   }

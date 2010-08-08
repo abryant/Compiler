@@ -1,5 +1,6 @@
 package compiler.language.ast.misc;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.terminal.Name;
 
@@ -20,9 +21,11 @@ public class DefaultParameter extends Parameter
    * Creates a new default parameter with the specified name and expression.
    * @param name - the name of the default parameter
    * @param expression - the expression for the default parameter
+   * @param parseInfo - the parsing information
    */
-  public DefaultParameter(Name name, Expression expression)
+  public DefaultParameter(Name name, Expression expression, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.name = name;
     this.expression = expression;
   }

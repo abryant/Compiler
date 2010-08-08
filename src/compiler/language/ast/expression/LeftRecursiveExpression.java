@@ -1,5 +1,7 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 3 Aug 2010
  */
@@ -18,9 +20,11 @@ public abstract class LeftRecursiveExpression extends Expression
    * Creates a new LeftRecursiveExpression with the specified initial subExpressions
    * @param firstExpression - the first sub expression of this LeftRecursiveExpression
    * @param secondExpression - the second sub expression of this LeftRecursiveExpression
+   * @param parseInfo - the parsing information
    */
-  public LeftRecursiveExpression(Expression firstExpression, Expression secondExpression)
+  public LeftRecursiveExpression(Expression firstExpression, Expression secondExpression, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.subExpressions = new Expression[] {firstExpression, secondExpression};
   }
 
@@ -28,9 +32,11 @@ public abstract class LeftRecursiveExpression extends Expression
    * Creates a new LeftRecursiveExpression from all of the sub expressions in startExpression plus a new subExpression
    * @param startExpression - the existing LeftRecursiveExpression to take subExpressions from
    * @param subExpression - the new sub expression for this LeftRecursiveExpression
+   * @param parseInfo - the parsing information
    */
-  public LeftRecursiveExpression(LeftRecursiveExpression startExpression, Expression subExpression)
+  public LeftRecursiveExpression(LeftRecursiveExpression startExpression, Expression subExpression, ParseInfo parseInfo)
   {
+    super(parseInfo);
     Expression[] oldList = startExpression.getSubExpressions();
     subExpressions = new Expression[oldList.length + 1];
     System.arraycopy(oldList, 0, subExpressions, 0, oldList.length);

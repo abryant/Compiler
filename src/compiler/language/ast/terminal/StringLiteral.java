@@ -1,5 +1,7 @@
 package compiler.language.ast.terminal;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 5 Aug 2010
  */
@@ -7,22 +9,38 @@ package compiler.language.ast.terminal;
 /**
  * @author Anthony Bryant
  */
-public class StringLiteral extends Terminal
+public class StringLiteral
 {
+
+  private ParseInfo parseInfo;
 
   private String literal;
 
   /**
    * Creates a new String literal with the specified value
    * @param literal - the value of the string literal
-   * @param line - the line number of the token
-   * @param startPos - the start position of the token
-   * @param length - the length of the token
+   * @param parseInfo - the parsing information
    */
-  public StringLiteral(String literal, int line, int startPos, int length)
+  public StringLiteral(String literal, ParseInfo parseInfo)
   {
-    super(line, startPos, length);
+    this.parseInfo = parseInfo;
     this.literal = literal;
+  }
+
+  /**
+   * @return the literal string
+   */
+  public String getLiteral()
+  {
+    return literal;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
   }
 
   /**

@@ -1,5 +1,6 @@
 package compiler.language.ast.typeDefinition;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.Member;
 import compiler.language.ast.member.Modifier;
@@ -34,9 +35,11 @@ public class ClassDefinition extends TypeDefinition
    * @param baseClass - the base class of this class
    * @param interfaces - the list of interfaces that this class implements
    * @param members - the list of members of this class
+   * @param parseInfo - the parsing information
    */
-  public ClassDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, TypeArgument[] typeArguments, PointerType baseClass, PointerType[] interfaces, Member[] members)
+  public ClassDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, TypeArgument[] typeArguments, PointerType baseClass, PointerType[] interfaces, Member[] members, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.access = access;
     this.modifiers = modifiers;
     this.name = name;

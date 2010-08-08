@@ -1,5 +1,7 @@
 package compiler.language.ast.type;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 11 Jul 2010
@@ -10,7 +12,15 @@ package compiler.language.ast.type;
  */
 public class VoidType extends Type
 {
-  // stores nothing (yet), but instances represent the void type
+
+  /**
+   * Creates a new VoidType with the specified ParseInfo
+   * @param parseInfo - the parsing information
+   */
+  public VoidType(ParseInfo parseInfo)
+  {
+    super(parseInfo);
+  }
 
   /**
    * @see java.lang.Object#toString()

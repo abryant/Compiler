@@ -6,7 +6,9 @@ import static compiler.language.parser.ParseType.PRIVATE_KEYWORD;
 import static compiler.language.parser.ParseType.PROTECTED_KEYWORD;
 import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.AccessSpecifier;
+import compiler.language.ast.member.AccessSpecifierType;
 import compiler.parser.Rule;
 
 /*
@@ -45,23 +47,23 @@ public class AccessSpecifierRule extends Rule
     }
     if (types == PUBLIC_PRODUCTION)
     {
-      return AccessSpecifier.PUBLIC;
+      return new AccessSpecifier(AccessSpecifierType.PUBLIC, (ParseInfo) args[0]);
     }
     if (types == PACKAGE_PRODUCTION)
     {
-      return AccessSpecifier.PACKAGE;
+      return new AccessSpecifier(AccessSpecifierType.PACKAGE, (ParseInfo) args[0]);
     }
     if (types == PACKAGE_PROTECTED_PRODUCTION || types == PROTECTED_PACKAGE_PRODUCTION)
     {
-      return AccessSpecifier.PACKAGE_PROTECTED;
+      return new AccessSpecifier(AccessSpecifierType.PACKAGE_PROTECTED, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (types == PROTECTED_PRODUCTION)
     {
-      return AccessSpecifier.PROTECTED;
+      return new AccessSpecifier(AccessSpecifierType.PROTECTED, (ParseInfo) args[0]);
     }
     if (types == PRIVATE_PRODUCTION)
     {
-      return AccessSpecifier.PRIVATE;
+      return new AccessSpecifier(AccessSpecifierType.PRIVATE, (ParseInfo) args[0]);
     }
     throw badTypeList();
   }

@@ -1,5 +1,6 @@
 package compiler.language.ast.typeDefinition;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.Member;
 import compiler.language.ast.member.Modifier;
@@ -33,9 +34,11 @@ public class InterfaceDefinition extends TypeDefinition
    * @param typeArguments - the type arguments to this interface
    * @param parentInterfaces - the list of interfaces that this interface extends
    * @param members - the list of members of this interface
+   * @param parseInfo - the parsing information
    */
-  public InterfaceDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, TypeArgument[] typeArguments, PointerType[] parentInterfaces, Member[] members)
+  public InterfaceDefinition(AccessSpecifier access, Modifier[] modifiers, Name name, TypeArgument[] typeArguments, PointerType[] parentInterfaces, Member[] members, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.access = access;
     this.modifiers = modifiers;
     this.name = name;

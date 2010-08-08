@@ -1,5 +1,6 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.ArgumentList;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.type.Type;
@@ -23,9 +24,11 @@ public class ClosureCreationExpression extends Expression
    * @param returnType - the return type of the closure
    * @param arguments - the arguments to the closure
    * @param block - the block containing the closure's statements
+   * @param parseInfo - the parsing information
    */
-  public ClosureCreationExpression(Type returnType, ArgumentList arguments, Block block)
+  public ClosureCreationExpression(Type returnType, ArgumentList arguments, Block block, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.returnType = returnType;
     this.arguments = arguments;
     this.block = block;

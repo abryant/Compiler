@@ -1,5 +1,7 @@
 package compiler.language.ast.statement;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 8 Jul 2010
  */
@@ -10,5 +12,24 @@ package compiler.language.ast.statement;
  */
 public abstract class Statement
 {
-  // no methods or fields
+
+  private ParseInfo parseInfo;
+
+  /**
+   * Creates a new Statement with the specified ParseInfo
+   * @param parseInfo - the parsing information
+   */
+  public Statement(ParseInfo parseInfo)
+  {
+    this.parseInfo = parseInfo;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
+  }
+
 }

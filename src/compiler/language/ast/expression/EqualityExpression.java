@@ -1,5 +1,7 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 3 Aug 2010
  */
@@ -12,15 +14,15 @@ public class EqualityExpression extends LeftRecursiveExpression
 
   private EqualityExpressionType[] separatorTypes;
 
-  public EqualityExpression(Expression firstExpression, EqualityExpressionType separator, Expression secondExpression)
+  public EqualityExpression(Expression firstExpression, EqualityExpressionType separator, Expression secondExpression, ParseInfo parseInfo)
   {
-    super(firstExpression, secondExpression);
+    super(firstExpression, secondExpression, parseInfo);
     separatorTypes = new EqualityExpressionType[] {separator};
   }
 
-  public EqualityExpression(EqualityExpression startExpression, EqualityExpressionType separator, Expression subExpression)
+  public EqualityExpression(EqualityExpression startExpression, EqualityExpressionType separator, Expression subExpression, ParseInfo parseInfo)
   {
-    super(startExpression, subExpression);
+    super(startExpression, subExpression, parseInfo);
     EqualityExpressionType[] oldList = startExpression.getSeparatorTypes();
     separatorTypes = new EqualityExpressionType[oldList.length];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);

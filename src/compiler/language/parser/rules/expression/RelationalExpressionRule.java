@@ -1,5 +1,6 @@
 package compiler.language.parser.rules.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.InstanceOfExpression;
 import compiler.language.ast.expression.RelationalExpression;
@@ -45,7 +46,9 @@ public class RelationalExpressionRule extends Rule
     }
     if (types == INSTANCE_OF_PRODUCTION)
     {
-      return new InstanceOfExpression((Expression) args[0], (Type) args[2]);
+      Expression expression = (Expression) args[0];
+      Type type = (Type) args[2];
+      return new InstanceOfExpression(expression, type, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1], type.getParseInfo()));
     }
 
     // the only remaining productions are RelationalExpression productions
@@ -71,7 +74,9 @@ public class RelationalExpressionRule extends Rule
       throw badTypeList();
     }
 
-    return new RelationalExpression((Expression) args[0], separator, (Expression) args[2]);
+    Expression firstExpression = (Expression) args[0];
+    Expression lastExpression = (Expression) args[2];
+    return new RelationalExpression(firstExpression, separator, lastExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], lastExpression.getParseInfo()));
   }
 
 }

@@ -1,5 +1,6 @@
 package compiler.language.parser.rules.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.EqualityExpression;
 import compiler.language.ast.expression.EqualityExpressionType;
 import compiler.language.ast.expression.Expression;
@@ -55,10 +56,12 @@ public class EqualityExpressionRule extends Rule
 
     if (args[0] instanceof EqualityExpression)
     {
-      // continue the current equality expression if we've started one
-      return new EqualityExpression((EqualityExpression) args[0], separator, newExpression);
+      // continue the current EqualityExpression if we've started one
+      EqualityExpression startExpression = (EqualityExpression) args[0];
+      return new EqualityExpression(startExpression, separator, newExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], newExpression.getParseInfo()));
     }
-    return new EqualityExpression((Expression) args[0], separator, newExpression);
+    Expression firstExpression = (Expression) args[0];
+    return new EqualityExpression(firstExpression, separator, newExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], newExpression.getParseInfo()));
   }
 
 }

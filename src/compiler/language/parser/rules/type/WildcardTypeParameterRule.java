@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.QUESTION_MARK;
 import static compiler.language.parser.ParseType.SUPER_KEYWORD;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.WildcardTypeParameter;
 import compiler.parser.Rule;
@@ -39,23 +40,29 @@ public class WildcardTypeParameterRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new WildcardTypeParameter(null, null);
+      return new WildcardTypeParameter(null, null, (ParseInfo) args[0]);
     }
     if (types == EXTENDS_PRODUCTION)
     {
-      return new WildcardTypeParameter((PointerType) args[2], null);
+      PointerType superType = (PointerType) args[2];
+      return new WildcardTypeParameter(superType, null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo()));
     }
     if (types == SUPER_PRODUCTION)
     {
-      return new WildcardTypeParameter(null, (PointerType) args[2]);
+      PointerType subType = (PointerType) args[2];
+      return new WildcardTypeParameter(null, subType, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo()));
     }
     if (types == EXTENDS_SUPER_PRODUCTION)
     {
-      return new WildcardTypeParameter((PointerType) args[2], (PointerType) args[4]);
+      PointerType superType = (PointerType) args[2];
+      PointerType subType = (PointerType) args[4];
+      return new WildcardTypeParameter(superType, subType, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo(), (ParseInfo) args[3], subType.getParseInfo()));
     }
     if (types == SUPER_EXTENDS_PRODUCTION)
     {
-      return new WildcardTypeParameter((PointerType) args[4], (PointerType) args[2]);
+      PointerType subType = (PointerType) args[2];
+      PointerType superType = (PointerType) args[4];
+      return new WildcardTypeParameter(superType, subType, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo(), (ParseInfo) args[3], superType.getParseInfo()));
     }
     throw badTypeList();
   }

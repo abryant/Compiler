@@ -1,5 +1,6 @@
 package compiler.language.parser.rules.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BitwiseAndExpression;
 import compiler.language.ast.expression.Expression;
 import compiler.language.parser.ParseType;
@@ -37,12 +38,15 @@ public class BitwiseAndExpressionRule extends Rule
     }
     if (types == CONTINUATION_PRODUCTION)
     {
+      Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BitwiseAndExpression)
       {
-        // continue the current bitwise and if we've already started one
-        return new BitwiseAndExpression((BitwiseAndExpression) args[0], (Expression) args[2]);
+        // continue the current BitwiseAndExpression if we've already started one
+        BitwiseAndExpression startExpression = (BitwiseAndExpression) args[0];
+        return new BitwiseAndExpression(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
       }
-      return new BitwiseAndExpression((Expression) args[0], (Expression) args[2]);
+      Expression firstExpression = (Expression) args[0];
+      return new BitwiseAndExpression(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     throw badTypeList();
   }

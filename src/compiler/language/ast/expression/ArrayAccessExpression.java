@@ -1,5 +1,7 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 3 Aug 2010
  */
@@ -17,9 +19,11 @@ public class ArrayAccessExpression extends Expression
    * Creates a new ArrayAccessExpression with the specified array and index expressions
    * @param arrayExpression - the expression for the array that is being accessed
    * @param indexExpression - the expression for the index into the array
+   * @param parseInfo - the parsing information
    */
-  public ArrayAccessExpression(Expression arrayExpression, Expression indexExpression)
+  public ArrayAccessExpression(Expression arrayExpression, Expression indexExpression, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.arrayExpression = arrayExpression;
     this.indexExpression = indexExpression;
   }

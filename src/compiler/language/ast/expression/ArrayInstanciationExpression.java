@@ -1,5 +1,6 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.Type;
 
 /*
@@ -23,9 +24,11 @@ public class ArrayInstanciationExpression extends Expression
    * @param dimensionExpressions - the dimension expressions
    * @param dimensions - the total number of dimensions, including those from the dimension expressions
    * @param arrayInitializerExpressions - the array initializer's expressions, or null if no initializer was specified
+   * @param parseInfo - the parsing information
    */
-  public ArrayInstanciationExpression(Type baseType, Expression[] dimensionExpressions, int dimensions, Expression[] arrayInitializerExpressions)
+  public ArrayInstanciationExpression(Type baseType, Expression[] dimensionExpressions, int dimensions, Expression[] arrayInitializerExpressions, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.baseType = baseType;
     this.dimensionExpressions = dimensionExpressions;
     this.dimensions = dimensions;

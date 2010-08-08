@@ -4,6 +4,8 @@ import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.INTERFACE_LIST;
 import static compiler.language.parser.ParseType.POINTER_TYPE;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerType;
 import compiler.parser.Rule;
 
@@ -33,15 +35,16 @@ public class InterfaceListRule extends Rule
   {
     if (types == START_PRODUCTION)
     {
-      return new PointerType[] {(PointerType) args[0]};
+      PointerType type = (PointerType) args[0];
+      return new ParseList<PointerType>(type, type.getParseInfo());
     }
     if (types == CONTINUATION_PRODUCTION)
     {
-      PointerType[] oldList = (PointerType[]) args[0];
-      PointerType[] newList = new PointerType[oldList.length + 1];
-      System.arraycopy(oldList, 0, newList, 0, oldList.length);
-      newList[oldList.length] = (PointerType) args[2];
-      return newList;
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> list = (ParseList<PointerType>) args[0];
+      PointerType newType = (PointerType) args[2];
+      list.addLast(newType, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], newType.getParseInfo()));
+      return list;
     }
     throw badTypeList();
   }

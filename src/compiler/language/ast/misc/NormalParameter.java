@@ -1,5 +1,6 @@
 package compiler.language.ast.misc;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 
 /*
@@ -17,9 +18,11 @@ public class NormalParameter extends Parameter
   /**
    * Creates a new normal parameter with the specified expression
    * @param expression - the expression to create this normal parameter with
+   * @param parseInfo - the parsing information
    */
-  public NormalParameter(Expression expression)
+  public NormalParameter(Expression expression, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.expression = expression;
   }
 

@@ -3,6 +3,7 @@ package compiler.language.parser.rules.type;
 import static compiler.language.parser.ParseType.BOOLEAN_KEYWORD;
 import static compiler.language.parser.ParseType.BOOLEAN_TYPE;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.BooleanType;
 import compiler.parser.Rule;
 
@@ -31,7 +32,7 @@ public class BooleanTypeRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new BooleanType();
+      return new BooleanType((ParseInfo) args[0]);
     }
     throw badTypeList();
   }

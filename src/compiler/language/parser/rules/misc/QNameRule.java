@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.DOT;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.QNAME;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.terminal.Name;
 import compiler.parser.Rule;
@@ -34,11 +35,14 @@ public class QNameRule extends Rule
   {
     if (types == START_PRODUCTION)
     {
-      return new QName((Name) args[0]);
+      Name name = (Name) args[0];
+      return new QName(name, name.getParseInfo());
     }
     if (types == CONTINUATION_PRODUCTION)
     {
-      return new QName((QName) args[0], (Name) args[2]);
+      QName qname = (QName) args[0];
+      Name name = (Name) args[2];
+      return new QName(qname, name, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], name.getParseInfo()));
     }
     throw badTypeList();
   }

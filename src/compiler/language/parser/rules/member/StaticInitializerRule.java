@@ -4,8 +4,10 @@ import static compiler.language.parser.ParseType.BLOCK;
 import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.STATIC_INITIALIZER;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.MemberHeader;
 import compiler.language.ast.member.Modifier;
+import compiler.language.ast.member.ModifierType;
 import compiler.language.ast.member.StaticInitializer;
 import compiler.language.ast.statement.Block;
 import compiler.parser.Rule;
@@ -42,11 +44,12 @@ public class StaticInitializerRule extends Rule
         throw new IllegalStateException("A static initializer cannot have an access specifier.");
       }
       Modifier[] modifiers = header.getModifiers();
-      if (modifiers.length != 1 || modifiers[0] != Modifier.STATIC)
+      if (modifiers.length != 1 || modifiers[0].getType() != ModifierType.STATIC)
       {
         throw new IllegalStateException("A static initializer must have exactly one modifier: \"static\"");
       }
-      return new StaticInitializer((Block) args[1]);
+      Block block = (Block) args[1];
+      return new StaticInitializer(block, ParseInfo.combine(header.getParseInfo(), block.getParseInfo()));
     }
     throw badTypeList();
   }

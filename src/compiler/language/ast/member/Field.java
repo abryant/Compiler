@@ -1,5 +1,6 @@
 package compiler.language.ast.member;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.misc.Assignee;
 import compiler.language.ast.type.Type;
@@ -25,9 +26,11 @@ public class Field extends Member
    * @param modifiers - the modifiers for this field
    * @param type - the type of this field
    * @param assignees - the assignees for this field
+   * @param parseInfo - the parsing information
    */
-  public Field(AccessSpecifier accessSpecifier, Modifier[] modifiers, Type type, Assignee[] assignees)
+  public Field(AccessSpecifier accessSpecifier, Modifier[] modifiers, Type type, Assignee[] assignees, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
     this.type = type;
@@ -41,9 +44,11 @@ public class Field extends Member
    * @param type - the type of this field
    * @param assignees - the assignees for this field
    * @param expression - the expression to assign to this field by default
+   * @param parseInfo - the parsing information
    */
-  public Field(AccessSpecifier accessSpecifier, Modifier[] modifiers, Type type, Assignee[] assignees, Expression expression)
+  public Field(AccessSpecifier accessSpecifier, Modifier[] modifiers, Type type, Assignee[] assignees, Expression expression, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
     this.type = type;

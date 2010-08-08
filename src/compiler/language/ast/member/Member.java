@@ -1,5 +1,7 @@
 package compiler.language.ast.member;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 1 Jul 2010
  */
@@ -9,6 +11,24 @@ package compiler.language.ast.member;
  */
 public abstract class Member
 {
-  // no fields or methods, this is an abstract base class
-  // (not even the access specifier, as some members do not have them, e.g. static initializers)
+
+  private ParseInfo parseInfo;
+
+  /**
+   * Creates a new Member with the specified ParseInfo
+   * @param parseInfo - the parsing information
+   */
+  public Member(ParseInfo parseInfo)
+  {
+    this.parseInfo = parseInfo;
+  }
+
+  /**
+   * @return the parseInfo
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
+  }
+
 }

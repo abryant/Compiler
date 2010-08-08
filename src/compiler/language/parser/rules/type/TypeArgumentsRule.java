@@ -5,6 +5,9 @@ import static compiler.language.parser.ParseType.RANGLE;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENT_LIST;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
+import compiler.language.ast.type.TypeArgument;
 import compiler.parser.Rule;
 
 /*
@@ -32,8 +35,10 @@ public class TypeArgumentsRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      // just return the result of the TYPE_ARGUMENT_LIST argument, as it has already built the list we need here
-      return args[1];
+      @SuppressWarnings("unchecked")
+      ParseList<TypeArgument> list = (ParseList<TypeArgument>) args[1];
+      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
+      return list;
     }
     throw badTypeList();
   }

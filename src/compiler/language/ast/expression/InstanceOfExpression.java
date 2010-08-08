@@ -1,5 +1,6 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.Type;
 
 /*
@@ -19,9 +20,11 @@ public class InstanceOfExpression extends Expression
    * Creates a new InstanceOfExpression to check the specified expression is of the specified type
    * @param expression - the expression to check
    * @param type - the type to check against
+   * @param parseInfo - the parsing information
    */
-  public InstanceOfExpression(Expression expression, Type type)
+  public InstanceOfExpression(Expression expression, Type type, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.expression = expression;
     this.type = type;
   }

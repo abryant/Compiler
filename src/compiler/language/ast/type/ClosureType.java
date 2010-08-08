@@ -1,5 +1,7 @@
 package compiler.language.ast.type;
 
+import compiler.language.ast.ParseInfo;
+
 
 /*
  * Created on 13 Jul 2010
@@ -20,9 +22,11 @@ public class ClosureType extends Type
    * @param parameterTypes - the types of the parameters to this closure
    * @param resultTypes - the types of the results of this closure
    * @param exceptionTypes - the types of the exceptions thrown by this closure
+   * @param parseInfo - the parsing information
    */
-  public ClosureType(Type[] parameterTypes, Type[] resultTypes, PointerType[] exceptionTypes)
+  public ClosureType(Type[] parameterTypes, Type[] resultTypes, PointerType[] exceptionTypes, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.parameterTypes = parameterTypes;
     this.resultTypes = resultTypes;
     this.exceptionTypes = exceptionTypes;

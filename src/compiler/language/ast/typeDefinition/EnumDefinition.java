@@ -1,5 +1,6 @@
 package compiler.language.ast.typeDefinition;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.Member;
 import compiler.language.ast.member.Modifier;
@@ -34,9 +35,11 @@ public class EnumDefinition extends TypeDefinition
    * @param interfaces - the list of implemented interfaces
    * @param constants - the enum constants
    * @param members - the members
+   * @param parseInfo - the parsing information
    */
-  public EnumDefinition(AccessSpecifier accessSpecifier, Modifier[] modifiers, Name name, PointerType baseClass, PointerType[] interfaces, EnumConstant[] constants, Member[] members)
+  public EnumDefinition(AccessSpecifier accessSpecifier, Modifier[] modifiers, Name name, PointerType baseClass, PointerType[] interfaces, EnumConstant[] constants, Member[] members, ParseInfo parseInfo)
   {
+    super(parseInfo);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
     this.name = name;

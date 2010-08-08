@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.ASSIGNEE;
 import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.UNDERSCORE;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.Assignee;
 import compiler.language.ast.misc.QName;
 import compiler.parser.Rule;
@@ -34,11 +35,12 @@ public class AssigneeRule extends Rule
   {
     if (types == BLANK_PRODUCTION)
     {
-      return new Assignee();
+      return new Assignee((ParseInfo) args[0]);
     }
     if (types == PRODUCTION)
     {
-      return new Assignee((QName) args[0]);
+      QName qname = (QName) args[0];
+      return new Assignee(qname, qname.getParseInfo());
     }
     throw badTypeList();
   }

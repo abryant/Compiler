@@ -1,5 +1,7 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 3 Aug 2010
  */
@@ -12,15 +14,15 @@ public class ShiftExpression extends LeftRecursiveExpression
 
   private ShiftExpressionType[] separatorTypes;
 
-  public ShiftExpression(Expression firstExpression, ShiftExpressionType separator, Expression secondExpression)
+  public ShiftExpression(Expression firstExpression, ShiftExpressionType separator, Expression secondExpression, ParseInfo parseInfo)
   {
-    super(firstExpression, secondExpression);
+    super(firstExpression, secondExpression, parseInfo);
     separatorTypes = new ShiftExpressionType[] {separator};
   }
 
-  public ShiftExpression(ShiftExpression startExpression, ShiftExpressionType separator, Expression subExpression)
+  public ShiftExpression(ShiftExpression startExpression, ShiftExpressionType separator, Expression subExpression, ParseInfo parseInfo)
   {
-    super(startExpression, subExpression);
+    super(startExpression, subExpression, parseInfo);
     ShiftExpressionType[] oldList = startExpression.getSeparatorTypes();
     separatorTypes = new ShiftExpressionType[oldList.length];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);

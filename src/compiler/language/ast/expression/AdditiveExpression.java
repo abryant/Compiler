@@ -1,5 +1,7 @@
 package compiler.language.ast.expression;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 3 Aug 2010
  */
@@ -12,15 +14,15 @@ public class AdditiveExpression extends LeftRecursiveExpression
 
   private AdditiveExpressionType[] separatorTypes;
 
-  public AdditiveExpression(Expression firstExpression, AdditiveExpressionType separator, Expression secondExpression)
+  public AdditiveExpression(Expression firstExpression, AdditiveExpressionType separator, Expression secondExpression, ParseInfo parseInfo)
   {
-    super(firstExpression, secondExpression);
+    super(firstExpression, secondExpression, parseInfo);
     separatorTypes = new AdditiveExpressionType[] {separator};
   }
 
-  public AdditiveExpression(AdditiveExpression startExpression, AdditiveExpressionType separator, Expression subExpression)
+  public AdditiveExpression(AdditiveExpression startExpression, AdditiveExpressionType separator, Expression subExpression, ParseInfo parseInfo)
   {
-    super(startExpression, subExpression);
+    super(startExpression, subExpression, parseInfo);
     AdditiveExpressionType[] oldList = startExpression.getSeparatorTypes();
     separatorTypes = new AdditiveExpressionType[oldList.length];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);

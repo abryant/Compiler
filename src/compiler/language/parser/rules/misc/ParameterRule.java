@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.EXPRESSION_NO_TUPLE;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PARAMETER;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.misc.DefaultParameter;
 import compiler.language.ast.misc.NormalParameter;
@@ -38,11 +39,14 @@ public class ParameterRule extends Rule
   {
     if (types == NORMAL_PRODUCTION)
     {
-      return new NormalParameter((Expression) args[0]);
+      Expression expression = (Expression) args[0];
+      return new NormalParameter(expression, expression.getParseInfo());
     }
     if (types == DEFAULT_PRODUCTION)
     {
-      return new DefaultParameter((Name) args[1], (Expression) args[3]);
+      Name name = (Name) args[1];
+      Expression expression = (Expression) args[3];
+      return new DefaultParameter(name, expression, ParseInfo.combine((ParseInfo) args[0], name.getParseInfo(), (ParseInfo) args[2], expression.getParseInfo()));
     }
     throw badTypeList();
   }
