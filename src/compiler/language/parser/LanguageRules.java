@@ -1,5 +1,6 @@
 package compiler.language.parser;
 
+import compiler.language.parser.rules.expression.AdditiveExpressionRule;
 import compiler.language.parser.rules.expression.BitwiseAndExpressionRule;
 import compiler.language.parser.rules.expression.BitwiseOrExpressionRule;
 import compiler.language.parser.rules.expression.BitwiseXorExpressionRule;
@@ -10,7 +11,9 @@ import compiler.language.parser.rules.expression.EqualityExpressionRule;
 import compiler.language.parser.rules.expression.ExpressionNoTupleRule;
 import compiler.language.parser.rules.expression.ExpressionRule;
 import compiler.language.parser.rules.expression.InlineIfExpressionRule;
+import compiler.language.parser.rules.expression.MultiplicativeExpressionRule;
 import compiler.language.parser.rules.expression.RelationalExpressionRule;
+import compiler.language.parser.rules.expression.ShiftExpressionRule;
 import compiler.language.parser.rules.expression.StatementExpressionRule;
 import compiler.language.parser.rules.expression.TupleExpressionRule;
 import compiler.language.parser.rules.member.AccessSpecifierRule;
@@ -139,6 +142,7 @@ public class LanguageRules
     new StatementsRule(),
 
     // expressions
+    new AdditiveExpressionRule(),
     new BitwiseAndExpressionRule(),
     new BitwiseOrExpressionRule(),
     new BitwiseXorExpressionRule(),
@@ -149,7 +153,9 @@ public class LanguageRules
     new ExpressionNoTupleRule(),
     new ExpressionRule(),
     new InlineIfExpressionRule(),
+    new MultiplicativeExpressionRule(),
     new RelationalExpressionRule(),
+    new ShiftExpressionRule(),
     new StatementExpressionRule(),
     new TupleExpressionRule(),
 

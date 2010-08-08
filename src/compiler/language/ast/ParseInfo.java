@@ -21,7 +21,7 @@ public class ParseInfo
    * @param startLine - the start line
    * @param startPos - the starting position on the start line
    * @param endLine - the end line
-   * @param endPos - the ending position on the end line
+   * @param endPos - the ending position on the end line (this actually indexes the character after the ending position)
    */
   public ParseInfo(int startLine, int startPos, int endLine, int endPos)
   {
@@ -89,6 +89,17 @@ public class ParseInfo
   public int getEndPos()
   {
     return endPos;
+  }
+
+  /**
+   * Checks whether the specified ParseInfo objects are adjacent.
+   * @param first - the first ParseInfo
+   * @param second - the second ParseInfo
+   * @return true if the specified ParseInfo objects are directly adjacent and on the same line as each other, false otherwise
+   */
+  public static boolean areAdjacent(ParseInfo first, ParseInfo second)
+  {
+    return first.getEndLine() == second.getStartLine() && first.getEndPos() == second.getStartPos();
   }
 
 }
