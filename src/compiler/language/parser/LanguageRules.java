@@ -47,12 +47,15 @@ import compiler.language.parser.rules.topLevel.CompilationUnitRule;
 import compiler.language.parser.rules.topLevel.ImportDeclarationRule;
 import compiler.language.parser.rules.topLevel.PackageDeclarationRule;
 import compiler.language.parser.rules.topLevel.TypeDefinitionRule;
+import compiler.language.parser.rules.type.ArrayTypeRule;
 import compiler.language.parser.rules.type.BooleanTypeRule;
 import compiler.language.parser.rules.type.CharacterTypeRule;
 import compiler.language.parser.rules.type.ClosureTypeRule;
 import compiler.language.parser.rules.type.FloatingTypeRule;
 import compiler.language.parser.rules.type.IntegerTypeRule;
+import compiler.language.parser.rules.type.MutablePointerTypeTrailingParamsRule;
 import compiler.language.parser.rules.type.NormalTypeParameterRule;
+import compiler.language.parser.rules.type.PointerTypeNotQNameRule;
 import compiler.language.parser.rules.type.PointerTypeRule;
 import compiler.language.parser.rules.type.PrimitiveTypeRule;
 import compiler.language.parser.rules.type.TupleTypeRule;
@@ -60,6 +63,7 @@ import compiler.language.parser.rules.type.TypeArgumentListRule;
 import compiler.language.parser.rules.type.TypeArgumentRule;
 import compiler.language.parser.rules.type.TypeArgumentsRule;
 import compiler.language.parser.rules.type.TypeListRule;
+import compiler.language.parser.rules.type.TypeNotQNameRule;
 import compiler.language.parser.rules.type.TypeParameterListRule;
 import compiler.language.parser.rules.type.TypeParameterRule;
 import compiler.language.parser.rules.type.TypeParametersRule;
@@ -150,12 +154,15 @@ public class LanguageRules
     new TupleExpressionRule(),
 
     // types
+    new ArrayTypeRule(),
     new BooleanTypeRule(),
     new CharacterTypeRule(),
     new ClosureTypeRule(),
     new FloatingTypeRule(),
     new IntegerTypeRule(),
+    new MutablePointerTypeTrailingParamsRule(),
     new NormalTypeParameterRule(),
+    new PointerTypeNotQNameRule(),
     new PointerTypeRule(),
     new PrimitiveTypeRule(),
     new TupleTypeRule(),
@@ -163,6 +170,7 @@ public class LanguageRules
     new TypeArgumentRule(),
     new TypeArgumentsRule(),
     new TypeListRule(),
+    new TypeNotQNameRule(),
     new TypeParameterListRule(),
     new TypeParameterRule(),
     new TypeParametersRule(),

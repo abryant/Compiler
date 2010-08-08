@@ -98,20 +98,23 @@ public enum ParseType
   ARRAY_INITIALIZER,              // ParseList<Expression>
   EXPRESSION_LIST,                // ParseList<Expression>
   DIMENSION_EXPRESSIONS,          // ParseList<Expression>
-  DIMENSIONS,                     // TODO: decide on something, should store ParseInfo and an integer
   ASSIGNMENT_OPERATOR,            // AssignmentOperator
 
   // types
+  ARRAY_TYPE,               // ArrayType
   BOOLEAN_TYPE,             // BooleanType
   CHARACTER_TYPE,           // CharacterType
   CLOSURE_TYPE,             // ClosureType
   FLOATING_TYPE,            // FloatingType
   INTEGER_TYPE,             // IntegerType
   PRIMITIVE_TYPE,           // PrimitiveType
-  POINTER_TYPE,             // PointerType TODO: this needs redoing in Grammar.txt to handle type arguments properly - a preliminary version is currently in Grammar.txt
+  POINTER_TYPE,             // PointerType
+  POINTER_TYPE_NOT_QNAME,   // PointerType
+  MUTABLE_POINTER_TYPE_TRAILING_PARAMS, // PointerType
   TUPLE_TYPE,               // TupleType
   TYPE_LIST,                // ParseList<Type> (length > 0)
   TYPE,                     // Type
+  TYPE_NOT_QNAME,           // Type
   TYPE_ARGUMENTS,           // ParseList<TypeArgument> (length > 0)
   TYPE_ARGUMENT_LIST,       // ParseList<TypeArgument> (length > 0)
   TYPE_ARGUMENT,            // TypeArgument
@@ -128,6 +131,7 @@ public enum ParseType
   ARGUMENTS,                // ArgumentList
   ASSIGNEE,                 // Assignee
   ASSIGNEE_LIST,            // ParseList<Assignee>
+  DIMENSIONS,               // TODO: decide on something, should store ParseInfo and an integer
   PARAMETER,                // Parameter
   PARAMETER_LIST,           // ParseList<Parameter> (length > 0)
   PARAMETERS,               // ParseList<Parameter>
@@ -205,12 +209,14 @@ public enum ParseType
   LANGLE_EQUALS,
   LBRACE,
   LPAREN,
+  LSQUARE,
   PIPE,
   QUESTION_MARK,
   RANGLE,
   RANGLE_EQUALS,
   RBRACE,
   RPAREN,
+  RSQUARE,
   SEMICOLON,
   STAR,
   UNDERSCORE,

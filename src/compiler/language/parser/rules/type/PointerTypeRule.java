@@ -1,13 +1,11 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.HASH;
 import static compiler.language.parser.ParseType.POINTER_TYPE;
+import static compiler.language.parser.ParseType.POINTER_TYPE_NOT_QNAME;
 import static compiler.language.parser.ParseType.QNAME;
-import static compiler.language.parser.ParseType.TYPE_PARAMETERS;
 
-import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.QName;
+import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
 import compiler.parser.Rule;
@@ -22,14 +20,12 @@ import compiler.parser.Rule;
 public class PointerTypeRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {QNAME};
-  private static final Object[] IMMUTABLE_PRODUCTION = new Object[] {HASH, QNAME};
-  private static final Object[] TYPE_PARAMETERS_PRODUCTION = new Object[] {QNAME, TYPE_PARAMETERS};
-  private static final Object[] IMMUTABLE_TYPE_PARAMETERS_PRODUCTION = new Object[] {HASH, QNAME, TYPE_PARAMETERS};
+  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME};
+  private static final Object[] PRODUCTION = new Object[] {POINTER_TYPE_NOT_QNAME};
 
   public PointerTypeRule()
   {
-    super(POINTER_TYPE, PRODUCTION, IMMUTABLE_PRODUCTION, TYPE_PARAMETERS_PRODUCTION, IMMUTABLE_TYPE_PARAMETERS_PRODUCTION);
+    super(POINTER_TYPE, QNAME_PRODUCTION, PRODUCTION);
   }
 
   /**
@@ -38,29 +34,21 @@ public class PointerTypeRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
+    if (types == QNAME_PRODUCTION)
+    {
+      QName qname = (QName) args[0];
+      Name[] names = qname.getNames();
+      TypeParameter[][] typeParams = new TypeParameter[names.length][];
+      for (int i = 0; i < typeParams.length; i++)
+      {
+        typeParams[i] = new TypeParameter[0];
+      }
+      return new PointerType(false, names, typeParams, qname.getParseInfo());
+    }
     if (types == PRODUCTION)
     {
-      QName qname = (QName) args[0];
-      return new PointerType(qname, false, new TypeParameter[0], qname.getParseInfo());
-    }
-    if (types == IMMUTABLE_PRODUCTION)
-    {
-      QName qname = (QName) args[1];
-      return new PointerType(qname, true, new TypeParameter[0], ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo()));
-    }
-    if (types == TYPE_PARAMETERS_PRODUCTION)
-    {
-      QName qname = (QName) args[0];
-      @SuppressWarnings("unchecked")
-      ParseList<TypeParameter> typeParameters = (ParseList<TypeParameter>) args[1];
-      return new PointerType(qname, false, typeParameters.toArray(new TypeParameter[0]), ParseInfo.combine(qname.getParseInfo(), typeParameters.getParseInfo()));
-    }
-    if (types == IMMUTABLE_TYPE_PARAMETERS_PRODUCTION)
-    {
-      QName qname = (QName) args[1];
-      @SuppressWarnings("unchecked")
-      ParseList<TypeParameter> typeParameters = (ParseList<TypeParameter>) args[2];
-      return new PointerType(qname, true, typeParameters.toArray(new TypeParameter[0]), ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), typeParameters.getParseInfo()));
+      // POINTER_TYPE_NOT_QNAME has already built a PointerType, so return it
+      return args[0];
     }
     throw badTypeList();
   }

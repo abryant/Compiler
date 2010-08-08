@@ -1,7 +1,7 @@
 package compiler.language.ast.type;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QName;
+import compiler.language.ast.terminal.Name;
 
 /*
  * Created on 30 Jun 2010
@@ -13,31 +13,56 @@ import compiler.language.ast.misc.QName;
 public class PointerType extends Type
 {
 
-  private QName typeName;
   private boolean immutable;
-  private TypeParameter[] typeParameters;
+
+  private Name[] names;
+  private TypeParameter[][] typeParameterLists;
 
   /**
-   * Creates a new PointerType with the specified name and immutability
-   * @param typeName - the name of the type
+   * Creates a new PointerType with the specified immutability, qualifying names and type parameter lists.
    * @param immutable - true if this type should be immutable, false otherwise
-   * @param typeParameters - the type parameters for this pointer type
+   * @param names - the list of (qualifier) names in this PointerType, ending in the actual type name
+   * @param typeParameterLists - the type parameter list for each name in this pointer type, with empty arrays for names that do not have type parameters
    * @param parseInfo - the parsing information
    */
-  public PointerType(QName typeName, boolean immutable, TypeParameter[] typeParameters, ParseInfo parseInfo)
+  public PointerType(boolean immutable, Name[] names, TypeParameter[][] typeParameterLists, ParseInfo parseInfo)
   {
     super(parseInfo);
-    this.typeName = typeName;
     this.immutable = immutable;
-    this.typeParameters = typeParameters;
+
+    if (names.length != typeParameterLists.length)
+    {
+      throw new IllegalArgumentException("A PointerType must have an equal number of names and lists of type parameters");
+    }
+    this.names = names;
+    this.typeParameterLists = typeParameterLists;
   }
 
   /**
-   * @return the type name
+   * Creates a new PointerType with the specified immutability, qualifying names and type parameter lists.
+   * @param baseType - the base PointerType to copy the old qualifying names and type parameters from
+   * @param immutable - true if this type should be immutable, false otherwise
+   * @param addedNames - the list of added (qualifier) names in this PointerType, ending in the actual type name
+   * @param addedTypeParameterLists - the type parameter list for each added name in this pointer type, with empty arrays for names that do not have type parameters
+   * @param parseInfo - the parsing information
    */
-  public QName getTypeName()
+  public PointerType(PointerType baseType, boolean immutable, Name[] addedNames, TypeParameter[][] addedTypeParameterLists, ParseInfo parseInfo)
   {
-    return typeName;
+    super(parseInfo);
+    this.immutable = immutable;
+    if (addedNames.length != addedTypeParameterLists.length)
+    {
+      throw new IllegalArgumentException("A PointerType must have an equal number of names and lists of type parameters");
+    }
+    Name[] oldNames = baseType.getNames();
+    TypeParameter[][] oldTypeParameterLists = baseType.getTypeParameterLists();
+
+    names = new Name[oldNames.length + addedNames.length];
+    typeParameterLists = new TypeParameter[oldTypeParameterLists.length + addedTypeParameterLists.length][];
+    System.arraycopy(oldNames, 0, names, 0, oldNames.length);
+    System.arraycopy(addedNames, 0, names, oldNames.length, addedNames.length);
+    System.arraycopy(oldTypeParameterLists, 0, typeParameterLists, 0, oldTypeParameterLists.length);
+    System.arraycopy(addedTypeParameterLists, 0, typeParameterLists, oldTypeParameterLists.length, addedTypeParameterLists.length);
   }
 
   /**
@@ -49,11 +74,19 @@ public class PointerType extends Type
   }
 
   /**
-   * @return the typeParameters
+   * @return the names
    */
-  public TypeParameter[] getTypeParameters()
+  public Name[] getNames()
   {
-    return typeParameters;
+    return names;
+  }
+
+  /**
+   * @return the typeParameterLists
+   */
+  public TypeParameter[][] getTypeParameterLists()
+  {
+    return typeParameterLists;
   }
 
   /**
@@ -67,19 +100,27 @@ public class PointerType extends Type
     {
       buffer.append("#");
     }
-    buffer.append(typeName);
-    if (typeParameters.length > 0)
+    for (int i = 0; i < names.length; i++)
     {
-      buffer.append("<");
-      for (int i = 0; i < typeParameters.length; i++)
+      buffer.append(names[i]);
+      TypeParameter[] typeParameterList = typeParameterLists[i];
+      if (typeParameterList.length > 0)
       {
-        buffer.append(typeParameters[i]);
-        if (i != typeParameters.length - 1)
+        buffer.append("<");
+        for (int j = 0; j < typeParameterList.length; j++)
         {
-          buffer.append(", ");
+          buffer.append(typeParameterList[j]);
+          if (j != typeParameterList.length - 1)
+          {
+            buffer.append(", ");
+          }
         }
+        buffer.append(">");
       }
-      buffer.append(">");
+      if (i != names.length - 1)
+      {
+        buffer.append(".");
+      }
     }
     return buffer.toString();
   }

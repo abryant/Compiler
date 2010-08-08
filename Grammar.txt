@@ -273,29 +273,37 @@ CastExpression = CastKeyword LAngle Type RAngle UnaryExpression
 PlusExpression = Plus UnaryExpression
 MinusExpression = Minus UnaryExpression
 
-Primary = PrimaryNoTrailingDimensions | ArrayInstanciationExpressionNoInitializer
+Primary = PrimaryNotQName | QName
 
-PrimaryNoTrailingDimensions = LParen Expression RParen
-                            | IntegerLiteral | FloatingLiteral | CharacterLiteral | StringLiteral | NilLiteral
-                            | FieldAccessExpression
-                            | StatementExpression
-                            | ThisAccessExpression
-                            | SuperAccessExpression
-                            | ArrayAccessExpression
-                            | ClosureCreationExpression
-                            | ArrayInstanciationExpressionWithInitializer
+// QNames are excluded here so that FieldAccessExpression can have a production that allows ".name" on the end
+// of any Primary that is not already a QName
+PrimaryNotQName = PrimaryNoTrailingDimensionsNotQName | ArrayInstanciationExpressionNoInitializer
+
+// Trailing Dimensions from ArrayInstanciationNoInitializer are excluded here so that
+// ArrayAccessExpression doesn't have a chance to parse the last part of: new Object[2][0]
+// QNames are excluded here so that ArrayAccessExpression can have its own production for QName,
+// which resolves a potential shift reduce conflict between an ArrayType and an ArrayAccessExpression
+PrimaryNoTrailingDimensionsNotQName = LParen Expression RParen
+                                    | IntegerLiteral | FloatingLiteral | CharacterLiteral | StringLiteral | NilLiteral
+                                    | FieldAccessExpressionNotQName
+                                    | StatementExpression
+                                    | ThisAccessExpression
+                                    | ArrayAccessExpression
+                                    | ClosureCreationExpression
+                                    | ArrayInstanciationExpressionWithInitializer
 
 MethodCallExpression = Primary Parameters
 
-FieldAccessExpression = QName
-                      | Primary Dot Name
-                      | SuperKeyword Dot Name
-                      | QName Dot SuperKeyword Dot Name
+FieldAccessExpression = QName | FieldAccessExpressionNotQName
+FieldAccessExpressionNotQName = PrimaryNotQName Dot Name
+                              | SuperKeyword Dot Name
+                              | QName Dot SuperKeyword Dot Name
 
 ThisAccessExpression = ThisKeyword
                      | QName Dot ThisKeyword
 
-ArrayAccessExpression = PrimaryNoTrailingDimensions DimensionExpression
+ArrayAccessExpression = PrimaryNoTrailingDimensionsNotQName DimensionExpression
+                      | QName DimensionExpression
 
 InstanciationExpression = NewKeyword QName Parameters
                         | NewKeyword QName Parameters LBrace MemberList RBrace
@@ -349,14 +357,14 @@ IntegerType = SignedKeyword ByteKeyword  | UnsignedKeyword ByteKeyword  | ByteKe
 CharacterType = CharacterKeyword
 FloatingType = FloatKeyword | DoubleKeyword
 
-PointerType = PointerTypeNotQName | QName
-PointerTypeNotQName = Hash QName
-                    | PointerTypeWithParams
-                    | PointerTypeWithParams Dot QName
-                    | Hash PointerTypeWithParams
-                    | Hash PointerTypeWithParams Dot QName
-PointerTypeWithParams = QName TypeParameters
-                      | PointerTypeWithParams Dot QName TypeParameters // the following should be valid: #a.b.C<W, X<Y>>.D.E<Z>.F
+PointerType = QName | PointerTypeNotQName
+PointerTypeNotQName = MutablePointerTypeTrailingParams
+                    | MutablePointerTypeTrailingParams Dot QName
+                    | Hash QName
+                    | Hash MutablePointerTypeTrailingParams
+                    | Hash MutablePointerTypeTrailingParams Dot QName
+MutablePointerTypeTrailingParams = QName TypeParameters
+                                 | MutablePointerTypeTrailingParams Dot QName TypeParameters // the following should be valid: #a.b.C<W, X<Y>>.D.E<Z>.F
 TypeParameters = LAngle TypeParameterList RAngle
 TypeParameterList = TypeParameter | TypeParameterList Comma TypeParameter
 TypeParameter = NormalTypeParameter | WildcardTypeParameter
