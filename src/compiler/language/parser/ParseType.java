@@ -36,7 +36,7 @@ public enum ParseType
   // members
   ACCESS_SPECIFIER,         // AccessSpecifier or null
   MODIFIER,                 // Modifier
-  MODIFIERS,                // ParseList<Modifier> (length > 0) TODO
+  MODIFIERS,                // ParseList<Modifier> (length > 0)
   NATIVE_SPECIFIER,         // NativeSpecifier
   SINCE_SPECIFIER,          // SinceSpecifier
   MEMBER_HEADER,            // MemberHeader
@@ -62,10 +62,10 @@ public enum ParseType
   // will be returned (e.g. BracketedExpression)
   // This is handled in the rules by checking for their created type via
   // 'instanceof', so Bracketed expressions must not just return their argument
-  EXPRESSION,                     // Expression TODO: add a rule for this
+  EXPRESSION,                     // Expression
   STATEMENT_EXPRESSION,           // StatementExpression
   TUPLE_EXPRESSION,               // Expression (TupleExpression)
-  EXPRESSION_NO_TUPLE,            // Expression TODO: add a rule for this
+  EXPRESSION_NO_TUPLE,            // Expression
   INLINE_IF_EXPRESSION,           // Expression (InlineIfExpression)
   BOOLEAN_OR_EXPRESSION,          // Expression (BooleanOrExpression)
   BOOLEAN_XOR_EXPRESSION,         // Expression (BooleanXorExpression)
@@ -108,7 +108,7 @@ public enum ParseType
   FLOATING_TYPE,            // FloatingType
   INTEGER_TYPE,             // IntegerType
   PRIMITIVE_TYPE,           // PrimitiveType
-  POINTER_TYPE,             // PointerType TODO: this needs redoing from Grammar.txt
+  POINTER_TYPE,             // PointerType TODO: this needs redoing in Grammar.txt to handle type arguments properly - a preliminary version is currently in Grammar.txt
   TUPLE_TYPE,               // TupleType
   TYPE_LIST,                // ParseList<Type> (length > 0)
   TYPE,                     // Type

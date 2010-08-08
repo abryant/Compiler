@@ -349,11 +349,14 @@ IntegerType = SignedKeyword ByteKeyword  | UnsignedKeyword ByteKeyword  | ByteKe
 CharacterType = CharacterKeyword
 FloatingType = FloatKeyword | DoubleKeyword
 
-PointerType = QName | PointerTypeNotQName
+PointerType = PointerTypeNotQName | QName
 PointerTypeNotQName = Hash QName
-                    | QName TypeParameters
-                    | Hash QName TypeParameters
-                    | PointerTypeNotQName Dot Name TypeParameters // the following should be valid: #a.b.C<W, X<Y>>.D<Z>
+                    | PointerTypeWithParams
+                    | PointerTypeWithParams Dot QName
+                    | Hash PointerTypeWithParams
+                    | Hash PointerTypeWithParams Dot QName
+PointerTypeWithParams = QName TypeParameters
+                      | PointerTypeWithParams Dot QName TypeParameters // the following should be valid: #a.b.C<W, X<Y>>.D.E<Z>.F
 TypeParameters = LAngle TypeParameterList RAngle
 TypeParameterList = TypeParameter | TypeParameterList Comma TypeParameter
 TypeParameter = NormalTypeParameter | WildcardTypeParameter
