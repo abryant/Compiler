@@ -42,35 +42,32 @@ public class AdditiveExpressionRule extends Rule
       // return the existing Expression
       return args[0];
     }
+
+    AdditiveExpressionType type = null;
     if (types == PLUS_PRODUCTION)
     {
-      Expression secondExpression = (Expression) args[2];
-      if (args[0] instanceof AdditiveExpression)
-      {
-        // continue the existing AdditiveExpression if we've already started one
-        AdditiveExpression startExpression = (AdditiveExpression) args[0];
-        return new AdditiveExpression(startExpression, AdditiveExpressionType.PLUS, secondExpression,
-                                      ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
-      }
-      Expression firstExpression = (Expression) args[0];
-      return new AdditiveExpression(firstExpression, AdditiveExpressionType.PLUS, secondExpression,
-                                    ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      type = AdditiveExpressionType.PLUS;
     }
-    if (types == MINUS_PRODUCTION)
+    else if (types == MINUS_PRODUCTION)
     {
-      Expression secondExpression = (Expression) args[2];
-      if (args[0] instanceof AdditiveExpression)
-      {
-        // continue the existing AdditiveExpression if we've already started one
-        AdditiveExpression startExpression = (AdditiveExpression) args[0];
-        return new AdditiveExpression(startExpression, AdditiveExpressionType.MINUS, secondExpression,
-                                      ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
-      }
-      Expression firstExpression = (Expression) args[0];
-      return new AdditiveExpression(firstExpression, AdditiveExpressionType.MINUS, secondExpression,
-                                    ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      type = AdditiveExpressionType.MINUS;
     }
-    throw badTypeList();
+    else
+    {
+      throw badTypeList();
+    }
+    Expression secondExpression = (Expression) args[2];
+
+    if (args[0] instanceof AdditiveExpression)
+    {
+      // continue the existing AdditiveExpression if we've already started one
+      AdditiveExpression startExpression = (AdditiveExpression) args[0];
+      return new AdditiveExpression(startExpression, type, secondExpression,
+                                    ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+    }
+    Expression firstExpression = (Expression) args[0];
+    return new AdditiveExpression(firstExpression, type, secondExpression,
+                                  ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
   }
 
 }

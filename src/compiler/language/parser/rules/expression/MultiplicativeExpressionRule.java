@@ -44,49 +44,36 @@ public class MultiplicativeExpressionRule extends Rule
       // return the existing Expression
       return args[0];
     }
+
+    MultiplicativeExpressionType type = null;
     if (types == TIMES_PRODUCTION)
     {
-      Expression secondExpression = (Expression) args[2];
-      if (args[0] instanceof MultiplicativeExpression)
-      {
-        // continue the existing MultiplicativeExpression if we've already started one
-        MultiplicativeExpression startExpression = (MultiplicativeExpression) args[0];
-        return new MultiplicativeExpression(startExpression, MultiplicativeExpressionType.TIMES, secondExpression,
-                                            ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
-      }
-      Expression firstExpression = (Expression) args[0];
-      return new MultiplicativeExpression(firstExpression, MultiplicativeExpressionType.TIMES, secondExpression,
-                                          ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      type = MultiplicativeExpressionType.TIMES;
     }
-    if (types == DIVIDE_PRODUCTION)
+    else if (types == DIVIDE_PRODUCTION)
     {
-      Expression secondExpression = (Expression) args[2];
-      if (args[0] instanceof MultiplicativeExpression)
-      {
-        // continue the existing MultiplicativeExpression if we've already started one
-        MultiplicativeExpression startExpression = (MultiplicativeExpression) args[0];
-        return new MultiplicativeExpression(startExpression, MultiplicativeExpressionType.DIVIDE, secondExpression,
-                                            ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
-      }
-      Expression firstExpression = (Expression) args[0];
-      return new MultiplicativeExpression(firstExpression, MultiplicativeExpressionType.DIVIDE, secondExpression,
-                                          ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      type = MultiplicativeExpressionType.DIVIDE;
     }
-    if (types == MODULUS_PRODUCTION)
+    else if (types == MODULUS_PRODUCTION)
     {
-      Expression secondExpression = (Expression) args[2];
-      if (args[0] instanceof MultiplicativeExpression)
-      {
-        // continue the existing MultiplicativeExpression if we've already started one
-        MultiplicativeExpression startExpression = (MultiplicativeExpression) args[0];
-        return new MultiplicativeExpression(startExpression, MultiplicativeExpressionType.MODULUS, secondExpression,
-                                            ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
-      }
-      Expression firstExpression = (Expression) args[0];
-      return new MultiplicativeExpression(firstExpression, MultiplicativeExpressionType.MODULUS, secondExpression,
-                                          ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      type = MultiplicativeExpressionType.MODULUS;
     }
-    throw badTypeList();
+    else
+    {
+      throw badTypeList();
+    }
+    Expression secondExpression = (Expression) args[2];
+
+    if (args[0] instanceof MultiplicativeExpression)
+    {
+      // continue the existing MultiplicativeExpression if we've already started one
+      MultiplicativeExpression startExpression = (MultiplicativeExpression) args[0];
+      return new MultiplicativeExpression(startExpression, type, secondExpression,
+                                          ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+    }
+    Expression firstExpression = (Expression) args[0];
+    return new MultiplicativeExpression(firstExpression, type, secondExpression,
+                                        ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
   }
 
 }
