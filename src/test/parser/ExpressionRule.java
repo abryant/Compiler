@@ -1,5 +1,6 @@
 package test.parser;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -24,7 +25,7 @@ public class ExpressionRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == SUM_PRODUCTION)
     {

@@ -5,6 +5,7 @@ import static compiler.language.parser.ParseType.ENUM_DEFINITION;
 import static compiler.language.parser.ParseType.INTERFACE_DEFINITION;
 import static compiler.language.parser.ParseType.TYPE_DEFINITION;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -30,7 +31,7 @@ public class TypeDefinitionRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == CLASS_PRODUCTION || types == INTERFACE_PRODUCTION || types == ENUM_PRODUCTION)
     {

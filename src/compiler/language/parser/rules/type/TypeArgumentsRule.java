@@ -8,6 +8,7 @@ import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.TypeArgument;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -31,7 +32,7 @@ public class TypeArgumentsRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == PRODUCTION)
     {

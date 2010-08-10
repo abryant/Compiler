@@ -10,6 +10,8 @@ import compiler.language.ast.member.Modifier;
 import compiler.language.ast.member.ModifierType;
 import compiler.language.ast.member.StaticInitializer;
 import compiler.language.ast.statement.Block;
+import compiler.language.parser.LanguageParseException;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -34,21 +36,30 @@ public class StaticInitializerRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == PRODUCTION)
     {
       MemberHeader header = (MemberHeader) args[0];
       if (header.getAccessSpecifier() != null)
       {
-        throw new IllegalStateException("A static initializer cannot have an access specifier.");
+        throw new LanguageParseException("A static initializer cannot have an access specifier.", header.getAccessSpecifier().getParseInfo());
       }
       Modifier[] modifiers = header.getModifiers();
-      if (modifiers.length != 1 || modifiers[0].getType() != ModifierType.STATIC)
-      {
-        throw new IllegalStateException("A static initializer must have exactly one modifier: \"static\"");
-      }
       Block block = (Block) args[1];
+      if (modifiers.length == 0)
+      {
+        throw new LanguageParseException("A static initializer must have a \"static\" modifier", block.getParseInfo());
+      }
+      if (modifiers.length > 1 || modifiers[0].getType() != ModifierType.STATIC)
+      {
+        ParseInfo[] modifierInfo = new ParseInfo[modifiers.length];
+        for (int i = 0; i < modifiers.length; i++)
+        {
+          modifierInfo[i] = modifiers[i].getParseInfo();
+        }
+        throw new LanguageParseException("A static initializer can only have one modifier, and it must be \"static\"", ParseInfo.combine(modifierInfo));
+      }
       return new StaticInitializer(block, ParseInfo.combine(header.getParseInfo(), block.getParseInfo()));
     }
     throw badTypeList();

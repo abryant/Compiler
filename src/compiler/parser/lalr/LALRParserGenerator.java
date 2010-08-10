@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -64,7 +65,7 @@ public class LALRParserGenerator
     Rule newStartRule = new Rule(generatedStartRuleType, new Object[] {startRule.getType()})
     {
       @Override
-      public Object match(Object[] types, Object[] args)
+      public Object match(Object[] types, Object[] args) throws ParseException
       {
         if (types.length == 1 && types[0] == startRule.getType())
         {

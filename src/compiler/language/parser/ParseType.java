@@ -156,6 +156,7 @@ public enum ParseType
   // =============
 
   // literals
+  // all literals must have a special case for extracting ParseInfo from them in LanguageParser
   NAME,                     // Name
   INTEGER_LITERAL,          // IntegerLiteral
   STRING_LITERAL,           // StringLiteral

@@ -19,6 +19,7 @@ import compiler.language.ast.member.Property;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.Type;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -53,7 +54,7 @@ public class PropertyRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == PRODUCTION)
     {

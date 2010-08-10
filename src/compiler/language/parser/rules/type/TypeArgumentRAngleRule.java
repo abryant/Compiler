@@ -13,6 +13,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeArgument;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -41,7 +42,7 @@ public class TypeArgumentRAngleRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     // all productions have the first argument as a Name, so we can cast it early
     // (this assumes that we have the correct type list, and that the NAME type is only ever associated with a Name object)

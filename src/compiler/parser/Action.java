@@ -30,6 +30,7 @@ public abstract class Action
    * @param stateStack - the stack of states
    * @param tokenStack - the stack of tokens (including terminals and non-terminals)
    * @return true if the token was added to the token stack (or used in some other way), false otherwise
+   * @throws ParseException - if there is an error while performing the action
    */
-  public abstract boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack);
+  public abstract boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack) throws ParseException;
 }

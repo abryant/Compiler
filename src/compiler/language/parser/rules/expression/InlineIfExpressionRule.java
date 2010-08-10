@@ -9,6 +9,7 @@ import static compiler.language.parser.ParseType.QUESTION_MARK;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.InlineIfExpression;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -34,7 +35,7 @@ public class InlineIfExpressionRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == NO_CHANGE_PRODUCTION)
     {

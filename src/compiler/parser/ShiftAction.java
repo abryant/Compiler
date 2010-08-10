@@ -28,7 +28,7 @@ public class ShiftAction extends Action
    * @see compiler.parser.Action#perform(compiler.parser.Token, java.util.Deque, java.util.Deque)
    */
   @Override
-  public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack)
+  public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack) throws ParseException
   {
     System.out.println("Shifting on " + (token == null ? null : token.getType())); // TODO: remove debug output
     // add the next state and the next token to their stacks

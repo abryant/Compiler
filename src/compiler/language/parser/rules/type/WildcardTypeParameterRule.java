@@ -9,6 +9,7 @@ import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.WildcardTypeParameter;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -36,7 +37,7 @@ public class WildcardTypeParameterRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == PRODUCTION)
     {

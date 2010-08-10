@@ -10,6 +10,8 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.ShiftExpression;
 import compiler.language.ast.expression.ShiftExpressionType;
+import compiler.language.parser.LanguageParseException;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -37,7 +39,7 @@ public class ShiftExpressionRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == START_PRODUCTION)
     {
@@ -78,7 +80,7 @@ public class ShiftExpressionRule extends Rule
       ParseInfo thirdAngle = (ParseInfo) args[2];
       if (!ParseInfo.areAdjacent(firstTwoAngles, thirdAngle))
       {
-        throw new IllegalArgumentException("The angle brackets in a shift expression must be directly adjacent to each other");
+        throw new LanguageParseException("The angle brackets in a shift expression must be directly adjacent to each other", ParseInfo.combine(firstTwoAngles, thirdAngle));
       }
       Expression secondExpression = (Expression) args[3];
       if (args[0] instanceof ShiftExpression)

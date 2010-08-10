@@ -9,6 +9,7 @@ import compiler.language.ast.ParseList;
 import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.MemberHeader;
 import compiler.language.ast.member.Modifier;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -33,7 +34,7 @@ public class MemberHeaderRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == PRODUCTION)
     {

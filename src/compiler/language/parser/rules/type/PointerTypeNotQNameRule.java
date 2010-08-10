@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.POINTER_TYPE_NOT_QNAME;
 import static compiler.language.parser.ParseType.POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME;
 import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_PARAMS;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -29,7 +30,7 @@ public class PointerTypeNotQNameRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == NO_TRAILING_PARAMS_PRODUCTION || types == TRAILING_PARAMS_PRODUCTION)
     {

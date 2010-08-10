@@ -1,5 +1,6 @@
 package test.parser;
 
+import compiler.parser.BadTokenException;
 import compiler.parser.ParseException;
 import compiler.parser.Parser;
 import compiler.parser.Token;
@@ -18,7 +19,7 @@ import compiler.parser.lalr.LALRState;
 public class ExpressionParser
 {
 
-  public static void main(String[] args) throws ParseException
+  public static void main(String[] args) throws ParseException, BadTokenException
   {
     LALRRuleSet ruleSet = new LALRRuleSet();
     ruleSet.addStartRule(new ExpressionRule());

@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.POINTER_TYPE_NOT_QNAME;
 import static compiler.language.parser.ParseType.TYPE_NOT_POINTER_TYPE;
 import static compiler.language.parser.ParseType.TYPE_NOT_QNAME;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -29,7 +30,7 @@ public class TypeNotQNameRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == PRODUCTION || types == POINTER_TYPE_NOT_QNAME_PRODUCTION)
     {

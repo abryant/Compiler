@@ -9,6 +9,7 @@ import compiler.language.ast.type.NormalTypeParameter;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
 import compiler.language.ast.type.WildcardTypeParameter;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -34,7 +35,7 @@ public class TypeParameterRAngleRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == NORMAL_PRODUCTION)
     {

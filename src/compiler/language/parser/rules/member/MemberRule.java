@@ -8,6 +8,7 @@ import static compiler.language.parser.ParseType.PROPERTY;
 import static compiler.language.parser.ParseType.STATIC_INITIALIZER;
 import static compiler.language.parser.ParseType.TYPE_DEFINITION;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -37,7 +38,7 @@ public class MemberRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == FIELD_PRODUCTION || types == PROPERTY_PRODUCTION || types == STATIC_INITIALIZER_PRODUCTION ||
         types == CONSTRUCTOR_PRODUCTION || types == METHOD_PRODUCTION || types == TYPE_DEFINITION_PRODUCTION)

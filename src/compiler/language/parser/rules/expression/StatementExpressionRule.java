@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.INSTANCIATION_EXPRESSION;
 import static compiler.language.parser.ParseType.METHOD_CALL_EXPRESSION;
 import static compiler.language.parser.ParseType.STATEMENT_EXPRESSION;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -29,7 +30,7 @@ public class StatementExpressionRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == METHOD_CALL_PRODUCTION || types == INSTANCIATION_PRODUCTION)
     {

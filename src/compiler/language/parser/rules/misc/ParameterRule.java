@@ -11,6 +11,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.misc.DefaultParameter;
 import compiler.language.ast.misc.NormalParameter;
 import compiler.language.ast.terminal.Name;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -35,7 +36,7 @@ public class ParameterRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == NORMAL_PRODUCTION)
     {

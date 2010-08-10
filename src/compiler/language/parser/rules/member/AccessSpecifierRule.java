@@ -9,6 +9,7 @@ import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.AccessSpecifierType;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -38,7 +39,7 @@ public class AccessSpecifierRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
 
     if (types == EMPTY_PRODUCTION)

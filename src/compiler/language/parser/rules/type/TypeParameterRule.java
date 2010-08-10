@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER;
 
 import compiler.language.ast.type.NormalTypeParameter;
 import compiler.language.ast.type.Type;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -30,7 +31,7 @@ public class TypeParameterRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == NORMAL_PRODUCTION)
     {

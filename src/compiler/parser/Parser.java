@@ -33,8 +33,9 @@ public class Parser
    * Parses the input from the tokenizer according to the start state
    * @return the token representing the whole of the parsed structure
    * @throws ParseException - if an error occurs while parsing
+   * @throws BadTokenException - if an unexpected token was found while parsing
    */
-  public Token parse() throws ParseException
+  public Token parse() throws ParseException, BadTokenException
   {
     Deque<State> stateStack = new LinkedList<State>();
     Deque<Token> tokenStack = new LinkedList<Token>();
@@ -49,8 +50,7 @@ public class Parser
       Action action = state.getAction(lookahead);
       if (action == null)
       {
-        String expectedTypes = getTypesString(state.getExpectedTerminalTypes());
-        throw new ParseException("Unexpected token: " + lookahead + ". Expected one of: " + expectedTypes);
+        throw new BadTokenException(lookahead, state.getExpectedTerminalTypes());
       }
 
       if (action.isAccept())
@@ -69,25 +69,6 @@ public class Parser
       }
     }
 
-  }
-
-  /**
-   * Finds the string representation of a list of types.
-   * @param types - the list of types to convert to a string
-   * @return the string representation of the specified list of types
-   */
-  private static String getTypesString(Object[] types)
-  {
-    StringBuffer buffer = new StringBuffer();
-    for (int i = 0; i < types.length; i++)
-    {
-      buffer.append(types[i]);
-      if (i != types.length - 1)
-      {
-        buffer.append(", ");
-      }
-    }
-    return buffer.toString();
   }
 
 }

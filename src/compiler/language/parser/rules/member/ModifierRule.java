@@ -15,6 +15,7 @@ import static compiler.language.parser.ParseType.VOLATILE_KEYWORD;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.Modifier;
 import compiler.language.ast.member.ModifierType;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -48,7 +49,7 @@ public class ModifierRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == STATIC_PRODUCTION)
     {

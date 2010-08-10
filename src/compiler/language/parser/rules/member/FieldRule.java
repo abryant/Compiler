@@ -15,6 +15,7 @@ import compiler.language.ast.member.Field;
 import compiler.language.ast.member.MemberHeader;
 import compiler.language.ast.misc.Assignee;
 import compiler.language.ast.type.Type;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -39,7 +40,7 @@ public class FieldRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == DECLARE_PRODUCTION)
     {

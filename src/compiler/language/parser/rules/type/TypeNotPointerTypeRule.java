@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.TUPLE_TYPE;
 import static compiler.language.parser.ParseType.TYPE_NOT_POINTER_TYPE;
 import static compiler.language.parser.ParseType.VOID_TYPE;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -35,7 +36,7 @@ public class TypeNotPointerTypeRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == ARRAY_TYPE_PRODUCTION || types == CLOSURE_TYPE_PRODUCTION || types == PRIMITIVE_TYPE_PRODUCTION ||
         types == TUPLE_TYPE_PRODUCTION || types == VOID_TYPE_PRODUCTION)

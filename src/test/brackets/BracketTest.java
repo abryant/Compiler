@@ -1,5 +1,6 @@
 package test.brackets;
 
+import compiler.parser.BadTokenException;
 import compiler.parser.ParseException;
 import compiler.parser.Parser;
 import compiler.parser.Token;
@@ -16,7 +17,7 @@ import compiler.parser.lalr.LALRRuleSet;
 public class BracketTest
 {
 
-  public static void main(String[] args) throws ParseException
+  public static void main(String[] args) throws ParseException, BadTokenException
   {
     LALRRuleSet rules = new LALRRuleSet();
     rules.addStartRule(new BracketsRule());

@@ -52,8 +52,9 @@ public abstract class Rule
    * @param types - the list of types of the arguments, this will have the same length as the args array
    * @param args - the arguments list, which will have length and types corresponding to one of the productions
    * @return the resulting value object
+   * @throws ParseException - if an error occurs while matching
    */
-  public abstract Object match(Object[] types, Object[] args);
+  public abstract Object match(Object[] types, Object[] args) throws ParseException;
 
   /**
    * @see java.lang.Object#equals(java.lang.Object)
@@ -125,10 +126,10 @@ public abstract class Rule
   }
 
   /**
-   * @return an IllegalArgumentException representing a bad list of types passed to a match() method
+   * @return a ParseException representing a bad list of types passed to a match() method
    */
-  public static IllegalArgumentException badTypeList()
+  public static ParseException badTypeList()
   {
-    return new IllegalArgumentException("Invalid type list passed to match()");
+    return new ParseException("Invalid type list passed to match()");
   }
 }

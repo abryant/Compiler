@@ -47,13 +47,13 @@ public class ReduceAction extends Action
    * @see compiler.parser.Action#perform(compiler.parser.Token, java.util.Deque, java.util.Deque)
    */
   @Override
-  public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack)
+  public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack) throws ParseException
   {
     Object[] production = rule.getProductions()[productionIndex];
     System.out.println("Reducing via production " + Rule.getProductionString(rule.getType(), production) + " (lookahead " + (token == null ? null : token.getType()) + ")"); // TODO: remove debug output
     if (stateStack.size() <= production.length || tokenStack.size() < production.length)
     {
-      throw new IllegalStateException("Bad reduction of rule, not enough elements");
+      throw new ParseException("Bad reduction of rule, not enough elements");
     }
 
     // get the list of token values
@@ -63,7 +63,7 @@ public class ReduceAction extends Action
       Token t = tokenStack.removeFirst();
       if (!t.getType().equals(production[i]))
       {
-        throw new IllegalStateException("Bad reduction of rule, invalid token type");
+        throw new ParseException("Bad reduction of rule, invalid token type");
       }
       values[i] = t.getValue();
 

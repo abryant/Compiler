@@ -7,6 +7,7 @@ import compiler.language.ast.expression.RelationalExpression;
 import compiler.language.ast.expression.RelationalExpressionType;
 import compiler.language.ast.type.Type;
 import compiler.language.parser.ParseType;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -37,7 +38,7 @@ public class RelationalExpressionRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == NO_CHANGE_PRODUCTION)
     {

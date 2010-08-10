@@ -79,7 +79,7 @@ public class MetaRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     // find the index of the production we are using
     Object[][] productions = getProductions();
@@ -108,7 +108,7 @@ public class MetaRule extends Rule
     // the production was not in any of this rule's productions
     if (index == -1)
     {
-      throw new IllegalStateException("MetaRule.match() called with invalid production");
+      throw new ParseException("MetaRule.match() called with invalid production");
     }
 
     // call either the first or the second rule's match() method depending on the index of the production in this rule's productions

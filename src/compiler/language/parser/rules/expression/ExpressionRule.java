@@ -3,6 +3,7 @@ package compiler.language.parser.rules.expression;
 import static compiler.language.parser.ParseType.EXPRESSION;
 import static compiler.language.parser.ParseType.TUPLE_EXPRESSION;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -27,7 +28,7 @@ public class ExpressionRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == PRODUCTION)
     {

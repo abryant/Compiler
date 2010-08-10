@@ -9,6 +9,7 @@ import static compiler.language.parser.ParseType.STRING_LITERAL;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.NativeSpecifier;
 import compiler.language.ast.terminal.StringLiteral;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -32,7 +33,7 @@ public class NativeSpecifierRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == PRODUCTION)
     {

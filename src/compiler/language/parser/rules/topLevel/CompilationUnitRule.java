@@ -10,6 +10,8 @@ import compiler.language.ast.topLevel.CompilationUnit;
 import compiler.language.ast.topLevel.ImportDeclaration;
 import compiler.language.ast.topLevel.PackageDeclaration;
 import compiler.language.ast.topLevel.TypeDefinition;
+import compiler.language.parser.LanguageParseException;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -35,7 +37,7 @@ public class CompilationUnitRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == EMPTY_PRODUCTION)
     {
@@ -44,35 +46,35 @@ public class CompilationUnitRule extends Rule
     if (types == PACKAGE_PRODUCTION)
     {
       CompilationUnit oldUnit = (CompilationUnit) args[0];
+      PackageDeclaration packageDeclaration = (PackageDeclaration) args[1];
       if (oldUnit.getPackageDeclaration() != null)
       {
-        throw new IllegalStateException("Multiple package specifications");
+        throw new LanguageParseException("Multiple package specifications", packageDeclaration.getParseInfo());
       }
       ImportDeclaration[] imports = oldUnit.getImports();
       if (imports.length > 0)
       {
-        throw new IllegalStateException("Package must be declared before imports");
+        throw new LanguageParseException("Package must be declared before imports", packageDeclaration.getParseInfo());
       }
       TypeDefinition[] typeDefinitions = oldUnit.getTypes();
       if (typeDefinitions.length > 0)
       {
-        throw new IllegalStateException("Package must be specified before types.");
+        throw new LanguageParseException("Package must be specified before types.", packageDeclaration.getParseInfo());
       }
-      PackageDeclaration packageDeclaration = (PackageDeclaration) args[1];
       return new CompilationUnit(packageDeclaration, imports, typeDefinitions, ParseInfo.combine(oldUnit.getParseInfo(), packageDeclaration.getParseInfo()));
     }
     if (types == IMPORT_PRODUCTION)
     {
       CompilationUnit oldUnit = (CompilationUnit) args[0];
+      ImportDeclaration newImport = (ImportDeclaration) args[1];
       TypeDefinition[] typeDefinitions = oldUnit.getTypes();
       if (typeDefinitions.length > 0)
       {
-        throw new IllegalStateException("Imports must be specified before types");
+        throw new LanguageParseException("Imports must be specified before types", newImport.getParseInfo());
       }
       ImportDeclaration[] oldImports = oldUnit.getImports();
       ImportDeclaration[] newImports = new ImportDeclaration[oldImports.length + 1];
       System.arraycopy(oldImports, 0, newImports, 0, oldImports.length);
-      ImportDeclaration newImport = (ImportDeclaration) args[1];
       newImports[oldImports.length] = newImport;
       return new CompilationUnit(oldUnit.getPackageDeclaration(), newImports, typeDefinitions, ParseInfo.combine(oldUnit.getParseInfo(), newImport.getParseInfo()));
     }

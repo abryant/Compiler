@@ -1,5 +1,6 @@
 package test.parser;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -25,7 +26,7 @@ public class ValueRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == NUMBER_PRODUCTION)
     {

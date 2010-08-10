@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.FLOATING_TYPE;
 import static compiler.language.parser.ParseType.INTEGER_TYPE;
 import static compiler.language.parser.ParseType.PRIMITIVE_TYPE;
 
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -32,7 +33,7 @@ public class PrimitiveTypeRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == BOOLEAN_PRODUCTION || types == INTEGER_PRODUCTION || types == CHARACTER_PRODUCTION || types == FLOATING_PRODUCTION)
     {

@@ -11,6 +11,7 @@ import compiler.language.ast.expression.FieldAccessExpression;
 import compiler.language.ast.misc.ArrayElementAssignee;
 import compiler.language.ast.misc.Assignee;
 import compiler.language.ast.misc.FieldAssignee;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -36,7 +37,7 @@ public class AssigneeRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == BLANK_PRODUCTION)
     {

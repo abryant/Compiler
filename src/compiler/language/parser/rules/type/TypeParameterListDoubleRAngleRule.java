@@ -10,6 +10,8 @@ import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.TypeParameter;
+import compiler.language.parser.LanguageParseException;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -35,7 +37,7 @@ public class TypeParameterListDoubleRAngleRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == DOUBLE_RANGLE_PRODUCTION)
     {
@@ -45,12 +47,12 @@ public class TypeParameterListDoubleRAngleRule extends Rule
       int line = doubleRAngleInfo.getStartLine();
       if (line != doubleRAngleInfo.getEndLine())
       {
-        throw new IllegalArgumentException("Found a DOUBLE_RANGLE \">>\" token which does not start and finish on the same line");
+        throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which does not start and finish on the same line", doubleRAngleInfo);
       }
       int startPos = doubleRAngleInfo.getStartPos();
       if (doubleRAngleInfo.getEndPos() - startPos != 2)
       {
-        throw new IllegalArgumentException("Found a DOUBLE_RANGLE \">>\" token which is not 2 characters long");
+        throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which is not 2 characters long", doubleRAngleInfo);
       }
       ParseInfo firstAngleInfo = new ParseInfo(line, startPos, line, startPos + 1);
       ParseContainer<ParseList<TypeParameter>> firstContainer = new ParseContainer<ParseList<TypeParameter>>(typeParameterList,

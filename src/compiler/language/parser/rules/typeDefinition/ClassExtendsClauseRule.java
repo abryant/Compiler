@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.POINTER_TYPE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.PointerType;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -30,7 +31,7 @@ public class ClassExtendsClauseRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == EMPTY_PRODUCTION)
     {

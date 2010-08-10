@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.PARAMETER_LIST;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.Parameter;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -31,7 +32,7 @@ public class ParameterListRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == START_PRODUCTION)
     {

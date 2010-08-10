@@ -20,6 +20,7 @@ import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeArgument;
+import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
@@ -52,7 +53,7 @@ public class MethodRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args)
+  public Object match(Object[] types, Object[] args) throws ParseException
   {
     if (types == DECLARATION_PRODUCTION)
     {
