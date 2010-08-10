@@ -241,9 +241,9 @@ BitwiseXorExpression = BitwiseAndExpression | BitwiseXorExpression Caret Bitwise
 BitwiseAndExpression = ShiftExpression      | BitwiseAndExpression Ampersand ShiftExpression 
 
 ShiftExpression = AdditiveExpression
-                | ShiftExpression LAngle LAngle AdditiveExpression
-                | ShiftExpression RAngle RAngle AdditiveExpression        // check while matching this production that the RAngles are directly next to each other
-                | ShiftExpression RAngle RAngle RAngle AdditiveExpression // and again for this production
+                | ShiftExpression DoubleLAngle AdditiveExpression
+                | ShiftExpression DoubleRAngle AdditiveExpression        // check while matching this production that the RAngles are directly next to each other
+                | ShiftExpression DoubleRAngle RAngle AdditiveExpression // and again for this production
 
 AdditiveExpression = MultiplicativeExpression
                    | AdditiveExpression Plus MultiplicativeExpression
