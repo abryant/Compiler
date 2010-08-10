@@ -1,9 +1,11 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.NORMAL_TYPE_PARAMETER;
+import static compiler.language.parser.ParseType.TYPE;
 import static compiler.language.parser.ParseType.TYPE_PARAMETER;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER;
 
+import compiler.language.ast.type.NormalTypeParameter;
+import compiler.language.ast.type.Type;
 import compiler.parser.Rule;
 
 /*
@@ -16,7 +18,7 @@ import compiler.parser.Rule;
 public class TypeParameterRule extends Rule
 {
 
-  private static final Object[] NORMAL_PRODUCTION = new Object[] {NORMAL_TYPE_PARAMETER};
+  private static final Object[] NORMAL_PRODUCTION = new Object[] {TYPE};
   private static final Object[] WILDCARD_PRODUCTION = new Object[] {WILDCARD_TYPE_PARAMETER};
 
   public TypeParameterRule()
@@ -30,9 +32,14 @@ public class TypeParameterRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args)
   {
-    if (types == NORMAL_PRODUCTION || types == WILDCARD_PRODUCTION)
+    if (types == NORMAL_PRODUCTION)
     {
-      // both sorts of type parameter are actually subclasses of TypeParameter, so just return the arguments
+      Type type = (Type) args[0];
+      return new NormalTypeParameter(type, type.getParseInfo());
+    }
+    if (types == WILDCARD_PRODUCTION)
+    {
+      // a wildcard type parameter is actually a subclass of TypeParameter, so just return the argument
       return args[0];
     }
     throw badTypeList();

@@ -3,6 +3,8 @@ package compiler.language.parser.rules.statement;
 import static compiler.language.parser.ParseType.STATEMENT;
 import static compiler.language.parser.ParseType.STATEMENTS;
 
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.statement.Statement;
 import compiler.parser.Rule;
 
@@ -32,15 +34,16 @@ public class StatementsRule extends Rule
   {
     if (types == START_PRODUCTION)
     {
-      return new Statement[] {(Statement) args[0]};
+      Statement statement = (Statement) args[0];
+      return new ParseList<Statement>(statement, statement.getParseInfo());
     }
     if (types == CONTINUATION_PRODUCTION)
     {
-      Statement[] oldList = (Statement[]) args[0];
-      Statement[] newList = new Statement[oldList.length + 1];
-      System.arraycopy(oldList, 0, newList, 0, oldList.length);
-      newList[oldList.length] = (Statement) args[1];
-      return newList;
+      @SuppressWarnings("unchecked")
+      ParseList<Statement> list = (ParseList<Statement>) args[0];
+      Statement statement = (Statement) args[1];
+      list.addLast(statement, ParseInfo.combine(list.getParseInfo(), statement.getParseInfo()));
+      return list;
     }
     throw badTypeList();
   }

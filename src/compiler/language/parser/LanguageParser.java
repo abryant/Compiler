@@ -28,10 +28,6 @@ public class LanguageParser
     try
     {
       Token result = parser.parse();
-      if (result.getType() != ParseType.COMPILATION_UNIT)
-      {
-        System.err.println("Invalid result type: " + result.getType());
-      }
       System.out.println("Success!");
       System.out.println(result.getValue());
     }

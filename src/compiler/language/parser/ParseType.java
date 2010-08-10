@@ -101,29 +101,40 @@ public enum ParseType
   ASSIGNMENT_OPERATOR,            // AssignmentOperator
 
   // types
-  ARRAY_TYPE,               // ArrayType
-  BOOLEAN_TYPE,             // BooleanType
-  CHARACTER_TYPE,           // CharacterType
-  CLOSURE_TYPE,             // ClosureType
-  FLOATING_TYPE,            // FloatingType
-  INTEGER_TYPE,             // IntegerType
-  PRIMITIVE_TYPE,           // PrimitiveType
-  POINTER_TYPE,             // PointerType
-  POINTER_TYPE_NOT_QNAME,   // PointerType
-  MUTABLE_POINTER_TYPE_TRAILING_PARAMS, // PointerType
-  TUPLE_TYPE,               // TupleType
-  TYPE_LIST,                // ParseList<Type> (length > 0)
-  TYPE,                     // Type
-  TYPE_NOT_QNAME,           // Type
-  TYPE_ARGUMENTS,           // ParseList<TypeArgument> (length > 0)
-  TYPE_ARGUMENT_LIST,       // ParseList<TypeArgument> (length > 0)
-  TYPE_ARGUMENT,            // TypeArgument
-  TYPE_PARAMETERS,          // ParseList<TypeParameter> (length > 0)
-  TYPE_PARAMETER_LIST,      // ParseList<TypeParameter> (length > 0)
-  TYPE_PARAMETER,           // TypeParameter
-  NORMAL_TYPE_PARAMETER,    // NormalTypeParameter
-  WILDCARD_TYPE_PARAMETER,  // WildcardTypeParameter
-  VOID_TYPE,                // VoidType
+  // TODO: add all of the new rules to LanguageRules
+  ARRAY_TYPE,                        // ArrayType
+  BOOLEAN_TYPE,                      // BooleanType
+  CHARACTER_TYPE,                    // CharacterType
+  CLOSURE_TYPE,                      // ClosureType
+  FLOATING_TYPE,                     // FloatingType
+  INTEGER_TYPE,                      // IntegerType
+  PRIMITIVE_TYPE,                    // PrimitiveType
+  POINTER_TYPE,                      // PointerType
+  POINTER_TYPE_RANGLE,               // ParseContainer<PointerType>
+  POINTER_TYPE_NOT_QNAME,            // PointerType
+  POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME, // PointerType
+  POINTER_TYPE_TRAILING_PARAMS,              // PointerType
+  POINTER_TYPE_TRAILING_PARAMS_RANGLE,       // ParseContainer<PointerType>
+  TUPLE_TYPE,                        // TupleType
+  TYPE_LIST,                         // ParseList<Type> (length > 0)
+  TYPE,                              // Type
+  TYPE_RANGLE,                       // ParseContainer<Type>
+  TYPE_NOT_QNAME,                    // Type
+  TYPE_NOT_POINTER_TYPE,             // Type
+  TYPE_ARGUMENTS,                    // ParseList<TypeArgument> (length > 0)
+  TYPE_ARGUMENT_LIST,                // ParseList<TypeArgument> (length > 0)
+  TYPE_ARGUMENT_LIST_RANGLE,         // ParseContainer<ParseList<TypeArgument>> (length > 0)
+  TYPE_ARGUMENT,                     // TypeArgument
+  TYPE_ARGUMENT_RANGLE,              // ParseContainer<TypeArgument>
+  TYPE_PARAMETERS,                   // ParseList<TypeParameter> (length > 0)
+  TYPE_PARAMETER_LIST,               // ParseList<TypeParameter> (length > 0)
+  TYPE_PARAMETER_LIST_RANGLE,        // ParseContainer<ParseList<TypeParameter>> (length > 0)
+  TYPE_PARAMETER_LIST_DOUBLE_RANGLE, // ParseContainer<ParseContainer<ParseList<TypeParameter>>> (length > 0)
+  TYPE_PARAMETER,                    // TypeParameter
+  TYPE_PARAMETER_RANGLE,             // ParseContainer<TypeParameter>
+  WILDCARD_TYPE_PARAMETER,           // WildcardTypeParameter
+  WILDCARD_TYPE_PARAMETER_RANGLE,    // ParseContainer<WildcardTypeParameter>
+  VOID_TYPE,                         // VoidType
 
   // miscellaneous non-terminals
   ARGUMENT,                 // Argument
@@ -199,7 +210,9 @@ public enum ParseType
   DOUBLE_AMPERSAND,
   DOUBLE_CARET,
   DOUBLE_EQUALS,
+  DOUBLE_LANGLE,
   DOUBLE_PIPE,
+  DOUBLE_RANGLE,
   ELLIPSIS,
   EQUALS,
   EXCLAIMATION_MARK,

@@ -56,22 +56,32 @@ import compiler.language.parser.rules.type.CharacterTypeRule;
 import compiler.language.parser.rules.type.ClosureTypeRule;
 import compiler.language.parser.rules.type.FloatingTypeRule;
 import compiler.language.parser.rules.type.IntegerTypeRule;
-import compiler.language.parser.rules.type.MutablePointerTypeTrailingParamsRule;
-import compiler.language.parser.rules.type.NormalTypeParameterRule;
+import compiler.language.parser.rules.type.PointerTypeNoTrailingParamsNotQNameRule;
 import compiler.language.parser.rules.type.PointerTypeNotQNameRule;
+import compiler.language.parser.rules.type.PointerTypeRAngleRule;
 import compiler.language.parser.rules.type.PointerTypeRule;
+import compiler.language.parser.rules.type.PointerTypeTrailingParamsRAngleRule;
+import compiler.language.parser.rules.type.PointerTypeTrailingParamsRule;
 import compiler.language.parser.rules.type.PrimitiveTypeRule;
 import compiler.language.parser.rules.type.TupleTypeRule;
+import compiler.language.parser.rules.type.TypeArgumentListRAngleRule;
 import compiler.language.parser.rules.type.TypeArgumentListRule;
+import compiler.language.parser.rules.type.TypeArgumentRAngleRule;
 import compiler.language.parser.rules.type.TypeArgumentRule;
 import compiler.language.parser.rules.type.TypeArgumentsRule;
 import compiler.language.parser.rules.type.TypeListRule;
+import compiler.language.parser.rules.type.TypeNotPointerTypeRule;
 import compiler.language.parser.rules.type.TypeNotQNameRule;
+import compiler.language.parser.rules.type.TypeParameterListDoubleRAngleRule;
+import compiler.language.parser.rules.type.TypeParameterListRAngleRule;
 import compiler.language.parser.rules.type.TypeParameterListRule;
+import compiler.language.parser.rules.type.TypeParameterRAngleRule;
 import compiler.language.parser.rules.type.TypeParameterRule;
 import compiler.language.parser.rules.type.TypeParametersRule;
+import compiler.language.parser.rules.type.TypeRAngleRule;
 import compiler.language.parser.rules.type.TypeRule;
 import compiler.language.parser.rules.type.VoidTypeRule;
+import compiler.language.parser.rules.type.WildcardTypeParameterRAngleRule;
 import compiler.language.parser.rules.type.WildcardTypeParameterRule;
 import compiler.language.parser.rules.typeDefinition.ClassDefinitionRule;
 import compiler.language.parser.rules.typeDefinition.ClassExtendsClauseRule;
@@ -166,22 +176,32 @@ public class LanguageRules
     new ClosureTypeRule(),
     new FloatingTypeRule(),
     new IntegerTypeRule(),
-    new MutablePointerTypeTrailingParamsRule(),
-    new NormalTypeParameterRule(),
     new PointerTypeNotQNameRule(),
+    new PointerTypeNoTrailingParamsNotQNameRule(),
+    new PointerTypeRAngleRule(),
     new PointerTypeRule(),
+    new PointerTypeTrailingParamsRAngleRule(),
+    new PointerTypeTrailingParamsRule(),
     new PrimitiveTypeRule(),
     new TupleTypeRule(),
+    new TypeArgumentListRAngleRule(),
     new TypeArgumentListRule(),
+    new TypeArgumentRAngleRule(),
     new TypeArgumentRule(),
     new TypeArgumentsRule(),
     new TypeListRule(),
+    new TypeNotPointerTypeRule(),
     new TypeNotQNameRule(),
+    new TypeParameterListDoubleRAngleRule(),
+    new TypeParameterListRAngleRule(),
     new TypeParameterListRule(),
+    new TypeParameterRAngleRule(),
     new TypeParameterRule(),
     new TypeParametersRule(),
+    new TypeRAngleRule(),
     new TypeRule(),
     new VoidTypeRule(),
+    new WildcardTypeParameterRAngleRule(),
     new WildcardTypeParameterRule(),
 
     // miscellaneous

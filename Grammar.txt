@@ -39,15 +39,6 @@ VersionNumber = IntegerLiteral | VersionNumber Dot IntegerLiteral
 
 MemberHeader = AccessSpecifier Modifiers | AccessSpecifier
 
-TypeArgument = Name
-             | Name ExtendsKeyword PointerType
-             | Name SuperKeyword PointerType
-             | Name ExtendsKeyword PointerType SuperKeyword PointerType
-             | Name SuperKeyword PointerType ExtendsKeyword PointerType
-
-TypeArgumentList = TypeArgumentList Comma TypeArgument | TypeArgument
-TypeArguments = LAngle TypeArgumentList RAngle
-
 ClassDefinition     = MemberHeader ClassKeyword Name ClassExtendsClause ImplementsClause LBrace MemberList RBrace
                     | MemberHeader ClassKeyword Name TypeArguments ClassExtendsClause ImplementsClause LBrace MemberList RBrace
 InterfaceDefinition = MemberHeader InterfaceKeyword Name TypeArguments InterfaceExtendsClause LBrace MemberList RBrace
@@ -157,7 +148,8 @@ LocalDeclaration = Type AssigneeList // check that underscore is not declared af
                  | Modifiers Type AssigneeList Equals Expression
 LocalDeclarationStatement = LocalDeclaration Semicolon
 
-AssignStatement = AssigneeList AssignmentOperator Expression Semicolon
+AssignStatement = Assignment Semicolon
+Assignment = AssigneeList AssignmentOperator Expression
 
 // right-recursive list, so that the symbol after the list can be
 // used to decide between TypeList and AssigneeList
@@ -179,8 +171,8 @@ ForHeader = ForInit Semicolon Expression Semicolon ForUpdate
           | ForInit Semicolon            Semicolon ForUpdate
           | Type Name Colon Expression
 
-ForInit = LocalDeclaration | StatementExpression | epsilon
-ForUpdate = StatementExpression | Increment | Decrement | epsilon
+ForInit = LocalDeclaration | StatementExpression | Assignment | epsilon
+ForUpdate = StatementExpression | Assignment | Increment | Decrement | epsilon
 
 SwitchStatement = SwitchKeyword Expression SwitchBlock
                 | SwitchKeyword SwitchBlock
@@ -244,12 +236,12 @@ RelationalExpression = BitwiseOrExpression
                      | BitwiseOrExpression RAngleEquals BitwiseOrExpression
                      | BitwiseOrExpression InstanceOfKeyword Type
 
-BitwiseOrExpression = BitwiseXorExpression  | BitwiseOrExpression Pipe BitwiseXorExpression 
+BitwiseOrExpression  = BitwiseXorExpression | BitwiseOrExpression Pipe BitwiseXorExpression 
 BitwiseXorExpression = BitwiseAndExpression | BitwiseXorExpression Caret BitwiseAndExpression 
 BitwiseAndExpression = ShiftExpression      | BitwiseAndExpression Ampersand ShiftExpression 
 
 ShiftExpression = AdditiveExpression
-                | ShiftExpression DoubleLAngle AdditiveExpression
+                | ShiftExpression LAngle LAngle AdditiveExpression
                 | ShiftExpression RAngle RAngle AdditiveExpression        // check while matching this production that the RAngles are directly next to each other
                 | ShiftExpression RAngle RAngle RAngle AdditiveExpression // and again for this production
 
@@ -269,7 +261,7 @@ TupleIndexExpression = UnaryExpression
 UnaryExpression = Primary | BooleanNotExpression | BitwiseNotExpression | CastExpression | PlusExpression | MinusExpression
 BooleanNotExpression = ExclaimationMark UnaryExpression
 BitwiseNotExpression = Tilde UnaryExpression
-CastExpression = CastKeyword LAngle Type RAngle UnaryExpression
+CastExpression = CastKeyword LAngle TypeRAngle UnaryExpression
 PlusExpression = Plus UnaryExpression
 MinusExpression = Minus UnaryExpression
 
@@ -333,8 +325,14 @@ AssignmentOperator = Equals | PlusEquals | MinusEquals | TimesEquals | DivideEqu
   Types
 #########
 
-Type = PrimitiveType | PointerType | ArrayType | TupleType | ClosureType | VoidType
-TypeNotQName = PrimitiveType | PointerTypeNotQName | ArrayType | TupleType | ClosureType | VoidType
+// The type lists for Type, PointerType, TypeParameters and TypeArguments have been slightly mutilated
+// so that they can cope with a DoubleRAngle token instead of two RAngle tokens
+// this results in a lot of rules whose only purpose is to have extra RAngles on the end of them
+
+Type = TypeNotQName | QName
+TypeRAngle = TypeNotPointerType RAngle | PointerTypeRAngle
+TypeNotQName = TypeNotPointerType | PointerTypeNotQName
+TypeNotPointerType = PrimitiveType | ArrayType | TupleType | ClosureType | VoidType
 
 TupleType = LParen TypeList RParen
 TypeList = Type | Type Comma TypeList
@@ -358,23 +356,59 @@ CharacterType = CharacterKeyword
 FloatingType = FloatKeyword | DoubleKeyword
 
 PointerType = QName | PointerTypeNotQName
-PointerTypeNotQName = MutablePointerTypeTrailingParams
-                    | MutablePointerTypeTrailingParams Dot QName
-                    | Hash QName
-                    | Hash MutablePointerTypeTrailingParams
-                    | Hash MutablePointerTypeTrailingParams Dot QName
-MutablePointerTypeTrailingParams = QName TypeParameters
-                                 | MutablePointerTypeTrailingParams Dot QName TypeParameters // the following should be valid: #a.b.C<W, X<Y>>.D.E<Z>.F
-TypeParameters = LAngle TypeParameterList RAngle
+PointerTypeRAngle = QName RAngle
+                  | PointerTypeNoTrailingParamsNotQName RAngle
+                  | PointerTypeTrailingParamsRAngle
+PointerTypeNotQName = PointerTypeNoTrailingParamsNotQName
+                    | PointerTypeTrailingParams
+PointerTypeNoTrailingParamsNotQName = Hash QName
+                                    | PointerTypeTrailingParams Dot QName
+PointerTypeTrailingParams = QName TypeParameters
+                          | Hash QName TypeParameters
+                          | PointerTypeTrailingParams Dot QName TypeParameters // the following should be valid: #a.b.C<W, X<Y>>.D.E<Z>.F
+PointerTypeTrailingParamsRAngle = QName LAngle TypeParameterListDoubleRAngle
+                                | Hash QName LAngle TypeParameterListDoubleRAngle
+                                | PointerTypeTrailingParams Dot QName LAngle TypeParameterListDoubleRAngle
+
+TypeParameters = LAngle TypeParameterListRAngle
 TypeParameterList = TypeParameter | TypeParameterList Comma TypeParameter
-TypeParameter = NormalTypeParameter | WildcardTypeParameter
-NormalTypeParameter = Type
-WildcardTypeParameter = QuestionMark ExtendsKeyword PointerType SuperKeyword PointerType
-                      | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerType
+TypeParameterListRAngle = TypeParameterRAngle
+                        | TypeParameterList Comma TypeParameterRAngle
+TypeParameterListDoubleRAngle = TypeParameterList DoubleRAngle
+                              | TypeParameterListRAngle RAngle
+
+TypeParameter = Type | WildcardTypeParameter
+TypeParameterRAngle = TypeRAngle
+                    | WildcardTypeParameterRAngle
+WildcardTypeParameter = QuestionMark
                       | QuestionMark ExtendsKeyword PointerType
                       | QuestionMark SuperKeyword PointerType
+                      | QuestionMark ExtendsKeyword PointerType SuperKeyword PointerType
+                      | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerType
+WildcardTypeParameterRAngle = QuestionMark RAngle
+                            | QuestionMark ExtendsKeyword PointerTypeRAngle
+                            | QuestionMark SuperKeyword PointerTypeRAngle
+                            | QuestionMark ExtendsKeyword PointerType SuperKeyword PointerTypeRAngle
+                            | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerTypeRAngle
 
 VoidType = VoidKeyword
+
+
+TypeArgument = Name
+             | Name ExtendsKeyword PointerType
+             | Name SuperKeyword PointerType
+             | Name ExtendsKeyword PointerType SuperKeyword PointerType
+             | Name SuperKeyword PointerType ExtendsKeyword PointerType
+TypeArgumentRAngle = Name
+                   | Name ExtendsKeyword PointerTypeRAngle
+                   | Name SuperKeyword PointerTypeRAngle
+                   | Name ExtendsKeyword PointerType SuperKeyword PointerTypeRAngle
+                   | Name SuperKeyword PointerType ExtendsKeyword PointerTypeRAngle
+
+TypeArgumentList = TypeArgumentList Comma TypeArgument | TypeArgument
+TypeArgumentListRAngle = TypeArgumentRAngle | TypeArgumentList Comma TypeArgumentRAngle
+TypeArguments = LAngle TypeArgumentListRAngle
+
 
 QName = Name | QName Dot Name
 

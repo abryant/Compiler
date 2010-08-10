@@ -1,10 +1,10 @@
 package compiler.language.parser.rules.type;
 
 import static compiler.language.parser.ParseType.LANGLE;
-import static compiler.language.parser.ParseType.RANGLE;
 import static compiler.language.parser.ParseType.TYPE_PARAMETERS;
-import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST;
+import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST_RANGLE;
 
+import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.TypeParameter;
@@ -20,7 +20,7 @@ import compiler.parser.Rule;
 public class TypeParametersRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {LANGLE, TYPE_PARAMETER_LIST, RANGLE};
+  private static final Object[] PRODUCTION = new Object[] {LANGLE, TYPE_PARAMETER_LIST_RANGLE};
 
   public TypeParametersRule()
   {
@@ -36,8 +36,9 @@ public class TypeParametersRule extends Rule
     if (types == PRODUCTION)
     {
       @SuppressWarnings("unchecked")
-      ParseList<TypeParameter> list = (ParseList<TypeParameter>) args[1];
-      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
+      ParseContainer<ParseList<TypeParameter>> container = (ParseContainer<ParseList<TypeParameter>>) args[1];
+      ParseList<TypeParameter> list = container.getItem();
+      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], container.getParseInfo()));
       return list;
     }
     throw badTypeList();
