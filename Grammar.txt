@@ -242,8 +242,8 @@ BitwiseAndExpression = ShiftExpression      | BitwiseAndExpression Ampersand Shi
 
 ShiftExpression = AdditiveExpression
                 | ShiftExpression DoubleLAngle AdditiveExpression
-                | ShiftExpression DoubleRAngle AdditiveExpression        // check while matching this production that the RAngles are directly next to each other
-                | ShiftExpression DoubleRAngle RAngle AdditiveExpression // and again for this production
+                | ShiftExpression DoubleRAngle AdditiveExpression
+                | ShiftExpression DoubleRAngle RAngle AdditiveExpression // check while matching this production that the RAngles are directly next to each other
 
 AdditiveExpression = MultiplicativeExpression
                    | AdditiveExpression Plus MultiplicativeExpression
