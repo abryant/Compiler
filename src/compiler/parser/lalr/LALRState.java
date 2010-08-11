@@ -52,7 +52,7 @@ public class LALRState implements State
   {
     if (shiftRules.containsKey(tokenType))
     {
-      throw new IllegalStateException("Shift-shift conflict! (this should not happen) Via terminal: " + tokenType);
+      throw new IllegalStateException("Shift-shift conflict! Via terminal: " + tokenType);
     }
     ReduceAction reduceAction = reduceActions.get(tokenType);
     if (reduceAction != null)
@@ -135,7 +135,7 @@ public class LALRState implements State
   {
     if (gotoRules.containsKey(tokenType))
     {
-      throw new IllegalStateException("Goto-goto conflict! (this should not happen) Type:" + tokenType);
+      throw new IllegalStateException("Goto-goto conflict! Type:" + tokenType);
     }
     gotoRules.put(tokenType, state);
   }
@@ -221,7 +221,7 @@ public class LALRState implements State
   private static IllegalStateException shiftAcceptConflict(Object tokenType, Object acceptRuleType, Object[] acceptProduction)
   {
     String production = Rule.getProductionString(acceptRuleType, acceptProduction);
-    return new IllegalStateException("Shift-reduce conflict! On input: " + tokenType + ", can either shift or accept via " + production);
+    return new IllegalStateException("Shift-accept conflict! On input: " + tokenType + ", can either shift or accept via " + production);
   }
 
   /**
