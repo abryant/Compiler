@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.CAST_EXPRESSION;
 import static compiler.language.parser.ParseType.EXCLAIMATION_MARK;
 import static compiler.language.parser.ParseType.MINUS;
 import static compiler.language.parser.ParseType.PLUS;
+import static compiler.language.parser.ParseType.PRIMARY;
 import static compiler.language.parser.ParseType.TILDE;
 import static compiler.language.parser.ParseType.UNARY_EXPRESSION;
 
@@ -26,19 +27,20 @@ import compiler.parser.Rule;
 public class UnaryExpressionRule extends Rule
 {
 
+  private static final Object[] PRIMARY_PRODUCTION = new Object[] {PRIMARY};
+  private static final Object[] CAST_PRODUCTION = new Object[] {CAST_EXPRESSION};
+
   private static final Object[] UNARY_PLUS_PRODUCTION = new Object[] {PLUS, UNARY_EXPRESSION};
   private static final Object[] UNARY_MINUS_PRODUCTION = new Object[] {MINUS, UNARY_EXPRESSION};
   private static final Object[] BOOLEAN_NOT_PRODUCTION = new Object[] {EXCLAIMATION_MARK, UNARY_EXPRESSION};
   private static final Object[] BITWISE_NOT_PRODUCTION = new Object[] {TILDE, UNARY_EXPRESSION};
 
-  private static final Object[] CAST_PRODUCTION = new Object[] {CAST_EXPRESSION};
-
 
   public UnaryExpressionRule()
   {
-    super(UNARY_EXPRESSION, UNARY_PLUS_PRODUCTION, UNARY_MINUS_PRODUCTION,
-                            BOOLEAN_NOT_PRODUCTION, BITWISE_NOT_PRODUCTION,
-                            CAST_PRODUCTION);
+    super(UNARY_EXPRESSION, PRIMARY_PRODUCTION, CAST_PRODUCTION,
+                            UNARY_PLUS_PRODUCTION, UNARY_MINUS_PRODUCTION,
+                            BOOLEAN_NOT_PRODUCTION, BITWISE_NOT_PRODUCTION);
   }
 
   /**
@@ -48,6 +50,11 @@ public class UnaryExpressionRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args) throws ParseException
   {
+    if (types == PRIMARY_PRODUCTION || types == CAST_PRODUCTION)
+    {
+      // the expression has already been built, so return it
+      return args[0];
+    }
     if (types == UNARY_PLUS_PRODUCTION)
     {
       Expression expression = (Expression) args[1];
@@ -67,11 +74,6 @@ public class UnaryExpressionRule extends Rule
     {
       Expression expression = (Expression) args[1];
       return new BitwiseNotExpression(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
-    }
-    if (types == CAST_PRODUCTION)
-    {
-      // the cast expression has already been built, so return it
-      return args[0];
     }
     throw badTypeList();
   }
