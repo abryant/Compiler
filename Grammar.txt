@@ -258,12 +258,13 @@ TupleIndexExpression = UnaryExpression
                      | TupleIndexExpression ExclaimationMark IntegerLiteral
 // TODO: should this be a constant expression instead of an integer literal?
 
-UnaryExpression = Primary | BooleanNotExpression | BitwiseNotExpression | CastExpression | PlusExpression | MinusExpression
-BooleanNotExpression = ExclaimationMark UnaryExpression
-BitwiseNotExpression = Tilde UnaryExpression
+UnaryExpression = Primary
+                | CastExpression
+                | ExclaimationMark UnaryExpression
+                | Tilde UnaryExpression
+                | Plus UnaryExpression
+                | Minus UnaryExpression
 CastExpression = CastKeyword LAngle TypeRAngle UnaryExpression
-PlusExpression = Plus UnaryExpression
-MinusExpression = Minus UnaryExpression
 
 Primary = PrimaryNotQName | QName
 

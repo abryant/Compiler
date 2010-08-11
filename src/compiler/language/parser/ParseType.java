@@ -80,11 +80,7 @@ public enum ParseType
   MULTIPLICATIVE_EXPRESSION,      // Expression (MultiplicativeExpression)
   TUPLE_INDEX_EXPRESSION,         // Expression (TupleIndexExpression)
   UNARY_EXPRESSION,               // Expression
-  BOOLEAN_NOT_EXPRESSION,         // BooleanNotExpression
-  BITWISE_NOT_EXPRESSION,         // BitwiseNotExpression
   CAST_EXPRESSION,                // CastExpression
-  UNARY_PLUS_EXPRESSION,          // UnaryPlusExpression
-  UNARY_MINUS_EXPRESSION,         // UnaryMinusExpression
   PRIMARY,                        // Expression
   PRIMARY_NO_TRAILING_DIMENSIONS, // Expression
   METHOD_CALL_EXPRESSION,         // MethodCallExpression
@@ -101,7 +97,6 @@ public enum ParseType
   ASSIGNMENT_OPERATOR,            // AssignmentOperator
 
   // types
-  // TODO: add all of the new rules to LanguageRules
   ARRAY_TYPE,                        // ArrayType
   BOOLEAN_TYPE,                      // BooleanType
   CHARACTER_TYPE,                    // CharacterType
@@ -166,6 +161,7 @@ public enum ParseType
   ASSIGN_KEYWORD,
   BOOLEAN_KEYWORD,
   BYTE_KEYWORD,
+  CAST_KEYWORD,
   CHARACTER_KEYWORD,
   CLASS_KEYWORD,
   DOUBLE_KEYWORD,
@@ -237,5 +233,6 @@ public enum ParseType
   RSQUARE,
   SEMICOLON,
   STAR,
+  TILDE,
   UNDERSCORE,
 }
