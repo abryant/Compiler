@@ -82,9 +82,11 @@ public enum ParseType
   UNARY_EXPRESSION,               // Expression
   CAST_EXPRESSION,                // CastExpression
   PRIMARY,                        // Expression
-  PRIMARY_NO_TRAILING_DIMENSIONS, // Expression
+  PRIMARY_NOT_QNAME,              // Expression
+  PRIMARY_NO_TRAILING_DIMENSIONS_NOT_QNAME, // Expression
   METHOD_CALL_EXPRESSION,         // MethodCallExpression
   FIELD_ACCESS_EXPRESSION,        // FieldAccessExpression
+  FIELD_ACCESS_EXPRESSION_NOT_QNAME, // FieldAccessExpression
   THIS_ACCESS_EXPRESSION,         // ThisAccessExpression
   ARRAY_ACCESS_EXPRESSION,        // ArrayAccessExpression
   INSTANCIATION_EXPRESSION,       // InstanciationExpression
@@ -93,8 +95,8 @@ public enum ParseType
   ARRAY_INSTANCIATION_EXPRESSION_NO_INITIALIZER,   // ArrayInstanciationExpression
   ARRAY_INITIALIZER,              // ParseList<Expression>
   EXPRESSION_LIST,                // ParseList<Expression>
+  DIMENSION_EXPRESSION,           // ParseContainer<Expression>
   DIMENSION_EXPRESSIONS,          // ParseList<Expression>
-  ASSIGNMENT_OPERATOR,            // AssignmentOperator
 
   // types
   ARRAY_TYPE,                        // ArrayType
@@ -116,6 +118,7 @@ public enum ParseType
   TYPE_RANGLE,                       // ParseContainer<Type>
   TYPE_NOT_QNAME,                    // Type
   TYPE_NOT_POINTER_TYPE,             // Type
+  TYPE_NOT_ARRAY_TYPE,               // Type
   TYPE_ARGUMENTS,                    // ParseList<TypeArgument> (length > 0)
   TYPE_ARGUMENT_LIST,                // ParseList<TypeArgument> (length > 0)
   TYPE_ARGUMENT_LIST_RANGLE,         // ParseContainer<ParseList<TypeArgument>> (length > 0)
@@ -132,19 +135,22 @@ public enum ParseType
   VOID_TYPE,                         // VoidType
 
   // miscellaneous non-terminals
-  ARGUMENT,                 // Argument
-  ARGUMENT_LIST,            // ParseList<Argument>
-  ARGUMENTS,                // ArgumentList
-  ASSIGNEE,                 // Assignee
-  ASSIGNEE_LIST,            // ParseList<Assignee>
-  DIMENSIONS,               // TODO: decide on something, should store ParseInfo and an integer
-  PARAMETER,                // Parameter
-  PARAMETER_LIST,           // ParseList<Parameter> (length > 0)
-  PARAMETERS,               // ParseList<Parameter>
-  QNAME,                    // QName
-  THROWS_LIST,              // ParseList<PointerType> (length > 0)
-  THROWS_CLAUSE,            // ParseList<PointerType> (length == 0 if none are specified)
-  VERSION_NUMBER,           // VersionNumber
+  ARGUMENT,                  // Argument
+  ARGUMENT_LIST,             // ParseList<Argument>
+  ARGUMENTS,                 // ArgumentList
+  ASSIGNEE,                  // Assignee
+  ASSIGNEE_LIST,             // ParseList<Assignee>
+  ASSIGNMENT_OPERATOR,       // AssignmentOperator
+  DECLARATION_ASSIGNEE,      // DeclarationAssignee
+  DECLARATION_ASSIGNEE_LIST, // ParseList<DeclarationAssignee>
+  DIMENSIONS,                // Dimensions
+  PARAMETER,                 // Parameter
+  PARAMETER_LIST,            // ParseList<Parameter> (length > 0)
+  PARAMETERS,                // ParseList<Parameter>
+  QNAME,                     // QName
+  THROWS_LIST,               // ParseList<PointerType> (length > 0)
+  THROWS_CLAUSE,             // ParseList<PointerType> (length == 0 if none are specified)
+  VERSION_NUMBER,            // VersionNumber
 
   // =============
   //   TERMINALS
@@ -152,9 +158,11 @@ public enum ParseType
 
   // literals
   // all literals must have a special case for extracting ParseInfo from them in LanguageParser
-  NAME,                     // Name
-  INTEGER_LITERAL,          // IntegerLiteral
-  STRING_LITERAL,           // StringLiteral
+  NAME,              // Name
+  INTEGER_LITERAL,   // IntegerLiteral
+  FLOATING_LITERAL,  // FloatingLiteral
+  CHARACTER_LITERAL, // CharacterLiteral
+  STRING_LITERAL,    // StringLiteral
 
   // keywords (values for these should all be ParseInfo)
   ABSTRACT_KEYWORD,
@@ -164,6 +172,7 @@ public enum ParseType
   CAST_KEYWORD,
   CHARACTER_KEYWORD,
   CLASS_KEYWORD,
+  CLOSURE_KEYWORD,
   DOUBLE_KEYWORD,
   ENUM_KEYWORD,
   EXTENDS_KEYWORD,
@@ -178,6 +187,8 @@ public enum ParseType
   LONG_KEYWORD,
   MUTABLE_KEYWORD,
   NATIVE_KEYWORD,
+  NEW_KEYWORD,
+  NIL_KEYWORD,
   PACKAGE_KEYWORD,
   PRIVATE_KEYWORD,
   PROPERTY_KEYWORD,
@@ -190,6 +201,7 @@ public enum ParseType
   STATIC_KEYWORD,
   SUPER_KEYWORD,
   SYNCHRONIZED_KEYWORD,
+  THIS_KEYWORD,
   THROWS_KEYWORD,
   TRANSIENT_KEYWORD,
   UNSIGNED_KEYWORD,

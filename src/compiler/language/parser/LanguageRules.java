@@ -1,6 +1,10 @@
 package compiler.language.parser;
 
 import compiler.language.parser.rules.expression.AdditiveExpressionRule;
+import compiler.language.parser.rules.expression.ArrayAccessExpressionRule;
+import compiler.language.parser.rules.expression.ArrayInitializerRule;
+import compiler.language.parser.rules.expression.ArrayInstanciationExpressionNoInitializerRule;
+import compiler.language.parser.rules.expression.ArrayInstanciationExpressionWithInitializerRule;
 import compiler.language.parser.rules.expression.BitwiseAndExpressionRule;
 import compiler.language.parser.rules.expression.BitwiseOrExpressionRule;
 import compiler.language.parser.rules.expression.BitwiseXorExpressionRule;
@@ -8,15 +12,28 @@ import compiler.language.parser.rules.expression.BooleanAndExpressionRule;
 import compiler.language.parser.rules.expression.BooleanOrExpressionRule;
 import compiler.language.parser.rules.expression.BooleanXorExpressionRule;
 import compiler.language.parser.rules.expression.CastExpressionRule;
+import compiler.language.parser.rules.expression.ClosureCreationExpressionRule;
+import compiler.language.parser.rules.expression.DimensionExpressionRule;
+import compiler.language.parser.rules.expression.DimensionExpressionsRule;
 import compiler.language.parser.rules.expression.EqualityExpressionRule;
+import compiler.language.parser.rules.expression.ExpressionListRule;
 import compiler.language.parser.rules.expression.ExpressionNoTupleRule;
 import compiler.language.parser.rules.expression.ExpressionRule;
+import compiler.language.parser.rules.expression.FieldAccessExpressionNotQNameRule;
+import compiler.language.parser.rules.expression.FieldAccessExpressionRule;
 import compiler.language.parser.rules.expression.InlineIfExpressionRule;
+import compiler.language.parser.rules.expression.InstanciationExpressionRule;
+import compiler.language.parser.rules.expression.MethodCallExpressionRule;
 import compiler.language.parser.rules.expression.MultiplicativeExpressionRule;
+import compiler.language.parser.rules.expression.PrimaryNoTrailingDimensionsNotQNameRule;
+import compiler.language.parser.rules.expression.PrimaryNotQNameRule;
+import compiler.language.parser.rules.expression.PrimaryRule;
 import compiler.language.parser.rules.expression.RelationalExpressionRule;
 import compiler.language.parser.rules.expression.ShiftExpressionRule;
 import compiler.language.parser.rules.expression.StatementExpressionRule;
+import compiler.language.parser.rules.expression.ThisAccessExpressionRule;
 import compiler.language.parser.rules.expression.TupleExpressionRule;
+import compiler.language.parser.rules.expression.TupleIndexExpressionRule;
 import compiler.language.parser.rules.expression.UnaryExpressionRule;
 import compiler.language.parser.rules.member.AccessSpecifierRule;
 import compiler.language.parser.rules.member.ConstructorRule;
@@ -36,6 +53,9 @@ import compiler.language.parser.rules.misc.ArgumentRule;
 import compiler.language.parser.rules.misc.ArgumentsRule;
 import compiler.language.parser.rules.misc.AssigneeListRule;
 import compiler.language.parser.rules.misc.AssigneeRule;
+import compiler.language.parser.rules.misc.DeclarationAssigneeListRule;
+import compiler.language.parser.rules.misc.DeclarationAssigneeRule;
+import compiler.language.parser.rules.misc.DimensionsRule;
 import compiler.language.parser.rules.misc.ParameterListRule;
 import compiler.language.parser.rules.misc.ParameterRule;
 import compiler.language.parser.rules.misc.ParametersRule;
@@ -72,6 +92,7 @@ import compiler.language.parser.rules.type.TypeArgumentRAngleRule;
 import compiler.language.parser.rules.type.TypeArgumentRule;
 import compiler.language.parser.rules.type.TypeArgumentsRule;
 import compiler.language.parser.rules.type.TypeListRule;
+import compiler.language.parser.rules.type.TypeNotArrayTypeRule;
 import compiler.language.parser.rules.type.TypeNotPointerTypeRule;
 import compiler.language.parser.rules.type.TypeNotQNameRule;
 import compiler.language.parser.rules.type.TypeParameterListDoubleRAngleRule;
@@ -155,6 +176,10 @@ public class LanguageRules
 
     // expressions
     new AdditiveExpressionRule(),
+    new ArrayAccessExpressionRule(),
+    new ArrayInitializerRule(),
+    new ArrayInstanciationExpressionNoInitializerRule(),
+    new ArrayInstanciationExpressionWithInitializerRule(),
     new BitwiseAndExpressionRule(),
     new BitwiseOrExpressionRule(),
     new BitwiseXorExpressionRule(),
@@ -162,15 +187,28 @@ public class LanguageRules
     new BooleanOrExpressionRule(),
     new BooleanXorExpressionRule(),
     new CastExpressionRule(),
+    new ClosureCreationExpressionRule(),
+    new DimensionExpressionRule(),
+    new DimensionExpressionsRule(),
     new EqualityExpressionRule(),
+    new ExpressionListRule(),
     new ExpressionNoTupleRule(),
     new ExpressionRule(),
+    new FieldAccessExpressionNotQNameRule(),
+    new FieldAccessExpressionRule(),
     new InlineIfExpressionRule(),
+    new InstanciationExpressionRule(),
+    new MethodCallExpressionRule(),
     new MultiplicativeExpressionRule(),
+    new PrimaryNotQNameRule(),
+    new PrimaryNoTrailingDimensionsNotQNameRule(),
+    new PrimaryRule(),
     new RelationalExpressionRule(),
     new ShiftExpressionRule(),
     new StatementExpressionRule(),
+    new ThisAccessExpressionRule(),
     new TupleExpressionRule(),
+    new TupleIndexExpressionRule(),
     new UnaryExpressionRule(),
 
     // types
@@ -194,6 +232,7 @@ public class LanguageRules
     new TypeArgumentRule(),
     new TypeArgumentsRule(),
     new TypeListRule(),
+    new TypeNotArrayTypeRule(),
     new TypeNotPointerTypeRule(),
     new TypeNotQNameRule(),
     new TypeParameterListDoubleRAngleRule(),
@@ -214,6 +253,9 @@ public class LanguageRules
     new ArgumentsRule(),
     new AssigneeListRule(),
     new AssigneeRule(),
+    new DeclarationAssigneeListRule(),
+    new DeclarationAssigneeRule(),
+    new DimensionsRule(),
     new ParameterListRule(),
     new ParameterRule(),
     new ParametersRule(),

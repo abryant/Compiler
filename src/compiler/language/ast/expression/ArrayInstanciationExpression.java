@@ -52,7 +52,7 @@ public class ArrayInstanciationExpression extends Expression
   }
 
   /**
-   * @return the dimensions
+   * @return the total number of dimensions in this array instanciation, including the ones which have dimension expressions
    */
   public int getDimensions()
   {

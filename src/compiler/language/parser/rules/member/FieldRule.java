@@ -1,6 +1,6 @@
 package compiler.language.parser.rules.member;
 
-import static compiler.language.parser.ParseType.ASSIGNEE_LIST;
+import static compiler.language.parser.ParseType.DECLARATION_ASSIGNEE_LIST;
 import static compiler.language.parser.ParseType.EQUALS;
 import static compiler.language.parser.ParseType.EXPRESSION;
 import static compiler.language.parser.ParseType.FIELD;
@@ -13,7 +13,7 @@ import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.member.Field;
 import compiler.language.ast.member.MemberHeader;
-import compiler.language.ast.misc.Assignee;
+import compiler.language.ast.misc.DeclarationAssignee;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
@@ -28,8 +28,8 @@ import compiler.parser.Rule;
 public class FieldRule extends Rule
 {
 
-  private static final Object[] DECLARE_PRODUCTION = new Object[] {MEMBER_HEADER, TYPE, ASSIGNEE_LIST, SEMICOLON};
-  private static final Object[] ASSIGN_PRODUCTION = new Object[] {MEMBER_HEADER, TYPE, ASSIGNEE_LIST, EQUALS, EXPRESSION, SEMICOLON};
+  private static final Object[] DECLARE_PRODUCTION = new Object[] {MEMBER_HEADER, TYPE, DECLARATION_ASSIGNEE_LIST, SEMICOLON};
+  private static final Object[] ASSIGN_PRODUCTION = new Object[] {MEMBER_HEADER, TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION, SEMICOLON};
 
   public FieldRule()
   {
@@ -47,8 +47,8 @@ public class FieldRule extends Rule
       MemberHeader header = (MemberHeader) args[0];
       Type type = (Type) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<Assignee> assignees = (ParseList<Assignee>) args[2];
-      return new Field(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new Assignee[0]),
+      ParseList<DeclarationAssignee> assignees = (ParseList<DeclarationAssignee>) args[2];
+      return new Field(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new DeclarationAssignee[0]),
                        ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[3]));
     }
     if (types == ASSIGN_PRODUCTION)
@@ -56,9 +56,9 @@ public class FieldRule extends Rule
       MemberHeader header = (MemberHeader) args[0];
       Type type = (Type) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<Assignee> assignees = (ParseList<Assignee>) args[2];
+      ParseList<DeclarationAssignee> assignees = (ParseList<DeclarationAssignee>) args[2];
       Expression expression = (Expression) args[4];
-      return new Field(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new Assignee[0]), expression,
+      return new Field(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new DeclarationAssignee[0]), expression,
                        ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[3], expression.getParseInfo(), (ParseInfo) args[5]));
     }
     throw badTypeList();

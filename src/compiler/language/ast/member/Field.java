@@ -2,7 +2,7 @@ package compiler.language.ast.member;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
-import compiler.language.ast.misc.Assignee;
+import compiler.language.ast.misc.DeclarationAssignee;
 import compiler.language.ast.type.Type;
 
 /*
@@ -17,7 +17,7 @@ public class Field extends Member
   private AccessSpecifier accessSpecifier;
   private Modifier[] modifiers;
   private Type type;
-  private Assignee[] assignees;
+  private DeclarationAssignee[] assignees;
   private Expression expression = null;
 
   /**
@@ -28,7 +28,7 @@ public class Field extends Member
    * @param assignees - the assignees for this field
    * @param parseInfo - the parsing information
    */
-  public Field(AccessSpecifier accessSpecifier, Modifier[] modifiers, Type type, Assignee[] assignees, ParseInfo parseInfo)
+  public Field(AccessSpecifier accessSpecifier, Modifier[] modifiers, Type type, DeclarationAssignee[] assignees, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.accessSpecifier = accessSpecifier;
@@ -46,7 +46,7 @@ public class Field extends Member
    * @param expression - the expression to assign to this field by default
    * @param parseInfo - the parsing information
    */
-  public Field(AccessSpecifier accessSpecifier, Modifier[] modifiers, Type type, Assignee[] assignees, Expression expression, ParseInfo parseInfo)
+  public Field(AccessSpecifier accessSpecifier, Modifier[] modifiers, Type type, DeclarationAssignee[] assignees, Expression expression, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.accessSpecifier = accessSpecifier;
@@ -83,7 +83,7 @@ public class Field extends Member
   /**
    * @return the assignees
    */
-  public Assignee[] getAssignees()
+  public DeclarationAssignee[] getAssignees()
   {
     return assignees;
   }

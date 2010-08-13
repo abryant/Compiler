@@ -1,12 +1,20 @@
 package compiler.language.parser.rules.expression;
 
+import static compiler.language.parser.ParseType.BITWISE_OR_EXPRESSION;
+import static compiler.language.parser.ParseType.INSTANCEOF_KEYWORD;
+import static compiler.language.parser.ParseType.LANGLE;
+import static compiler.language.parser.ParseType.LANGLE_EQUALS;
+import static compiler.language.parser.ParseType.RANGLE;
+import static compiler.language.parser.ParseType.RANGLE_EQUALS;
+import static compiler.language.parser.ParseType.RELATIONAL_EXPRESSION;
+import static compiler.language.parser.ParseType.TYPE;
+
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.InstanceOfExpression;
 import compiler.language.ast.expression.RelationalExpression;
 import compiler.language.ast.expression.RelationalExpressionType;
 import compiler.language.ast.type.Type;
-import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -20,16 +28,16 @@ import compiler.parser.Rule;
 public class RelationalExpressionRule extends Rule
 {
 
-  private static final Object[] NO_CHANGE_PRODUCTION = new Object[] {ParseType.BITWISE_OR_EXPRESSION};
-  private static final Object[] LESS_THAN_PRODUCTION = new Object[] {ParseType.BITWISE_OR_EXPRESSION, ParseType.LANGLE, ParseType.BITWISE_OR_EXPRESSION};
-  private static final Object[] GREATER_THAN_PRODUCTION = new Object[] {ParseType.BITWISE_OR_EXPRESSION, ParseType.RANGLE, ParseType.BITWISE_OR_EXPRESSION};
-  private static final Object[] LESS_THAN_EQUAL_PRODUCTION = new Object[] {ParseType.BITWISE_OR_EXPRESSION, ParseType.LANGLE_EQUALS, ParseType.BITWISE_OR_EXPRESSION};
-  private static final Object[] GREATER_THAN_EQUAL_PRODUCTION = new Object[] {ParseType.BITWISE_OR_EXPRESSION, ParseType.RANGLE_EQUALS, ParseType.BITWISE_OR_EXPRESSION};
-  private static final Object[] INSTANCE_OF_PRODUCTION = new Object[] {ParseType.BITWISE_OR_EXPRESSION, ParseType.INSTANCEOF_KEYWORD, ParseType.TYPE};
+  private static final Object[] NO_CHANGE_PRODUCTION          = new Object[] {BITWISE_OR_EXPRESSION};
+  private static final Object[] LESS_THAN_PRODUCTION          = new Object[] {BITWISE_OR_EXPRESSION, LANGLE,        BITWISE_OR_EXPRESSION};
+  private static final Object[] GREATER_THAN_PRODUCTION       = new Object[] {BITWISE_OR_EXPRESSION, RANGLE,        BITWISE_OR_EXPRESSION};
+  private static final Object[] LESS_THAN_EQUAL_PRODUCTION    = new Object[] {BITWISE_OR_EXPRESSION, LANGLE_EQUALS, BITWISE_OR_EXPRESSION};
+  private static final Object[] GREATER_THAN_EQUAL_PRODUCTION = new Object[] {BITWISE_OR_EXPRESSION, RANGLE_EQUALS, BITWISE_OR_EXPRESSION};
+  private static final Object[] INSTANCE_OF_PRODUCTION        = new Object[] {BITWISE_OR_EXPRESSION, INSTANCEOF_KEYWORD, TYPE};
 
   public RelationalExpressionRule()
   {
-    super(ParseType.RELATIONAL_EXPRESSION, NO_CHANGE_PRODUCTION, LESS_THAN_PRODUCTION, GREATER_THAN_PRODUCTION,
+    super(RELATIONAL_EXPRESSION, NO_CHANGE_PRODUCTION, LESS_THAN_PRODUCTION, GREATER_THAN_PRODUCTION,
                                            LESS_THAN_EQUAL_PRODUCTION, GREATER_THAN_EQUAL_PRODUCTION, INSTANCE_OF_PRODUCTION);
   }
 

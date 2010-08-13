@@ -3,6 +3,7 @@ package compiler.language.parser;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.IntegerLiteral;
 import compiler.language.ast.terminal.Name;
+import compiler.language.ast.terminal.StringLiteral;
 import compiler.parser.Token;
 import compiler.parser.Tokenizer;
 
@@ -112,7 +113,6 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.NAME, new Name("Interface", info(1250))),
     new Token(ParseType.LBRACE, info(1260)),
 
-    /* TODO: fix assignees
     new Token(ParseType.PRIVATE_KEYWORD, info(1300)),
     new Token(ParseType.UNSIGNED_KEYWORD, info(1310)),
     new Token(ParseType.BYTE_KEYWORD, info(1320)),
@@ -148,7 +148,6 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.RBRACE, info(1730)),
     new Token(ParseType.NAME, new Name("someClosure", info(1740))),
     new Token(ParseType.SEMICOLON, info(1750)),
-    */
 
     new Token(ParseType.PRIVATE_KEYWORD, info(1900)),
     new Token(ParseType.SINCE_KEYWORD, info(1910)),
@@ -160,15 +159,15 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.VOID_KEYWORD, info(1970)),
     new Token(ParseType.NAME, new Name("method", info(1980))),
     new Token(ParseType.LPAREN, info(1990)),
-    /* TODO: fix assignees
+
     new Token(ParseType.FINAL_KEYWORD, info(2000)),
     new Token(ParseType.NAME, new Name("String", info(2010))),
     new Token(ParseType.AT, info(2020)),
     new Token(ParseType.NAME, new Name("defaultArg", info(2030))),
     new Token(ParseType.EQUALS, info(2040)),
-    new Token(ParseType.EXPRESSION_NO_TUPLE, new ThisAccessExpression(null, info(2050))),
+    new Token(ParseType.STRING_LITERAL, new StringLiteral("hello", info(2050))),
     new Token(ParseType.COMMA, info(2200)),
-    */
+
     new Token(ParseType.UNSIGNED_KEYWORD, info(2210)),
     new Token(ParseType.INT_KEYWORD, info(2220)),
     new Token(ParseType.ELLIPSIS, info(2230)),
@@ -188,10 +187,19 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.VOID_KEYWORD, info(2540)),
     new Token(ParseType.RBRACE, info(2550)),
     new Token(ParseType.NAME, new Name("test", info(2560))),
-    /* TODO: finish expressions
     new Token(ParseType.EQUALS, info(2570)),
-    new Token(ParseType.EXPRESSION, new ThisAccessExpression(null, info(2580))),
-    */
+
+    new Token(ParseType.CLOSURE_KEYWORD, info(2580)),
+    new Token(ParseType.LPAREN, info(2590)),
+    new Token(ParseType.NAME, new Name("String", info(2600))),
+    new Token(ParseType.NAME, new Name("foo", info(2610))),
+    new Token(ParseType.ARROW, info(2620)),
+    new Token(ParseType.VOID_KEYWORD, info(2630)),
+    new Token(ParseType.RPAREN, info(2640)),
+    new Token(ParseType.LBRACE, info(2650)),
+    new Token(ParseType.SEMICOLON, info(2660)),
+    new Token(ParseType.RBRACE, info(2670)),
+
     new Token(ParseType.PACKAGE_KEYWORD, info(2800)),
     new Token(ParseType.ASSIGN_KEYWORD, info(2810)),
     new Token(ParseType.LBRACE, info(2820)),
@@ -250,14 +258,14 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.LBRACE, info(4100)),
     new Token(ParseType.NAME, new Name("CONSTANT_A", info(4110))),
     new Token(ParseType.LPAREN, info(4120)),
-    /* TODO: finish expressions
-    new Token(ParseType.EXPRESSION_NO_TUPLE, new ThisAccessExpression(null, info(4060))),
-    new Token(ParseType.COMMA, info(4070)),
-    new Token(ParseType.AT, info(4080)),
-    new Token(ParseType.NAME, new Name("defaultParam", info(4090))),
-    new Token(ParseType.EQUALS, info(4100)),
-    new Token(ParseType.EXPRESSION_NO_TUPLE, new ThisAccessExpression(null, info(4110))),
-    */
+
+    new Token(ParseType.NAME, new Name("variable", info(4130))),
+    new Token(ParseType.COMMA, info(4140)),
+    new Token(ParseType.AT, info(4150)),
+    new Token(ParseType.NAME, new Name("default", info(4160))),
+    new Token(ParseType.EQUALS, info(4170)),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("65536", info(4180))),
+
     new Token(ParseType.RPAREN, info(4300)),
     new Token(ParseType.COMMA, info(4310)),
     new Token(ParseType.NAME, new Name("CONSTANT_B", info(4320))),
@@ -266,11 +274,11 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.COMMA, info(4350)),
     new Token(ParseType.NAME, new Name("CONSTANT_C", info(4360))),
     new Token(ParseType.SEMICOLON, info(4370)),
-    /* TODO: fix assignees
+
     new Token(ParseType.BYTE_KEYWORD, info(4380)),
     new Token(ParseType.NAME, new Name("test", info(4390))),
     new Token(ParseType.SEMICOLON, info(4400)),
-    */
+
     new Token(ParseType.RBRACE, info(4410)),
   };
 

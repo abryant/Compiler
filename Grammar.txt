@@ -69,8 +69,11 @@ Method = MemberHeader TypeArguments Type Name Arguments ThrowsClause Semicolon
 ThrowsClause = ThrowsKeyword ThrowsList | epsilon
 ThrowsList = PointerType | ThrowsList Comma PointerType
 
-Field = MemberHeader Type AssigneeList Equals Expression Semicolon
-      | MemberHeader Type AssigneeList Semicolon
+Field = MemberHeader Type DeclarationAssigneeList Equals Expression Semicolon
+      | MemberHeader Type DeclarationAssigneeList Semicolon
+
+DeclarationAssigneeList = DeclarationAssignee | DeclarationAssigneeList Comma DeclarationAssignee
+DeclarationAssignee = Name | Underscore
 
 Property = MemberHeader PropertyKeyword Type Name Semicolon
          | MemberHeader PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock Semicolon
@@ -142,14 +145,18 @@ EmptyStatement = Semicolon
 ConstructorInvocationStatement = ThisKeyword Parameters Semicolon
                                | SuperKeyword Parameters Semicolon
 
-LocalDeclaration = Type AssigneeList // check that underscore is not declared after parsing
-                 | Type AssigneeList Equals Expression
-                 | Modifiers Type AssigneeList
-                 | Modifiers Type AssigneeList Equals Expression
+LocalDeclaration = Type DeclarationAssigneeList // check that underscore is not declared after parsing
+                 | Type DeclarationAssigneeList Equals Expression
+                 | Modifiers Type DeclarationAssigneeList
+                 | Modifiers Type DeclarationAssigneeList Equals Expression
 LocalDeclarationStatement = LocalDeclaration Semicolon
 
 AssignStatement = Assignment Semicolon
 Assignment = AssigneeList AssignmentOperator Expression
+
+AssignmentOperator = Equals | PlusEquals | MinusEquals | TimesEquals | DivideEquals | ModEquals
+                   | BooleanAndEquals | BooleanOrEquals | BitwiseAndEquals | BitwiseOrEquals | BitwiseXorEquals
+                   | LeftShiftEquals | ArithmeticRightShiftEquals | LogicalRightShiftEquals
 
 // right-recursive list, so that the symbol after the list can be
 // used to decide between TypeList and AssigneeList
@@ -277,7 +284,7 @@ PrimaryNotQName = PrimaryNoTrailingDimensionsNotQName | ArrayInstanciationExpres
 // QNames are excluded here so that ArrayAccessExpression can have its own production for QName,
 // which resolves a potential shift reduce conflict between an ArrayType and an ArrayAccessExpression
 PrimaryNoTrailingDimensionsNotQName = LParen Expression RParen
-                                    | IntegerLiteral | FloatingLiteral | CharacterLiteral | StringLiteral | NilLiteral
+                                    | IntegerLiteral | FloatingLiteral | CharacterLiteral | StringLiteral | NilKeyword
                                     | FieldAccessExpressionNotQName
                                     | StatementExpression
                                     | ThisAccessExpression
@@ -298,17 +305,20 @@ ThisAccessExpression = ThisKeyword
 ArrayAccessExpression = PrimaryNoTrailingDimensionsNotQName DimensionExpression
                       | QName DimensionExpression
 
-InstanciationExpression = NewKeyword QName Parameters
-                        | NewKeyword QName Parameters LBrace MemberList RBrace
+InstanciationExpression = NewKeyword PointerType Parameters
+                        | NewKeyword PointerType Parameters LBrace MemberList RBrace
 
-ClosureCreationExpression = Type ClosureKeyword Arguments Block
+ClosureCreationExpression = ClosureKeyword               LParen ArgumentList Arrow TypeList RParen ThrowsClause Block
+                          | ClosureKeyword TypeArguments LParen ArgumentList Arrow TypeList RParen ThrowsClause Block
+                          | ClosureKeyword               LParen VoidType     Arrow TypeList RParen ThrowsClause Block
+                          | ClosureKeyword TypeArguments LParen VoidType     Arrow TypeList RParen ThrowsClause Block
 
-ArrayInstanciationExpressionWithInitializer = NewKeyword Type DimensionExpressions Dimensions ArrayInitializer
-                                            | NewKeyword Type DimensionExpressions ArrayInitializer
-                                            | NewKeyword Type Dimensions ArrayInitializer
+ArrayInstanciationExpressionWithInitializer = NewKeyword TypeNotArrayType DimensionExpressions Dimensions ArrayInitializer
+                                            | NewKeyword TypeNotArrayType DimensionExpressions ArrayInitializer
+                                            | NewKeyword TypeNotArrayType Dimensions ArrayInitializer
 
-ArrayInstanciationExpressionNoInitializer = NewKeyword Type DimensionExpressions Dimensions
-                                          | NewKeyword Type DimensionExpressions
+ArrayInstanciationExpressionNoInitializer = NewKeyword TypeNotArrayType DimensionExpressions Dimensions
+                                          | NewKeyword TypeNotArrayType DimensionExpressions
 
 ArrayInitializer = LBrace ExpressionList RBrace | LBrace RBrace
 ExpressionList = ExpressionNoTuple | ExpressionList Comma ExpressionNoTuple | ExpressionList Comma
@@ -317,10 +327,6 @@ DimensionExpressions = DimensionExpression | DimensionExpressions DimensionExpre
 DimensionExpression = LSquare Expression RSquare
 
 Dimensions = LSquare RSquare | Dimensions LSquare RSquare
-
-AssignmentOperator = Equals | PlusEquals | MinusEquals | TimesEquals | DivideEquals | ModEquals
-                   | BooleanAndEquals | BooleanOrEquals | BitwiseAndEquals | BitwiseOrEquals | BitwiseXorEquals
-                   | LeftShiftEquals | ArithmeticRightShiftEquals | LogicalRightShiftEquals
 
 #########
   Types
@@ -334,13 +340,15 @@ Type = TypeNotQName | QName
 TypeRAngle = TypeNotPointerType RAngle | PointerTypeRAngle
 TypeNotQName = TypeNotPointerType | PointerTypeNotQName
 TypeNotPointerType = PrimitiveType | ArrayType | TupleType | ClosureType | VoidType
+TypeNotArrayType = PrimitiveType | PointerType | TupleType | ClosureType | VoidType
 
 TupleType = LParen TypeList RParen
 TypeList = Type | Type Comma TypeList
 // right-recursive list, so that the symbol after the list can be
 // used to decide between TypeList and AssigneeList
 
-ClosureType = LBrace TypeList Arrow TypeList ThrowsClause RBrace
+ClosureType = LBrace               TypeList Arrow TypeList ThrowsClause RBrace
+            | LBrace TypeArguments TypeList Arrow TypeList ThrowsClause RBrace
 
 // QNames are separated out so that ArrayType and ArrayAccess can be disambiguated
 // on partial input: class A { int method() { foo[

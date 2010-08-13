@@ -45,6 +45,17 @@ public class QName
   }
 
   /**
+   * Creates a new QName with the specified list of names.
+   * @param names - the names to include in this QName
+   * @param parseInfo - the parsing information
+   */
+  public QName(Name[] names, ParseInfo parseInfo)
+  {
+    this.parseInfo = parseInfo;
+    this.names = names;
+  }
+
+  /**
    * @return the names
    */
   public Name[] getNames()

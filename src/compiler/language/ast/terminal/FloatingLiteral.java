@@ -3,36 +3,28 @@ package compiler.language.ast.terminal;
 import compiler.language.ast.ParseInfo;
 
 /*
- * Created on 5 Aug 2010
+ * Created on 11 Aug 2010
  */
 
 /**
  * @author Anthony Bryant
  */
-public class StringLiteral
+public class FloatingLiteral
 {
 
   private ParseInfo parseInfo;
 
-  private String literal;
+  private String stringRepresentation;
 
   /**
-   * Creates a new String literal with the specified value
-   * @param literal - the value of the string literal
+   * Creates a new floating literal with the specified string representation.
+   * @param stringRepresentation - the string representation of the floating literal
    * @param parseInfo - the parsing information
    */
-  public StringLiteral(String literal, ParseInfo parseInfo)
+  public FloatingLiteral(String stringRepresentation, ParseInfo parseInfo)
   {
     this.parseInfo = parseInfo;
-    this.literal = literal;
-  }
-
-  /**
-   * @return the literal string
-   */
-  public String getLiteral()
-  {
-    return literal;
+    this.stringRepresentation = stringRepresentation;
   }
 
   /**
@@ -44,13 +36,11 @@ public class StringLiteral
   }
 
   /**
-   * {@inheritDoc}
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString()
   {
-    return "\"" + literal + "\"";
+    return stringRepresentation;
   }
-
 }

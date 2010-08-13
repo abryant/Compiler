@@ -25,6 +25,7 @@ public class LanguageParser
   public static void main(String[] args)
   {
     LALRRuleSet rules = LanguageRules.getRuleSet();
+
     LALRParserGenerator generator = new LALRParserGenerator(rules);
     generator.generate();
 
