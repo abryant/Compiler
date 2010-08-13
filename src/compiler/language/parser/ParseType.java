@@ -49,11 +49,40 @@ public enum ParseType
   STATIC_INITIALIZER,       // StaticInitializer
 
   // statements
-  BLOCK,                    // Block
-  OPTIONAL_BLOCK,           // Block or null
-  STATEMENTS,               // ParseList<Statement>
-  STATEMENT,                // Statement
-  EMPTY_STATEMENT,          // EmptyStatement
+  BLOCK,                            // Block
+  OPTIONAL_BLOCK,                   // Block or null
+  STATEMENTS,                       // ParseList<Statement>
+  STATEMENT,                        // Statement
+  EMPTY_STATEMENT,                  // EmptyStatement
+  CONSTRUCTOR_INVOCATION_STATEMENT, // ConstructorInvocationStatement
+  LOCAL_DECLARATION,                // LocalDeclarationStatement
+  ASSIGNMENT,                       // AssignmentStatement
+  IF_STATEMENT,                     // IfStatement
+  ELSE_IF_CLAUSES,                  // ParseList<ElseIfClause>
+  ELSE_IF_CLAUSE,                   // ElseIfClause
+  ELSE_CLAUSE,                      // Block or null
+  WHILE_STATEMENT,                  // WhileStatement
+  DO_STATEMENT,                     // DoStatement
+  FOR_EACH_STATEMENT,               // ForEachStatement
+  FOR_STATEMENT,                    // ForStatement
+  FOR_INIT,                         // Statement or null
+  FOR_UPDATE,                       // Statement or null
+  SWITCH_STATEMENT,                 // SwitchStatement
+  SWITCH_CASES,                     // ParseList<SwitchCase>
+  SWITCH_CASE,                      // SwitchCase
+  BREAK_STATEMENT,                  // BreakStatement
+  CONTINUE_STATEMENT,               // ContinueStatement
+  FALLTHROUGH_STATEMENT,            // FallthroughStatement
+  RETURN_STATEMENT,                 // ReturnStatement
+  THROW_STATEMENT,                  // ThrowStatement
+  SYNCHRONIZED_STATEMENT,           // SynchronizedStatement
+  TRY_STATEMENT,                    // TryStatement
+  CATCH_CLAUSES,                    // ParseList<CatchClause>
+  CATCH_CLAUSE,                     // CatchClause
+  FINALLY_CLAUSE,                   // Block or null
+  INCREMENT,                        // IncrementStatement
+  DECREMENT,                        // DecrementStatement
+
 
   // expressions
   // the return types that are Expression (AnotherExpression) mean that if the

@@ -121,9 +121,9 @@ Statements = Statement | Statements Statement
 Statement = Block
           | EmptyStatement
           | ConstructorInvocationStatement
-          | LocalDeclarationStatement
+          | LocalDeclaration Semicolon
           | StatementExpression Semicolon
-          | AssignStatement
+          | Assignment Semicolon
           | IfStatement
           | WhileStatement
           | DoStatement
@@ -136,8 +136,8 @@ Statement = Block
           | SynchronizedStatement
           | ThrowStatement
           | TryStatement
-          | IncrementStatement
-          | DecrementStatement
+          | Increment Semicolon
+          | Decrement Semicolon
 
 EmptyStatement = Semicolon
 
@@ -149,13 +149,11 @@ LocalDeclaration = Type DeclarationAssigneeList // check that underscore is not 
                  | Type DeclarationAssigneeList Equals Expression
                  | Modifiers Type DeclarationAssigneeList
                  | Modifiers Type DeclarationAssigneeList Equals Expression
-LocalDeclarationStatement = LocalDeclaration Semicolon
 
-AssignStatement = Assignment Semicolon
 Assignment = AssigneeList AssignmentOperator Expression
 
 AssignmentOperator = Equals | PlusEquals | MinusEquals | TimesEquals | DivideEquals | ModEquals
-                   | BooleanAndEquals | BooleanOrEquals | BitwiseAndEquals | BitwiseOrEquals | BitwiseXorEquals
+                   | BooleanAndEquals | BooleanOrEquals | BooleanXorEquals | BitwiseAndEquals | BitwiseOrEquals | BitwiseXorEquals
                    | LeftShiftEquals | ArithmeticRightShiftEquals | LogicalRightShiftEquals
 
 // right-recursive list, so that the symbol after the list can be
@@ -172,22 +170,24 @@ WhileStatement = WhileKeyword Expression Block
 
 DoStatement = DoKeyword Block WhileKeyword Expression Semicolon
 
-ForStatement = ForKeyword LParen ForHeader RParen Block
-             | ForKeyword ForHeader Block
-ForHeader = ForInit Semicolon Expression Semicolon ForUpdate
-          | ForInit Semicolon            Semicolon ForUpdate
-          | Type Name Colon Expression
+ForEachStatement = ForKeyword LParen Type Name Colon Expression RParen Block
+                 | ForKeyword        Type Name Colon Expression        Block
+
+ForStatement = ForKeyword LParen ForInit Semicolon Expression Semicolon ForUpdate RParen Block
+             | ForKeyword        ForInit Semicolon Expression Semicolon ForUpdate        Block
+             | ForKeyword LParen ForInit Semicolon            Semicolon ForUpdate RParen Block
+             | ForKeyword        ForInit Semicolon            Semicolon ForUpdate        Block
 
 ForInit = LocalDeclaration | StatementExpression | Assignment | epsilon
 ForUpdate = StatementExpression | Assignment | Increment | Decrement | epsilon
 
-SwitchStatement = SwitchKeyword Expression SwitchBlock
-                | SwitchKeyword SwitchBlock
-SwitchBlock = LBrace SwitchCases RBrace
+SwitchStatement = SwitchKeyword Expression LBrace SwitchCases RBrace
+                | SwitchKeyword LBrace SwitchCases RBrace
 SwitchCases = epsilon | SwitchCases SwitchCase
-SwitchCase = SwitchLabel | SwitchLabel Statements
-SwitchLabel = DefaultKeyword Colon
-            | CaseKeyword Expression Colon
+SwitchCase = DefaultKeyword         Colon
+           | DefaultKeyword         Colon Statements
+           | CaseKeyword Expression Colon
+           | CaseKeyword Expression Colon Statements
 
 BreakStatement = BreakKeyword IntegerLiteral Semicolon
                | BreakKeyword Semicolon
@@ -205,15 +205,12 @@ SynchronizedStatement = SynchronizedKeyword Expression Block
 
 TryStatement = TryKeyword Block CatchClauses FinallyClause
 CatchClauses = epsilon | CatchClauses CatchClause
-CatchClause = CatchKeyword CatchDeclaration Block
-CatchDeclaration = LParen QName Name RParen
-                 | QName Name
+CatchClause = CatchKeyword        QName Name        Block
+            | CatchKeyword LParen QName Name RParen Block
 FinallyClause = FinallyKeyword Block | epsilon
 
-Increment = FieldAccessExpression Plus Plus   | Plus Plus FieldAccessExpression
-Decrement = FieldAccessExpression Minus Minus | Minus Minus FieldAccessExpression
-IncrementStatement = Increment Semicolon
-DecrementStatement = Decrement Semicolon
+Increment = Assignee Plus  Plus  | Plus  Plus  Assignee
+Decrement = Assignee Minus Minus | Minus Minus Assignee
 
 ###############
   Expressions
