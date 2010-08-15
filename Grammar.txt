@@ -120,7 +120,6 @@ Statements = Statement | Statements Statement
 
 Statement = Block
           | EmptyStatement
-          | ConstructorInvocationStatement
           | LocalDeclaration Semicolon
           | Assignment Semicolon
           | IfStatement
@@ -141,10 +140,6 @@ Statement = Block
           | StatementExpression Semicolon
 
 EmptyStatement = Semicolon
-
-// should only be used in constructors - check after parsing
-ConstructorInvocationStatement = ThisKeyword Parameters Semicolon
-                               | SuperKeyword Parameters Semicolon
 
 LocalDeclaration = Type DeclarationAssigneeList // check that underscore is not declared after parsing
                  | Type DeclarationAssigneeList Equals Expression
@@ -286,6 +281,7 @@ PrimaryNoTrailingDimensionsNotQName = LParen Expression RParen
                                     | FieldAccessExpressionNotQName
                                     | StatementExpression
                                     | ThisAccessExpression
+                                    | SuperAccessExpression
                                     | ArrayAccessExpression
                                     | ClosureCreationExpression
                                     | ArrayInstanciationExpressionWithInitializer
@@ -294,11 +290,11 @@ MethodCallExpression = Primary Parameters
 
 FieldAccessExpression = QName | FieldAccessExpressionNotQName
 FieldAccessExpressionNotQName = PrimaryNotQName Dot Name
-                              | SuperKeyword Dot Name
-                              | QName Dot SuperKeyword Dot Name
 
 ThisAccessExpression = ThisKeyword
                      | QName Dot ThisKeyword
+SuperAccessExpression = SuperKeyword
+                      | QName Dot SuperKeyword
 
 ArrayAccessExpression = PrimaryNoTrailingDimensionsNotQName DimensionExpression
                       | QName DimensionExpression

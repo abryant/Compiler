@@ -117,6 +117,7 @@ public enum ParseType
   FIELD_ACCESS_EXPRESSION,        // FieldAccessExpression
   FIELD_ACCESS_EXPRESSION_NOT_QNAME, // FieldAccessExpression
   THIS_ACCESS_EXPRESSION,         // ThisAccessExpression
+  SUPER_ACCESS_EXPRESSION,        // SuperAccessExpression
   ARRAY_ACCESS_EXPRESSION,        // ArrayAccessExpression
   INSTANCIATION_EXPRESSION,       // InstanciationExpression
   CLOSURE_CREATION_EXPRESSION,    // ClosureCreationExpression

@@ -31,6 +31,7 @@ import compiler.language.parser.rules.expression.PrimaryRule;
 import compiler.language.parser.rules.expression.RelationalExpressionRule;
 import compiler.language.parser.rules.expression.ShiftExpressionRule;
 import compiler.language.parser.rules.expression.StatementExpressionRule;
+import compiler.language.parser.rules.expression.SuperAccessExpressionRule;
 import compiler.language.parser.rules.expression.ThisAccessExpressionRule;
 import compiler.language.parser.rules.expression.TupleExpressionRule;
 import compiler.language.parser.rules.expression.TupleIndexExpressionRule;
@@ -206,6 +207,7 @@ public class LanguageRules
     new RelationalExpressionRule(),
     new ShiftExpressionRule(),
     new StatementExpressionRule(),
+    new SuperAccessExpressionRule(),
     new ThisAccessExpressionRule(),
     new TupleExpressionRule(),
     new TupleIndexExpressionRule(),

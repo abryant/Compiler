@@ -15,25 +15,9 @@ public class FieldAccessExpression extends Expression
 {
 
   private QName qualifier = null;
-  private boolean superQualifier = false;
   private Expression expressionQualifier = null;
 
   private Name name;
-
-  /**
-   * Creates a new FieldAccessExpression with the specified qualifier and name
-   * @param qualifier - the qualifier for the field
-   * @param superQualifier - true if the qualifier is of the form A.B.super, false otherwise
-   * @param name - the name of the field
-   * @param parseInfo - the parsing information
-   */
-  public FieldAccessExpression(QName qualifier, boolean superQualifier, Name name, ParseInfo parseInfo)
-  {
-    super(parseInfo);
-    this.qualifier = qualifier;
-    this.superQualifier = superQualifier;
-    this.name = name;
-  }
 
   /**
    * Creates a new FieldAccessExpression which consists of only the specified qualified name.
@@ -59,21 +43,7 @@ public class FieldAccessExpression extends Expression
 
       qualifier = new QName(qualifierNames, ParseInfo.combine(qualifierInfo));
     }
-    superQualifier = false;
     name = names[names.length - 1];
-  }
-
-  /**
-   * Creates a new FieldAccessExpression with the specified qualifier and name
-   * @param superQualifier - true if the qualifier is super, false if there is no qualifier
-   * @param name - the name of the field to access
-   * @param parseInfo - the parsing information
-   */
-  public FieldAccessExpression(boolean superQualifier, Name name, ParseInfo parseInfo)
-  {
-    super(parseInfo);
-    this.superQualifier = superQualifier;
-    this.name = name;
   }
 
   /**
@@ -95,14 +65,6 @@ public class FieldAccessExpression extends Expression
   public QName getQualifier()
   {
     return qualifier;
-  }
-
-  /**
-   * @return true if this field access' qualifier includes a super keyword, false otherwise
-   */
-  public boolean hasSuperQualifier()
-  {
-    return superQualifier;
   }
 
   /**
@@ -132,20 +94,12 @@ public class FieldAccessExpression extends Expression
     if (qualifier != null)
     {
       buffer.append(qualifier);
-      if (superQualifier)
-      {
-        buffer.append(".super");
-      }
       buffer.append(".");
     }
     else if (expressionQualifier != null)
     {
       buffer.append(expressionQualifier);
       buffer.append(".");
-    }
-    else if (superQualifier)
-    {
-      buffer.append("super.");
     }
     buffer.append(name);
     return buffer.toString();
