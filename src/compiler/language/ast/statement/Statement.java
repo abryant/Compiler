@@ -32,4 +32,13 @@ public abstract class Statement
     return parseInfo;
   }
 
+  /**
+   * Sets this Statement's ParseInfo. This should only be used during parsing.
+   * @param parseInfo - the parseInfo to set
+   */
+  public void setParseInfo(ParseInfo parseInfo)
+  {
+    this.parseInfo = parseInfo;
+  }
+
 }

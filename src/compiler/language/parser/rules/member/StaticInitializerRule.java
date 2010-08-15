@@ -2,6 +2,7 @@ package compiler.language.parser.rules.member;
 
 import static compiler.language.parser.ParseType.BLOCK;
 import static compiler.language.parser.ParseType.MEMBER_HEADER;
+import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.STATIC_INITIALIZER;
 
 import compiler.language.ast.ParseInfo;
@@ -10,6 +11,7 @@ import compiler.language.ast.member.Modifier;
 import compiler.language.ast.member.ModifierType;
 import compiler.language.ast.member.StaticInitializer;
 import compiler.language.ast.statement.Block;
+import compiler.language.ast.terminal.Name;
 import compiler.language.parser.LanguageParseException;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
@@ -25,7 +27,7 @@ public class StaticInitializerRule extends Rule
 {
   // this uses MEMBER_HEADER instead of STATIC_KEYWORD because using STATIC_KEYWORD causes shift-reduce conflicts
   // the match() method checks that there is one modifier (static) and that there are no access specifiers
-  private static final Object[] PRODUCTION = new Object[] {MEMBER_HEADER, BLOCK};
+  private static final Object[] PRODUCTION = new Object[] {MEMBER_HEADER, NAME, BLOCK};
 
   public StaticInitializerRule()
   {
@@ -46,7 +48,8 @@ public class StaticInitializerRule extends Rule
         throw new LanguageParseException("A static initializer cannot have an access specifier.", header.getAccessSpecifier().getParseInfo());
       }
       Modifier[] modifiers = header.getModifiers();
-      Block block = (Block) args[1];
+      Name name = (Name) args[1];
+      Block block = (Block) args[2];
       if (modifiers.length == 0)
       {
         throw new LanguageParseException("A static initializer must have a \"static\" modifier", block.getParseInfo());
@@ -60,7 +63,7 @@ public class StaticInitializerRule extends Rule
         }
         throw new LanguageParseException("A static initializer can only have one modifier, and it must be \"static\"", ParseInfo.combine(modifierInfo));
       }
-      return new StaticInitializer(block, ParseInfo.combine(header.getParseInfo(), block.getParseInfo()));
+      return new StaticInitializer(name, block, ParseInfo.combine(header.getParseInfo(), name.getParseInfo(), block.getParseInfo()));
     }
     throw badTypeList();
   }

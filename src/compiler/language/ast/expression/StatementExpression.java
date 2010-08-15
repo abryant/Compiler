@@ -7,7 +7,7 @@ import compiler.language.ast.ParseInfo;
  */
 
 /**
- * The abstract base class of all expressions that can also be statements.
+ * The abstract base class of all expressions that can also be used as statements (via ExpressionStatement).
  * @author Anthony Bryant
  */
 public abstract class StatementExpression extends Expression

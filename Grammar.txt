@@ -88,10 +88,10 @@ Property = MemberHeader PropertyKeyword Type Name Semicolon
 
 OptionalBlock = Block | epsilon
 
-// MemberHeader is used here instead of StaticKeyword to avoid shift-reduce conflicts with "static"
-// for example: static {int -> void} foo;
-// since this should normally shift with a static initializer and reduce to a MemberHeader for Field
-StaticInitializer = MemberHeader Block
+// MemberHeader is used here instead of StaticKeyword to avoid shift-reduce conflicts
+// due to not being able to decide whether to reduce via [ACCESS_SPECIFIER <- ]
+// if the next token is "static"
+StaticInitializer = MemberHeader Name Block
 
 Arguments = LParen ArgumentList RParen | LParen RParen
 ArgumentList = Argument | ArgumentList Comma Argument
@@ -122,12 +122,12 @@ Statement = Block
           | EmptyStatement
           | ConstructorInvocationStatement
           | LocalDeclaration Semicolon
-          | StatementExpression Semicolon
           | Assignment Semicolon
           | IfStatement
           | WhileStatement
           | DoStatement
           | ForStatement
+          | ForEachStatement
           | SwitchStatement
           | BreakStatement
           | ContinueStatement
@@ -138,6 +138,7 @@ Statement = Block
           | TryStatement
           | Increment Semicolon
           | Decrement Semicolon
+          | StatementExpression Semicolon
 
 EmptyStatement = Semicolon
 
