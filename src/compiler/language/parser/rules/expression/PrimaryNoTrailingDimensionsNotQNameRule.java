@@ -14,6 +14,7 @@ import static compiler.language.parser.ParseType.PRIMARY_NO_TRAILING_DIMENSIONS_
 import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.STATEMENT_EXPRESSION;
 import static compiler.language.parser.ParseType.STRING_LITERAL;
+import static compiler.language.parser.ParseType.SUPER_ACCESS_EXPRESSION;
 import static compiler.language.parser.ParseType.THIS_ACCESS_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
@@ -50,6 +51,7 @@ public class PrimaryNoTrailingDimensionsNotQNameRule extends Rule
   private static final Object[] FIELD_ACCESS_PRODUCTION = new Object[] {FIELD_ACCESS_EXPRESSION_NOT_QNAME};
   private static final Object[] STATEMENT_EXPRESSION_PRODUCTION = new Object[] {STATEMENT_EXPRESSION};
   private static final Object[] THIS_ACCESS_PRODUCTION = new Object[] {THIS_ACCESS_EXPRESSION};
+  private static final Object[] SUPER_ACCESS_PRODUCTION = new Object[] {SUPER_ACCESS_EXPRESSION};
   private static final Object[] ARRAY_ACCESS_PRODUCTION = new Object[] {ARRAY_ACCESS_EXPRESSION};
   private static final Object[] CLOSURE_CREATION_PRODUCTION = new Object[] {CLOSURE_CREATION_EXPRESSION};
   private static final Object[] ARRAY_INSTANCIATION_PRODUCTION = new Object[] {ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER};
@@ -63,6 +65,7 @@ public class PrimaryNoTrailingDimensionsNotQNameRule extends Rule
                                                     FIELD_ACCESS_PRODUCTION,
                                                     STATEMENT_EXPRESSION_PRODUCTION,
                                                     THIS_ACCESS_PRODUCTION,
+                                                    SUPER_ACCESS_PRODUCTION,
                                                     ARRAY_ACCESS_PRODUCTION,
                                                     CLOSURE_CREATION_PRODUCTION,
                                                     ARRAY_INSTANCIATION_PRODUCTION);
@@ -104,8 +107,10 @@ public class PrimaryNoTrailingDimensionsNotQNameRule extends Rule
     {
       return new NilLiteralExpression((ParseInfo) args[0]);
     }
-    if (types == FIELD_ACCESS_PRODUCTION || types == STATEMENT_EXPRESSION_PRODUCTION || types == THIS_ACCESS_PRODUCTION ||
-        types == ARRAY_ACCESS_PRODUCTION || types == CLOSURE_CREATION_PRODUCTION     || types == ARRAY_INSTANCIATION_PRODUCTION)
+    if (types == FIELD_ACCESS_PRODUCTION || types == STATEMENT_EXPRESSION_PRODUCTION ||
+        types == THIS_ACCESS_PRODUCTION  || types == SUPER_ACCESS_PRODUCTION         ||
+        types == ARRAY_ACCESS_PRODUCTION || types == CLOSURE_CREATION_PRODUCTION     ||
+        types == ARRAY_INSTANCIATION_PRODUCTION)
     {
       // an expression has already been generated, so return it
       return args[0];
