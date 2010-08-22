@@ -181,6 +181,8 @@ public class LALRParserGenerator
   {
     Map<LALRItemSet, LALRState> states = new HashMap<LALRItemSet, LALRState>();
 
+    System.err.println("Total states: " + itemSets.size()); // TODO: remove debug output
+
     // create an LALRState for each item set
     for (LALRItemSet set : itemSets)
     {
