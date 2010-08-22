@@ -1,16 +1,21 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.DOUBLE_RANGLE;
-import static compiler.language.parser.ParseType.RANGLE;
-import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST;
+import static compiler.language.parser.ParseType.COMMA;
+import static compiler.language.parser.ParseType.NESTED_QNAME_LIST;
+import static compiler.language.parser.ParseType.QNAME;
+import static compiler.language.parser.ParseType.TYPE_PARAMETER_DOUBLE_RANGLE;
 import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST_DOUBLE_RANGLE;
-import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST_RANGLE;
+import static compiler.language.parser.ParseType.TYPE_PARAMETER_NOT_QNAME_LIST;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
+import compiler.language.ast.misc.QName;
+import compiler.language.ast.misc.QNameElement;
+import compiler.language.ast.type.NormalTypeParameter;
+import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
-import compiler.language.parser.LanguageParseException;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -24,12 +29,14 @@ import compiler.parser.Rule;
 public class TypeParameterListDoubleRAngleRule extends Rule
 {
 
-  private static final Object[] DOUBLE_RANGLE_PRODUCTION = new Object[] {TYPE_PARAMETER_LIST, DOUBLE_RANGLE};
-  private static final Object[] SINGLE_RANGLE_PRODUCTION = new Object[] {TYPE_PARAMETER_LIST_RANGLE, RANGLE};
+  private static final Object[] TYPE_PARAMETER_PRODUCTION      = new Object[] {TYPE_PARAMETER_DOUBLE_RANGLE};
+  private static final Object[] TYPE_PARAMETER_LIST_PRODUCTION = new Object[] {TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
+  private static final Object[] QNAME_LIST_PRODUCTION          = new Object[] {QNAME,                         COMMA, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
+  private static final Object[] NESTED_QNAME_LIST_PRODUCTION   = new Object[] {NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
 
   public TypeParameterListDoubleRAngleRule()
   {
-    super(TYPE_PARAMETER_LIST_DOUBLE_RANGLE, DOUBLE_RANGLE_PRODUCTION, SINGLE_RANGLE_PRODUCTION);
+    super(TYPE_PARAMETER_LIST_DOUBLE_RANGLE, TYPE_PARAMETER_PRODUCTION, TYPE_PARAMETER_LIST_PRODUCTION, QNAME_LIST_PRODUCTION, NESTED_QNAME_LIST_PRODUCTION);
   }
 
   /**
@@ -39,35 +46,46 @@ public class TypeParameterListDoubleRAngleRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args) throws ParseException
   {
-    if (types == DOUBLE_RANGLE_PRODUCTION)
+    if (types == TYPE_PARAMETER_PRODUCTION)
     {
       @SuppressWarnings("unchecked")
-      ParseList<TypeParameter> typeParameterList = (ParseList<TypeParameter>) args[0];
-      ParseInfo doubleRAngleInfo = (ParseInfo) args[1];
-      int line = doubleRAngleInfo.getStartLine();
-      if (line != doubleRAngleInfo.getEndLine())
-      {
-        throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which does not start and finish on the same line", doubleRAngleInfo);
-      }
-      int startPos = doubleRAngleInfo.getStartPos();
-      if (doubleRAngleInfo.getEndPos() - startPos != 2)
-      {
-        throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which is not 2 characters long", doubleRAngleInfo);
-      }
-      ParseInfo firstAngleInfo = new ParseInfo(line, startPos, line, startPos + 1);
-      ParseContainer<ParseList<TypeParameter>> firstContainer = new ParseContainer<ParseList<TypeParameter>>(typeParameterList,
-                                                                      ParseInfo.combine(typeParameterList.getParseInfo(), firstAngleInfo));
-      return new ParseContainer<ParseContainer<ParseList<TypeParameter>>>(firstContainer,
-                                                                          ParseInfo.combine(typeParameterList.getParseInfo(), doubleRAngleInfo));
+      ParseContainer<ParseContainer<TypeParameter>> parameter = (ParseContainer<ParseContainer<TypeParameter>>) args[0];
+      ParseList<TypeParameter> list = new ParseList<TypeParameter>(parameter.getItem().getItem(), parameter.getItem().getItem().getParseInfo());
+      ParseContainer<ParseList<TypeParameter>> firstContainer = new ParseContainer<ParseList<TypeParameter>>(list, parameter.getItem().getParseInfo());
+      return new ParseContainer<ParseContainer<ParseList<TypeParameter>>>(firstContainer, parameter.getParseInfo());
     }
-    if (types == SINGLE_RANGLE_PRODUCTION)
+
+    TypeParameter parameter;
+    if (types == TYPE_PARAMETER_LIST_PRODUCTION)
     {
-      @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<TypeParameter>> typeParameterList = (ParseContainer<ParseList<TypeParameter>>) args[0];
-      return new ParseContainer<ParseContainer<ParseList<TypeParameter>>>(typeParameterList,
-                                                                          ParseInfo.combine(typeParameterList.getParseInfo(), (ParseInfo) args[1]));
+      parameter = (TypeParameter) args[0];
     }
-    throw badTypeList();
+    else if (types == QNAME_LIST_PRODUCTION)
+    {
+      QName qname = (QName) args[0];
+      Type type = new PointerType(qname, qname.getParseInfo());
+      parameter = new NormalTypeParameter(type, type.getParseInfo());
+    }
+    else if (types == NESTED_QNAME_LIST_PRODUCTION)
+    {
+      QNameElement element = (QNameElement) args[0];
+      Type type = element.toType();
+      parameter = new NormalTypeParameter(type, type.getParseInfo());
+    }
+    else
+    {
+      throw badTypeList();
+    }
+
+    @SuppressWarnings("unchecked")
+    ParseContainer<ParseContainer<ParseList<TypeParameter>>> oldContainer = (ParseContainer<ParseContainer<ParseList<TypeParameter>>>) args[2];
+    ParseList<TypeParameter> list = oldContainer.getItem().getItem();
+    list.addFirst(parameter, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+    ParseContainer<ParseList<TypeParameter>> firstContainer =
+           new ParseContainer<ParseList<TypeParameter>>(list,
+                 ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], oldContainer.getItem().getParseInfo()));
+    return new ParseContainer<ParseContainer<ParseList<TypeParameter>>>(firstContainer,
+                 ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], oldContainer.getParseInfo()));
   }
 
 }

@@ -1,12 +1,11 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.COMMA;
-import static compiler.language.parser.ParseType.TYPE;
 import static compiler.language.parser.ParseType.TYPE_LIST;
 
-import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
+import compiler.language.ast.misc.QNameElement;
 import compiler.language.ast.type.Type;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -20,14 +19,12 @@ import compiler.parser.Rule;
 public class TypeListRule extends Rule
 {
 
-  // this is a right-recursive list, so that the symbol after the list can be
-  // used to decide between TypeList and AssigneeList
-  private static final Object[] START_PRODUCTION = new Object[] {TYPE};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {TYPE, COMMA, TYPE_LIST};
+  private static final Object[] TYPE_LIST_PRODUCTION = new Object[] {ParseType.TYPE_LIST_NOT_QNAME_LIST};
+  private static final Object[] QNAME_LIST_PRODUCTION = new Object[] {ParseType.QNAME_LIST};
 
   public TypeListRule()
   {
-    super(TYPE_LIST, START_PRODUCTION, CONTINUATION_PRODUCTION);
+    super(TYPE_LIST, TYPE_LIST_PRODUCTION, QNAME_LIST_PRODUCTION);
   }
 
   /**
@@ -36,18 +33,22 @@ public class TypeListRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (types == TYPE_LIST_PRODUCTION)
     {
-      Type type = (Type) args[0];
-      return new ParseList<Type>(type, type.getParseInfo());
+      // return the existing ParseList<Type>
+      return args[0];
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (types == QNAME_LIST_PRODUCTION)
     {
-      Type newType = (Type) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<Type> list = (ParseList<Type>) args[2];
-      list.addFirst(newType, ParseInfo.combine(newType.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
-      return list;
+      ParseList<QNameElement> elements = (ParseList<QNameElement>) args[0];
+      QNameElement[] elems = elements.toArray(new QNameElement[0]);
+      Type[] typeArray = new Type[elems.length];
+      for (int i = 0; i < elems.length; i++)
+      {
+        typeArray[i] = elems[i].toType();
+      }
+      return new ParseList<Type>(typeArray, elements.getParseInfo());
     }
     throw badTypeList();
   }

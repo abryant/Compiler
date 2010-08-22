@@ -5,9 +5,7 @@ import static compiler.language.parser.ParseType.POINTER_TYPE_NOT_QNAME;
 import static compiler.language.parser.ParseType.QNAME;
 
 import compiler.language.ast.misc.QName;
-import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -38,13 +36,7 @@ public class PointerTypeRule extends Rule
     if (types == QNAME_PRODUCTION)
     {
       QName qname = (QName) args[0];
-      Name[] names = qname.getNames();
-      TypeParameter[][] typeParams = new TypeParameter[names.length][];
-      for (int i = 0; i < typeParams.length; i++)
-      {
-        typeParams[i] = new TypeParameter[0];
-      }
-      return new PointerType(false, names, typeParams, qname.getParseInfo());
+      return new PointerType(qname, qname.getParseInfo());
     }
     if (types == PRODUCTION)
     {

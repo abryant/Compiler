@@ -9,9 +9,7 @@ import static compiler.language.parser.ParseType.RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
-import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -44,13 +42,7 @@ public class PointerTypeRAngleRule extends Rule
     if (types == QNAME_PRODUCTION)
     {
       QName qname = (QName) args[0];
-      Name[] names = qname.getNames();
-      TypeParameter[][] typeParams = new TypeParameter[names.length][];
-      for (int i = 0; i < typeParams.length; i++)
-      {
-        typeParams[i] = new TypeParameter[0];
-      }
-      PointerType type = new PointerType(false, names, typeParams, qname.getParseInfo());
+      PointerType type = new PointerType(qname, qname.getParseInfo());
       return new ParseContainer<PointerType>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
     }
     if (types == NO_TRAILING_PARAMS_PRODUCTION)

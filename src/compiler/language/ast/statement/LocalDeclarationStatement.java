@@ -26,7 +26,7 @@ public class LocalDeclarationStatement extends Statement
    * @param modifiers - the modifiers for the local variable
    * @param type - the type of the local variables
    * @param assignees - the assignees which are being declared (or defined to the expression)
-   * @param expression - the expression to assign to the assignees
+   * @param expression - the expression to assign to the assignees, or null if this is just a declaration and not also a definition
    * @param parseInfo - the parsing information
    */
   public LocalDeclarationStatement(Modifier[] modifiers, Type type, DeclarationAssignee[] assignees, Expression expression, ParseInfo parseInfo)
@@ -63,7 +63,7 @@ public class LocalDeclarationStatement extends Statement
   }
 
   /**
-   * @return the expression
+   * @return the expression, or null if no expression is specified
    */
   public Expression getExpression()
   {
@@ -93,8 +93,11 @@ public class LocalDeclarationStatement extends Statement
         buffer.append(", ");
       }
     }
-    buffer.append(" = ");
-    buffer.append(expression);
+    if (expression != null)
+    {
+      buffer.append(" = ");
+      buffer.append(expression);
+    }
     buffer.append(";");
     return buffer.toString();
   }

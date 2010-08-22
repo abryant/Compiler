@@ -1,9 +1,13 @@
 package compiler.language.parser.rules.expression;
 
+import static compiler.language.parser.ParseType.BOOLEAN_AND_EXPRESSION;
+import static compiler.language.parser.ParseType.BOOLEAN_XOR_EXPRESSION;
+import static compiler.language.parser.ParseType.DOUBLE_CARET;
+import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
+
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BooleanXorExpression;
 import compiler.language.ast.expression.Expression;
-import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -17,12 +21,15 @@ import compiler.parser.Rule;
 public class BooleanXorExpressionRule extends Rule
 {
 
-  private static final Object[] START_PRODUCTION = new Object[] {ParseType.BOOLEAN_AND_EXPRESSION};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {ParseType.BOOLEAN_XOR_EXPRESSION, ParseType.DOUBLE_CARET, ParseType.BOOLEAN_AND_EXPRESSION};
+  private static final Object[] START_PRODUCTION           = new Object[] {BOOLEAN_AND_EXPRESSION};
+  private static final Object[] XOR_PRODUCTION             = new Object[] {BOOLEAN_XOR_EXPRESSION,        DOUBLE_CARET, BOOLEAN_AND_EXPRESSION};
+  private static final Object[] XOR_QNAME_PRODUCTION       = new Object[] {BOOLEAN_XOR_EXPRESSION,        DOUBLE_CARET, QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Object[] QNAME_XOR_PRODUCTION       = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_CARET, BOOLEAN_AND_EXPRESSION};
+  private static final Object[] QNAME_XOR_QNAME_PRODUCTION = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_CARET, QNAME_OR_LESS_THAN_EXPRESSION};
 
   public BooleanXorExpressionRule()
   {
-    super(ParseType.BOOLEAN_XOR_EXPRESSION, START_PRODUCTION, CONTINUATION_PRODUCTION);
+    super(BOOLEAN_XOR_EXPRESSION, START_PRODUCTION, XOR_PRODUCTION, XOR_QNAME_PRODUCTION, QNAME_XOR_PRODUCTION, QNAME_XOR_QNAME_PRODUCTION);
   }
 
   /**
@@ -37,7 +44,7 @@ public class BooleanXorExpressionRule extends Rule
       // return the existing Expression
       return args[0];
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (types == XOR_PRODUCTION || types == XOR_QNAME_PRODUCTION || types == QNAME_XOR_PRODUCTION || types == QNAME_XOR_QNAME_PRODUCTION)
     {
       Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BooleanXorExpression)

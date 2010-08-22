@@ -1,14 +1,10 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.LPAREN;
-import static compiler.language.parser.ParseType.RPAREN;
+import static compiler.language.parser.ParseType.NESTED_QNAME_LIST;
 import static compiler.language.parser.ParseType.TUPLE_TYPE;
-import static compiler.language.parser.ParseType.TYPE_LIST;
+import static compiler.language.parser.ParseType.TUPLE_TYPE_NOT_QNAME_LIST;
 
-import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
-import compiler.language.ast.type.TupleType;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.misc.QNameElement;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -22,11 +18,12 @@ import compiler.parser.Rule;
 public class TupleTypeRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {LPAREN, TYPE_LIST, RPAREN};
+  private static final Object[] PRODUCTION = new Object[] {TUPLE_TYPE_NOT_QNAME_LIST};
+  private static final Object[] QNAME_LIST_PRODUCTION = new Object[] {NESTED_QNAME_LIST};
 
   public TupleTypeRule()
   {
-    super(TUPLE_TYPE, PRODUCTION);
+    super(TUPLE_TYPE, PRODUCTION, QNAME_LIST_PRODUCTION);
   }
 
   /**
@@ -37,9 +34,15 @@ public class TupleTypeRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      @SuppressWarnings("unchecked")
-      ParseList<Type> typeList = (ParseList<Type>) args[1];
-      return new TupleType(typeList.toArray(new Type[0]), ParseInfo.combine((ParseInfo) args[0], typeList.getParseInfo(), (ParseInfo) args[2]));
+      // return the existing TupleType
+      return args[0];
+    }
+    if (types == QNAME_LIST_PRODUCTION)
+    {
+      QNameElement element = (QNameElement) args[0];
+      // since this QNameElement is from the NESTED_QNAME_LIST rule, it must be
+      // a compound element which will return a TupleType
+      return element.toType();
     }
     throw badTypeList();
   }

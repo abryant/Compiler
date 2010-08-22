@@ -1,9 +1,13 @@
 package compiler.language.parser.rules.expression;
 
+import static compiler.language.parser.ParseType.BOOLEAN_OR_EXPRESSION;
+import static compiler.language.parser.ParseType.BOOLEAN_XOR_EXPRESSION;
+import static compiler.language.parser.ParseType.DOUBLE_PIPE;
+import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
+
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BooleanOrExpression;
 import compiler.language.ast.expression.Expression;
-import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -17,12 +21,15 @@ import compiler.parser.Rule;
 public class BooleanOrExpressionRule extends Rule
 {
 
-  private static final Object[] START_PRODUCTION = new Object[] {ParseType.BOOLEAN_XOR_EXPRESSION};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {ParseType.BOOLEAN_OR_EXPRESSION, ParseType.DOUBLE_PIPE, ParseType.BOOLEAN_XOR_EXPRESSION};
+  private static final Object[] START_PRODUCTION          = new Object[] {BOOLEAN_XOR_EXPRESSION};
+  private static final Object[] OR_PRODUCTION             = new Object[] {BOOLEAN_OR_EXPRESSION,         DOUBLE_PIPE, BOOLEAN_XOR_EXPRESSION};
+  private static final Object[] OR_QNAME_PRODUCTION       = new Object[] {BOOLEAN_OR_EXPRESSION,         DOUBLE_PIPE, QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Object[] QNAME_OR_PRODUCTION       = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_PIPE, BOOLEAN_XOR_EXPRESSION};
+  private static final Object[] QNAME_OR_QNAME_PRODUCTION = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_PIPE, QNAME_OR_LESS_THAN_EXPRESSION};
 
   public BooleanOrExpressionRule()
   {
-    super(ParseType.BOOLEAN_OR_EXPRESSION, START_PRODUCTION, CONTINUATION_PRODUCTION);
+    super(BOOLEAN_OR_EXPRESSION, START_PRODUCTION, OR_PRODUCTION, OR_QNAME_PRODUCTION, QNAME_OR_PRODUCTION, QNAME_OR_QNAME_PRODUCTION);
   }
 
   /**
@@ -37,7 +44,7 @@ public class BooleanOrExpressionRule extends Rule
       // return the existing Expression
       return args[0];
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (types == OR_PRODUCTION || types == OR_QNAME_PRODUCTION || types == QNAME_OR_PRODUCTION || types == QNAME_OR_QNAME_PRODUCTION)
     {
       Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BooleanOrExpression)

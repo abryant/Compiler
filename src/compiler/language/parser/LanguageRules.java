@@ -5,6 +5,7 @@ import compiler.language.parser.rules.expression.ArrayAccessExpressionRule;
 import compiler.language.parser.rules.expression.ArrayInitializerRule;
 import compiler.language.parser.rules.expression.ArrayInstanciationExpressionNoInitializerRule;
 import compiler.language.parser.rules.expression.ArrayInstanciationExpressionWithInitializerRule;
+import compiler.language.parser.rules.expression.BasicPrimaryRule;
 import compiler.language.parser.rules.expression.BitwiseAndExpressionRule;
 import compiler.language.parser.rules.expression.BitwiseOrExpressionRule;
 import compiler.language.parser.rules.expression.BitwiseXorExpressionRule;
@@ -26,9 +27,11 @@ import compiler.language.parser.rules.expression.InstanciationExpressionRule;
 import compiler.language.parser.rules.expression.MethodCallExpressionRule;
 import compiler.language.parser.rules.expression.MultiplicativeExpressionRule;
 import compiler.language.parser.rules.expression.PrimaryNoTrailingDimensionsNotQNameRule;
-import compiler.language.parser.rules.expression.PrimaryNotQNameRule;
 import compiler.language.parser.rules.expression.PrimaryRule;
-import compiler.language.parser.rules.expression.RelationalExpressionRule;
+import compiler.language.parser.rules.expression.QNameExpressionRule;
+import compiler.language.parser.rules.expression.QNameOrLessThanExpressionRule;
+import compiler.language.parser.rules.expression.RelationalExpressionLessThanQNameRule;
+import compiler.language.parser.rules.expression.RelationalExpressionNotLessThanQNameRule;
 import compiler.language.parser.rules.expression.ShiftExpressionRule;
 import compiler.language.parser.rules.expression.StatementExpressionRule;
 import compiler.language.parser.rules.expression.SuperAccessExpressionRule;
@@ -57,15 +60,18 @@ import compiler.language.parser.rules.misc.AssigneeRule;
 import compiler.language.parser.rules.misc.DeclarationAssigneeListRule;
 import compiler.language.parser.rules.misc.DeclarationAssigneeRule;
 import compiler.language.parser.rules.misc.DimensionsRule;
+import compiler.language.parser.rules.misc.NestedQNameListRule;
 import compiler.language.parser.rules.misc.ParameterListRule;
 import compiler.language.parser.rules.misc.ParameterRule;
 import compiler.language.parser.rules.misc.ParametersRule;
+import compiler.language.parser.rules.misc.QNameListRule;
 import compiler.language.parser.rules.misc.QNameRule;
 import compiler.language.parser.rules.misc.ThrowsClauseRule;
 import compiler.language.parser.rules.misc.ThrowsListRule;
 import compiler.language.parser.rules.misc.VersionNumberRule;
 import compiler.language.parser.rules.statement.BlockRule;
 import compiler.language.parser.rules.statement.EmptyStatementRule;
+import compiler.language.parser.rules.statement.LocalDeclarationRule;
 import compiler.language.parser.rules.statement.OptionalBlockRule;
 import compiler.language.parser.rules.statement.StatementRule;
 import compiler.language.parser.rules.statement.StatementsRule;
@@ -79,34 +85,48 @@ import compiler.language.parser.rules.type.CharacterTypeRule;
 import compiler.language.parser.rules.type.ClosureTypeRule;
 import compiler.language.parser.rules.type.FloatingTypeRule;
 import compiler.language.parser.rules.type.IntegerTypeRule;
+import compiler.language.parser.rules.type.PointerTypeDoubleRAngleRule;
 import compiler.language.parser.rules.type.PointerTypeNoTrailingParamsNotQNameRule;
 import compiler.language.parser.rules.type.PointerTypeNotQNameRule;
 import compiler.language.parser.rules.type.PointerTypeRAngleRule;
 import compiler.language.parser.rules.type.PointerTypeRule;
+import compiler.language.parser.rules.type.PointerTypeTrailingParamsDoubleRAngleRule;
 import compiler.language.parser.rules.type.PointerTypeTrailingParamsRAngleRule;
 import compiler.language.parser.rules.type.PointerTypeTrailingParamsRule;
+import compiler.language.parser.rules.type.PointerTypeTrailingParamsTripleRAngleRule;
+import compiler.language.parser.rules.type.PointerTypeTripleRAngleRule;
 import compiler.language.parser.rules.type.PrimitiveTypeRule;
+import compiler.language.parser.rules.type.TupleTypeNotQNameListRule;
 import compiler.language.parser.rules.type.TupleTypeRule;
 import compiler.language.parser.rules.type.TypeArgumentListRAngleRule;
 import compiler.language.parser.rules.type.TypeArgumentListRule;
 import compiler.language.parser.rules.type.TypeArgumentRAngleRule;
 import compiler.language.parser.rules.type.TypeArgumentRule;
 import compiler.language.parser.rules.type.TypeArgumentsRule;
+import compiler.language.parser.rules.type.TypeDoubleRAngleRule;
+import compiler.language.parser.rules.type.TypeListNotQNameListRule;
 import compiler.language.parser.rules.type.TypeListRule;
 import compiler.language.parser.rules.type.TypeNotArrayTypeRule;
-import compiler.language.parser.rules.type.TypeNotPointerTypeRule;
+import compiler.language.parser.rules.type.TypeNotPointerTypeNotTupleTypeRule;
+import compiler.language.parser.rules.type.TypeNotQNameListRule;
 import compiler.language.parser.rules.type.TypeNotQNameRule;
+import compiler.language.parser.rules.type.TypeParameterDoubleRAngleRule;
 import compiler.language.parser.rules.type.TypeParameterListDoubleRAngleRule;
 import compiler.language.parser.rules.type.TypeParameterListRAngleRule;
 import compiler.language.parser.rules.type.TypeParameterListRule;
+import compiler.language.parser.rules.type.TypeParameterListTripleRAngleRule;
+import compiler.language.parser.rules.type.TypeParameterNotQNameListRule;
 import compiler.language.parser.rules.type.TypeParameterRAngleRule;
-import compiler.language.parser.rules.type.TypeParameterRule;
+import compiler.language.parser.rules.type.TypeParameterTripleRAngleRule;
 import compiler.language.parser.rules.type.TypeParametersRule;
 import compiler.language.parser.rules.type.TypeRAngleRule;
 import compiler.language.parser.rules.type.TypeRule;
+import compiler.language.parser.rules.type.TypeTripleRAngleRule;
 import compiler.language.parser.rules.type.VoidTypeRule;
+import compiler.language.parser.rules.type.WildcardTypeParameterDoubleRAngleRule;
 import compiler.language.parser.rules.type.WildcardTypeParameterRAngleRule;
 import compiler.language.parser.rules.type.WildcardTypeParameterRule;
+import compiler.language.parser.rules.type.WildcardTypeParameterTripleRAngleRule;
 import compiler.language.parser.rules.typeDefinition.ClassDefinitionRule;
 import compiler.language.parser.rules.typeDefinition.ClassExtendsClauseRule;
 import compiler.language.parser.rules.typeDefinition.EnumConstantListRule;
@@ -171,6 +191,7 @@ public class LanguageRules
     // statements
     new BlockRule(),
     new EmptyStatementRule(),
+    new LocalDeclarationRule(),
     new OptionalBlockRule(),
     new StatementRule(),
     new StatementsRule(),
@@ -181,6 +202,7 @@ public class LanguageRules
     new ArrayInitializerRule(),
     new ArrayInstanciationExpressionNoInitializerRule(),
     new ArrayInstanciationExpressionWithInitializerRule(),
+    new BasicPrimaryRule(),
     new BitwiseAndExpressionRule(),
     new BitwiseOrExpressionRule(),
     new BitwiseXorExpressionRule(),
@@ -201,10 +223,12 @@ public class LanguageRules
     new InstanciationExpressionRule(),
     new MethodCallExpressionRule(),
     new MultiplicativeExpressionRule(),
-    new PrimaryNotQNameRule(),
     new PrimaryNoTrailingDimensionsNotQNameRule(),
     new PrimaryRule(),
-    new RelationalExpressionRule(),
+    new QNameExpressionRule(),
+    new QNameOrLessThanExpressionRule(),
+    new RelationalExpressionLessThanQNameRule(),
+    new RelationalExpressionNotLessThanQNameRule(),
     new ShiftExpressionRule(),
     new StatementExpressionRule(),
     new SuperAccessExpressionRule(),
@@ -220,34 +244,48 @@ public class LanguageRules
     new ClosureTypeRule(),
     new FloatingTypeRule(),
     new IntegerTypeRule(),
+    new PointerTypeDoubleRAngleRule(),
     new PointerTypeNotQNameRule(),
     new PointerTypeNoTrailingParamsNotQNameRule(),
     new PointerTypeRAngleRule(),
     new PointerTypeRule(),
+    new PointerTypeTrailingParamsDoubleRAngleRule(),
     new PointerTypeTrailingParamsRAngleRule(),
     new PointerTypeTrailingParamsRule(),
+    new PointerTypeTrailingParamsTripleRAngleRule(),
+    new PointerTypeTripleRAngleRule(),
     new PrimitiveTypeRule(),
+    new TupleTypeNotQNameListRule(),
     new TupleTypeRule(),
     new TypeArgumentListRAngleRule(),
     new TypeArgumentListRule(),
     new TypeArgumentRAngleRule(),
     new TypeArgumentRule(),
     new TypeArgumentsRule(),
+    new TypeDoubleRAngleRule(),
+    new TypeListNotQNameListRule(),
     new TypeListRule(),
     new TypeNotArrayTypeRule(),
-    new TypeNotPointerTypeRule(),
+    new TypeNotPointerTypeNotTupleTypeRule(),
+    new TypeNotQNameListRule(),
     new TypeNotQNameRule(),
+    new TypeParameterDoubleRAngleRule(),
     new TypeParameterListDoubleRAngleRule(),
     new TypeParameterListRAngleRule(),
     new TypeParameterListRule(),
+    new TypeParameterListTripleRAngleRule(),
+    new TypeParameterNotQNameListRule(),
     new TypeParameterRAngleRule(),
-    new TypeParameterRule(),
     new TypeParametersRule(),
+    new TypeParameterTripleRAngleRule(),
     new TypeRAngleRule(),
     new TypeRule(),
+    new TypeTripleRAngleRule(),
     new VoidTypeRule(),
+    new WildcardTypeParameterDoubleRAngleRule(),
     new WildcardTypeParameterRAngleRule(),
     new WildcardTypeParameterRule(),
+    new WildcardTypeParameterTripleRAngleRule(),
 
     // miscellaneous
     new ArgumentListRule(),
@@ -258,9 +296,11 @@ public class LanguageRules
     new DeclarationAssigneeListRule(),
     new DeclarationAssigneeRule(),
     new DimensionsRule(),
+    new NestedQNameListRule(),
     new ParameterListRule(),
     new ParameterRule(),
     new ParametersRule(),
+    new QNameListRule(),
     new QNameRule(),
     new ThrowsClauseRule(),
     new ThrowsListRule(),

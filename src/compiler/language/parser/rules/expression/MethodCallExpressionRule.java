@@ -3,6 +3,7 @@ package compiler.language.parser.rules.expression;
 import static compiler.language.parser.ParseType.METHOD_CALL_EXPRESSION;
 import static compiler.language.parser.ParseType.PARAMETERS;
 import static compiler.language.parser.ParseType.PRIMARY;
+import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
@@ -23,10 +24,11 @@ public class MethodCallExpressionRule extends Rule
 {
 
   private static final Object[] PRODUCTION = new Object[] {PRIMARY, PARAMETERS};
+  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME_EXPRESSION, PARAMETERS};
 
   public MethodCallExpressionRule()
   {
-    super(METHOD_CALL_EXPRESSION, PRODUCTION);
+    super(METHOD_CALL_EXPRESSION, PRODUCTION, QNAME_PRODUCTION);
   }
 
   /**
@@ -36,8 +38,10 @@ public class MethodCallExpressionRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (types == PRODUCTION || types == QNAME_PRODUCTION)
     {
+      // both of the productions produce the same types of results, so we can
+      // use the same code to generate the MethodCallExpression
       Expression expression = (Expression) args[0];
       @SuppressWarnings("unchecked")
       ParseList<Parameter> parameters = (ParseList<Parameter>) args[1];

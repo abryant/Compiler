@@ -1,5 +1,6 @@
 package compiler.language.ast;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,6 +38,21 @@ public class ParseList<E>
   {
     this(parseInfo);
     list.add(elem);
+  }
+
+  /**
+   * Creates a new ParseList containing the specified list of elements with the specified ParseInfo
+   * @param elements - the elements in this list
+   * @param parseInfo - the parsing information to store
+   */
+  public ParseList(E[] elements, ParseInfo parseInfo)
+  {
+    this.parseInfo = parseInfo;
+    list = new ArrayList<E>(elements.length);
+    for (E element : elements)
+    {
+      list.add(element);
+    }
   }
 
   /**

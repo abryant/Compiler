@@ -1,6 +1,7 @@
 package compiler.language.ast.type;
 
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.misc.QName;
 import compiler.language.ast.terminal.Name;
 
 /*
@@ -17,6 +18,23 @@ public class PointerType extends Type
 
   private Name[] names;
   private TypeParameter[][] typeParameterLists;
+
+  /**
+   * Creates a new PointerType that consists only of the specified QName
+   * @param qname - the qualified name of the type
+   * @param parseInfo - the parsing information
+   */
+  public PointerType(QName qname, ParseInfo parseInfo)
+  {
+    super(parseInfo);
+    immutable = false;
+    names = qname.getNames();
+    typeParameterLists = new TypeParameter[names.length][];
+    for (int i = 0; i < typeParameterLists.length; i++)
+    {
+      typeParameterLists[i] = new TypeParameter[0];
+    }
+  }
 
   /**
    * Creates a new PointerType with the specified immutability, qualifying names and type parameter lists.

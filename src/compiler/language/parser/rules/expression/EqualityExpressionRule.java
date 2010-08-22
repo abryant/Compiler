@@ -1,10 +1,15 @@
 package compiler.language.parser.rules.expression;
 
+import static compiler.language.parser.ParseType.DOUBLE_EQUALS;
+import static compiler.language.parser.ParseType.EQUALITY_EXPRESSION;
+import static compiler.language.parser.ParseType.EXCLAIMATION_MARK_EQUALS;
+import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
+import static compiler.language.parser.ParseType.RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME;
+
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.EqualityExpression;
 import compiler.language.ast.expression.EqualityExpressionType;
 import compiler.language.ast.expression.Expression;
-import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -18,13 +23,21 @@ import compiler.parser.Rule;
 public class EqualityExpressionRule extends Rule
 {
 
-  private static final Object[] START_PRODUCTION = new Object[] {ParseType.RELATIONAL_EXPRESSION};
-  private static final Object[] EQUALS_PRODUCTION = new Object[] {ParseType.EQUALITY_EXPRESSION, ParseType.DOUBLE_EQUALS, ParseType.RELATIONAL_EXPRESSION};
-  private static final Object[] NOT_EQUALS_PRODUCTION = new Object[] {ParseType.EQUALITY_EXPRESSION, ParseType.EXCLAIMATION_MARK_EQUALS, ParseType.RELATIONAL_EXPRESSION};
+  private static final Object[] START_PRODUCTION                  = new Object[] {RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME};
+  private static final Object[] EQUALS_PRODUCTION                 = new Object[] {EQUALITY_EXPRESSION,           DOUBLE_EQUALS,            RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME};
+  private static final Object[] EQUALS_QNAME_PRODUCTION           = new Object[] {EQUALITY_EXPRESSION,           DOUBLE_EQUALS,            QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Object[] QNAME_EQUALS_PRODUCTION           = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_EQUALS,            RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME};
+  private static final Object[] QNAME_EQUALS_QNAME_PRODUCTION     = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_EQUALS,            QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Object[] NOT_EQUALS_PRODUCTION             = new Object[] {EQUALITY_EXPRESSION,           EXCLAIMATION_MARK_EQUALS, RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME};
+  private static final Object[] NOT_EQUALS_QNAME_PRODUCTION       = new Object[] {EQUALITY_EXPRESSION,           EXCLAIMATION_MARK_EQUALS, QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Object[] QNAME_NOT_EQUALS_PRODUCTION       = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, EXCLAIMATION_MARK_EQUALS, RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME};
+  private static final Object[] QNAME_NOT_EQUALS_QNAME_PRODUCTION = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, EXCLAIMATION_MARK_EQUALS, QNAME_OR_LESS_THAN_EXPRESSION};
 
   public EqualityExpressionRule()
   {
-    super(ParseType.EQUALITY_EXPRESSION, START_PRODUCTION, EQUALS_PRODUCTION, NOT_EQUALS_PRODUCTION);
+    super(EQUALITY_EXPRESSION, START_PRODUCTION,
+                               EQUALS_PRODUCTION,     EQUALS_QNAME_PRODUCTION,     QNAME_EQUALS_PRODUCTION,     QNAME_EQUALS_QNAME_PRODUCTION,
+                               NOT_EQUALS_PRODUCTION, NOT_EQUALS_QNAME_PRODUCTION, QNAME_NOT_EQUALS_PRODUCTION, QNAME_NOT_EQUALS_QNAME_PRODUCTION);
   }
 
   /**
@@ -41,11 +54,11 @@ public class EqualityExpressionRule extends Rule
     }
 
     EqualityExpressionType separator = null;
-    if (types == EQUALS_PRODUCTION)
+    if (types == EQUALS_PRODUCTION || types == EQUALS_QNAME_PRODUCTION || types == QNAME_EQUALS_PRODUCTION || types == QNAME_EQUALS_QNAME_PRODUCTION)
     {
       separator = EqualityExpressionType.EQUAL;
     }
-    else if (types == NOT_EQUALS_PRODUCTION)
+    else if (types == NOT_EQUALS_PRODUCTION || types == NOT_EQUALS_QNAME_PRODUCTION || types == QNAME_NOT_EQUALS_PRODUCTION || types == QNAME_NOT_EQUALS_QNAME_PRODUCTION)
     {
       separator = EqualityExpressionType.NOT_EQUAL;
     }

@@ -1,7 +1,7 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.TYPE;
-import static compiler.language.parser.ParseType.TYPE_PARAMETER;
+import static compiler.language.parser.ParseType.TYPE_NOT_QNAME_LIST;
+import static compiler.language.parser.ParseType.TYPE_PARAMETER_NOT_QNAME_LIST;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER;
 
 import compiler.language.ast.type.NormalTypeParameter;
@@ -16,15 +16,15 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeParameterRule extends Rule
+public class TypeParameterNotQNameListRule extends Rule
 {
 
-  private static final Object[] NORMAL_PRODUCTION = new Object[] {TYPE};
+  private static final Object[] NORMAL_PRODUCTION = new Object[] {TYPE_NOT_QNAME_LIST};
   private static final Object[] WILDCARD_PRODUCTION = new Object[] {WILDCARD_TYPE_PARAMETER};
 
-  public TypeParameterRule()
+  public TypeParameterNotQNameListRule()
   {
-    super(TYPE_PARAMETER, NORMAL_PRODUCTION, WILDCARD_PRODUCTION);
+    super(TYPE_PARAMETER_NOT_QNAME_LIST, NORMAL_PRODUCTION, WILDCARD_PRODUCTION);
   }
 
   /**

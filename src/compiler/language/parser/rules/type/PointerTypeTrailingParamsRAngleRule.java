@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.LANGLE;
 import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_PARAMS;
 import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_PARAMS_RANGLE;
 import static compiler.language.parser.ParseType.QNAME;
+import static compiler.language.parser.ParseType.RANGLE;
 import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST_DOUBLE_RANGLE;
 
 import compiler.language.ast.ParseContainer;
@@ -28,13 +29,14 @@ import compiler.parser.Rule;
 public class PointerTypeTrailingParamsRAngleRule extends Rule
 {
 
-  private static final Object[] MUTABLE_PRODUCTION = new Object[] {QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
-  private static final Object[] IMMUTABLE_PRODUCTION = new Object[] {HASH, QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
+  private static final Object[] MUTABLE_PRODUCTION         = new Object[] {      QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
+  private static final Object[] IMMUTABLE_PRODUCTION       = new Object[] {HASH, QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
   private static final Object[] TRAILING_PARAMS_PRODUCTION = new Object[] {POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
+  private static final Object[] RANGLE_PRODUCTION          = new Object[] {POINTER_TYPE_TRAILING_PARAMS, RANGLE};
 
   public PointerTypeTrailingParamsRAngleRule()
   {
-    super(POINTER_TYPE_TRAILING_PARAMS_RANGLE, MUTABLE_PRODUCTION, IMMUTABLE_PRODUCTION, TRAILING_PARAMS_PRODUCTION);
+    super(POINTER_TYPE_TRAILING_PARAMS_RANGLE, MUTABLE_PRODUCTION, IMMUTABLE_PRODUCTION, TRAILING_PARAMS_PRODUCTION, RANGLE_PRODUCTION);
   }
 
   /**
@@ -94,6 +96,11 @@ public class PointerTypeTrailingParamsRAngleRule extends Rule
                                                            typeParameters.getItem().getParseInfo()));
       return new ParseContainer<PointerType>(type, ParseInfo.combine(oldType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3],
                                                                      typeParameters.getItem().getParseInfo()));
+    }
+    if (types == RANGLE_PRODUCTION)
+    {
+      PointerType type = (PointerType) args[0];
+      return new ParseContainer<PointerType>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
     }
     throw badTypeList();
   }

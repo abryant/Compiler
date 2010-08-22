@@ -1,9 +1,13 @@
 package compiler.language.parser.rules.expression;
 
+import static compiler.language.parser.ParseType.AMPERSAND;
+import static compiler.language.parser.ParseType.BITWISE_AND_EXPRESSION;
+import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
+import static compiler.language.parser.ParseType.SHIFT_EXPRESSION;
+
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BitwiseAndExpression;
 import compiler.language.ast.expression.Expression;
-import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -17,12 +21,16 @@ import compiler.parser.Rule;
 public class BitwiseAndExpressionRule extends Rule
 {
 
-  private static final Object[] START_PRODUCTION = new Object[] {ParseType.SHIFT_EXPRESSION};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {ParseType.BITWISE_AND_EXPRESSION, ParseType.AMPERSAND, ParseType.SHIFT_EXPRESSION};
+  private static final Object[] START_PRODUCTION           = new Object[] {SHIFT_EXPRESSION};
+  private static final Object[] AND_PRODUCTION             = new Object[] {BITWISE_AND_EXPRESSION, AMPERSAND, SHIFT_EXPRESSION};
+  private static final Object[] AND_QNAME_PRODUCTION       = new Object[] {BITWISE_AND_EXPRESSION, AMPERSAND, QNAME_EXPRESSION};
+  private static final Object[] QNAME_AND_PRODUCTION       = new Object[] {QNAME_EXPRESSION,       AMPERSAND, SHIFT_EXPRESSION};
+  private static final Object[] QNAME_AND_QNAME_PRODUCTION = new Object[] {QNAME_EXPRESSION,       AMPERSAND, QNAME_EXPRESSION};
 
   public BitwiseAndExpressionRule()
   {
-    super(ParseType.BITWISE_AND_EXPRESSION, START_PRODUCTION, CONTINUATION_PRODUCTION);
+    super(BITWISE_AND_EXPRESSION, START_PRODUCTION,
+                                  AND_PRODUCTION, AND_QNAME_PRODUCTION, QNAME_AND_PRODUCTION, QNAME_AND_QNAME_PRODUCTION);
   }
 
   /**
@@ -37,7 +45,7 @@ public class BitwiseAndExpressionRule extends Rule
       // return the existing Expression
       return args[0];
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (types == AND_PRODUCTION || types == AND_QNAME_PRODUCTION || types == QNAME_AND_PRODUCTION || types == QNAME_AND_QNAME_PRODUCTION)
     {
       Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BitwiseAndExpression)

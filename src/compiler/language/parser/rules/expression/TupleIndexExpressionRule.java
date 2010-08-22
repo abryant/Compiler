@@ -2,6 +2,7 @@ package compiler.language.parser.rules.expression;
 
 import static compiler.language.parser.ParseType.EXCLAIMATION_MARK;
 import static compiler.language.parser.ParseType.INTEGER_LITERAL;
+import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 import static compiler.language.parser.ParseType.TUPLE_INDEX_EXPRESSION;
 import static compiler.language.parser.ParseType.UNARY_EXPRESSION;
 
@@ -24,10 +25,11 @@ public class TupleIndexExpressionRule extends Rule
 
   private static final Object[] NO_CHANGE_PRODUCTION = new Object[] {UNARY_EXPRESSION};
   private static final Object[] PRODUCTION = new Object[] {TUPLE_INDEX_EXPRESSION, EXCLAIMATION_MARK, INTEGER_LITERAL};
+  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME_EXPRESSION, EXCLAIMATION_MARK, INTEGER_LITERAL};
 
   public TupleIndexExpressionRule()
   {
-    super(TUPLE_INDEX_EXPRESSION, NO_CHANGE_PRODUCTION, PRODUCTION);
+    super(TUPLE_INDEX_EXPRESSION, NO_CHANGE_PRODUCTION, PRODUCTION, QNAME_PRODUCTION);
   }
 
   /**
@@ -42,7 +44,7 @@ public class TupleIndexExpressionRule extends Rule
       // return the existing expression
       return args[0];
     }
-    if (types == PRODUCTION)
+    if (types == PRODUCTION || types == QNAME_PRODUCTION)
     {
       Expression expression = (Expression) args[0];
       IntegerLiteral index = (IntegerLiteral) args[2];

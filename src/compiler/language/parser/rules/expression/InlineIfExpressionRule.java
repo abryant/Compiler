@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.BOOLEAN_OR_EXPRESSION;
 import static compiler.language.parser.ParseType.COLON;
 import static compiler.language.parser.ParseType.EXPRESSION;
 import static compiler.language.parser.ParseType.INLINE_IF_EXPRESSION;
+import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
 import static compiler.language.parser.ParseType.QUESTION_MARK;
 
 import compiler.language.ast.ParseInfo;
@@ -22,12 +23,16 @@ import compiler.parser.Rule;
 public class InlineIfExpressionRule extends Rule
 {
 
-  private static final Object[] NO_CHANGE_PRODUCTION = new Object[] {BOOLEAN_OR_EXPRESSION};
-  private static final Object[] PRODUCTION = new Object[] {BOOLEAN_OR_EXPRESSION, QUESTION_MARK, EXPRESSION, COLON, INLINE_IF_EXPRESSION};
+  private static final Object[] NO_CHANGE_PRODUCTION      = new Object[] {BOOLEAN_OR_EXPRESSION};
+  private static final Object[] IF_PRODUCTION             = new Object[] {BOOLEAN_OR_EXPRESSION,         QUESTION_MARK, EXPRESSION, COLON, INLINE_IF_EXPRESSION};
+  private static final Object[] IF_QNAME_PRODUCTION       = new Object[] {BOOLEAN_OR_EXPRESSION,         QUESTION_MARK, EXPRESSION, COLON, QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Object[] QNAME_IF_PRODUCTION       = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, QUESTION_MARK, EXPRESSION, COLON, INLINE_IF_EXPRESSION};
+  private static final Object[] QNAME_IF_QNAME_PRODUCTION = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, QUESTION_MARK, EXPRESSION, COLON, QNAME_OR_LESS_THAN_EXPRESSION};
 
   public InlineIfExpressionRule()
   {
-    super(INLINE_IF_EXPRESSION, NO_CHANGE_PRODUCTION, PRODUCTION);
+    super(INLINE_IF_EXPRESSION, NO_CHANGE_PRODUCTION,
+                                IF_PRODUCTION, IF_QNAME_PRODUCTION, QNAME_IF_PRODUCTION, QNAME_IF_QNAME_PRODUCTION);
   }
 
   /**
@@ -42,7 +47,7 @@ public class InlineIfExpressionRule extends Rule
       // return the existing Expression
       return args[0];
     }
-    if (types == PRODUCTION)
+    if (types == IF_PRODUCTION || types == IF_QNAME_PRODUCTION || types == QNAME_IF_PRODUCTION || types == QNAME_IF_QNAME_PRODUCTION)
     {
       Expression firstExpression = (Expression) args[0];
       Expression secondExpression = (Expression) args[2];

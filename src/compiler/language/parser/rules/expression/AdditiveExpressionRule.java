@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.ADDITIVE_EXPRESSION;
 import static compiler.language.parser.ParseType.MINUS;
 import static compiler.language.parser.ParseType.MULTIPLICATIVE_EXPRESSION;
 import static compiler.language.parser.ParseType.PLUS;
+import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.AdditiveExpression;
@@ -22,13 +23,21 @@ import compiler.parser.Rule;
 public class AdditiveExpressionRule extends Rule
 {
 
-  private static final Object[] START_PRODUCTION = new Object[] {MULTIPLICATIVE_EXPRESSION};
-  private static final Object[] PLUS_PRODUCTION = new Object[] {ADDITIVE_EXPRESSION, PLUS, MULTIPLICATIVE_EXPRESSION};
-  private static final Object[] MINUS_PRODUCTION = new Object[] {ADDITIVE_EXPRESSION, MINUS, MULTIPLICATIVE_EXPRESSION};
+  private static final Object[] START_PRODUCTION             = new Object[] {MULTIPLICATIVE_EXPRESSION};
+  private static final Object[] PLUS_PRODUCTION              = new Object[] {ADDITIVE_EXPRESSION, PLUS,  MULTIPLICATIVE_EXPRESSION};
+  private static final Object[] PLUS_QNAME_PRODUCTION        = new Object[] {ADDITIVE_EXPRESSION, PLUS,  QNAME_EXPRESSION};
+  private static final Object[] QNAME_PLUS_PRODUCTION        = new Object[] {QNAME_EXPRESSION,    PLUS,  MULTIPLICATIVE_EXPRESSION};
+  private static final Object[] QNAME_PLUS_QNAME_PRODUCTION  = new Object[] {QNAME_EXPRESSION,    PLUS,  QNAME_EXPRESSION};
+  private static final Object[] MINUS_PRODUCTION             = new Object[] {ADDITIVE_EXPRESSION, MINUS, MULTIPLICATIVE_EXPRESSION};
+  private static final Object[] MINUS_QNAME_PRODUCTION       = new Object[] {ADDITIVE_EXPRESSION, MINUS, QNAME_EXPRESSION};
+  private static final Object[] QNAME_MINUS_PRODUCTION       = new Object[] {QNAME_EXPRESSION,    MINUS, MULTIPLICATIVE_EXPRESSION};
+  private static final Object[] QNAME_MINUS_QNAME_PRODUCTION = new Object[] {QNAME_EXPRESSION,    MINUS, QNAME_EXPRESSION};
 
   public AdditiveExpressionRule()
   {
-    super(ADDITIVE_EXPRESSION, START_PRODUCTION, PLUS_PRODUCTION, MINUS_PRODUCTION);
+    super(ADDITIVE_EXPRESSION, START_PRODUCTION,
+                               PLUS_PRODUCTION,  PLUS_QNAME_PRODUCTION,  QNAME_PLUS_PRODUCTION,  QNAME_PLUS_QNAME_PRODUCTION,
+                               MINUS_PRODUCTION, MINUS_QNAME_PRODUCTION, QNAME_MINUS_PRODUCTION, QNAME_MINUS_QNAME_PRODUCTION);
   }
 
   /**
@@ -45,11 +54,11 @@ public class AdditiveExpressionRule extends Rule
     }
 
     AdditiveExpressionType type = null;
-    if (types == PLUS_PRODUCTION)
+    if (types == PLUS_PRODUCTION || types == PLUS_QNAME_PRODUCTION || types == QNAME_PLUS_PRODUCTION || types == QNAME_PLUS_QNAME_PRODUCTION)
     {
       type = AdditiveExpressionType.PLUS;
     }
-    else if (types == MINUS_PRODUCTION)
+    else if (types == MINUS_PRODUCTION || types == MINUS_QNAME_PRODUCTION || types == QNAME_MINUS_PRODUCTION || types == QNAME_MINUS_QNAME_PRODUCTION)
     {
       type = AdditiveExpressionType.MINUS;
     }

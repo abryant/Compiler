@@ -8,7 +8,6 @@ import compiler.language.ast.ParseContainer;
 import compiler.language.ast.type.NormalTypeParameter;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
-import compiler.language.ast.type.WildcardTypeParameter;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -46,9 +45,9 @@ public class TypeParameterRAngleRule extends Rule
     }
     if (types == WILDCARD_PRODUCTION)
     {
-      @SuppressWarnings("unchecked")
-      ParseContainer<WildcardTypeParameter> container = (ParseContainer<WildcardTypeParameter>) args[0];
-      return new ParseContainer<TypeParameter>(container.getItem(), container.getParseInfo());
+      // the rule for WILDCARD_TYPE_PARAMETER_RANGLE has already created
+      // a ParseContainer<TypeParameter>, so return it
+      return args[0];
     }
     throw badTypeList();
   }

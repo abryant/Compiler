@@ -3,6 +3,7 @@ package compiler.language.parser.rules.expression;
 import static compiler.language.parser.ParseType.CAST_EXPRESSION;
 import static compiler.language.parser.ParseType.CAST_KEYWORD;
 import static compiler.language.parser.ParseType.LANGLE;
+import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 import static compiler.language.parser.ParseType.TYPE_RANGLE;
 import static compiler.language.parser.ParseType.UNARY_EXPRESSION;
 
@@ -25,10 +26,11 @@ public class CastExpressionRule extends Rule
 {
 
   private static final Object[] PRODUCTION = new Object[] {CAST_KEYWORD, LANGLE, TYPE_RANGLE, UNARY_EXPRESSION};
+  private static final Object[] QNAME_PRODUCTION = new Object[] {CAST_KEYWORD, LANGLE, TYPE_RANGLE, QNAME_EXPRESSION};
 
   public CastExpressionRule()
   {
-    super(CAST_EXPRESSION, PRODUCTION);
+    super(CAST_EXPRESSION, PRODUCTION, QNAME_PRODUCTION);
   }
 
   /**
@@ -38,7 +40,7 @@ public class CastExpressionRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (types == PRODUCTION || types == QNAME_PRODUCTION)
     {
       @SuppressWarnings("unchecked")
       ParseContainer<Type> type = (ParseContainer<Type>) args[2];

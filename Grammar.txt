@@ -212,84 +212,220 @@ Decrement = Assignee Minus Minus | Minus Minus Assignee
   Expressions
 ###############
 
+// all of the types of expression that can be used as a statement
 StatementExpression = MethodCallExpression | InstanciationExpression
 
-Expression = TupleExpression
-TupleExpression = InlineIfExpression | TupleExpession Comma InlineIfExpression
+// the basic Expression type, this includes lists of QNames as TupleExpressions
+Expression = TupleExpression | QNameList
 
-ExpressionNoTuple = InlineIfExpression
+// NOTE:
+// All the following Expressions explicitly exclude lists of just QNames, along
+// with single QNames and arbitrarily nested lists of QNames. This is because
+// these can easily conflict with a TupleType, a PointerType, or a TypeList.
+// The rules work for QNames by having QNameExpression versions of themselves.
 
-InlineIfExpression = BooleanOrExpression | BooleanOrExpression QuestionMark Expression Colon InlineIfExpression
+// right recursive so that the parser can easily decide between this and
+// QNameList
+TupleExpression = QName                                  Comma TupleExpression
+                | NestedQNameList                        Comma TupleExpression
+                | QName           LAngle QName           Comma TupleExpression
+                | QName           LAngle NestedQNameList Comma TupleExpression
+                | NestedQNameList LAngle QName           Comma TupleExpression
+                | NestedQNameList LAngle NestedQNameList Comma TupleExpression
+                | InlineIfExpression                     Comma TupleExpression
+                | InlineIfExpression                     Comma QNameList
+                | InlineIfExpression
+                | RelationalExpressionLessThanQName
 
-BooleanOrExpression = BooleanXorExpression | BooleanOrExpression DoublePipe BooleanXorExpression
-BooleanXorExpression = BooleanAndExpression | BooleanXorExpression DoubleCaret BooleanAndExpression
-BooleanAndExpression = EqualityExpression | BooleanAndExpression DoubleAmpersand EqualityExpression
+ExpressionNoTuple = InlineIfExpression | QNameOrLessThanExpression
 
-EqualityExpression = RelationalExpression
-                   | EqualityExpression DoubleEquals RelationalExpression
-                   | EqualityExpression ExclaimationMarkEquals RelationalExpression
+InlineIfExpression = BooleanOrExpression
+                   | BooleanOrExpression       QuestionMark Expression Colon InlineIfExpression
+                   | BooleanOrExpression       QuestionMark Expression Colon QNameOrLessThanExpression
+                   | QNameOrLessThanExpression QuestionMark Expression Colon InlineIfExpression
+                   | QNameOrLessThanExpression QuestionMark Expression Colon QNameOrLessThanExpression
 
-RelationalExpression = BitwiseOrExpression
-                     | BitwiseOrExpression LAngle BitwiseOrExpression
-                     | BitwiseOrExpression RAngle BitwiseOrExpression
-                     | BitwiseOrExpression LAngleEquals BitwiseOrExpression
-                     | BitwiseOrExpression RAngleEquals BitwiseOrExpression
-                     | BitwiseOrExpression InstanceOfKeyword Type
+BooleanOrExpression = BooleanXorExpression
+                    | BooleanOrExpression       DoublePipe BooleanXorExpression
+                    | BooleanOrExpression       DoublePipe QNameOrLessThanExpression
+                    | QNameOrLessThanExpression DoublePipe BooleanXorExpression
+                    | QNameOrLessThanExpression DoublePipe QNameOrLessThanExpression
+BooleanXorExpression = BooleanAndExpression
+                     | BooleanXorExpression      DoubleCaret BooleanAndExpression
+                     | BooleanXorExpression      DoubleCaret QNameOrLessThanExpression
+                     | QNameOrLessThanExpression DoubleCaret BooleanAndExpression
+                     | QNameOrLessThanExpression DoubleCaret QNameOrLessThanExpression
+BooleanAndExpression = EqualityExpression
+                     | BooleanAndExpression      DoubleAmpersand EqualityExpression
+                     | BooleanAndExpression      DoubleAmpersand QNameOrLessThanExpression
+                     | QNameOrLessThanExpression DoubleAmpersand EqualityExpression
+                     | QNameOrLessThanExpression DoubleAmpersand QNameOrLessThanExpression
 
-BitwiseOrExpression  = BitwiseXorExpression | BitwiseOrExpression Pipe BitwiseXorExpression 
-BitwiseXorExpression = BitwiseAndExpression | BitwiseXorExpression Caret BitwiseAndExpression 
-BitwiseAndExpression = ShiftExpression      | BitwiseAndExpression Ampersand ShiftExpression 
+EqualityExpression = RelationalExpressionNotLessThanQName
+                   | EqualityExpression        DoubleEquals           RelationalExpressionNotLessThanQName
+                   | EqualityExpression        DoubleEquals           QNameOrLessThanExpression
+                   | QNameOrLessThanExpression DoubleEquals           RelationalExpressionNotLessThanQName
+                   | QNameOrLessThanExpression DoubleEquals           QNameOrLessThanExpression
+                   | EqualityExpression        ExclaimationMarkEquals RelationalExpressionNotLessThanQName
+                   | EqualityExpression        ExclaimationMarkEquals QNameOrLessThanExpression
+                   | QNameOrLessThanExpression ExclaimationMarkEquals RelationalExpressionNotLessThanQName
+                   | QNameOrLessThanExpression ExclaimationMarkEquals QNameOrLessThanExpression
+
+QNameOrLessThanExpression = QNameExpression
+                          | RelationalExpressionLessThanQName
+
+// relational expressions which only compare QNames or NestedQNameLists are
+// separated out here so that the following is easier to parse:
+// class X { void foo() { (a<b,
+// since a<b may be the start of a parametrised type or the start of
+// a tuple expression which starts in a comparison
+
+RelationalExpressionLessThanQName = QName           LAngle QName
+                                  | QName           LAngle NestedQNameList
+                                  | NestedQNameList LAngle QName
+                                  | NestedQNameList LAngle NestedQNameList
+
+RelationalExpressionNotLessThanQName = BitwiseOrExpression
+                                     | BitwiseOrExpression LAngle BitwiseOrExpression
+                                     | BitwiseOrExpression LAngle QNameExpression
+                                     | QName               LAngle BitwiseOrExpression
+                                     | NestedQNameList     LAngle BitwiseOrExpression
+                                     | BitwiseOrExpression RAngle BitwiseOrExpression
+                                     | BitwiseOrExpression RAngle QNameExpression
+                                     | QName               RAngle BitwiseOrExpression
+                                     | QName               RAngle QNameExpression
+                                     | NestedQNameList     RAngle BitwiseOrExpression
+                                     | NestedQNameList     RAngle QNameExpression
+                                     | BitwiseOrExpression LAngleEquals BitwiseOrExpression
+                                     | BitwiseOrExpression LAngleEquals QNameExpression
+                                     | QNameExpression     LAngleEquals BitwiseOrExpression
+                                     | QNameExpression     LAngleEquals QNameExpression
+                                     | BitwiseOrExpression RAngleEquals BitwiseOrExpression
+                                     | BitwiseOrExpression RAngleEquals QNameExpression
+                                     | QNameExpression     RAngleEquals BitwiseOrExpression
+                                     | QNameExpression     RAngleEquals QNameExpression
+                                     | BitwiseOrExpression InstanceOfKeyword Type
+                                     | QNameExpression     InstanceOfKeyword Type
+
+BitwiseOrExpression  = BitwiseXorExpression
+                     | BitwiseOrExpression Pipe BitwiseXorExpression
+                     | BitwiseOrExpression Pipe QNameExpression
+                     | QNameExpression     Pipe BitwiseXorExpression
+                     | QNameExpression     Pipe QNameExpression
+BitwiseXorExpression = BitwiseAndExpression
+                     | BitwiseXorExpression Caret BitwiseAndExpression
+                     | BitwiseXorExpression Caret QNameExpression
+                     | QNameExpression      Caret BitwiseAndExpression
+                     | QNameExpression      Caret QNameExpression
+BitwiseAndExpression = ShiftExpression
+                     | BitwiseAndExpression Ampersand ShiftExpression
+                     | BitwiseAndExpression Ampersand QNameExpression
+                     | QNameExpression      Ampersand ShiftExpression
+                     | QNameExpression      Ampersand QNameExpression
 
 ShiftExpression = AdditiveExpression
                 | ShiftExpression DoubleLAngle AdditiveExpression
+                | ShiftExpression DoubleLAngle QNameExpression
+                | QNameExpression DoubleLAngle AdditiveExpression
+                | QNameExpression DoubleLAngle QNameExpression
                 | ShiftExpression DoubleRAngle AdditiveExpression
-                | ShiftExpression DoubleRAngle RAngle AdditiveExpression // check while matching this production that the RAngles are directly next to each other
+                | ShiftExpression DoubleRAngle QNameExpression
+                | QName           DoubleRAngle AdditiveExpression
+                | QName           DoubleRAngle QNameExpression
+                | NestedQNameList DoubleRAngle AdditiveExpression
+                | NestedQNameList DoubleRAngle QNameExpression
+                | ShiftExpression TripleRAngle AdditiveExpression
+                | ShiftExpression TripleRAngle QNameExpression
+                | QName           TripleRAngle AdditiveExpression
+                | QName           TripleRAngle QNameExpression
+                | NestedQNameList TripleRAngle AdditiveExpression
+                | NestedQNameList TripleRAngle QNameExpression
 
 AdditiveExpression = MultiplicativeExpression
                    | AdditiveExpression Plus MultiplicativeExpression
+                   | AdditiveExpression Plus QNameExpression
+                   | QNameExpression    Plus MultiplicativeExpression
+                   | QNameExpression    Plus QNameExpression
                    | AdditiveExpression Minus MultiplicativeExpression
+                   | AdditiveExpression Minus QNameExpression
+                   | QNameExpression    Minus MultiplicativeExpression
+                   | QNameExpression    Minus QNameExpression
 
 MultiplicativeExpression = TupleIndexExpression
                          | MultiplicativeExpression Star TupleIndexExpression
+                         | MultiplicativeExpression Star QNameExpression
+                         | QNameExpression          Star TupleIndexExpression
+                         | QNameExpression          Star QNameExpression
                          | MultiplicativeExpression ForwardSlash TupleIndexExpression
+                         | MultiplicativeExpression ForwardSlash QNameExpression
+                         | QNameExpression          ForwardSlash TupleIndexExpression
+                         | QNameExpression          ForwardSlash QNameExpression
                          | MultiplicativeExpression Percent TupleIndexExpression
+                         | MultiplicativeExpression Percent QNameExpression
+                         | QNameExpression          Percent TupleIndexExpression
+                         | QNameExpression          Percent QNameExpression
 
 TupleIndexExpression = UnaryExpression
                      | TupleIndexExpression ExclaimationMark IntegerLiteral
+                     | QNameExpression      ExclaimationMark IntegerLiteral
 // TODO: should this be a constant expression instead of an integer literal?
 
 UnaryExpression = Primary
                 | CastExpression
                 | ExclaimationMark UnaryExpression
-                | Tilde UnaryExpression
-                | Plus UnaryExpression
-                | Minus UnaryExpression
+                | ExclaimationMark QNameExpression
+                | Tilde            UnaryExpression
+                | Tilde            QNameExpression
+                | Plus             UnaryExpression
+                | Plus             QNameExpression
+                | Minus            UnaryExpression
+                | Minus            QNameExpression
 CastExpression = CastKeyword LAngle TypeRAngle UnaryExpression
+               | CastKeyword LAngle TypeRAngle QNameExpression
 
-Primary = PrimaryNotQName | QName
+// Primary includes bracketed expressions, but not ones that are nested tuples
+// of QNames. Basically, the bracketed expression must have something to
+// distinguish itself from a list of qualified names, or an arbitrarily nested
+// list of qualified names. This does not allow a QName on its own.
+// This is to disambiguate between itself and Type at the start of a statement
+Primary = BasicPrimary
+        | LParen TupleExpression RParen
+        | ArrayInstanciationExpressionNoInitializer
 
-// QNames are excluded here so that FieldAccessExpression can have a production that allows ".name" on the end
-// of any Primary that is not already a QName
-PrimaryNotQName = PrimaryNoTrailingDimensionsNotQName | ArrayInstanciationExpressionNoInitializer
+// Trailing Dimensions from ArrayInstanciationNoInitializer are excluded here
+// so that ArrayAccessExpression doesn't have a chance to parse the last part
+// of: new Object[2][0]
+// QNames are excluded here so that ArrayAccessExpression can have its own
+// production for QName, which resolves a potential shift reduce conflict
+// between an ArrayType and an ArrayAccessExpression
+PrimaryNoTrailingDimensionsNotQName = BasicPrimary
+                                    | LParen TupleExpression RParen
 
-// Trailing Dimensions from ArrayInstanciationNoInitializer are excluded here so that
-// ArrayAccessExpression doesn't have a chance to parse the last part of: new Object[2][0]
-// QNames are excluded here so that ArrayAccessExpression can have its own production for QName,
-// which resolves a potential shift reduce conflict between an ArrayType and an ArrayAccessExpression
-PrimaryNoTrailingDimensionsNotQName = LParen Expression RParen
-                                    | IntegerLiteral | FloatingLiteral | CharacterLiteral | StringLiteral | NilKeyword
-                                    | FieldAccessExpressionNotQName
-                                    | StatementExpression
-                                    | ThisAccessExpression
-                                    | SuperAccessExpression
-                                    | ArrayAccessExpression
-                                    | ClosureCreationExpression
-                                    | ArrayInstanciationExpressionWithInitializer
+// Primary, but:
+// * no trailing dimensions (square brackets, optionally containing things)
+// * not just a QName on its own
+// * no bracketed expressions
+BasicPrimary = IntegerLiteral   | FloatingLiteral
+             | CharacterLiteral | StringLiteral | NilKeyword
+             | FieldAccessExpressionNotQName
+             | StatementExpression
+             | ThisAccessExpression
+             | SuperAccessExpression
+             | ArrayAccessExpression
+             | ClosureCreationExpression
+             | ArrayInstanciationExpressionWithInitializer
 
-MethodCallExpression = Primary Parameters
+// an Expression made up entirely of QNames. This can be either a single QName
+// or a tupled list of other QNameExpressions.
+// this returns either a FieldAccessExpression or a ParenthesisedExpression
+// containing a TupleExpression
+QNameExpression = QName | NestedQNameList
+
+MethodCallExpression = QNameExpression Parameters
+                     | Primary         Parameters
 
 FieldAccessExpression = QName | FieldAccessExpressionNotQName
-FieldAccessExpressionNotQName = PrimaryNotQName Dot Name
+FieldAccessExpressionNotQName = Primary Dot Name
 
 ThisAccessExpression = ThisKeyword
                      | QName Dot ThisKeyword
@@ -298,6 +434,7 @@ SuperAccessExpression = SuperKeyword
 
 ArrayAccessExpression = PrimaryNoTrailingDimensionsNotQName DimensionExpression
                       | QName DimensionExpression
+                      | NestedQNameList DimensionsExpression
 
 InstanciationExpression = NewKeyword PointerType Parameters
                         | NewKeyword PointerType Parameters LBrace MemberList RBrace
@@ -315,6 +452,7 @@ ArrayInstanciationExpressionNoInitializer = NewKeyword TypeNotArrayType Dimensio
                                           | NewKeyword TypeNotArrayType DimensionExpressions
 
 ArrayInitializer = LBrace ExpressionList RBrace | LBrace RBrace
+// TODO: fix this broken rule - it would match: a,,,b
 ExpressionList = ExpressionNoTuple | ExpressionList Comma ExpressionNoTuple | ExpressionList Comma
 
 DimensionExpressions = DimensionExpression | DimensionExpressions DimensionExpression
@@ -327,19 +465,41 @@ Dimensions = LSquare RSquare | Dimensions LSquare RSquare
 #########
 
 // The type lists for Type, PointerType, TypeParameters and TypeArguments have been slightly mutilated
-// so that they can cope with a DoubleRAngle token instead of two RAngle tokens
+// so that they can cope with a DoubleRAngle or TripleRAngle token instead of two RAngle tokens
 // this results in a lot of rules whose only purpose is to have extra RAngles on the end of them
 
-Type = TypeNotQName | QName
-TypeRAngle = TypeNotPointerType RAngle | PointerTypeRAngle
-TypeNotQName = TypeNotPointerType | PointerTypeNotQName
-TypeNotPointerType = PrimitiveType | ArrayType | TupleType | ClosureType | VoidType
-TypeNotArrayType = PrimitiveType | PointerType | TupleType | ClosureType | VoidType
+// Also, some rules have been made to not take QNames and/or NestedQNameLists,
+// this is to eliminate shift-reduce and reduce-reduce conflicts between 
+// QName lists and other types (e.g. TupleType and NestedQNameList)
 
-TupleType = LParen TypeList RParen
-TypeList = Type | Type Comma TypeList
-// right-recursive list, so that the symbol after the list can be
-// used to decide between TypeList and AssigneeList
+Type = TypeNotQName | QName
+TypeRAngle = TypeNotPointerTypeNotTupleType RAngle
+           | PointerTypeRAngle
+           | TupleTypeNotQNameList RAngle
+           | NestedQNameList RAngle
+TypeDoubleRAngle = TypeNotPointerTypeNotTupleType DoubleRAngle
+                 | PointerTypeDoubleRAngle
+                 | TupleTypeNotQNameList DoubleRAngle
+                 | NestedQNameList DoubleRAngle
+TypeTripleRAngle = TypeNotPointerTypeNotTupleType TripleRAngle
+                 | PointerTypeTripleRAngle
+                 | TupleTypeNotQNameList TripleRAngle
+                 | NestedQNameList TripleRAngle
+TypeNotQName = TypeNotQNameList | NestedQNameList
+TypeNotPointerTypeNotTupleType = PrimitiveType | ArrayType | ClosureType | VoidType
+TypeNotArrayType = PrimitiveType | PointerType | TupleType | ClosureType | VoidType
+TypeNotQNameList = ArrayType | PrimitiveType | PointerTypeNotQName | TupleTypeNotQNameList | ClosureType | VoidType
+
+TupleType = TupleTypeNotQNameList | NestedQNameList
+TupleTypeNotQNameList = LParen TypeListNotQNameList RParen
+
+TypeList = TypeListNotQNameList | QNameList
+// a right recursive list that accepts any list of types except a QNameList
+// this is so that there are no conflicts between TupleExpression and TypeList
+TypeListNotQNameList = QName            Comma TypeListNotQNameList
+                     | NestedQNameList  Comma TypeListNotQNameList
+                     | TypeNotQNameList Comma TypeList
+                     | TypeNotQNameList
 
 ClosureType = LBrace               TypeList Arrow TypeList ThrowsClause RBrace
             | LBrace TypeArguments TypeList Arrow TypeList ThrowsClause RBrace
@@ -347,7 +507,9 @@ ClosureType = LBrace               TypeList Arrow TypeList ThrowsClause RBrace
 // QNames are separated out so that ArrayType and ArrayAccess can be disambiguated
 // on partial input: class A { int method() { foo[
 // where the lookahead token is the final [
-ArrayType = TypeNotQName LSquare RSquare | QName LSquare RSquare
+ArrayType = TypeNotQNameList LSquare RSquare
+          | QName LSquare RSquare
+          | NestedQNameList LSquare RSquare
 
 PrimitiveType = BooleanType | IntegerType | CharacterType | FloatingType
 BooleanType = BooleanKeyword
@@ -362,6 +524,12 @@ PointerType = QName | PointerTypeNotQName
 PointerTypeRAngle = QName RAngle
                   | PointerTypeNoTrailingParamsNotQName RAngle
                   | PointerTypeTrailingParamsRAngle
+PointerTypeDoubleRAngle = QName DoubleRAngle
+                        | PointerTypeNoTrailingParamsNotQName DoubleRAngle
+                        | PointerTypeTrailingParamsDoubleRAngle
+PointerTypeTripleRAngle = QName TripleRAngle
+                        | PointerTypeNoTrailingParamsNotQName TripleRAngle
+                        | PointerTypeTrailingParamsTripleRAngle
 PointerTypeNotQName = PointerTypeNoTrailingParamsNotQName
                     | PointerTypeTrailingParams
 PointerTypeNoTrailingParamsNotQName = Hash QName
@@ -372,17 +540,40 @@ PointerTypeTrailingParams = QName TypeParameters
 PointerTypeTrailingParamsRAngle = QName LAngle TypeParameterListDoubleRAngle
                                 | Hash QName LAngle TypeParameterListDoubleRAngle
                                 | PointerTypeTrailingParams Dot QName LAngle TypeParameterListDoubleRAngle
+                                | PointerTypeTrailingParams RAngle
+PointerTypeTrailingParamsDoubleRAngle = QName LAngle TypeParameterListTripleRAngle
+                                      | Hash QName LAngle TypeParameterListTripleRAngle
+                                      | PointerTypeTrailingParams Dot QName LAngle TypeParameterListTripleRAngle
+                                      | PointerTypeTrailingParams DoubleRAngle
+PointerTypeTrailingParamsTripleRAngle = PointerTypeTrailingParams TripleRAngle
 
 TypeParameters = LAngle TypeParameterListRAngle
-TypeParameterList = TypeParameter | TypeParameterList Comma TypeParameter
+TypeParameterList = TypeParameterNotQNameList
+                  | QName
+                  | NestedQNameList
+                  | TypeParameterNotQNameList Comma TypeParameterList
+                  | QName                     Comma TypeParameterList
+                  | NestedQNameList           Comma TypeParameterList
 TypeParameterListRAngle = TypeParameterRAngle
-                        | TypeParameterList Comma TypeParameterRAngle
-TypeParameterListDoubleRAngle = TypeParameterList DoubleRAngle
-                              | TypeParameterListRAngle RAngle
+                        | TypeParameterNotQNameList Comma TypeParameterListRAngle
+                        | QName                     Comma TypeParameterListRAngle
+                        | NestedQNameList           Comma TypeParameterListRAngle
+TypeParameterListDoubleRAngle = TypeParameterDoubleRAngle
+                              | TypeParameterNotQNameList Comma TypeParameterListDoubleRAngle
+                              | QName                     Comma TypeParameterListDoubleRAngle
+                              | NestedQNameList           Comma TypeParameterListDoubleRAngle
+TypeParameterListTripleRAngle = TypeParameterTripleRAngle
+                              | TypeParameterNotQNameList Comma TypeParameterListTripleRAngle
+                              | QName                     Comma TypeParameterListTripleRAngle
+                              | NestedQNameList           Comma TypeParameterListTripleRAngle
 
-TypeParameter = Type | WildcardTypeParameter
+TypeParameterNotQNameList = TypeNotQNameList | WildcardTypeParameter
 TypeParameterRAngle = TypeRAngle
                     | WildcardTypeParameterRAngle
+TypeParameterDoubleRAngle = TypeDoubleRAngle
+                          | WildcardTypeParameterDoubleRAngle
+TypeParameterTripleRAngle = TypeTripleRAngle
+                          | WildcardTypeParameterTripleRAngle
 WildcardTypeParameter = QuestionMark
                       | QuestionMark ExtendsKeyword PointerType
                       | QuestionMark SuperKeyword PointerType
@@ -393,6 +584,20 @@ WildcardTypeParameterRAngle = QuestionMark RAngle
                             | QuestionMark SuperKeyword PointerTypeRAngle
                             | QuestionMark ExtendsKeyword PointerType SuperKeyword PointerTypeRAngle
                             | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerTypeRAngle
+WildcardTypeParameterDoubleRAngle = QuestionMark DoubleRAngle
+                                  | QuestionMark RAngle RAngle
+                                  | QuestionMark ExtendsKeyword PointerTypeDoubleRAngle
+                                  | QuestionMark SuperKeyword PointerTypeDoubleRAngle
+                                  | QuestionMark ExtendsKeyword PointerType SuperKeyword PointerTypeDoubleRAngle
+                                  | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerTypeDoubleRAngle
+WildcardTypeParameterTripleRAngle = QuestionMark TripleRAngle
+                                  | QuestionMark DoubleRAngle RAngle
+                                  | QuestionMark RAngle DoubleRAngle
+                                  | QuestionMark RAngle RAngle RAngle
+                                  | QuestionMark ExtendsKeyword PointerTypeTripleRAngle
+                                  | QuestionMark SuperKeyword PointerTypeTripleRAngle
+                                  | QuestionMark ExtendsKeyword PointerType SuperKeyword PointerTypeTripleRAngle
+                                  | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerTypeTripleRAngle
 
 VoidType = VoidKeyword
 
@@ -412,6 +617,11 @@ TypeArgumentList = TypeArgumentList Comma TypeArgument | TypeArgument
 TypeArgumentListRAngle = TypeArgumentRAngle | TypeArgumentList Comma TypeArgumentRAngle
 TypeArguments = LAngle TypeArgumentListRAngle
 
+
+NestedQNameList = LParen QNameList RParen
+QNameList = QName | NestedQNameList
+          | QName Comma QNameList
+          | NestedQNameList Comma QNameList
 
 QName = Name | QName Dot Name
 

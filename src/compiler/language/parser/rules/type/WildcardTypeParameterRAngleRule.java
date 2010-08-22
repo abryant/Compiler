@@ -11,6 +11,7 @@ import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER_RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.TypeParameter;
 import compiler.language.ast.type.WildcardTypeParameter;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
@@ -46,7 +47,7 @@ public class WildcardTypeParameterRAngleRule extends Rule
     if (types == PRODUCTION)
     {
       WildcardTypeParameter typeParameter = new WildcardTypeParameter(null, null, (ParseInfo) args[0]);
-      return new ParseContainer<WildcardTypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (types == EXTENDS_PRODUCTION)
     {
@@ -54,7 +55,7 @@ public class WildcardTypeParameterRAngleRule extends Rule
       ParseContainer<PointerType> container = (ParseContainer<PointerType>) args[2];
       PointerType superType = container.getItem();
       WildcardTypeParameter typeParameter = new WildcardTypeParameter(superType, null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo()));
-      return new ParseContainer<WildcardTypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], container.getParseInfo()));
+      return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], container.getParseInfo()));
     }
     if (types == SUPER_PRODUCTION)
     {
@@ -62,7 +63,7 @@ public class WildcardTypeParameterRAngleRule extends Rule
       ParseContainer<PointerType> container = (ParseContainer<PointerType>) args[2];
       PointerType subType = container.getItem();
       WildcardTypeParameter typeParameter = new WildcardTypeParameter(null, subType, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo()));
-      return new ParseContainer<WildcardTypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], container.getParseInfo()));
+      return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], container.getParseInfo()));
     }
     if (types == EXTENDS_SUPER_PRODUCTION)
     {
@@ -73,7 +74,7 @@ public class WildcardTypeParameterRAngleRule extends Rule
       WildcardTypeParameter typeParameter = new WildcardTypeParameter(superType, subType,
                                                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo(),
                                                                     (ParseInfo) args[3], subType.getParseInfo()));
-      return new ParseContainer<WildcardTypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo(),
+      return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo(),
                                                                                         (ParseInfo) args[3], container.getParseInfo()));
     }
     if (types == SUPER_EXTENDS_PRODUCTION)
@@ -85,7 +86,7 @@ public class WildcardTypeParameterRAngleRule extends Rule
       WildcardTypeParameter typeParameter = new WildcardTypeParameter(superType, subType,
                                                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo(),
                                                                     (ParseInfo) args[3], superType.getParseInfo()));
-      return new ParseContainer<WildcardTypeParameter>(typeParameter,
+      return new ParseContainer<TypeParameter>(typeParameter,
                    ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo(), (ParseInfo) args[3], container.getParseInfo()));
     }
     throw badTypeList();

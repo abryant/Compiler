@@ -9,27 +9,47 @@ import compiler.language.ast.ParseInfo;
 /**
  * @author Anthony Bryant
  */
-public class TupleExpression extends LeftRecursiveExpression
+public class TupleExpression extends Expression
 {
 
-  public TupleExpression(Expression firstExpression, Expression secondExpression, ParseInfo parseInfo)
+  private Expression[] expressions;
+
+  /**
+   * Creates a new TupleExpression from the specified array of expressions
+   * @param expressions - the expressions to store in this TupleExpression
+   * @param parseInfo - the parsing information
+   */
+  public TupleExpression(Expression[] expressions, ParseInfo parseInfo)
   {
-    super(firstExpression, secondExpression, parseInfo);
+    super(parseInfo);
+    this.expressions = expressions;
   }
 
-  public TupleExpression(TupleExpression startExpression, Expression subExpression, ParseInfo parseInfo)
+  /**
+   * @return the expressions
+   */
+  public Expression[] getExpressions()
   {
-    super(startExpression, subExpression, parseInfo);
+    return expressions;
   }
 
   /**
    * {@inheritDoc}
-   * @see compiler.language.ast.expression.LeftRecursiveExpression#getSeparator()
+   * @see java.lang.Object#toString()
    */
   @Override
-  protected String getSeparator(int index)
+  public String toString()
   {
-    return ", ";
+    StringBuffer buffer = new StringBuffer();
+    for (int i = 0; i < expressions.length; i++)
+    {
+      buffer.append(expressions[i]);
+      if (i != expressions.length - 1)
+      {
+        buffer.append(", ");
+      }
+    }
+    return buffer.toString();
   }
 
 }

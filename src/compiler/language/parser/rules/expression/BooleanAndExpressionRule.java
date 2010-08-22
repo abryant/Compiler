@@ -1,9 +1,13 @@
 package compiler.language.parser.rules.expression;
 
+import static compiler.language.parser.ParseType.BOOLEAN_AND_EXPRESSION;
+import static compiler.language.parser.ParseType.DOUBLE_AMPERSAND;
+import static compiler.language.parser.ParseType.EQUALITY_EXPRESSION;
+import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
+
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BooleanAndExpression;
 import compiler.language.ast.expression.Expression;
-import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -17,12 +21,15 @@ import compiler.parser.Rule;
 public class BooleanAndExpressionRule extends Rule
 {
 
-  private static final Object[] START_PRODUCTION = new Object[] {ParseType.EQUALITY_EXPRESSION};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {ParseType.BOOLEAN_AND_EXPRESSION, ParseType.DOUBLE_AMPERSAND, ParseType.EQUALITY_EXPRESSION};
+  private static final Object[] START_PRODUCTION           = new Object[] {EQUALITY_EXPRESSION};
+  private static final Object[] AND_PRODUCTION             = new Object[] {BOOLEAN_AND_EXPRESSION,        DOUBLE_AMPERSAND, EQUALITY_EXPRESSION};
+  private static final Object[] AND_QNAME_PRODUCTION       = new Object[] {BOOLEAN_AND_EXPRESSION,        DOUBLE_AMPERSAND, QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Object[] QNAME_AND_PRODUCTION       = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_AMPERSAND, EQUALITY_EXPRESSION};
+  private static final Object[] QNAME_AND_QNAME_PRODUCTION = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_AMPERSAND, QNAME_OR_LESS_THAN_EXPRESSION};
 
   public BooleanAndExpressionRule()
   {
-    super(ParseType.BOOLEAN_AND_EXPRESSION, START_PRODUCTION, CONTINUATION_PRODUCTION);
+    super(BOOLEAN_AND_EXPRESSION, START_PRODUCTION, AND_PRODUCTION, AND_QNAME_PRODUCTION, QNAME_AND_PRODUCTION, QNAME_AND_QNAME_PRODUCTION);
   }
 
   /**
@@ -37,7 +44,7 @@ public class BooleanAndExpressionRule extends Rule
       // return the existing Expression
       return args[0];
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (types == AND_PRODUCTION || types == AND_QNAME_PRODUCTION || types == QNAME_AND_PRODUCTION || types == QNAME_AND_QNAME_PRODUCTION)
     {
       Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BooleanAndExpression)

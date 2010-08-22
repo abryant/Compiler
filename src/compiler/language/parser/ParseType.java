@@ -88,7 +88,7 @@ public enum ParseType
   // the return types that are Expression (AnotherExpression) mean that if the
   // rule's main production is used (e.g. for additive: a + b) then the type in
   // brackets will be returned but otherwise some other subclass of Expression
-  // will be returned (e.g. BracketedExpression)
+  // will be returned (e.g. ParenthesisedExpression)
   // This is handled in the rules by checking for their created type via
   // 'instanceof', so Bracketed expressions must not just return their argument
   EXPRESSION,                     // Expression
@@ -100,7 +100,9 @@ public enum ParseType
   BOOLEAN_XOR_EXPRESSION,         // Expression (BooleanXorExpression)
   BOOLEAN_AND_EXPRESSION,         // Expression (BooleanAndExpression)
   EQUALITY_EXPRESSION,            // Expression (EqualityExpression)
-  RELATIONAL_EXPRESSION,          // Expression (RelationalExpression or InstanceOfExpression)
+  QNAME_OR_LESS_THAN_EXPRESSION,  // Expression (RelationalExpression, FieldAccessExpression or ParenthesisedExpression)
+  RELATIONAL_EXPRESSION_LESS_THAN_QNAME,     // Expression (RelationalExpression or InstanceOfExpression)
+  RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME, // Expression (RelationalExpression or InstanceOfExpression)
   BITWISE_OR_EXPRESSION,          // Expression (BitwiseOrExpression)
   BITWISE_XOR_EXPRESSION,         // Expression (BitwiseXorExpression)
   BITWISE_AND_EXPRESSION,         // Expression (BitwiseAndExpression)
@@ -111,8 +113,9 @@ public enum ParseType
   UNARY_EXPRESSION,               // Expression
   CAST_EXPRESSION,                // CastExpression
   PRIMARY,                        // Expression
-  PRIMARY_NOT_QNAME,              // Expression
   PRIMARY_NO_TRAILING_DIMENSIONS_NOT_QNAME, // Expression
+  BASIC_PRIMARY,                  // Expression
+  QNAME_EXPRESSION,               // Expression (either FieldAccessExpression or ParenthesisedExpression)
   METHOD_CALL_EXPRESSION,         // MethodCallExpression
   FIELD_ACCESS_EXPRESSION,        // FieldAccessExpression
   FIELD_ACCESS_EXPRESSION_NOT_QNAME, // FieldAccessExpression
@@ -138,17 +141,26 @@ public enum ParseType
   PRIMITIVE_TYPE,                    // PrimitiveType
   POINTER_TYPE,                      // PointerType
   POINTER_TYPE_RANGLE,               // ParseContainer<PointerType>
+  POINTER_TYPE_DOUBLE_RANGLE,        // ParseContainer<ParseContainer<PointerType>>
+  POINTER_TYPE_TRIPLE_RANGLE,        // ParseContainer<ParseContainer<ParseContainer<PointerType>>>
   POINTER_TYPE_NOT_QNAME,            // PointerType
-  POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME, // PointerType
-  POINTER_TYPE_TRAILING_PARAMS,              // PointerType
-  POINTER_TYPE_TRAILING_PARAMS_RANGLE,       // ParseContainer<PointerType>
+  POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME,  // PointerType
+  POINTER_TYPE_TRAILING_PARAMS,               // PointerType
+  POINTER_TYPE_TRAILING_PARAMS_RANGLE,        // ParseContainer<PointerType>
+  POINTER_TYPE_TRAILING_PARAMS_DOUBLE_RANGLE, // ParseContainer<ParseContainer<PointerType>>
+  POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<PointerType>>>
   TUPLE_TYPE,                        // TupleType
+  TUPLE_TYPE_NOT_QNAME_LIST,         // TupleType
   TYPE_LIST,                         // ParseList<Type> (length > 0)
+  TYPE_LIST_NOT_QNAME_LIST,          // ParseList<Type> (length > 0)
   TYPE,                              // Type
   TYPE_RANGLE,                       // ParseContainer<Type>
+  TYPE_DOUBLE_RANGLE,                // ParseContainer<ParseContainer<Type>>
+  TYPE_TRIPLE_RANGLE,                // ParseContainer<ParseContainer<ParseContainer<Type>>>
   TYPE_NOT_QNAME,                    // Type
-  TYPE_NOT_POINTER_TYPE,             // Type
+  TYPE_NOT_POINTER_TYPE_NOT_TUPLE_TYPE, // Type
   TYPE_NOT_ARRAY_TYPE,               // Type
+  TYPE_NOT_QNAME_LIST,               // Type
   TYPE_ARGUMENTS,                    // ParseList<TypeArgument> (length > 0)
   TYPE_ARGUMENT_LIST,                // ParseList<TypeArgument> (length > 0)
   TYPE_ARGUMENT_LIST_RANGLE,         // ParseContainer<ParseList<TypeArgument>> (length > 0)
@@ -158,10 +170,15 @@ public enum ParseType
   TYPE_PARAMETER_LIST,               // ParseList<TypeParameter> (length > 0)
   TYPE_PARAMETER_LIST_RANGLE,        // ParseContainer<ParseList<TypeParameter>> (length > 0)
   TYPE_PARAMETER_LIST_DOUBLE_RANGLE, // ParseContainer<ParseContainer<ParseList<TypeParameter>>> (length > 0)
-  TYPE_PARAMETER,                    // TypeParameter
+  TYPE_PARAMETER_LIST_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameter>>>> (length > 0)
+  TYPE_PARAMETER_NOT_QNAME_LIST,     // TypeParameter
   TYPE_PARAMETER_RANGLE,             // ParseContainer<TypeParameter>
+  TYPE_PARAMETER_DOUBLE_RANGLE,      // ParseContainer<ParseContainer<TypeParameter>>
+  TYPE_PARAMETER_TRIPLE_RANGLE,      // ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>
   WILDCARD_TYPE_PARAMETER,           // WildcardTypeParameter
-  WILDCARD_TYPE_PARAMETER_RANGLE,    // ParseContainer<WildcardTypeParameter>
+  WILDCARD_TYPE_PARAMETER_RANGLE,    // ParseContainer<TypeParameter>
+  WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE, // ParseContainer<ParseContainer<TypeParameter>>
+  WILDCARD_TYPE_PARAMETER_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>
   VOID_TYPE,                         // VoidType
 
   // miscellaneous non-terminals
@@ -178,6 +195,8 @@ public enum ParseType
   PARAMETER_LIST,            // ParseList<Parameter> (length > 0)
   PARAMETERS,                // ParseList<Parameter>
   QNAME,                     // QName
+  QNAME_LIST,                // ParseList<QNameElement>
+  NESTED_QNAME_LIST,         // QNameElement
   THROWS_LIST,               // ParseList<PointerType> (length > 0)
   THROWS_CLAUSE,             // ParseList<PointerType> (length == 0 if none are specified)
   VERSION_NUMBER,            // VersionNumber
@@ -276,5 +295,6 @@ public enum ParseType
   SEMICOLON,
   STAR,
   TILDE,
+  TRIPLE_RANGLE,
   UNDERSCORE,
 }

@@ -1,9 +1,13 @@
 package compiler.language.parser.rules.expression;
 
+import static compiler.language.parser.ParseType.BITWISE_AND_EXPRESSION;
+import static compiler.language.parser.ParseType.BITWISE_XOR_EXPRESSION;
+import static compiler.language.parser.ParseType.CARET;
+import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
+
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BitwiseXorExpression;
 import compiler.language.ast.expression.Expression;
-import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
@@ -17,12 +21,15 @@ import compiler.parser.Rule;
 public class BitwiseXorExpressionRule extends Rule
 {
 
-  private static final Object[] START_PRODUCTION = new Object[] {ParseType.BITWISE_AND_EXPRESSION};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {ParseType.BITWISE_XOR_EXPRESSION, ParseType.CARET, ParseType.BITWISE_AND_EXPRESSION};
+  private static final Object[] START_PRODUCTION           = new Object[] {BITWISE_AND_EXPRESSION};
+  private static final Object[] XOR_PRODUCTION             = new Object[] {BITWISE_XOR_EXPRESSION, CARET, BITWISE_AND_EXPRESSION};
+  private static final Object[] XOR_QNAME_PRODUCTION       = new Object[] {BITWISE_XOR_EXPRESSION, CARET, QNAME_EXPRESSION};
+  private static final Object[] QNAME_XOR_PRODUCTION       = new Object[] {QNAME_EXPRESSION,       CARET, BITWISE_AND_EXPRESSION};
+  private static final Object[] QNAME_XOR_QNAME_PRODUCTION = new Object[] {QNAME_EXPRESSION,       CARET, QNAME_EXPRESSION};
 
   public BitwiseXorExpressionRule()
   {
-    super(ParseType.BITWISE_XOR_EXPRESSION, START_PRODUCTION, CONTINUATION_PRODUCTION);
+    super(BITWISE_XOR_EXPRESSION, START_PRODUCTION, XOR_PRODUCTION, XOR_QNAME_PRODUCTION, QNAME_XOR_PRODUCTION, QNAME_XOR_QNAME_PRODUCTION);
   }
 
   /**
@@ -37,7 +44,7 @@ public class BitwiseXorExpressionRule extends Rule
       // return the existing Expression
       return args[0];
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (types == XOR_PRODUCTION || types == XOR_QNAME_PRODUCTION || types == QNAME_XOR_PRODUCTION || types == QNAME_XOR_QNAME_PRODUCTION)
     {
       Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BitwiseXorExpression)
