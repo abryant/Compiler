@@ -56,15 +56,39 @@ public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
       return new ParseContainer<ParseContainer<PointerType>>(firstContainer, ParseInfo.combine(type.getParseInfo(), doubleRAngleInfo));
     }
 
+    // find the index of the TYPE_PARAMETER_LIST_TRIPLE_RANGLE based on which production this is
+    int parameterListIndex;
+    if (types == MUTABLE_PRODUCTION)
+    {
+      parameterListIndex = 2;
+    }
+    else if (types == IMMUTABLE_PRODUCTION)
+    {
+      parameterListIndex = 3;
+    }
+    else if (types == TRAILING_PARAMS_PRODUCTION)
+    {
+      parameterListIndex = 4;
+    }
+    else
+    {
+      throw badTypeList();
+    }
+
+    // find the list of type parameters
+    @SuppressWarnings("unchecked")
+    ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameter>>>> firstParamsContainer =
+      (ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameter>>>>) args[parameterListIndex];
+    ParseContainer<ParseContainer<ParseList<TypeParameter>>> secondParamsContainer = firstParamsContainer.getItem();
+    ParseContainer<ParseList<TypeParameter>> thirdParamsContainer = secondParamsContainer.getItem();
+    ParseList<TypeParameter> parameters = thirdParamsContainer.getItem();
+
+    // create the PointerType to encapsulate, and the ParseInfo of everything but the trailing type parameter list
+    PointerType type;
+    ParseInfo startInfo;
     if (types == MUTABLE_PRODUCTION)
     {
       QName qname = (QName) args[0];
-      @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameter>>>> firstParamsContainer =
-        (ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameter>>>>) args[2];
-      ParseContainer<ParseContainer<ParseList<TypeParameter>>> secondParamsContainer = firstParamsContainer.getItem();
-      ParseContainer<ParseList<TypeParameter>> thirdParamsContainer = secondParamsContainer.getItem();
-      ParseList<TypeParameter> parameters = thirdParamsContainer.getItem();
 
       Name[] names = qname.getNames();
       TypeParameter[][] typeParameterLists = new TypeParameter[names.length][];
@@ -74,29 +98,13 @@ public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
       }
       typeParameterLists[typeParameterLists.length - 1] = parameters.toArray(new TypeParameter[0]);
 
-      PointerType type = new PointerType(false, names, typeParameterLists,
-                                         ParseInfo.combine(qname.getParseInfo(),
-                                                           (ParseInfo) args[1],
-                                                           thirdParamsContainer.getParseInfo()));
-      ParseContainer<PointerType> embeddedContainer =
-        new ParseContainer<PointerType>(type,
-                                        ParseInfo.combine(qname.getParseInfo(),
-                                                          (ParseInfo) args[1],
-                                                          secondParamsContainer.getParseInfo()));
-      return new ParseContainer<ParseContainer<PointerType>>(embeddedContainer,
-                                                             ParseInfo.combine(qname.getParseInfo(),
-                                                                               (ParseInfo) args[1],
-                                                                               firstParamsContainer.getParseInfo()));
+      startInfo = ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1]);
+      type = new PointerType(false, names, typeParameterLists,
+                             ParseInfo.combine(startInfo, thirdParamsContainer.getParseInfo()));
     }
-    if (types == IMMUTABLE_PRODUCTION)
+    else if (types == IMMUTABLE_PRODUCTION)
     {
       QName qname = (QName) args[1];
-      @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameter>>>> firstParamsContainer =
-        (ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameter>>>>) args[3];
-      ParseContainer<ParseContainer<ParseList<TypeParameter>>> secondParamsContainer = firstParamsContainer.getItem();
-      ParseContainer<ParseList<TypeParameter>> thirdParamsContainer = secondParamsContainer.getItem();
-      ParseList<TypeParameter> parameters = thirdParamsContainer.getItem();
 
       Name[] names = qname.getNames();
       TypeParameter[][] typeParameterLists = new TypeParameter[names.length][];
@@ -106,33 +114,14 @@ public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
       }
       typeParameterLists[typeParameterLists.length - 1] = parameters.toArray(new TypeParameter[0]);
 
-      PointerType type = new PointerType(true, names, typeParameterLists,
-                                         ParseInfo.combine((ParseInfo) args[0],
-                                                           qname.getParseInfo(),
-                                                           (ParseInfo) args[2],
-                                                           thirdParamsContainer.getParseInfo()));
-      ParseContainer<PointerType> embeddedContainer =
-        new ParseContainer<PointerType>(type,
-                                        ParseInfo.combine((ParseInfo) args[0],
-                                                          qname.getParseInfo(),
-                                                          (ParseInfo) args[2],
-                                                          secondParamsContainer.getParseInfo()));
-      return new ParseContainer<ParseContainer<PointerType>>(embeddedContainer,
-                                                             ParseInfo.combine((ParseInfo) args[0],
-                                                                               qname.getParseInfo(),
-                                                                               (ParseInfo) args[2],
-                                                                               firstParamsContainer.getParseInfo()));
+      startInfo = ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2]);
+      type = new PointerType(true, names, typeParameterLists,
+                   ParseInfo.combine(startInfo, thirdParamsContainer.getParseInfo()));
     }
-    if (types == TRAILING_PARAMS_PRODUCTION)
+    else if (types == TRAILING_PARAMS_PRODUCTION)
     {
       PointerType baseType = (PointerType) args[0];
       QName qname = (QName) args[2];
-      @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameter>>>> firstParamsContainer =
-        (ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameter>>>>) args[4];
-      ParseContainer<ParseContainer<ParseList<TypeParameter>>> secondParamsContainer = firstParamsContainer.getItem();
-      ParseContainer<ParseList<TypeParameter>> thirdParamsContainer = secondParamsContainer.getItem();
-      ParseList<TypeParameter> parameters = thirdParamsContainer.getItem();
 
       Name[] names = qname.getNames();
       TypeParameter[][] typeParameterLists = new TypeParameter[names.length][];
@@ -142,27 +131,20 @@ public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
       }
       typeParameterLists[typeParameterLists.length - 1] = parameters.toArray(new TypeParameter[0]);
 
-      PointerType type = new PointerType(baseType, baseType.isImmutable(), names, typeParameterLists,
-                                         ParseInfo.combine(baseType.getParseInfo(),
-                                                           (ParseInfo) args[1],
-                                                           qname.getParseInfo(),
-                                                           (ParseInfo) args[3],
-                                                           thirdParamsContainer.getParseInfo()));
-      ParseContainer<PointerType> embeddedContainer =
-        new ParseContainer<PointerType>(type,
-                                        ParseInfo.combine(baseType.getParseInfo(),
-                                                          (ParseInfo) args[1],
-                                                          qname.getParseInfo(),
-                                                          (ParseInfo) args[3],
-                                                          secondParamsContainer.getParseInfo()));
-      return new ParseContainer<ParseContainer<PointerType>>(embeddedContainer,
-                   ParseInfo.combine(baseType.getParseInfo(),
-                                     (ParseInfo) args[1],
-                                     qname.getParseInfo(),
-                                     (ParseInfo) args[3],
-                                     firstParamsContainer.getParseInfo()));
+      startInfo = ParseInfo.combine(baseType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3]);
+      type = new PointerType(baseType, baseType.isImmutable(), names, typeParameterLists,
+                   ParseInfo.combine(startInfo, thirdParamsContainer.getParseInfo()));
     }
-    throw badTypeList();
+    else
+    {
+      throw badTypeList();
+    }
+
+    // encapsulate the result in two ParseContainers
+    ParseContainer<PointerType> embeddedContainer = new ParseContainer<PointerType>(type,
+                 ParseInfo.combine(startInfo, secondParamsContainer.getParseInfo()));
+    return new ParseContainer<ParseContainer<PointerType>>(embeddedContainer,
+                 ParseInfo.combine(startInfo, firstParamsContainer.getParseInfo()));
   }
 
 }
