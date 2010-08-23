@@ -1,6 +1,7 @@
 package compiler.language.parser.rules.expression;
 
 import static compiler.language.parser.ParseType.ARRAY_INITIALIZER;
+import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.EXPRESSION_LIST;
 import static compiler.language.parser.ParseType.LBRACE;
 import static compiler.language.parser.ParseType.RBRACE;
@@ -22,11 +23,12 @@ public class ArrayInitializerRule extends Rule
 {
 
   private static final Object[] PRODUCTION = new Object[] {LBRACE, EXPRESSION_LIST, RBRACE};
+  private static final Object[] TRAILING_COMMA_PRODUCTION = new Object[] {LBRACE, EXPRESSION_LIST, COMMA, RBRACE};
   private static final Object[] EMPTY_PRODUCTION = new Object[] {LBRACE, RBRACE};
 
   public ArrayInitializerRule()
   {
-    super(ARRAY_INITIALIZER, PRODUCTION, EMPTY_PRODUCTION);
+    super(ARRAY_INITIALIZER, PRODUCTION, TRAILING_COMMA_PRODUCTION, EMPTY_PRODUCTION);
   }
 
   /**
@@ -41,6 +43,13 @@ public class ArrayInitializerRule extends Rule
       @SuppressWarnings("unchecked")
       ParseList<Expression> list = (ParseList<Expression>) args[1];
       list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
+      return list;
+    }
+    if (types == TRAILING_COMMA_PRODUCTION)
+    {
+      @SuppressWarnings("unchecked")
+      ParseList<Expression> list = (ParseList<Expression>) args[1];
+      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2], (ParseInfo) args[3]));
       return list;
     }
     if (types == EMPTY_PRODUCTION)

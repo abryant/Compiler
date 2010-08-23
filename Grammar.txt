@@ -451,9 +451,10 @@ ArrayInstanciationExpressionWithInitializer = NewKeyword TypeNotArrayType Dimens
 ArrayInstanciationExpressionNoInitializer = NewKeyword TypeNotArrayType DimensionExpressions Dimensions
                                           | NewKeyword TypeNotArrayType DimensionExpressions
 
-ArrayInitializer = LBrace ExpressionList RBrace | LBrace RBrace
-// TODO: fix this broken rule - it would match: a,,,b
-ExpressionList = ExpressionNoTuple | ExpressionList Comma ExpressionNoTuple | ExpressionList Comma
+ArrayInitializer = LBrace ExpressionList RBrace
+                 | LBrace ExpressionList Comma RBrace
+                 | LBrace RBrace
+ExpressionList = ExpressionNoTuple | ExpressionList Comma ExpressionNoTuple
 
 DimensionExpressions = DimensionExpression | DimensionExpressions DimensionExpression
 DimensionExpression = LSquare Expression RSquare

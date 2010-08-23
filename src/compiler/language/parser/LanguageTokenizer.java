@@ -304,11 +304,26 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.NAME, new Name("CONSTANT_C", info(4360))),
     new Token(ParseType.SEMICOLON, info(4370)),
 
+    new Token(ParseType.SIGNED_KEYWORD, info(4379)),
     new Token(ParseType.BYTE_KEYWORD, info(4380)),
+    new Token(ParseType.LSQUARE, info(4381)),
+    new Token(ParseType.RSQUARE, info(4382)),
     new Token(ParseType.NAME, new Name("test", info(4390))),
-    new Token(ParseType.SEMICOLON, info(4400)),
+    new Token(ParseType.EQUALS, info(4391)),
+    new Token(ParseType.NEW_KEYWORD, info(4392)),
+    new Token(ParseType.SIGNED_KEYWORD, info(4393)),
+    new Token(ParseType.BYTE_KEYWORD, info(4394)),
+    new Token(ParseType.LSQUARE, info(4395)),
+    new Token(ParseType.RSQUARE, info(4396)),
+    new Token(ParseType.LBRACE, info(4397)),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("0xFF", info(4398))),
+    new Token(ParseType.COMMA, info(4400)),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("0xFF", info(4401))),
+    new Token(ParseType.COMMA, info(4402)),
+    new Token(ParseType.RBRACE, info(4420)),
+    new Token(ParseType.SEMICOLON, info(4430)),
 
-    new Token(ParseType.RBRACE, info(4410)),
+    new Token(ParseType.RBRACE, info(4440)),
   };
 
   private Token[] tokens = TEST1;
