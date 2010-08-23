@@ -42,6 +42,7 @@ public class TypeNotArrayTypeRule extends Rule
         types == TUPLE_TYPE_PRODUCTION   || types == VOID_TYPE_PRODUCTION)
     {
       // All types are actually subclasses of Type, so just return the argument
+      return args[0];
     }
     throw badTypeList();
   }
