@@ -57,6 +57,7 @@ import compiler.language.parser.rules.misc.ArgumentRule;
 import compiler.language.parser.rules.misc.ArgumentsRule;
 import compiler.language.parser.rules.misc.AssigneeListRule;
 import compiler.language.parser.rules.misc.AssigneeRule;
+import compiler.language.parser.rules.misc.AssignmentOperatorRule;
 import compiler.language.parser.rules.misc.DeclarationAssigneeListRule;
 import compiler.language.parser.rules.misc.DeclarationAssigneeRule;
 import compiler.language.parser.rules.misc.DimensionsRule;
@@ -69,6 +70,7 @@ import compiler.language.parser.rules.misc.QNameRule;
 import compiler.language.parser.rules.misc.ThrowsClauseRule;
 import compiler.language.parser.rules.misc.ThrowsListRule;
 import compiler.language.parser.rules.misc.VersionNumberRule;
+import compiler.language.parser.rules.statement.AssignmentRule;
 import compiler.language.parser.rules.statement.BlockRule;
 import compiler.language.parser.rules.statement.EmptyStatementRule;
 import compiler.language.parser.rules.statement.LocalDeclarationRule;
@@ -189,6 +191,7 @@ public class LanguageRules
     new StaticInitializerRule(),
 
     // statements
+    new AssignmentRule(),
     new BlockRule(),
     new EmptyStatementRule(),
     new LocalDeclarationRule(),
@@ -293,6 +296,7 @@ public class LanguageRules
     new ArgumentsRule(),
     new AssigneeListRule(),
     new AssigneeRule(),
+    new AssignmentOperatorRule(),
     new DeclarationAssigneeListRule(),
     new DeclarationAssigneeRule(),
     new DimensionsRule(),

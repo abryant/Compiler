@@ -41,27 +41,27 @@ import compiler.parser.Rule;
 public class StatementRule extends Rule
 {
 
-  private static final Object[] BLOCK_PRODUCTION = new Object[] {BLOCK};
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {EMPTY_STATEMENT};
+  private static final Object[] BLOCK_PRODUCTION                  = new Object[] {BLOCK};
+  private static final Object[] EMPTY_PRODUCTION                  = new Object[] {EMPTY_STATEMENT};
   private static final Object[] CONSTRUCTOR_INVOCATION_PRODUCTION = new Object[] {CONSTRUCTOR_INVOCATION_STATEMENT};
-  private static final Object[] LOCAL_DECLARATION_PRODUCTION = new Object[] {LOCAL_DECLARATION, SEMICOLON};
-  private static final Object[] ASSIGNMENT_PRODUCTION = new Object[] {ASSIGNMENT, SEMICOLON};
-  private static final Object[] IF_PRODUCTION = new Object[] {IF_STATEMENT};
-  private static final Object[] WHILE_PRODUCTION = new Object[] {WHILE_STATEMENT};
-  private static final Object[] DO_PRODUCTION = new Object[] {DO_STATEMENT};
-  private static final Object[] FOR_PRODUCTION = new Object[] {FOR_STATEMENT};
-  private static final Object[] FOR_EACH_PRODUCTION = new Object[] {FOR_EACH_STATEMENT};
-  private static final Object[] SWITCH_PRODUCTION = new Object[] {SWITCH_STATEMENT};
-  private static final Object[] BREAK_PRODUCTION = new Object[] {BREAK_STATEMENT};
-  private static final Object[] CONTINUE_PRODUCTION = new Object[] {CONTINUE_STATEMENT};
-  private static final Object[] FALLTHROUGH_PRODUCTION = new Object[] {FALLTHROUGH_STATEMENT};
-  private static final Object[] RETURN_PRODUCTION = new Object[] {RETURN_STATEMENT};
-  private static final Object[] SYNCHRONIZED_PRODUCTION = new Object[] {SYNCHRONIZED_STATEMENT};
-  private static final Object[] THROW_PRODUCTION = new Object[] {THROW_STATEMENT};
-  private static final Object[] TRY_PRODUCTION = new Object[] {TRY_STATEMENT};
-  private static final Object[] INCREMENT_PRODUCTION = new Object[] {INCREMENT, SEMICOLON};
-  private static final Object[] DECREMENT_PRODUCTION = new Object[] {DECREMENT, SEMICOLON};
-  private static final Object[] STATEMENT_EXPRESSION_PRODUCTION = new Object[] {STATEMENT_EXPRESSION, SEMICOLON};
+  private static final Object[] LOCAL_DECLARATION_PRODUCTION      = new Object[] {LOCAL_DECLARATION, SEMICOLON};
+  private static final Object[] ASSIGNMENT_PRODUCTION             = new Object[] {ASSIGNMENT,        SEMICOLON};
+  private static final Object[] IF_PRODUCTION                     = new Object[] {IF_STATEMENT};
+  private static final Object[] WHILE_PRODUCTION                  = new Object[] {WHILE_STATEMENT};
+  private static final Object[] DO_PRODUCTION                     = new Object[] {DO_STATEMENT};
+  private static final Object[] FOR_PRODUCTION                    = new Object[] {FOR_STATEMENT};
+  private static final Object[] FOR_EACH_PRODUCTION               = new Object[] {FOR_EACH_STATEMENT};
+  private static final Object[] SWITCH_PRODUCTION                 = new Object[] {SWITCH_STATEMENT};
+  private static final Object[] BREAK_PRODUCTION                  = new Object[] {BREAK_STATEMENT};
+  private static final Object[] CONTINUE_PRODUCTION               = new Object[] {CONTINUE_STATEMENT};
+  private static final Object[] FALLTHROUGH_PRODUCTION            = new Object[] {FALLTHROUGH_STATEMENT};
+  private static final Object[] RETURN_PRODUCTION                 = new Object[] {RETURN_STATEMENT};
+  private static final Object[] SYNCHRONIZED_PRODUCTION           = new Object[] {SYNCHRONIZED_STATEMENT};
+  private static final Object[] THROW_PRODUCTION                  = new Object[] {THROW_STATEMENT};
+  private static final Object[] TRY_PRODUCTION                    = new Object[] {TRY_STATEMENT};
+  private static final Object[] INCREMENT_PRODUCTION              = new Object[] {INCREMENT,            SEMICOLON};
+  private static final Object[] DECREMENT_PRODUCTION              = new Object[] {DECREMENT,            SEMICOLON};
+  private static final Object[] STATEMENT_EXPRESSION_PRODUCTION   = new Object[] {STATEMENT_EXPRESSION, SEMICOLON};
 
   public StatementRule()
   {

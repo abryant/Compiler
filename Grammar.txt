@@ -148,14 +148,19 @@ LocalDeclaration = Type DeclarationAssigneeList // check that underscore is not 
 
 Assignment = AssigneeList AssignmentOperator Expression
 
-AssignmentOperator = Equals | PlusEquals | MinusEquals | TimesEquals | DivideEquals | ModEquals
-                   | BooleanAndEquals | BooleanOrEquals | BooleanXorEquals | BitwiseAndEquals | BitwiseOrEquals | BitwiseXorEquals
-                   | LeftShiftEquals | ArithmeticRightShiftEquals | LogicalRightShiftEquals
+AssignmentOperator = Equals | PlusEquals | MinusEquals | StarEquals | ForwardSlashEquals | PercentEquals
+                   | DoubleAmpersandEquals | DoublePipeEquals   | DoubleCaretEquals
+                   | AmpersandEquals       | PipeEquals         | CaretEquals
+                   | DoubleLAngleEquals    | DoubleRAngleEquals | TripleRAngleEquals
 
 // right-recursive list, so that the symbol after the list can be
 // used to decide between TypeList and AssigneeList
-AssigneeList = Assignee | Assignee Comma AssigneeList
-Assignee = FieldAccessExpression | ArrayAccessExpression | Underscore
+// Assignee excludes QName because including it would cause conflicts
+AssigneeList = Assignee
+             | QName
+             | Assignee Comma AssigneeList
+             | QName    Comma AssigneeList
+Assignee = FieldAccessExpressionNotQName | ArrayAccessExpression | Underscore
 
 IfStatement = IfKeyword Expression Block ElseIfClauses ElseClause
 ElseIfClauses = epsilon | ElseIfClauses ElseIfClause

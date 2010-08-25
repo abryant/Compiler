@@ -2,7 +2,7 @@ package compiler.language.parser.rules.misc;
 
 import static compiler.language.parser.ParseType.ARRAY_ACCESS_EXPRESSION;
 import static compiler.language.parser.ParseType.ASSIGNEE;
-import static compiler.language.parser.ParseType.FIELD_ACCESS_EXPRESSION;
+import static compiler.language.parser.ParseType.FIELD_ACCESS_EXPRESSION_NOT_QNAME;
 import static compiler.language.parser.ParseType.UNDERSCORE;
 
 import compiler.language.ast.ParseInfo;
@@ -25,7 +25,7 @@ public class AssigneeRule extends Rule
 {
 
   private static final Object[] BLANK_PRODUCTION = new Object[] {UNDERSCORE};
-  private static final Object[] FIELD_PRODUCTION = new Object[] {FIELD_ACCESS_EXPRESSION};
+  private static final Object[] FIELD_PRODUCTION = new Object[] {FIELD_ACCESS_EXPRESSION_NOT_QNAME};
   private static final Object[] ARRAY_ELEMENT_PRODUCTION = new Object[] {ARRAY_ACCESS_EXPRESSION};
 
   public AssigneeRule()

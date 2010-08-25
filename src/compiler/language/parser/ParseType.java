@@ -34,8 +34,8 @@ public enum ParseType
   ENUM_CONSTANT,            // EnumConstant
 
   // members
-  ACCESS_SPECIFIER,         // AccessSpecifier or null
-  MODIFIER,                 // Modifier
+  ACCESS_SPECIFIER,         // AccessSpecifier or null // TODO: change to ParseContainer<AccessSpecifier> where AccessSpecifier is an enum?
+  MODIFIER,                 // Modifier // TODO: change to ParseContainer<Modifier> where Modifier it used to be - a fake enum without ParseInfo?
   MODIFIERS,                // ParseList<Modifier> (length > 0)
   NATIVE_SPECIFIER,         // NativeSpecifier
   SINCE_SPECIFIER,          // SinceSpecifier
@@ -187,7 +187,7 @@ public enum ParseType
   ARGUMENTS,                 // ArgumentList
   ASSIGNEE,                  // Assignee
   ASSIGNEE_LIST,             // ParseList<Assignee>
-  ASSIGNMENT_OPERATOR,       // AssignmentOperator
+  ASSIGNMENT_OPERATOR,       // ParseContainer<AssignmentOperator>
   DECLARATION_ASSIGNEE,      // DeclarationAssignee
   DECLARATION_ASSIGNEE_LIST, // ParseList<DeclarationAssignee>
   DIMENSIONS,                // Dimensions
@@ -259,23 +259,31 @@ public enum ParseType
 
   // symbols (values for these should all be ParseInfo)
   AMPERSAND,
+  AMPERSAND_EQUALS,
   ARROW, // "->", same as MINUS RANGLE, but without any whitespace between them
   AT,
   CARET,
+  CARET_EQUALS,
   COLON,
   COMMA,
   DOT,
   DOUBLE_AMPERSAND,
+  DOUBLE_AMPERSAND_EQUALS,
   DOUBLE_CARET,
+  DOUBLE_CARET_EQUALS,
   DOUBLE_EQUALS,
   DOUBLE_LANGLE,
+  DOUBLE_LANGLE_EQUALS,
   DOUBLE_PIPE,
+  DOUBLE_PIPE_EQUALS,
   DOUBLE_RANGLE,
+  DOUBLE_RANGLE_EQUALS,
   ELLIPSIS,
   EQUALS,
   EXCLAIMATION_MARK,
   EXCLAIMATION_MARK_EQUALS,
   FORWARD_SLASH,
+  FORWARD_SLASH_EQUALS,
   HASH,
   LANGLE,
   LANGLE_EQUALS,
@@ -283,9 +291,13 @@ public enum ParseType
   LPAREN,
   LSQUARE,
   MINUS,
+  MINUS_EQUALS,
   PERCENT,
+  PERCENT_EQUALS,
   PIPE,
+  PIPE_EQUALS,
   PLUS,
+  PLUS_EQUALS,
   QUESTION_MARK,
   RANGLE,
   RANGLE_EQUALS,
@@ -294,7 +306,9 @@ public enum ParseType
   RSQUARE,
   SEMICOLON,
   STAR,
+  STAR_EQUALS,
   TILDE,
   TRIPLE_RANGLE,
+  TRIPLE_RANGLE_EQUALS,
   UNDERSCORE,
 }
