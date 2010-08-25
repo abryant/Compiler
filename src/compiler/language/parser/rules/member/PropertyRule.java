@@ -12,6 +12,7 @@ import static compiler.language.parser.ParseType.RETRIEVE_KEYWORD;
 import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.TYPE;
 
+import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.member.AccessSpecifier;
@@ -67,63 +68,69 @@ public class PropertyRule extends Rule
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[3];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> retrieveAccess = (ParseContainer<AccessSpecifier>) args[3];
       Block retrieveBlock = (Block) args[5];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
+                                         retrieveAccess.getParseInfo(),
                                          (ParseInfo) args[4],
                                          retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
                                          (ParseInfo) args[6]);
-      return new Property(type, name, null, null, null, retrieveAccess, retrieveBlock, info);
+      return new Property(type, name, null, null, null, retrieveAccess.getItem(), retrieveBlock, info);
     }
     if (types == ASSIGN_PRODUCTION)
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[3];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> assignAccess = (ParseContainer<AccessSpecifier>) args[3];
       Block assignBlock = (Block) args[5];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
+                                         assignAccess.getParseInfo(),
                                          (ParseInfo) args[4],
                                          assignBlock != null ? assignBlock.getParseInfo() : null,
                                          (ParseInfo) args[6]);
-      return new Property(type, name, null, assignAccess, assignBlock, null, null, info);
+      return new Property(type, name, null, assignAccess.getItem(), assignBlock, null, null, info);
     }
     if (types == ASSIGN_RETRIEVE_PRODUCTION)
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[3];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> assignAccess = (ParseContainer<AccessSpecifier>) args[3];
       Block assignBlock = (Block) args[5];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[6];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> retrieveAccess = (ParseContainer<AccessSpecifier>) args[6];
       Block retrieveBlock = (Block) args[8];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
+                                         assignAccess.getParseInfo(),
                                          (ParseInfo) args[4],
                                          assignBlock != null ? assignBlock.getParseInfo() : null,
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
+                                         retrieveAccess.getParseInfo(),
                                          (ParseInfo) args[7],
                                          retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
                                          (ParseInfo) args[9]);
-      return new Property(type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      return new Property(type, name, null, assignAccess.getItem(), assignBlock, retrieveAccess.getItem(), retrieveBlock, info);
     }
     if (types == RETRIEVE_ASSIGN_PRODUCTION)
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[3];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> retrieveAccess = (ParseContainer<AccessSpecifier>) args[3];
       Block retrieveBlock = (Block) args[5];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[6];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> assignAccess = (ParseContainer<AccessSpecifier>) args[6];
       Block assignBlock = (Block) args[8];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
+                                         retrieveAccess.getParseInfo(),
                                          (ParseInfo) args[4],
                                          retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
+                                         assignAccess.getParseInfo(),
                                          (ParseInfo) args[7],
                                          assignBlock != null ? assignBlock.getParseInfo() : null,
                                          (ParseInfo) args[9]);
-      return new Property(type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      return new Property(type, name, null, assignAccess.getItem(), assignBlock, retrieveAccess.getItem(), retrieveBlock, info);
     }
     if (types == EQUALS_PRODUCTION)
     {
@@ -141,74 +148,80 @@ public class PropertyRule extends Rule
       Type type = (Type) args[1];
       Name name = (Name) args[2];
       Expression expression = (Expression) args[4];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[5];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> retrieveAccess = (ParseContainer<AccessSpecifier>) args[5];
       Block retrieveBlock = (Block) args[7];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          (ParseInfo) args[3],
                                          expression.getParseInfo(),
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
+                                         retrieveAccess.getParseInfo(),
                                          (ParseInfo) args[6],
                                          retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
                                          (ParseInfo) args[8]);
-      return new Property(type, name, expression, null, null, retrieveAccess, retrieveBlock, info);
+      return new Property(type, name, expression, null, null, retrieveAccess.getItem(), retrieveBlock, info);
     }
     if (types == EQUALS_ASSIGN_PRODUCTION)
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
       Expression expression = (Expression) args[4];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[5];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> assignAccess = (ParseContainer<AccessSpecifier>) args[5];
       Block assignBlock = (Block) args[7];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          (ParseInfo) args[3],
                                          expression.getParseInfo(),
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
+                                         assignAccess.getParseInfo(),
                                          (ParseInfo) args[6],
                                          assignBlock != null ? assignBlock.getParseInfo() : null,
                                          (ParseInfo) args[8]);
-      return new Property(type, name, expression, assignAccess, assignBlock, null, null, info);
+      return new Property(type, name, expression, assignAccess.getItem(), assignBlock, null, null, info);
     }
     if (types == EQUALS_ASSIGN_RETRIEVE_PRODUCTION)
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
       Expression expression = (Expression) args[4];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[5];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> assignAccess = (ParseContainer<AccessSpecifier>) args[5];
       Block assignBlock = (Block) args[7];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[8];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> retrieveAccess = (ParseContainer<AccessSpecifier>) args[8];
       Block retrieveBlock = (Block) args[10];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          (ParseInfo) args[3],
                                          expression.getParseInfo(),
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
+                                         assignAccess.getParseInfo(),
                                          (ParseInfo) args[6],
                                          assignBlock != null ? assignBlock.getParseInfo() : null,
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
+                                         retrieveAccess.getParseInfo(),
                                          (ParseInfo) args[9],
                                          retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
                                          (ParseInfo) args[11]);
-      return new Property(type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      return new Property(type, name, expression, assignAccess.getItem(), assignBlock, retrieveAccess.getItem(), retrieveBlock, info);
     }
     if (types == EQUALS_RETRIEVE_ASSIGN_PRODUCTION)
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
       Expression expression = (Expression) args[4];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[5];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> retrieveAccess = (ParseContainer<AccessSpecifier>) args[5];
       Block retrieveBlock = (Block) args[7];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[8];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> assignAccess = (ParseContainer<AccessSpecifier>) args[8];
       Block assignBlock = (Block) args[10];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          (ParseInfo) args[3],
                                          expression.getParseInfo(),
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
+                                         retrieveAccess.getParseInfo(),
                                          (ParseInfo) args[6],
                                          retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
+                                         assignAccess.getParseInfo(),
                                          (ParseInfo) args[9],
                                          assignBlock != null ? assignBlock.getParseInfo() : null,
                                          (ParseInfo) args[11]);
-      return new Property(type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      return new Property(type, name, expression, assignAccess.getItem(), assignBlock, retrieveAccess.getItem(), retrieveBlock, info);
     }
     throw badTypeList();
   }

@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.ACCESS_SPECIFIER;
 import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.MODIFIERS;
 
+import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.member.AccessSpecifier;
@@ -38,25 +39,18 @@ public class MemberHeaderRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      AccessSpecifier access = (AccessSpecifier) args[0];
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> access = (ParseContainer<AccessSpecifier>) args[0];
       @SuppressWarnings("unchecked")
       ParseList<Modifier> modifiers = (ParseList<Modifier>) args[1];
-      ParseInfo parseInfo = null;
-      if (access == null)
-      {
-        parseInfo = modifiers.getParseInfo();
-      }
-      else
-      {
-        parseInfo = ParseInfo.combine(access.getParseInfo(), modifiers.getParseInfo());
-      }
-      return new MemberHeader(access, modifiers.toArray(new Modifier[0]), parseInfo);
+      return new MemberHeader(access.getItem(), modifiers.toArray(new Modifier[0]),
+                              ParseInfo.combine(access.getParseInfo(), modifiers.getParseInfo()));
     }
     if (types == NO_MODIFIERS_PRODUCTION)
     {
-      AccessSpecifier access = (AccessSpecifier) args[0];
-      ParseInfo parseInfo = access != null ? access.getParseInfo() : null;
-      return new MemberHeader(access, new Modifier[0], parseInfo);
+      @SuppressWarnings("unchecked")
+      ParseContainer<AccessSpecifier> access = (ParseContainer<AccessSpecifier>) args[0];
+      return new MemberHeader(access.getItem(), new Modifier[0], access.getParseInfo());
     }
     throw badTypeList();
   }
