@@ -3,7 +3,6 @@ package compiler.language.parser.rules.statement;
 import static compiler.language.parser.ParseType.ASSIGNMENT;
 import static compiler.language.parser.ParseType.BLOCK;
 import static compiler.language.parser.ParseType.BREAK_STATEMENT;
-import static compiler.language.parser.ParseType.CONSTRUCTOR_INVOCATION_STATEMENT;
 import static compiler.language.parser.ParseType.CONTINUE_STATEMENT;
 import static compiler.language.parser.ParseType.DECREMENT;
 import static compiler.language.parser.ParseType.DO_STATEMENT;
@@ -43,7 +42,6 @@ public class StatementRule extends Rule
 
   private static final Object[] BLOCK_PRODUCTION                  = new Object[] {BLOCK};
   private static final Object[] EMPTY_PRODUCTION                  = new Object[] {EMPTY_STATEMENT};
-  private static final Object[] CONSTRUCTOR_INVOCATION_PRODUCTION = new Object[] {CONSTRUCTOR_INVOCATION_STATEMENT};
   private static final Object[] LOCAL_DECLARATION_PRODUCTION      = new Object[] {LOCAL_DECLARATION, SEMICOLON};
   private static final Object[] ASSIGNMENT_PRODUCTION             = new Object[] {ASSIGNMENT,        SEMICOLON};
   private static final Object[] IF_PRODUCTION                     = new Object[] {IF_STATEMENT};
@@ -67,7 +65,6 @@ public class StatementRule extends Rule
   {
     super(STATEMENT, BLOCK_PRODUCTION,
                      EMPTY_PRODUCTION,
-                     CONSTRUCTOR_INVOCATION_PRODUCTION,
                      LOCAL_DECLARATION_PRODUCTION,
                      ASSIGNMENT_PRODUCTION,
                      IF_PRODUCTION,
@@ -94,12 +91,11 @@ public class StatementRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args) throws ParseException
   {
-    if (types == BLOCK_PRODUCTION  || types == EMPTY_PRODUCTION        || types == CONSTRUCTOR_INVOCATION_PRODUCTION ||
-        types == IF_PRODUCTION     || types == WHILE_PRODUCTION        || types == DO_PRODUCTION ||
-        types == FOR_PRODUCTION    || types == FOR_EACH_PRODUCTION     || types == SWITCH_PRODUCTION ||
-        types == BREAK_PRODUCTION  || types == CONTINUE_PRODUCTION     || types == FALLTHROUGH_PRODUCTION ||
-        types == RETURN_PRODUCTION || types == SYNCHRONIZED_PRODUCTION || types == THROW_PRODUCTION ||
-        types == TRY_PRODUCTION)
+    if (types == BLOCK_PRODUCTION    || types == EMPTY_PRODUCTION        || types == IF_PRODUCTION          ||
+        types == WHILE_PRODUCTION    || types == DO_PRODUCTION           || types == FOR_PRODUCTION         ||
+        types == FOR_EACH_PRODUCTION || types == SWITCH_PRODUCTION       || types == TRY_PRODUCTION         ||
+        types == BREAK_PRODUCTION    || types == CONTINUE_PRODUCTION     || types == FALLTHROUGH_PRODUCTION ||
+        types == RETURN_PRODUCTION   || types == SYNCHRONIZED_PRODUCTION || types == THROW_PRODUCTION)
     {
       // these productions only take one argument and all return a Statement, so return the argument
       return args[0];

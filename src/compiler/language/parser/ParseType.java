@@ -54,7 +54,6 @@ public enum ParseType
   STATEMENTS,                       // ParseList<Statement>
   STATEMENT,                        // Statement
   EMPTY_STATEMENT,                  // EmptyStatement
-  CONSTRUCTOR_INVOCATION_STATEMENT, // ConstructorInvocationStatement
   LOCAL_DECLARATION,                // LocalDeclarationStatement
   ASSIGNMENT,                       // AssignmentStatement
   IF_STATEMENT,                     // IfStatement
