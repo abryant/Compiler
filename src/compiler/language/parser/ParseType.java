@@ -34,8 +34,8 @@ public enum ParseType
   ENUM_CONSTANT,            // EnumConstant
 
   // members
-  ACCESS_SPECIFIER,         // ParseContainer<AccessSpecifier> (containing null if not specified)
-  MODIFIER,                 // Modifier // TODO: change to ParseContainer<Modifier> where Modifier it used to be - a fake enum without ParseInfo?
+  ACCESS_SPECIFIER,         // AccessSpecifier or null
+  MODIFIER,                 // Modifier
   MODIFIERS,                // ParseList<Modifier> (length > 0)
   NATIVE_SPECIFIER,         // NativeSpecifier
   SINCE_SPECIFIER,          // SinceSpecifier
