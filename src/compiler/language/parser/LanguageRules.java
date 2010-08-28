@@ -10,6 +10,7 @@ import compiler.language.parser.rules.expression.BitwiseAndExpressionRule;
 import compiler.language.parser.rules.expression.BitwiseOrExpressionRule;
 import compiler.language.parser.rules.expression.BitwiseXorExpressionRule;
 import compiler.language.parser.rules.expression.BooleanAndExpressionRule;
+import compiler.language.parser.rules.expression.BooleanLiteralExpressionRule;
 import compiler.language.parser.rules.expression.BooleanOrExpressionRule;
 import compiler.language.parser.rules.expression.BooleanXorExpressionRule;
 import compiler.language.parser.rules.expression.CastExpressionRule;
@@ -72,7 +73,11 @@ import compiler.language.parser.rules.misc.ThrowsListRule;
 import compiler.language.parser.rules.misc.VersionNumberRule;
 import compiler.language.parser.rules.statement.AssignmentRule;
 import compiler.language.parser.rules.statement.BlockRule;
+import compiler.language.parser.rules.statement.ElseClauseRule;
+import compiler.language.parser.rules.statement.ElseIfClauseRule;
+import compiler.language.parser.rules.statement.ElseIfClausesRule;
 import compiler.language.parser.rules.statement.EmptyStatementRule;
+import compiler.language.parser.rules.statement.IfStatementRule;
 import compiler.language.parser.rules.statement.LocalDeclarationRule;
 import compiler.language.parser.rules.statement.OptionalBlockRule;
 import compiler.language.parser.rules.statement.StatementRule;
@@ -193,7 +198,11 @@ public class LanguageRules
     // statements
     new AssignmentRule(),
     new BlockRule(),
+    new ElseClauseRule(),
+    new ElseIfClauseRule(),
+    new ElseIfClausesRule(),
     new EmptyStatementRule(),
+    new IfStatementRule(),
     new LocalDeclarationRule(),
     new OptionalBlockRule(),
     new StatementRule(),
@@ -210,6 +219,7 @@ public class LanguageRules
     new BitwiseOrExpressionRule(),
     new BitwiseXorExpressionRule(),
     new BooleanAndExpressionRule(),
+    new BooleanLiteralExpressionRule(),
     new BooleanOrExpressionRule(),
     new BooleanXorExpressionRule(),
     new CastExpressionRule(),

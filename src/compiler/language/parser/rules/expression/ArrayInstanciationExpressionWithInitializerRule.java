@@ -3,7 +3,6 @@ package compiler.language.parser.rules.expression;
 import static compiler.language.parser.ParseType.ARRAY_INITIALIZER;
 import static compiler.language.parser.ParseType.ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER;
 import static compiler.language.parser.ParseType.DIMENSIONS;
-import static compiler.language.parser.ParseType.DIMENSION_EXPRESSIONS;
 import static compiler.language.parser.ParseType.NEW_KEYWORD;
 import static compiler.language.parser.ParseType.TYPE_NOT_ARRAY_TYPE;
 
@@ -26,13 +25,14 @@ import compiler.parser.Rule;
 public class ArrayInstanciationExpressionWithInitializerRule extends Rule
 {
 
-  private static final Object[] EXPRESSIONS_DIMENSIONS_PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSION_EXPRESSIONS, DIMENSIONS, ARRAY_INITIALIZER};
-  private static final Object[] EXPRESSIONS_PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSION_EXPRESSIONS, ARRAY_INITIALIZER};
+  // TODO: remove
+  //private static final Object[] EXPRESSIONS_DIMENSIONS_PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSION_EXPRESSIONS, DIMENSIONS, ARRAY_INITIALIZER};
+  //private static final Object[] EXPRESSIONS_PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSION_EXPRESSIONS, ARRAY_INITIALIZER};
   private static final Object[] DIMENSIONS_PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSIONS, ARRAY_INITIALIZER};
 
   public ArrayInstanciationExpressionWithInitializerRule()
   {
-    super(ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER, EXPRESSIONS_DIMENSIONS_PRODUCTION, EXPRESSIONS_PRODUCTION, DIMENSIONS_PRODUCTION);
+    super(ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER, /* TODO EXPRESSIONS_DIMENSIONS_PRODUCTION, EXPRESSIONS_PRODUCTION, */DIMENSIONS_PRODUCTION);
   }
 
   /**
@@ -42,6 +42,7 @@ public class ArrayInstanciationExpressionWithInitializerRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args) throws ParseException
   {
+    /* TODO: remove
     if (types == EXPRESSIONS_DIMENSIONS_PRODUCTION)
     {
       Type type = (Type) args[1];
@@ -66,6 +67,7 @@ public class ArrayInstanciationExpressionWithInitializerRule extends Rule
                                               ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(),
                                                                 dimensionExpressions.getParseInfo(), arrayInitializer.getParseInfo()));
     }
+    */
     if (types == DIMENSIONS_PRODUCTION)
     {
       Type type = (Type) args[1];

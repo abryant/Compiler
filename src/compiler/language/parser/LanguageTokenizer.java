@@ -333,6 +333,30 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.SEMICOLON, info(4430)),
 
     new Token(ParseType.RBRACE, info(4440)),
+
+    new Token(ParseType.CLASS_KEYWORD, info(4450)),
+    new Token(ParseType.NAME, new Name("X", info(4460))),
+    new Token(ParseType.LBRACE, info(4470)),
+
+    new Token(ParseType.VOID_KEYWORD, info(4480)),
+    new Token(ParseType.NAME, new Name("foo", info(4490))),
+    new Token(ParseType.LPAREN, info(4500)),
+    new Token(ParseType.RPAREN, info(4510)),
+    new Token(ParseType.LBRACE, info(4520)),
+
+    new Token(ParseType.IF_KEYWORD, info(4530)),
+    new Token(ParseType.TRUE_KEYWORD, info(4540)),
+    new Token(ParseType.LBRACE, info(4550)),
+    new Token(ParseType.RBRACE, info(4560)),
+    new Token(ParseType.ELSE_KEYWORD, info(4570)),
+    new Token(ParseType.IF_KEYWORD, info(4580)),
+    new Token(ParseType.FALSE_KEYWORD, info(4590)),
+    new Token(ParseType.LBRACE, info(4600)),
+    new Token(ParseType.RBRACE, info(4610)),
+
+    new Token(ParseType.RBRACE, info(4990)),
+
+    new Token(ParseType.RBRACE, info(5000)),
   };
 
   private Token[] tokens = TEST1;

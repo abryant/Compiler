@@ -3,6 +3,7 @@ package compiler.language.parser.rules.expression;
 import static compiler.language.parser.ParseType.ARRAY_ACCESS_EXPRESSION;
 import static compiler.language.parser.ParseType.ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER;
 import static compiler.language.parser.ParseType.BASIC_PRIMARY;
+import static compiler.language.parser.ParseType.BOOLEAN_LITERAL_EXPRESSION;
 import static compiler.language.parser.ParseType.CHARACTER_LITERAL;
 import static compiler.language.parser.ParseType.CLOSURE_CREATION_EXPRESSION;
 import static compiler.language.parser.ParseType.FIELD_ACCESS_EXPRESSION_NOT_QNAME;
@@ -39,6 +40,7 @@ public class BasicPrimaryRule extends Rule
 
   private static final Object[] INTEGER_LITERAL_PRODUCTION = new Object[] {INTEGER_LITERAL};
   private static final Object[] FLOATING_LITERAL_PRODUCTION = new Object[] {FLOATING_LITERAL};
+  private static final Object[] BOOLEAN_LITERAL_PRODUCTION = new Object[] {BOOLEAN_LITERAL_EXPRESSION};
   private static final Object[] CHARACTER_LITERAL_PRODUCTION = new Object[] {CHARACTER_LITERAL};
   private static final Object[] STRING_LITERAL_PRODUCTION = new Object[] {STRING_LITERAL};
   private static final Object[] NIL_LITERAL_PRODUCTION = new Object[] {NIL_KEYWORD};
@@ -52,9 +54,9 @@ public class BasicPrimaryRule extends Rule
 
   public BasicPrimaryRule()
   {
-    super(BASIC_PRIMARY, INTEGER_LITERAL_PRODUCTION, FLOATING_LITERAL_PRODUCTION,
+    super(BASIC_PRIMARY, INTEGER_LITERAL_PRODUCTION,   FLOATING_LITERAL_PRODUCTION,
+                         BOOLEAN_LITERAL_PRODUCTION,   NIL_LITERAL_PRODUCTION,
                          CHARACTER_LITERAL_PRODUCTION, STRING_LITERAL_PRODUCTION,
-                         NIL_LITERAL_PRODUCTION,
                          FIELD_ACCESS_PRODUCTION,
                          STATEMENT_EXPRESSION_PRODUCTION,
                          THIS_ACCESS_PRODUCTION, SUPER_ACCESS_PRODUCTION,
@@ -94,10 +96,10 @@ public class BasicPrimaryRule extends Rule
     {
       return new NilLiteralExpression((ParseInfo) args[0]);
     }
-    if (types == FIELD_ACCESS_PRODUCTION || types == STATEMENT_EXPRESSION_PRODUCTION ||
-        types == THIS_ACCESS_PRODUCTION  || types == SUPER_ACCESS_PRODUCTION         ||
-        types == ARRAY_ACCESS_PRODUCTION || types == CLOSURE_CREATION_PRODUCTION     ||
-        types == ARRAY_INSTANCIATION_PRODUCTION)
+    if (types == FIELD_ACCESS_PRODUCTION        || types == STATEMENT_EXPRESSION_PRODUCTION ||
+        types == THIS_ACCESS_PRODUCTION         || types == SUPER_ACCESS_PRODUCTION         ||
+        types == ARRAY_ACCESS_PRODUCTION        || types == CLOSURE_CREATION_PRODUCTION     ||
+        types == ARRAY_INSTANCIATION_PRODUCTION || types == BOOLEAN_LITERAL_PRODUCTION)
     {
       // an Expression has already been generated, so return it
       return args[0];

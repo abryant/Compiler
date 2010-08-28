@@ -79,18 +79,14 @@ public class IfStatement extends Statement
     buffer.append(condition);
     buffer.append("\n");
     buffer.append(block);
-    if (elseIfClauses.length > 0 || elseBlock != null)
-    {
-      buffer.append("\n");
-    }
     for (int i = 0; i < elseIfClauses.length; i++)
     {
-      buffer.append(elseIfClauses[i]);
       buffer.append("\n");
+      buffer.append(elseIfClauses[i]);
     }
     if (elseBlock != null)
     {
-      buffer.append("else\n");
+      buffer.append("\nelse\n");
       buffer.append(elseBlock);
     }
     return buffer.toString();

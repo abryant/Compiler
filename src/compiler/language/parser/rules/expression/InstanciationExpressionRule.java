@@ -1,5 +1,6 @@
 package compiler.language.parser.rules.expression;
 
+import static compiler.language.parser.ParseType.CLASS_KEYWORD;
 import static compiler.language.parser.ParseType.INSTANCIATION_EXPRESSION;
 import static compiler.language.parser.ParseType.LBRACE;
 import static compiler.language.parser.ParseType.MEMBER_LIST;
@@ -28,7 +29,7 @@ public class InstanciationExpressionRule extends Rule
 {
 
   private static final Object[] PRODUCTION = new Object[] {NEW_KEYWORD, POINTER_TYPE, PARAMETERS};
-  private static final Object[] MEMBER_LIST_PRODUCTION = new Object[] {NEW_KEYWORD, POINTER_TYPE, PARAMETERS, LBRACE, MEMBER_LIST, RBRACE};
+  private static final Object[] MEMBER_LIST_PRODUCTION = new Object[] {NEW_KEYWORD, POINTER_TYPE, PARAMETERS, CLASS_KEYWORD, LBRACE, MEMBER_LIST, RBRACE};
 
   public InstanciationExpressionRule()
   {
@@ -56,10 +57,10 @@ public class InstanciationExpressionRule extends Rule
       @SuppressWarnings("unchecked")
       ParseList<Parameter> parameters = (ParseList<Parameter>) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<Member> members = (ParseList<Member>) args[4];
+      ParseList<Member> members = (ParseList<Member>) args[5];
       return new InstanciationExpression(type, parameters.toArray(new Parameter[0]), members.toArray(new Member[0]),
                                          ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), parameters.getParseInfo(),
-                                                           (ParseInfo) args[3], members.getParseInfo(), (ParseInfo) args[5]));
+                                                           (ParseInfo) args[3], (ParseInfo) args[4], members.getParseInfo(), (ParseInfo) args[6]));
     }
     throw badTypeList();
   }

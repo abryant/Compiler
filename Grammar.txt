@@ -410,8 +410,8 @@ PrimaryNoTrailingDimensionsNotQName = BasicPrimary
 // * no trailing dimensions (square brackets, optionally containing things)
 // * not just a QName on its own
 // * no bracketed expressions
-BasicPrimary = IntegerLiteral   | FloatingLiteral
-             | CharacterLiteral | StringLiteral | NilKeyword
+BasicPrimary = IntegerLiteral   | FloatingLiteral | BooleanLiteralExpression
+             | CharacterLiteral | StringLiteral   | NilKeyword
              | FieldAccessExpressionNotQName
              | StatementExpression
              | ThisAccessExpression
@@ -419,6 +419,8 @@ BasicPrimary = IntegerLiteral   | FloatingLiteral
              | ArrayAccessExpression
              | ClosureCreationExpression
              | ArrayInstanciationExpressionWithInitializer
+
+BooleanLiteralExpression = TrueKeyword | FalseKeyword
 
 // an Expression made up entirely of QNames. This can be either a single QName
 // or a tupled list of other QNameExpressions.
@@ -442,16 +444,14 @@ ArrayAccessExpression = PrimaryNoTrailingDimensionsNotQName DimensionExpression
                       | NestedQNameList DimensionsExpression
 
 InstanciationExpression = NewKeyword PointerType Parameters
-                        | NewKeyword PointerType Parameters LBrace MemberList RBrace
+                        | NewKeyword PointerType Parameters ClassKeyword LBrace MemberList RBrace
 
 ClosureCreationExpression = ClosureKeyword               LParen ArgumentList Arrow TypeList RParen ThrowsClause Block
                           | ClosureKeyword TypeArguments LParen ArgumentList Arrow TypeList RParen ThrowsClause Block
                           | ClosureKeyword               LParen VoidType     Arrow TypeList RParen ThrowsClause Block
                           | ClosureKeyword TypeArguments LParen VoidType     Arrow TypeList RParen ThrowsClause Block
 
-ArrayInstanciationExpressionWithInitializer = NewKeyword TypeNotArrayType DimensionExpressions Dimensions ArrayInitializer
-                                            | NewKeyword TypeNotArrayType DimensionExpressions ArrayInitializer
-                                            | NewKeyword TypeNotArrayType Dimensions ArrayInitializer
+ArrayInstanciationExpressionWithInitializer = NewKeyword TypeNotArrayType Dimensions ArrayInitializer
 
 ArrayInstanciationExpressionNoInitializer = NewKeyword TypeNotArrayType DimensionExpressions Dimensions
                                           | NewKeyword TypeNotArrayType DimensionExpressions

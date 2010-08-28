@@ -49,38 +49,38 @@ public enum ParseType
   STATIC_INITIALIZER,       // StaticInitializer
 
   // statements
-  BLOCK,                            // Block
-  OPTIONAL_BLOCK,                   // Block or null
-  STATEMENTS,                       // ParseList<Statement>
-  STATEMENT,                        // Statement
-  EMPTY_STATEMENT,                  // EmptyStatement
-  LOCAL_DECLARATION,                // LocalDeclarationStatement
-  ASSIGNMENT,                       // AssignmentStatement
-  IF_STATEMENT,                     // IfStatement
-  ELSE_IF_CLAUSES,                  // ParseList<ElseIfClause>
-  ELSE_IF_CLAUSE,                   // ElseIfClause
-  ELSE_CLAUSE,                      // Block or null
-  WHILE_STATEMENT,                  // WhileStatement
-  DO_STATEMENT,                     // DoStatement
-  FOR_EACH_STATEMENT,               // ForEachStatement
-  FOR_STATEMENT,                    // ForStatement
-  FOR_INIT,                         // Statement or null
-  FOR_UPDATE,                       // Statement or null
-  SWITCH_STATEMENT,                 // SwitchStatement
-  SWITCH_CASES,                     // ParseList<SwitchCase>
-  SWITCH_CASE,                      // SwitchCase
-  BREAK_STATEMENT,                  // BreakStatement
-  CONTINUE_STATEMENT,               // ContinueStatement
-  FALLTHROUGH_STATEMENT,            // FallthroughStatement
-  RETURN_STATEMENT,                 // ReturnStatement
-  THROW_STATEMENT,                  // ThrowStatement
-  SYNCHRONIZED_STATEMENT,           // SynchronizedStatement
-  TRY_STATEMENT,                    // TryStatement
-  CATCH_CLAUSES,                    // ParseList<CatchClause>
-  CATCH_CLAUSE,                     // CatchClause
-  FINALLY_CLAUSE,                   // Block or null
-  INCREMENT,                        // IncrementStatement
-  DECREMENT,                        // DecrementStatement
+  BLOCK,                  // Block
+  OPTIONAL_BLOCK,         // Block or null
+  STATEMENTS,             // ParseList<Statement>
+  STATEMENT,              // Statement
+  EMPTY_STATEMENT,        // EmptyStatement
+  LOCAL_DECLARATION,      // LocalDeclarationStatement
+  ASSIGNMENT,             // AssignmentStatement
+  IF_STATEMENT,           // IfStatement
+  ELSE_IF_CLAUSES,        // ParseList<ElseIfClause>
+  ELSE_IF_CLAUSE,         // ElseIfClause
+  ELSE_CLAUSE,            // ParseContainer<Block> (containing null if the empty production is used)
+  WHILE_STATEMENT,        // WhileStatement
+  DO_STATEMENT,           // DoStatement
+  FOR_EACH_STATEMENT,     // ForEachStatement
+  FOR_STATEMENT,          // ForStatement
+  FOR_INIT,               // Statement or null
+  FOR_UPDATE,             // Statement or null
+  SWITCH_STATEMENT,       // SwitchStatement
+  SWITCH_CASES,           // ParseList<SwitchCase>
+  SWITCH_CASE,            // SwitchCase
+  BREAK_STATEMENT,        // BreakStatement
+  CONTINUE_STATEMENT,     // ContinueStatement
+  FALLTHROUGH_STATEMENT,  // FallthroughStatement
+  RETURN_STATEMENT,       // ReturnStatement
+  THROW_STATEMENT,        // ThrowStatement
+  SYNCHRONIZED_STATEMENT, // SynchronizedStatement
+  TRY_STATEMENT,          // TryStatement
+  CATCH_CLAUSES,          // ParseList<CatchClause>
+  CATCH_CLAUSE,           // CatchClause
+  FINALLY_CLAUSE,         // Block or null
+  INCREMENT,              // IncrementStatement
+  DECREMENT,              // DecrementStatement
 
 
   // expressions
@@ -114,6 +114,7 @@ public enum ParseType
   PRIMARY,                        // Expression
   PRIMARY_NO_TRAILING_DIMENSIONS_NOT_QNAME, // Expression
   BASIC_PRIMARY,                  // Expression
+  BOOLEAN_LITERAL_EXPRESSION,     // BooleanLiteralExpression
   QNAME_EXPRESSION,               // Expression (either FieldAccessExpression or ParenthesisedExpression)
   METHOD_CALL_EXPRESSION,         // MethodCallExpression
   FIELD_ACCESS_EXPRESSION,        // FieldAccessExpression
@@ -222,10 +223,13 @@ public enum ParseType
   CLASS_KEYWORD,
   CLOSURE_KEYWORD,
   DOUBLE_KEYWORD,
+  ELSE_KEYWORD,
   ENUM_KEYWORD,
   EXTENDS_KEYWORD,
+  FALSE_KEYWORD,
   FINAL_KEYWORD,
   FLOAT_KEYWORD,
+  IF_KEYWORD,
   IMMUTABLE_KEYWORD,
   IMPLEMENTS_KEYWORD,
   IMPORT_KEYWORD,
@@ -252,6 +256,7 @@ public enum ParseType
   THIS_KEYWORD,
   THROWS_KEYWORD,
   TRANSIENT_KEYWORD,
+  TRUE_KEYWORD,
   UNSIGNED_KEYWORD,
   VOID_KEYWORD,
   VOLATILE_KEYWORD,
