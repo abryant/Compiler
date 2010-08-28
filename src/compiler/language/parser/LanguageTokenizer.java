@@ -399,6 +399,27 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.SEMICOLON, info(5010)),
     new Token(ParseType.RBRACE, info(5020)),
 
+    new Token(ParseType.SWITCH_KEYWORD, info(5030)),
+    new Token(ParseType.NAME, new Name("test", info(5040))),
+    new Token(ParseType.LBRACE, info(5050)),
+
+    new Token(ParseType.CASE_KEYWORD, info(5060)),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("5", info(5070))),
+    new Token(ParseType.COLON, info(5080)),
+    new Token(ParseType.CASE_KEYWORD, info(5090)),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("32", info(5100))),
+    new Token(ParseType.COLON, info(5110)),
+    new Token(ParseType.NAME, new Name("test", info(5120))),
+    new Token(ParseType.TRIPLE_RANGLE_EQUALS, info(5130)),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("2", info(5140))),
+    new Token(ParseType.SEMICOLON, info(5150)),
+    new Token(ParseType.DEFAULT_KEYWORD, info(5160)),
+    new Token(ParseType.COLON, info(5170)),
+    new Token(ParseType.LBRACE, info(5180)),
+    new Token(ParseType.RBRACE, info(5190)),
+
+    new Token(ParseType.RBRACE, info(5200)),
+
     new Token(ParseType.RBRACE, info(5990)),
 
     new Token(ParseType.RBRACE, info(6000)),

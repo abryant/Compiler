@@ -40,7 +40,7 @@ public class SwitchCase
   }
 
   /**
-   * @return the caseExpression
+   * @return the expression for this case, or null if this is actually a default case
    */
   public Expression getCaseExpression()
   {

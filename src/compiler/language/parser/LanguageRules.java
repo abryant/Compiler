@@ -87,6 +87,9 @@ import compiler.language.parser.rules.statement.LocalDeclarationRule;
 import compiler.language.parser.rules.statement.OptionalBlockRule;
 import compiler.language.parser.rules.statement.StatementRule;
 import compiler.language.parser.rules.statement.StatementsRule;
+import compiler.language.parser.rules.statement.SwitchCaseRule;
+import compiler.language.parser.rules.statement.SwitchCasesRule;
+import compiler.language.parser.rules.statement.SwitchStatementRule;
 import compiler.language.parser.rules.statement.WhileStatementRule;
 import compiler.language.parser.rules.topLevel.CompilationUnitRule;
 import compiler.language.parser.rules.topLevel.ImportDeclarationRule;
@@ -218,6 +221,9 @@ public class LanguageRules
     new OptionalBlockRule(),
     new StatementRule(),
     new StatementsRule(),
+    new SwitchCaseRule(),
+    new SwitchCasesRule(),
+    new SwitchStatementRule(),
     new WhileStatementRule(),
 
     // expressions
