@@ -374,9 +374,34 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.LBRACE, info(4770)),
     new Token(ParseType.RBRACE, info(4780)),
 
-    new Token(ParseType.RBRACE, info(4990)),
+    new Token(ParseType.FOR_KEYWORD, info(4790)),
+    new Token(ParseType.INT_KEYWORD, info(4800)),
+    new Token(ParseType.NAME, new Name("i", info(4810))),
+    new Token(ParseType.EQUALS, info(4820)),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("0", info(4830))),
+    new Token(ParseType.SEMICOLON, info(4840)),
+    new Token(ParseType.NAME, new Name("i", info(4850))),
+    new Token(ParseType.LANGLE, info(4860)),
+    new Token(ParseType.NAME, new Name("array", info(4870))),
+    new Token(ParseType.DOT, info(4880)),
+    new Token(ParseType.NAME, new Name("length", info(4890))),
+    new Token(ParseType.SEMICOLON, info(4900)),
+    new Token(ParseType.NAME, new Name("i", info(4910))),
+    new Token(ParseType.PLUS_EQUALS, info(4920)),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("2", info(4930))),
+    new Token(ParseType.LBRACE, info(4940)),
+    new Token(ParseType.NAME, new Name("array", info(4950))),
+    new Token(ParseType.LSQUARE, info(4960)),
+    new Token(ParseType.NAME, new Name("i", info(4970))),
+    new Token(ParseType.RSQUARE, info(4980)),
+    new Token(ParseType.EQUALS, info(4990)),
+    new Token(ParseType.NAME, new Name("i", info(5000))),
+    new Token(ParseType.SEMICOLON, info(5010)),
+    new Token(ParseType.RBRACE, info(5020)),
 
-    new Token(ParseType.RBRACE, info(5000)),
+    new Token(ParseType.RBRACE, info(5990)),
+
+    new Token(ParseType.RBRACE, info(6000)),
   };
 
   private Token[] tokens = TEST1;
