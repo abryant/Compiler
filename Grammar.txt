@@ -203,8 +203,8 @@ SynchronizedStatement = SynchronizedKeyword Expression Block
 
 TryStatement = TryKeyword Block CatchClauses FinallyClause
 CatchClauses = epsilon | CatchClauses CatchClause
-CatchClause = CatchKeyword        QName Name        Block
-            | CatchKeyword LParen QName Name RParen Block
+CatchClause = CatchKeyword PointerType Name Block
+            | CatchKeyword Modifiers PointerType Name Block
 FinallyClause = FinallyKeyword Block | epsilon
 
 Increment = Assignee Plus  Plus  | Plus  Plus  Assignee
