@@ -25,14 +25,11 @@ import compiler.parser.Rule;
 public class ArrayInstanciationExpressionWithInitializerRule extends Rule
 {
 
-  // TODO: remove
-  //private static final Object[] EXPRESSIONS_DIMENSIONS_PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSION_EXPRESSIONS, DIMENSIONS, ARRAY_INITIALIZER};
-  //private static final Object[] EXPRESSIONS_PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSION_EXPRESSIONS, ARRAY_INITIALIZER};
-  private static final Object[] DIMENSIONS_PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSIONS, ARRAY_INITIALIZER};
+  private static final Object[] PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSIONS, ARRAY_INITIALIZER};
 
   public ArrayInstanciationExpressionWithInitializerRule()
   {
-    super(ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER, /* TODO EXPRESSIONS_DIMENSIONS_PRODUCTION, EXPRESSIONS_PRODUCTION, */DIMENSIONS_PRODUCTION);
+    super(ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER, PRODUCTION);
   }
 
   /**
@@ -42,33 +39,7 @@ public class ArrayInstanciationExpressionWithInitializerRule extends Rule
   @Override
   public Object match(Object[] types, Object[] args) throws ParseException
   {
-    /* TODO: remove
-    if (types == EXPRESSIONS_DIMENSIONS_PRODUCTION)
-    {
-      Type type = (Type) args[1];
-      @SuppressWarnings("unchecked")
-      ParseList<Expression> dimensionExpressions = (ParseList<Expression>) args[2];
-      Dimensions dimensions = (Dimensions) args[3];
-      @SuppressWarnings("unchecked")
-      ParseList<Expression> arrayInitializer = (ParseList<Expression>) args[4];
-      int totalDimensions = dimensionExpressions.size() + dimensions.getDimensions();
-      return new ArrayInstanciationExpression(type, dimensionExpressions.toArray(new Expression[0]), totalDimensions, arrayInitializer.toArray(new Expression[0]),
-                                              ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), dimensionExpressions.getParseInfo(),
-                                                                dimensions.getParseInfo(), arrayInitializer.getParseInfo()));
-    }
-    if (types == EXPRESSIONS_PRODUCTION)
-    {
-      Type type = (Type) args[1];
-      @SuppressWarnings("unchecked")
-      ParseList<Expression> dimensionExpressions = (ParseList<Expression>) args[2];
-      @SuppressWarnings("unchecked")
-      ParseList<Expression> arrayInitializer = (ParseList<Expression>) args[3];
-      return new ArrayInstanciationExpression(type, dimensionExpressions.toArray(new Expression[0]), dimensionExpressions.size(), arrayInitializer.toArray(new Expression[0]),
-                                              ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(),
-                                                                dimensionExpressions.getParseInfo(), arrayInitializer.getParseInfo()));
-    }
-    */
-    if (types == DIMENSIONS_PRODUCTION)
+    if (types == PRODUCTION)
     {
       Type type = (Type) args[1];
       Dimensions dimensions = (Dimensions) args[2];
