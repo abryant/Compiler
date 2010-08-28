@@ -73,6 +73,7 @@ import compiler.language.parser.rules.misc.ThrowsListRule;
 import compiler.language.parser.rules.misc.VersionNumberRule;
 import compiler.language.parser.rules.statement.AssignmentRule;
 import compiler.language.parser.rules.statement.BlockRule;
+import compiler.language.parser.rules.statement.DoStatementRule;
 import compiler.language.parser.rules.statement.ElseClauseRule;
 import compiler.language.parser.rules.statement.ElseIfClauseRule;
 import compiler.language.parser.rules.statement.ElseIfClausesRule;
@@ -199,6 +200,7 @@ public class LanguageRules
     // statements
     new AssignmentRule(),
     new BlockRule(),
+    new DoStatementRule(),
     new ElseClauseRule(),
     new ElseIfClauseRule(),
     new ElseIfClausesRule(),
