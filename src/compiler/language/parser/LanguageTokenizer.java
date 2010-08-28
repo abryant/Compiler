@@ -413,12 +413,21 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.TRIPLE_RANGLE_EQUALS, info(5130)),
     new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("2", info(5140))),
     new Token(ParseType.SEMICOLON, info(5150)),
-    new Token(ParseType.DEFAULT_KEYWORD, info(5160)),
-    new Token(ParseType.COLON, info(5170)),
-    new Token(ParseType.LBRACE, info(5180)),
-    new Token(ParseType.RBRACE, info(5190)),
+    new Token(ParseType.FALLTHROUGH_KEYWORD, info(5160)),
+    new Token(ParseType.SEMICOLON, info(5170)),
+    new Token(ParseType.DEFAULT_KEYWORD, info(5180)),
+    new Token(ParseType.COLON, info(5190)),
+    new Token(ParseType.LBRACE, info(5200)),
+    new Token(ParseType.BREAK_KEYWORD, info(5210)),
+    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("2", info(5215))),
+    new Token(ParseType.SEMICOLON, info(5220)),
+    new Token(ParseType.RBRACE, info(5230)),
 
-    new Token(ParseType.RBRACE, info(5200)),
+    new Token(ParseType.RBRACE, info(5300)),
+
+    new Token(ParseType.RETURN_KEYWORD, info(5310)),
+    new Token(ParseType.NIL_KEYWORD, info(5320)),
+    new Token(ParseType.SEMICOLON, info(5330)),
 
     new Token(ParseType.RBRACE, info(5990)),
 

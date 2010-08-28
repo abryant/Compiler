@@ -73,11 +73,14 @@ import compiler.language.parser.rules.misc.ThrowsListRule;
 import compiler.language.parser.rules.misc.VersionNumberRule;
 import compiler.language.parser.rules.statement.AssignmentRule;
 import compiler.language.parser.rules.statement.BlockRule;
+import compiler.language.parser.rules.statement.BreakStatementRule;
+import compiler.language.parser.rules.statement.ContinueStatementRule;
 import compiler.language.parser.rules.statement.DoStatementRule;
 import compiler.language.parser.rules.statement.ElseClauseRule;
 import compiler.language.parser.rules.statement.ElseIfClauseRule;
 import compiler.language.parser.rules.statement.ElseIfClausesRule;
 import compiler.language.parser.rules.statement.EmptyStatementRule;
+import compiler.language.parser.rules.statement.FallthroughStatementRule;
 import compiler.language.parser.rules.statement.ForEachStatementRule;
 import compiler.language.parser.rules.statement.ForInitRule;
 import compiler.language.parser.rules.statement.ForStatementRule;
@@ -85,11 +88,13 @@ import compiler.language.parser.rules.statement.ForUpdateRule;
 import compiler.language.parser.rules.statement.IfStatementRule;
 import compiler.language.parser.rules.statement.LocalDeclarationRule;
 import compiler.language.parser.rules.statement.OptionalBlockRule;
+import compiler.language.parser.rules.statement.ReturnStatementRule;
 import compiler.language.parser.rules.statement.StatementRule;
 import compiler.language.parser.rules.statement.StatementsRule;
 import compiler.language.parser.rules.statement.SwitchCaseRule;
 import compiler.language.parser.rules.statement.SwitchCasesRule;
 import compiler.language.parser.rules.statement.SwitchStatementRule;
+import compiler.language.parser.rules.statement.ThrowStatementRule;
 import compiler.language.parser.rules.statement.WhileStatementRule;
 import compiler.language.parser.rules.topLevel.CompilationUnitRule;
 import compiler.language.parser.rules.topLevel.ImportDeclarationRule;
@@ -207,11 +212,14 @@ public class LanguageRules
     // statements
     new AssignmentRule(),
     new BlockRule(),
+    new BreakStatementRule(),
+    new ContinueStatementRule(),
     new DoStatementRule(),
     new ElseClauseRule(),
     new ElseIfClauseRule(),
     new ElseIfClausesRule(),
     new EmptyStatementRule(),
+    new FallthroughStatementRule(),
     new ForEachStatementRule(),
     new ForInitRule(),
     new ForStatementRule(),
@@ -219,11 +227,13 @@ public class LanguageRules
     new IfStatementRule(),
     new LocalDeclarationRule(),
     new OptionalBlockRule(),
+    new ReturnStatementRule(),
     new StatementRule(),
     new StatementsRule(),
     new SwitchCaseRule(),
     new SwitchCasesRule(),
     new SwitchStatementRule(),
+    new ThrowStatementRule(),
     new WhileStatementRule(),
 
     // expressions
