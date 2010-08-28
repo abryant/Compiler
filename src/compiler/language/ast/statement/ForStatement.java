@@ -89,6 +89,7 @@ public class ForStatement extends Statement
     buffer.append(";");
     if (condition != null)
     {
+      buffer.append(" ");
       buffer.append(condition);
     }
     buffer.append(";");
@@ -99,6 +100,7 @@ public class ForStatement extends Statement
       {
         updateString = updateString.substring(0, updateString.length() - 1);
       }
+      buffer.append(" ");
       buffer.append(updateString);
     }
     buffer.append("\n");

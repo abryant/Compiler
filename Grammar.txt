@@ -171,13 +171,10 @@ WhileStatement = WhileKeyword Expression Block
 
 DoStatement = DoKeyword Block WhileKeyword Expression Semicolon
 
-ForEachStatement = ForKeyword LParen Type Name Colon Expression RParen Block
-                 | ForKeyword        Type Name Colon Expression        Block
+ForEachStatement = ForKeyword Type Name Colon Expression Block
 
-ForStatement = ForKeyword LParen ForInit Semicolon Expression Semicolon ForUpdate RParen Block
-             | ForKeyword        ForInit Semicolon Expression Semicolon ForUpdate        Block
-             | ForKeyword LParen ForInit Semicolon            Semicolon ForUpdate RParen Block
-             | ForKeyword        ForInit Semicolon            Semicolon ForUpdate        Block
+ForStatement = ForKeyword ForInit Semicolon Expression Semicolon ForUpdate Block
+             | ForKeyword ForInit Semicolon            Semicolon ForUpdate Block
 
 ForInit = LocalDeclaration | StatementExpression | Assignment | epsilon
 ForUpdate = StatementExpression | Assignment | Increment | Decrement | epsilon

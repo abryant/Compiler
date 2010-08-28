@@ -5,9 +5,7 @@ import static compiler.language.parser.ParseType.COLON;
 import static compiler.language.parser.ParseType.EXPRESSION;
 import static compiler.language.parser.ParseType.FOR_EACH_STATEMENT;
 import static compiler.language.parser.ParseType.FOR_KEYWORD;
-import static compiler.language.parser.ParseType.LPAREN;
 import static compiler.language.parser.ParseType.NAME;
-import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.TYPE;
 
 import compiler.language.ast.ParseInfo;
@@ -30,11 +28,10 @@ public class ForEachStatementRule extends Rule
 {
 
   private static final Object[] PRODUCTION = new Object[] {FOR_KEYWORD, TYPE, NAME, COLON, EXPRESSION, BLOCK};
-  private static final Object[] PARENTHESES_PRODUCTION = new Object[] {FOR_KEYWORD, LPAREN, TYPE, NAME, COLON, EXPRESSION, RPAREN, BLOCK};
 
   public ForEachStatementRule()
   {
-    super(FOR_EACH_STATEMENT, PRODUCTION, PARENTHESES_PRODUCTION);
+    super(FOR_EACH_STATEMENT, PRODUCTION);
   }
 
   /**
@@ -53,16 +50,6 @@ public class ForEachStatementRule extends Rule
       return new ForEachStatement(type, name, expression, block,
                                   ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                                     (ParseInfo) args[3], expression.getParseInfo(), block.getParseInfo()));
-    }
-    if (types == PARENTHESES_PRODUCTION)
-    {
-      Type type = (Type) args[2];
-      Name name = (Name) args[3];
-      Expression expression = (Expression) args[5];
-      Block block = (Block) args[7];
-      return new ForEachStatement(type, name, expression, block,
-                                  ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(),
-                                                    (ParseInfo) args[4], expression.getParseInfo(), (ParseInfo) args[6], block.getParseInfo()));
     }
     throw badTypeList();
   }

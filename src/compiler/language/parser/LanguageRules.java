@@ -79,6 +79,9 @@ import compiler.language.parser.rules.statement.ElseIfClauseRule;
 import compiler.language.parser.rules.statement.ElseIfClausesRule;
 import compiler.language.parser.rules.statement.EmptyStatementRule;
 import compiler.language.parser.rules.statement.ForEachStatementRule;
+import compiler.language.parser.rules.statement.ForInitRule;
+import compiler.language.parser.rules.statement.ForStatementRule;
+import compiler.language.parser.rules.statement.ForUpdateRule;
 import compiler.language.parser.rules.statement.IfStatementRule;
 import compiler.language.parser.rules.statement.LocalDeclarationRule;
 import compiler.language.parser.rules.statement.OptionalBlockRule;
@@ -207,6 +210,9 @@ public class LanguageRules
     new ElseIfClausesRule(),
     new EmptyStatementRule(),
     new ForEachStatementRule(),
+    new ForInitRule(),
+    new ForStatementRule(),
+    new ForUpdateRule(),
     new IfStatementRule(),
     new LocalDeclarationRule(),
     new OptionalBlockRule(),
