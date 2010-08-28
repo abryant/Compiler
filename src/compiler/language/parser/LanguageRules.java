@@ -82,6 +82,7 @@ import compiler.language.parser.rules.statement.LocalDeclarationRule;
 import compiler.language.parser.rules.statement.OptionalBlockRule;
 import compiler.language.parser.rules.statement.StatementRule;
 import compiler.language.parser.rules.statement.StatementsRule;
+import compiler.language.parser.rules.statement.WhileStatementRule;
 import compiler.language.parser.rules.topLevel.CompilationUnitRule;
 import compiler.language.parser.rules.topLevel.ImportDeclarationRule;
 import compiler.language.parser.rules.topLevel.PackageDeclarationRule;
@@ -207,6 +208,7 @@ public class LanguageRules
     new OptionalBlockRule(),
     new StatementRule(),
     new StatementsRule(),
+    new WhileStatementRule(),
 
     // expressions
     new AdditiveExpressionRule(),

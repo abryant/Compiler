@@ -260,6 +260,7 @@ public enum ParseType
   UNSIGNED_KEYWORD,
   VOID_KEYWORD,
   VOLATILE_KEYWORD,
+  WHILE_KEYWORD,
 
   // symbols (values for these should all be ParseInfo)
   AMPERSAND,
