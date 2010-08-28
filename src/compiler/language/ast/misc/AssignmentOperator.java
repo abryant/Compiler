@@ -21,9 +21,9 @@ public enum AssignmentOperator
   BITWISE_AND_EQUALS("&="),
   BITWISE_OR_EQUALS("|="),
   BITWISE_XOR_EQUALS("^="),
-  LEFT_SHIFT_EQUALS("<<"),
-  ARITHMETIC_RIGHT_SHIFT_EQUALS(">>"),
-  LOGICAL_RIGHT_SHIFT_EQUALS(">>>");
+  LEFT_SHIFT_EQUALS("<<="),
+  ARITHMETIC_RIGHT_SHIFT_EQUALS(">>="),
+  LOGICAL_RIGHT_SHIFT_EQUALS(">>>=");
 
   private String tokenString;
 
