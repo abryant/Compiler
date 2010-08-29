@@ -73,9 +73,13 @@ public class LanguageParser
         {
           parseInfo = ((StringLiteral) token.getValue()).getParseInfo();
         }
-        else
+        else if (token.getValue() instanceof ParseInfo)
         {
           parseInfo = (ParseInfo) token.getValue();
+        }
+        else
+        {
+          parseInfo = null;
         }
       }
       printParseError(message, parseInfo);
@@ -109,6 +113,11 @@ public class LanguageParser
    */
   private static void printParseError(String message, ParseInfo parseInfo)
   {
+    if (parseInfo == null)
+    {
+      System.err.println(message);
+      return;
+    }
     // make a String representation of the ParseInfo's character range
     String characterRange;
     int startLine = parseInfo.getStartLine();
@@ -130,7 +139,6 @@ public class LanguageParser
       // startLine-endLine if it spans multiple lines
       characterRange = startLine + "-" + endLine;
     }
-
     System.err.println(characterRange + ": " + message);
   }
 
