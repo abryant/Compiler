@@ -27,7 +27,7 @@ public class SynchronizedStatementRule extends Rule
 
   public SynchronizedStatementRule()
   {
-    super(SYNCHRONIZED_STATEMENT, PRODUCTION/* TODO:, NO_EXPRESSION_PRODUCTION*/);
+    super(SYNCHRONIZED_STATEMENT, PRODUCTION, NO_EXPRESSION_PRODUCTION);
   }
 
   /**
