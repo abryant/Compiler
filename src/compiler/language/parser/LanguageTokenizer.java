@@ -439,6 +439,19 @@ public class LanguageTokenizer extends Tokenizer
 
     new Token(ParseType.RBRACE, info(5400)),
 
+    new Token(ParseType.TRY_KEYWORD, info(5410)),
+    new Token(ParseType.LBRACE, info(5420)),
+    new Token(ParseType.RBRACE, info(5430)),
+    new Token(ParseType.CATCH_KEYWORD, info(5440)),
+    new Token(ParseType.FINAL_KEYWORD, info(5445)),
+    new Token(ParseType.NAME, new Name("Exception", info(5450))),
+    new Token(ParseType.NAME, new Name("e", info(5460))),
+    new Token(ParseType.LBRACE, info(5470)),
+    new Token(ParseType.RBRACE, info(5480)),
+    new Token(ParseType.FINALLY_KEYWORD, info(5490)),
+    new Token(ParseType.LBRACE, info(5500)),
+    new Token(ParseType.RBRACE, info(5510)),
+
     new Token(ParseType.RBRACE, info(5990)),
 
     new Token(ParseType.RBRACE, info(6000)),

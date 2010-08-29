@@ -76,6 +76,8 @@ import compiler.language.parser.rules.misc.VersionNumberRule;
 import compiler.language.parser.rules.statement.AssignmentRule;
 import compiler.language.parser.rules.statement.BlockRule;
 import compiler.language.parser.rules.statement.BreakStatementRule;
+import compiler.language.parser.rules.statement.CatchClauseRule;
+import compiler.language.parser.rules.statement.CatchClausesRule;
 import compiler.language.parser.rules.statement.ContinueStatementRule;
 import compiler.language.parser.rules.statement.DoStatementRule;
 import compiler.language.parser.rules.statement.ElseClauseRule;
@@ -83,6 +85,7 @@ import compiler.language.parser.rules.statement.ElseIfClauseRule;
 import compiler.language.parser.rules.statement.ElseIfClausesRule;
 import compiler.language.parser.rules.statement.EmptyStatementRule;
 import compiler.language.parser.rules.statement.FallthroughStatementRule;
+import compiler.language.parser.rules.statement.FinallyClauseRule;
 import compiler.language.parser.rules.statement.ForEachStatementRule;
 import compiler.language.parser.rules.statement.ForInitRule;
 import compiler.language.parser.rules.statement.ForStatementRule;
@@ -98,6 +101,7 @@ import compiler.language.parser.rules.statement.SwitchCasesRule;
 import compiler.language.parser.rules.statement.SwitchStatementRule;
 import compiler.language.parser.rules.statement.SynchronizedStatementRule;
 import compiler.language.parser.rules.statement.ThrowStatementRule;
+import compiler.language.parser.rules.statement.TryStatementRule;
 import compiler.language.parser.rules.statement.WhileStatementRule;
 import compiler.language.parser.rules.topLevel.CompilationUnitRule;
 import compiler.language.parser.rules.topLevel.ImportDeclarationRule;
@@ -212,6 +216,8 @@ public class LanguageRules
     new AssignmentRule(),
     new BlockRule(),
     new BreakStatementRule(),
+    new CatchClauseRule(),
+    new CatchClausesRule(),
     new ContinueStatementRule(),
     new DoStatementRule(),
     new ElseClauseRule(),
@@ -219,6 +225,7 @@ public class LanguageRules
     new ElseIfClausesRule(),
     new EmptyStatementRule(),
     new FallthroughStatementRule(),
+    new FinallyClauseRule(),
     new ForEachStatementRule(),
     new ForInitRule(),
     new ForStatementRule(),
@@ -234,6 +241,7 @@ public class LanguageRules
     new SwitchStatementRule(),
     new SynchronizedStatementRule(),
     new ThrowStatementRule(),
+    new TryStatementRule(),
     new WhileStatementRule(),
 
     // expressions

@@ -74,7 +74,7 @@ public enum ParseType
   TRY_STATEMENT,          // TryStatement
   CATCH_CLAUSES,          // ParseList<CatchClause>
   CATCH_CLAUSE,           // CatchClause
-  FINALLY_CLAUSE,         // Block or null
+  FINALLY_CLAUSE,         // ParseContainer<Block> (containing null if the empty production is used)
   INCREMENT,              // IncrementStatement
   DECREMENT,              // DecrementStatement
 
@@ -223,6 +223,7 @@ public enum ParseType
   BYTE_KEYWORD,
   CASE_KEYWORD,
   CAST_KEYWORD,
+  CATCH_KEYWORD,
   CHARACTER_KEYWORD,
   CLASS_KEYWORD,
   CLOSURE_KEYWORD,
@@ -236,6 +237,7 @@ public enum ParseType
   FALLTHROUGH_KEYWORD,
   FALSE_KEYWORD,
   FINAL_KEYWORD,
+  FINALLY_KEYWORD,
   FLOAT_KEYWORD,
   FOR_KEYWORD,
   IF_KEYWORD,
@@ -269,6 +271,7 @@ public enum ParseType
   THROWS_KEYWORD,
   TRANSIENT_KEYWORD,
   TRUE_KEYWORD,
+  TRY_KEYWORD,
   UNSIGNED_KEYWORD,
   VOID_KEYWORD,
   VOLATILE_KEYWORD,

@@ -1,6 +1,7 @@
 package compiler.language.ast.statement;
 
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 
@@ -14,6 +15,7 @@ import compiler.language.ast.type.PointerType;
 public class CatchClause
 {
 
+  private Modifier[] modifiers;
   private PointerType caughtType;
   private Name caughtName;
   private Block block;
@@ -22,13 +24,15 @@ public class CatchClause
 
   /**
    * Creates a new CatchClause with the specified caught type and name, and the specified block to execute when that type is caught
+   * @param modifiers - the modifiers to apply to the declared variable
    * @param caughtType - the caught type
    * @param caughtName - the name of the variable holding the caught object
    * @param block - the block to be executed when this type is caught
    * @param parseInfo - the parsing information
    */
-  public CatchClause(PointerType caughtType, Name caughtName, Block block, ParseInfo parseInfo)
+  public CatchClause(Modifier[] modifiers, PointerType caughtType, Name caughtName, Block block, ParseInfo parseInfo)
   {
+    this.modifiers = modifiers;
     this.parseInfo = parseInfo;
     this.caughtType = caughtType;
     this.caughtName = caughtName;
@@ -36,7 +40,15 @@ public class CatchClause
   }
 
   /**
-   * @return the caughtType
+   * @return the modifiers
+   */
+  public Modifier[] getModifiers()
+  {
+    return modifiers;
+  }
+
+  /**
+   * @return the caught type
    */
   public PointerType getCaughtType()
   {
@@ -74,6 +86,18 @@ public class CatchClause
   @Override
   public String toString()
   {
-    return "catch " + caughtType + " " + caughtName + "\n" + block;
+    StringBuffer buffer = new StringBuffer();
+    buffer.append("catch ");
+    for (Modifier modifier : modifiers)
+    {
+      buffer.append(modifier);
+      buffer.append(" ");
+    }
+    buffer.append(caughtType);
+    buffer.append(" ");
+    buffer.append(caughtName);
+    buffer.append("\n");
+    buffer.append(block);
+    return buffer.toString();
   }
 }
