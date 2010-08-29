@@ -35,10 +35,6 @@ public enum ParseType
 
   // members
   ACCESS_SPECIFIER,         // AccessSpecifier or null
-  MODIFIER,                 // Modifier
-  MODIFIERS,                // ParseList<Modifier> (length > 0)
-  NATIVE_SPECIFIER,         // NativeSpecifier
-  SINCE_SPECIFIER,          // SinceSpecifier
   MEMBER_HEADER,            // MemberHeader
   MEMBER_LIST,              // ParseList<Member>
   MEMBER,                   // Member
@@ -182,24 +178,30 @@ public enum ParseType
   VOID_TYPE,                         // VoidType
 
   // miscellaneous non-terminals
-  ARGUMENT,                  // Argument
-  ARGUMENT_LIST,             // ParseList<Argument>
-  ARGUMENTS,                 // ArgumentList
-  ASSIGNEE,                  // Assignee
-  ASSIGNEE_LIST,             // ParseList<Assignee>
-  ASSIGNMENT_OPERATOR,       // ParseContainer<AssignmentOperator>
-  DECLARATION_ASSIGNEE,      // DeclarationAssignee
-  DECLARATION_ASSIGNEE_LIST, // ParseList<DeclarationAssignee>
-  DIMENSIONS,                // Dimensions
-  PARAMETER,                 // Parameter
-  PARAMETER_LIST,            // ParseList<Parameter> (length > 0)
-  PARAMETERS,                // ParseList<Parameter>
-  QNAME,                     // QName
-  QNAME_LIST,                // ParseList<QNameElement>
-  NESTED_QNAME_LIST,         // QNameElement
-  THROWS_LIST,               // ParseList<PointerType> (length > 0)
-  THROWS_CLAUSE,             // ParseList<PointerType> (length == 0 if none are specified)
-  VERSION_NUMBER,            // VersionNumber
+  MODIFIER,                   // Modifier
+  MODIFIER_NOT_SYNCHRONIZED,  // Modifier
+  MODIFIERS,                  // ParseList<Modifier> (length > 0)
+  MODIFIERS_NOT_SYNCHRONIZED, // ParseList<Modifier> (length > 0)
+  NATIVE_SPECIFIER,           // NativeSpecifier
+  SINCE_SPECIFIER,            // SinceSpecifier
+  ARGUMENT,                   // Argument
+  ARGUMENT_LIST,              // ParseList<Argument>
+  ARGUMENTS,                  // ArgumentList
+  ASSIGNEE,                   // Assignee
+  ASSIGNEE_LIST,              // ParseList<Assignee>
+  ASSIGNMENT_OPERATOR,        // ParseContainer<AssignmentOperator>
+  DECLARATION_ASSIGNEE,       // DeclarationAssignee
+  DECLARATION_ASSIGNEE_LIST,  // ParseList<DeclarationAssignee>
+  DIMENSIONS,                 // Dimensions
+  PARAMETER,                  // Parameter
+  PARAMETER_LIST,             // ParseList<Parameter> (length > 0)
+  PARAMETERS,                 // ParseList<Parameter>
+  QNAME,                      // QName
+  QNAME_LIST,                 // ParseList<QNameElement>
+  NESTED_QNAME_LIST,          // QNameElement
+  THROWS_LIST,                // ParseList<PointerType> (length > 0)
+  THROWS_CLAUSE,              // ParseList<PointerType> (length == 0 if none are specified)
+  VERSION_NUMBER,             // VersionNumber
 
   // =============
   //   TERMINALS

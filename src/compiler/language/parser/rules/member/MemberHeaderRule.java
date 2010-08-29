@@ -8,7 +8,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.MemberHeader;
-import compiler.language.ast.member.Modifier;
+import compiler.language.ast.misc.Modifier;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 

@@ -56,6 +56,6 @@ public class SynchronizedStatement extends Statement
     {
       return "synchronized\n" + block;
     }
-    return "synchronized(" + expression + ")\n" + block;
+    return "synchronized " + expression + "\n" + block;
   }
 }

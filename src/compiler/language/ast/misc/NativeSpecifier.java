@@ -1,4 +1,4 @@
-package compiler.language.ast.member;
+package compiler.language.ast.misc;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.StringLiteral;
@@ -37,7 +37,7 @@ public class NativeSpecifier extends Modifier
 
   /**
    * {@inheritDoc}
-   * @see compiler.language.ast.member.Modifier#toString()
+   * @see compiler.language.ast.misc.Modifier#toString()
    */
   @Override
   public String toString()

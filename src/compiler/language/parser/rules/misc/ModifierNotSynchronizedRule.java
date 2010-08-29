@@ -1,31 +1,30 @@
-package compiler.language.parser.rules.member;
+package compiler.language.parser.rules.misc;
 
 import static compiler.language.parser.ParseType.ABSTRACT_KEYWORD;
 import static compiler.language.parser.ParseType.FINAL_KEYWORD;
 import static compiler.language.parser.ParseType.IMMUTABLE_KEYWORD;
-import static compiler.language.parser.ParseType.MODIFIER;
+import static compiler.language.parser.ParseType.MODIFIER_NOT_SYNCHRONIZED;
 import static compiler.language.parser.ParseType.MUTABLE_KEYWORD;
 import static compiler.language.parser.ParseType.NATIVE_SPECIFIER;
 import static compiler.language.parser.ParseType.SINCE_SPECIFIER;
 import static compiler.language.parser.ParseType.STATIC_KEYWORD;
-import static compiler.language.parser.ParseType.SYNCHRONIZED_KEYWORD;
 import static compiler.language.parser.ParseType.TRANSIENT_KEYWORD;
 import static compiler.language.parser.ParseType.VOLATILE_KEYWORD;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.member.Modifier;
-import compiler.language.ast.member.ModifierType;
+import compiler.language.ast.misc.Modifier;
+import compiler.language.ast.misc.ModifierType;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;
 
 /*
- * Created on 30 Jun 2010
+ * Created on 29 Aug 2010
  */
 
 /**
  * @author Anthony Bryant
  */
-public class ModifierRule extends Rule
+public class ModifierNotSynchronizedRule extends Rule
 {
 
   private static final Object[] STATIC_PRODUCTION = new Object[] {STATIC_KEYWORD};
@@ -33,19 +32,19 @@ public class ModifierRule extends Rule
   private static final Object[] FINAL_PRODUCTION = new Object[] {FINAL_KEYWORD};
   private static final Object[] MUTABLE_PRODUCTION = new Object[] {MUTABLE_KEYWORD};
   private static final Object[] IMMUTABLE_PRODUCTION = new Object[] {IMMUTABLE_KEYWORD};
-  private static final Object[] SYNCHRONIZED_PRODUCTION = new Object[] {SYNCHRONIZED_KEYWORD};
   private static final Object[] TRANSIENT_PRODUCTION = new Object[] {TRANSIENT_KEYWORD};
   private static final Object[] VOLATILE_PRODUCTION = new Object[] {VOLATILE_KEYWORD};
   private static final Object[] NATIVE_SPECIFIER_PRODUCTION = new Object[] {NATIVE_SPECIFIER};
   private static final Object[] SINCE_SPECIFIER_PRODUCTION = new Object[] {SINCE_SPECIFIER};
 
-  public ModifierRule()
+  public ModifierNotSynchronizedRule()
   {
-    super(MODIFIER, STATIC_PRODUCTION, ABSTRACT_PRODUCTION, FINAL_PRODUCTION, MUTABLE_PRODUCTION, IMMUTABLE_PRODUCTION,
-                    SYNCHRONIZED_PRODUCTION, TRANSIENT_PRODUCTION, VOLATILE_PRODUCTION, NATIVE_SPECIFIER_PRODUCTION, SINCE_SPECIFIER_PRODUCTION);
+    super(MODIFIER_NOT_SYNCHRONIZED, STATIC_PRODUCTION, ABSTRACT_PRODUCTION, FINAL_PRODUCTION, MUTABLE_PRODUCTION, IMMUTABLE_PRODUCTION,
+                                     TRANSIENT_PRODUCTION, VOLATILE_PRODUCTION, NATIVE_SPECIFIER_PRODUCTION, SINCE_SPECIFIER_PRODUCTION);
   }
 
   /**
+   * {@inheritDoc}
    * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
@@ -71,10 +70,6 @@ public class ModifierRule extends Rule
     {
       return new Modifier(ModifierType.IMMUTABLE, (ParseInfo) args[0]);
     }
-    if (types == SYNCHRONIZED_PRODUCTION)
-    {
-      return new Modifier(ModifierType.SYNCHRONIZED, (ParseInfo) args[0]);
-    }
     if (types == TRANSIENT_PRODUCTION)
     {
       return new Modifier(ModifierType.TRANSIENT, (ParseInfo) args[0]);
@@ -88,7 +83,7 @@ public class ModifierRule extends Rule
       // NativeSpecifier and SinceSpecifier are subclasses of Modifier, so we can just return them directly
       return args[0];
     }
-    return null;
+    throw badTypeList();
   }
 
 }

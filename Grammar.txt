@@ -31,8 +31,10 @@ AccessSpecifier = PublicKeyword | PrivateKeyword | PackageKeyword | ProtectedKey
                 | epsilon
 
 Modifiers = Modifier | Modifiers Modifier
-Modifier = StaticKeyword | AbstractKeyword | FinalKeyword | ImmutableKeyword | MutableKeyword
-         | SynchronizedKeyword | NativeSpecifier | SinceSpecifier | TransientKeyword | VolatileKeyword
+ModifiersNotSynchronized = ModifierNotSynchronized | ModifiersNotSynchronized ModifierNotSynchronized
+Modifier = ModifierNotSynchronized | SynchronizedKeyword
+ModifierNotSynchronized = StaticKeyword   | AbstractKeyword | FinalKeyword     | ImmutableKeyword | MutableKeyword
+                        | NativeSpecifier | SinceSpecifier  | TransientKeyword | VolatileKeyword
 NativeSpecifier = NativeKeyword LParen StringLiteral RParen
 SinceSpecifier = SinceKeyword LParen VersionNumber RParen
 VersionNumber = IntegerLiteral | VersionNumber Dot IntegerLiteral

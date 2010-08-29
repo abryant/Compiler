@@ -1,4 +1,4 @@
-package compiler.language.parser.rules.member;
+package compiler.language.parser.rules.misc;
 
 import static compiler.language.parser.ParseType.LPAREN;
 import static compiler.language.parser.ParseType.NATIVE_KEYWORD;
@@ -7,7 +7,7 @@ import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.STRING_LITERAL;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.member.NativeSpecifier;
+import compiler.language.ast.misc.NativeSpecifier;
 import compiler.language.ast.terminal.StringLiteral;
 import compiler.parser.ParseException;
 import compiler.parser.Rule;

@@ -218,8 +218,9 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.RPAREN, info(3030)),
     new Token(ParseType.THROWS_KEYWORD, info(3040)),
     new Token(ParseType.NAME, new Name("Exception", info(3050))),
-    new Token(ParseType.LBRACE, info(3060)),
+    new Token(ParseType.LBRACE, info(3059)),
 
+    new Token(ParseType.VOLATILE_KEYWORD, info(3060)),
     new Token(ParseType.NAME, new Name("Foo", info(3061))),
     new Token(ParseType.NAME, new Name("foo", info(3062))),
     new Token(ParseType.COMMA, info(3063)),
@@ -425,9 +426,18 @@ public class LanguageTokenizer extends Tokenizer
 
     new Token(ParseType.RBRACE, info(5300)),
 
-    new Token(ParseType.RETURN_KEYWORD, info(5310)),
-    new Token(ParseType.NIL_KEYWORD, info(5320)),
-    new Token(ParseType.SEMICOLON, info(5330)),
+    new Token(ParseType.SYNCHRONIZED_KEYWORD, info(5310)),
+    new Token(ParseType.NEW_KEYWORD, info(5320)),
+    new Token(ParseType.NAME, new Name("Foo", info(5330))),
+    new Token(ParseType.LPAREN, info(5340)),
+    new Token(ParseType.RPAREN, info(5350)),
+    new Token(ParseType.LBRACE, info(5360)),
+
+    new Token(ParseType.RETURN_KEYWORD, info(5370)),
+    new Token(ParseType.NIL_KEYWORD, info(5380)),
+    new Token(ParseType.SEMICOLON, info(5390)),
+
+    new Token(ParseType.RBRACE, info(5400)),
 
     new Token(ParseType.RBRACE, info(5990)),
 

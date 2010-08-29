@@ -47,11 +47,7 @@ import compiler.language.parser.rules.member.MemberHeaderRule;
 import compiler.language.parser.rules.member.MemberListRule;
 import compiler.language.parser.rules.member.MemberRule;
 import compiler.language.parser.rules.member.MethodRule;
-import compiler.language.parser.rules.member.ModifierRule;
-import compiler.language.parser.rules.member.ModifiersRule;
-import compiler.language.parser.rules.member.NativeSpecifierRule;
 import compiler.language.parser.rules.member.PropertyRule;
-import compiler.language.parser.rules.member.SinceSpecifierRule;
 import compiler.language.parser.rules.member.StaticInitializerRule;
 import compiler.language.parser.rules.misc.ArgumentListRule;
 import compiler.language.parser.rules.misc.ArgumentRule;
@@ -62,12 +58,18 @@ import compiler.language.parser.rules.misc.AssignmentOperatorRule;
 import compiler.language.parser.rules.misc.DeclarationAssigneeListRule;
 import compiler.language.parser.rules.misc.DeclarationAssigneeRule;
 import compiler.language.parser.rules.misc.DimensionsRule;
+import compiler.language.parser.rules.misc.ModifierNotSynchronizedRule;
+import compiler.language.parser.rules.misc.ModifierRule;
+import compiler.language.parser.rules.misc.ModifiersNotSynchronizedRule;
+import compiler.language.parser.rules.misc.ModifiersRule;
+import compiler.language.parser.rules.misc.NativeSpecifierRule;
 import compiler.language.parser.rules.misc.NestedQNameListRule;
 import compiler.language.parser.rules.misc.ParameterListRule;
 import compiler.language.parser.rules.misc.ParameterRule;
 import compiler.language.parser.rules.misc.ParametersRule;
 import compiler.language.parser.rules.misc.QNameListRule;
 import compiler.language.parser.rules.misc.QNameRule;
+import compiler.language.parser.rules.misc.SinceSpecifierRule;
 import compiler.language.parser.rules.misc.ThrowsClauseRule;
 import compiler.language.parser.rules.misc.ThrowsListRule;
 import compiler.language.parser.rules.misc.VersionNumberRule;
@@ -94,6 +96,7 @@ import compiler.language.parser.rules.statement.StatementsRule;
 import compiler.language.parser.rules.statement.SwitchCaseRule;
 import compiler.language.parser.rules.statement.SwitchCasesRule;
 import compiler.language.parser.rules.statement.SwitchStatementRule;
+import compiler.language.parser.rules.statement.SynchronizedStatementRule;
 import compiler.language.parser.rules.statement.ThrowStatementRule;
 import compiler.language.parser.rules.statement.WhileStatementRule;
 import compiler.language.parser.rules.topLevel.CompilationUnitRule;
@@ -202,11 +205,7 @@ public class LanguageRules
     new MemberListRule(),
     new MemberRule(),
     new MethodRule(),
-    new ModifierRule(),
-    new ModifiersRule(),
-    new NativeSpecifierRule(),
     new PropertyRule(),
-    new SinceSpecifierRule(),
     new StaticInitializerRule(),
 
     // statements
@@ -233,6 +232,7 @@ public class LanguageRules
     new SwitchCaseRule(),
     new SwitchCasesRule(),
     new SwitchStatementRule(),
+    new SynchronizedStatementRule(),
     new ThrowStatementRule(),
     new WhileStatementRule(),
 
@@ -338,12 +338,18 @@ public class LanguageRules
     new DeclarationAssigneeListRule(),
     new DeclarationAssigneeRule(),
     new DimensionsRule(),
+    new ModifierNotSynchronizedRule(),
+    new ModifierRule(),
+    new ModifiersNotSynchronizedRule(),
+    new ModifiersRule(),
+    new NativeSpecifierRule(),
     new NestedQNameListRule(),
     new ParameterListRule(),
     new ParameterRule(),
     new ParametersRule(),
     new QNameListRule(),
     new QNameRule(),
+    new SinceSpecifierRule(),
     new ThrowsClauseRule(),
     new ThrowsListRule(),
     new VersionNumberRule(),

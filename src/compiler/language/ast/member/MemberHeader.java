@@ -1,6 +1,7 @@
 package compiler.language.ast.member;
 
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.misc.Modifier;
 
 
 

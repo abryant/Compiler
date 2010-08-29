@@ -1,4 +1,4 @@
-package compiler.language.ast.member;
+package compiler.language.ast.misc;
 
 /*
  * Created on 5 Aug 2010

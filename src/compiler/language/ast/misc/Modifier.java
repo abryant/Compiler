@@ -1,4 +1,4 @@
-package compiler.language.ast.member;
+package compiler.language.ast.misc;
 
 import compiler.language.ast.ParseInfo;
 

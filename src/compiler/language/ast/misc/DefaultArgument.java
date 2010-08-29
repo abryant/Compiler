@@ -2,7 +2,6 @@ package compiler.language.ast.misc;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
-import compiler.language.ast.member.Modifier;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.Type;
 

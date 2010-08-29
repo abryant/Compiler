@@ -4,14 +4,14 @@ import static compiler.language.parser.ParseType.DECLARATION_ASSIGNEE_LIST;
 import static compiler.language.parser.ParseType.EQUALS;
 import static compiler.language.parser.ParseType.EXPRESSION;
 import static compiler.language.parser.ParseType.LOCAL_DECLARATION;
-import static compiler.language.parser.ParseType.MODIFIERS;
+import static compiler.language.parser.ParseType.MODIFIERS_NOT_SYNCHRONIZED;
 import static compiler.language.parser.ParseType.TYPE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.Expression;
-import compiler.language.ast.member.Modifier;
 import compiler.language.ast.misc.DeclarationAssignee;
+import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.statement.LocalDeclarationStatement;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
@@ -27,10 +27,10 @@ import compiler.parser.Rule;
 public class LocalDeclarationRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {TYPE, DECLARATION_ASSIGNEE_LIST};
-  private static final Object[] ASSIGNMENT_PRODUCTION = new Object[] {TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION};
-  private static final Object[] MODIFIERS_PRODUCTION = new Object[] {MODIFIERS, TYPE, DECLARATION_ASSIGNEE_LIST};
-  private static final Object[] MODIFIERS_ASSIGNMENT_PRODUCTION = new Object[] {MODIFIERS, TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION};
+  private static final Object[] PRODUCTION                      = new Object[] {                            TYPE, DECLARATION_ASSIGNEE_LIST};
+  private static final Object[] ASSIGNMENT_PRODUCTION           = new Object[] {                            TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION};
+  private static final Object[] MODIFIERS_PRODUCTION            = new Object[] {MODIFIERS_NOT_SYNCHRONIZED, TYPE, DECLARATION_ASSIGNEE_LIST};
+  private static final Object[] MODIFIERS_ASSIGNMENT_PRODUCTION = new Object[] {MODIFIERS_NOT_SYNCHRONIZED, TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION};
 
   public LocalDeclarationRule()
   {

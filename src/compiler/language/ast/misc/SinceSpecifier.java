@@ -1,7 +1,6 @@
-package compiler.language.ast.member;
+package compiler.language.ast.misc;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.VersionNumber;
 
 /*
  * Created on 13 Jul 2010
@@ -36,7 +35,7 @@ public class SinceSpecifier extends Modifier
 
   /**
    * {@inheritDoc}
-   * @see compiler.language.ast.member.Modifier#toString()
+   * @see compiler.language.ast.misc.Modifier#toString()
    */
   @Override
   public String toString()

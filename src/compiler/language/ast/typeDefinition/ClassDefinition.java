@@ -3,7 +3,7 @@ package compiler.language.ast.typeDefinition;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.Member;
-import compiler.language.ast.member.Modifier;
+import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.topLevel.TypeDefinition;
 import compiler.language.ast.type.PointerType;

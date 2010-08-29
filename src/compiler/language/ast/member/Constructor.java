@@ -2,6 +2,7 @@ package compiler.language.ast.member;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.ArgumentList;
+import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;

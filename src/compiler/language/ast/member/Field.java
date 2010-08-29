@@ -3,6 +3,7 @@ package compiler.language.ast.member;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.misc.DeclarationAssignee;
+import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.type.Type;
 
 /*

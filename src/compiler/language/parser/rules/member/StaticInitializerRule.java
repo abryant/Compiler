@@ -7,9 +7,9 @@ import static compiler.language.parser.ParseType.STATIC_INITIALIZER;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.MemberHeader;
-import compiler.language.ast.member.Modifier;
-import compiler.language.ast.member.ModifierType;
 import compiler.language.ast.member.StaticInitializer;
+import compiler.language.ast.misc.Modifier;
+import compiler.language.ast.misc.ModifierType;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.terminal.Name;
 import compiler.language.parser.LanguageParseException;
@@ -27,6 +27,7 @@ public class StaticInitializerRule extends Rule
 {
   // this uses MEMBER_HEADER instead of STATIC_KEYWORD because using STATIC_KEYWORD causes shift-reduce conflicts
   // the match() method checks that there is one modifier (static) and that there are no access specifiers
+  // TODO: go back to the old style of static initializers
   private static final Object[] PRODUCTION = new Object[] {MEMBER_HEADER, NAME, BLOCK};
 
   public StaticInitializerRule()
