@@ -398,6 +398,9 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.EQUALS, info(4990)),
     new Token(ParseType.NAME, new Name("i", info(5000))),
     new Token(ParseType.SEMICOLON, info(5010)),
+    new Token(ParseType.NAME, new Name("i", info(5015))),
+    new Token(ParseType.DOUBLE_PLUS, info(5016)),
+    new Token(ParseType.SEMICOLON, info(5017)),
     new Token(ParseType.RBRACE, info(5020)),
 
     new Token(ParseType.SWITCH_KEYWORD, info(5030)),

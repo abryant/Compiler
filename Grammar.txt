@@ -169,8 +169,10 @@ CatchClause = CatchKeyword PointerType Name Block
             | CatchKeyword Modifiers PointerType Name Block
 FinallyClause = FinallyKeyword Block | epsilon
 
-Increment = Assignee Plus  Plus  | Plus  Plus  Assignee
-Decrement = Assignee Minus Minus | Minus Minus Assignee
+Increment = Assignee DoublePlus  | DoublePlus  Assignee
+          | QName    DoublePlus  | DoublePlus  QName
+Decrement = Assignee DoubleMinus | DoubleMinus Assignee
+          | QName    DoubleMinus | DoubleMinus QName
 
 ###############
   Expressions

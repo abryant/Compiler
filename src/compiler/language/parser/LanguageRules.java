@@ -79,6 +79,7 @@ import compiler.language.parser.rules.statement.BreakStatementRule;
 import compiler.language.parser.rules.statement.CatchClauseRule;
 import compiler.language.parser.rules.statement.CatchClausesRule;
 import compiler.language.parser.rules.statement.ContinueStatementRule;
+import compiler.language.parser.rules.statement.DecrementRule;
 import compiler.language.parser.rules.statement.DoStatementRule;
 import compiler.language.parser.rules.statement.ElseClauseRule;
 import compiler.language.parser.rules.statement.ElseIfClauseRule;
@@ -91,6 +92,7 @@ import compiler.language.parser.rules.statement.ForInitRule;
 import compiler.language.parser.rules.statement.ForStatementRule;
 import compiler.language.parser.rules.statement.ForUpdateRule;
 import compiler.language.parser.rules.statement.IfStatementRule;
+import compiler.language.parser.rules.statement.IncrementRule;
 import compiler.language.parser.rules.statement.LocalDeclarationRule;
 import compiler.language.parser.rules.statement.OptionalBlockRule;
 import compiler.language.parser.rules.statement.ReturnStatementRule;
@@ -219,6 +221,7 @@ public class LanguageRules
     new CatchClauseRule(),
     new CatchClausesRule(),
     new ContinueStatementRule(),
+    new DecrementRule(),
     new DoStatementRule(),
     new ElseClauseRule(),
     new ElseIfClauseRule(),
@@ -231,6 +234,7 @@ public class LanguageRules
     new ForStatementRule(),
     new ForUpdateRule(),
     new IfStatementRule(),
+    new IncrementRule(),
     new LocalDeclarationRule(),
     new OptionalBlockRule(),
     new ReturnStatementRule(),
