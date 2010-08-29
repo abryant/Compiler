@@ -1,9 +1,9 @@
 The grammar for language X
 ===================================================================================================
 
-###################
-  Top Level Stuff
-###################
+#############
+  Top Level
+#############
 
 CompilationUnit = epsilon
                 | CompilationUnit PackageDeclaration
@@ -21,45 +21,42 @@ TypeDefinition = ClassDefinition
                | InterfaceDefinition
                | EnumDefinition
 
-###############
-  Class Stuff
-###############
+####################
+  Type Definitions
+####################
 
+ClassDefinition = MemberHeader ClassKeyword Name               ClassExtendsClause ImplementsClause LBrace MemberList RBrace
+                | MemberHeader ClassKeyword Name TypeArguments ClassExtendsClause ImplementsClause LBrace MemberList RBrace
+
+InterfaceDefinition = MemberHeader InterfaceKeyword Name TypeArguments InterfaceExtendsClause LBrace MemberList RBrace
+
+EnumDefinition = MemberHeader EnumKeyword Name ClassExtendsClause ImplementsClause LBrace EnumConstants Semicolon MemberList RBrace
+               | MemberHeader EnumKeyword Name ClassExtendsClause ImplementsClause LBrace EnumConstants                      RBrace
+
+ClassExtendsClause     = ExtendsKeyword PointerType | epsilon
+InterfaceList          = InterfaceList Comma PointerType | PointerType
+ImplementsClause       = ImplementsKeyword InterfaceList | epsilon
+InterfaceExtendsClause = ExtendsKeyword InterfaceList | epsilon
+
+EnumConstants = EnumConstantList Comma | EnumConstantList | epsilon
+EnumConstantList = EnumConstant | EnumConstantList Comma EnumConstant
+EnumConstant = Name | Name Parameters
+
+###########
+  Members
+###########
 
 AccessSpecifier = PublicKeyword | PrivateKeyword | PackageKeyword | ProtectedKeyword
                 | PackageKeyword ProtectedKeyword | ProtectedKeyword PackageKeyword
                 | epsilon
 
-Modifiers = Modifier | Modifiers Modifier
-ModifiersNotSynchronized = ModifierNotSynchronized | ModifiersNotSynchronized ModifierNotSynchronized
-Modifier = ModifierNotSynchronized | SynchronizedKeyword
-ModifierNotSynchronized = StaticKeyword   | AbstractKeyword | FinalKeyword     | ImmutableKeyword | MutableKeyword
-                        | NativeSpecifier | SinceSpecifier  | TransientKeyword | VolatileKeyword
-NativeSpecifier = NativeKeyword LParen StringLiteral RParen
-SinceSpecifier = SinceKeyword LParen VersionNumber RParen
-VersionNumber = IntegerLiteral | VersionNumber Dot IntegerLiteral
-
 MemberHeader = AccessSpecifier Modifiers | AccessSpecifier
-
-ClassDefinition     = MemberHeader ClassKeyword Name ClassExtendsClause ImplementsClause LBrace MemberList RBrace
-                    | MemberHeader ClassKeyword Name TypeArguments ClassExtendsClause ImplementsClause LBrace MemberList RBrace
-InterfaceDefinition = MemberHeader InterfaceKeyword Name TypeArguments InterfaceExtendsClause LBrace MemberList RBrace
-
-EnumDefinition = MemberHeader EnumKeyword Name ClassExtendsClause ImplementsClause LBrace EnumConstants Semicolon MemberList RBrace
-               | MemberHeader EnumKeyword Name ClassExtendsClause ImplementsClause LBrace EnumConstants RBrace
-
-EnumConstants = EnumConstantList Comma | EnumConstantList | epsilon
-EnumConstantList = EnumConstantList Comma EnumConstant
-                 | EnumConstant
-EnumConstant = Name | Name Parameters
-
-ClassExtendsClause     = ExtendsKeyword PointerType | epsilon
-ImplementsClause       = ImplementsKeyword InterfaceList | epsilon
-InterfaceExtendsClause = ExtendsKeyword InterfaceList | epsilon
-InterfaceList          = InterfaceList Comma PointerType | PointerType
 
 MemberList = MemberList Member | epsilon
 Member = Constructor | Method | Field | StaticInitializer | TypeDefinition
+
+Field = MemberHeader Type DeclarationAssigneeList Equals Expression Semicolon
+      | MemberHeader Type DeclarationAssigneeList Semicolon
 
 Constructor = MemberHeader Name Arguments ThrowsClause Block
 
@@ -67,15 +64,6 @@ Method = MemberHeader TypeArguments Type Name Arguments ThrowsClause Semicolon
        | MemberHeader TypeArguments Type Name Arguments ThrowsClause Block
        | MemberHeader               Type Name Arguments ThrowsClause Semicolon
        | MemberHeader               Type Name Arguments ThrowsClause Block
-
-ThrowsClause = ThrowsKeyword ThrowsList | epsilon
-ThrowsList = PointerType | ThrowsList Comma PointerType
-
-Field = MemberHeader Type DeclarationAssigneeList Equals Expression Semicolon
-      | MemberHeader Type DeclarationAssigneeList Semicolon
-
-DeclarationAssigneeList = DeclarationAssignee | DeclarationAssigneeList Comma DeclarationAssignee
-DeclarationAssignee = Name | Underscore
 
 Property = MemberHeader PropertyKeyword Type Name Semicolon
          | MemberHeader PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock Semicolon
@@ -88,36 +76,22 @@ Property = MemberHeader PropertyKeyword Type Name Semicolon
          | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
          | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
 
-OptionalBlock = Block | epsilon
 
 // MemberHeader is used here instead of StaticKeyword to avoid shift-reduce conflicts
 // due to not being able to decide whether to reduce via [ACCESS_SPECIFIER <- ]
 // if the next token is "static"
 StaticInitializer = MemberHeader Name Block
 
-Arguments = LParen ArgumentList RParen | LParen RParen
-ArgumentList = Argument | ArgumentList Comma Argument
-Argument = Modifiers Type Name
-         | Modifiers Type At Name Equals ExpressionNoTuple
-         | Modifiers Type Ellipsis Name
-         | Type Name
-         | Type At Name Equals ExpressionNoTuple
-         | Type Ellipsis Name
-         | Arguments
 
-Parameters = LParen ParameterList RParen
-           | LParen RParen
-ParameterList = Parameter | ParameterList Comma Parameter
-Parameter = At Name Equals ExpressionNoTuple
-          | ExpressionNoTuple
-
-
-#########################
-  Blocks and Statements
-#########################
+##############
+  Statements
+##############
 
 Block = LBrace RBrace
       | LBrace Statements RBrace
+
+OptionalBlock = Block | epsilon
+
 Statements = Statement | Statements Statement
 
 Statement = Block
@@ -149,20 +123,6 @@ LocalDeclaration = Type DeclarationAssigneeList // check that underscore is not 
                  | Modifiers Type DeclarationAssigneeList Equals Expression
 
 Assignment = AssigneeList AssignmentOperator Expression
-
-AssignmentOperator = Equals | PlusEquals | MinusEquals | StarEquals | ForwardSlashEquals | PercentEquals
-                   | DoubleAmpersandEquals | DoublePipeEquals   | DoubleCaretEquals
-                   | AmpersandEquals       | PipeEquals         | CaretEquals
-                   | DoubleLAngleEquals    | DoubleRAngleEquals | TripleRAngleEquals
-
-// right-recursive list, so that the symbol after the list can be
-// used to decide between TypeList and AssigneeList
-// Assignee excludes QName because including it would cause conflicts
-AssigneeList = Assignee
-             | QName
-             | Assignee Comma AssigneeList
-             | QName    Comma AssigneeList
-Assignee = FieldAccessExpressionNotQName | ArrayAccessExpression | Underscore
 
 IfStatement = IfKeyword Expression Block ElseIfClauses ElseClause
 ElseIfClauses = epsilon | ElseIfClauses ElseIfClause
@@ -216,11 +176,11 @@ Decrement = Assignee Minus Minus | Minus Minus Assignee
   Expressions
 ###############
 
-// all of the types of expression that can be used as a statement
-StatementExpression = MethodCallExpression | InstanciationExpression
-
 // the basic Expression type, this includes lists of QNames as TupleExpressions
 Expression = TupleExpression | QNameList
+
+// all of the types of expression that can be used as a statement
+StatementExpression = MethodCallExpression | InstanciationExpression
 
 // NOTE:
 // All the following Expressions explicitly exclude lists of just QNames, along
@@ -460,10 +420,8 @@ ArrayInitializer = LBrace ExpressionList RBrace
                  | LBrace RBrace
 ExpressionList = ExpressionNoTuple | ExpressionList Comma ExpressionNoTuple
 
-DimensionExpressions = DimensionExpression | DimensionExpressions DimensionExpression
 DimensionExpression = LSquare Expression RSquare
-
-Dimensions = LSquare RSquare | Dimensions LSquare RSquare
+DimensionExpressions = DimensionExpression | DimensionExpressions DimensionExpression
 
 #########
   Types
@@ -495,9 +453,6 @@ TypeNotPointerTypeNotTupleType = PrimitiveType | ArrayType | ClosureType | VoidT
 TypeNotArrayType = PrimitiveType | PointerType | TupleType | ClosureType | VoidType
 TypeNotQNameList = ArrayType | PrimitiveType | PointerTypeNotQName | TupleTypeNotQNameList | ClosureType | VoidType
 
-TupleType = TupleTypeNotQNameList | NestedQNameList
-TupleTypeNotQNameList = LParen TypeListNotQNameList RParen
-
 TypeList = TypeListNotQNameList | QNameList
 // a right recursive list that accepts any list of types except a QNameList
 // this is so that there are no conflicts between TupleExpression and TypeList
@@ -506,15 +461,20 @@ TypeListNotQNameList = QName            Comma TypeListNotQNameList
                      | TypeNotQNameList Comma TypeList
                      | TypeNotQNameList
 
-ClosureType = LBrace               TypeList Arrow TypeList ThrowsClause RBrace
-            | LBrace TypeArguments TypeList Arrow TypeList ThrowsClause RBrace
-
 // QNames are separated out so that ArrayType and ArrayAccess can be disambiguated
 // on partial input: class A { int method() { foo[
 // where the lookahead token is the final [
 ArrayType = TypeNotQNameList LSquare RSquare
           | QName LSquare RSquare
           | NestedQNameList LSquare RSquare
+
+TupleType = TupleTypeNotQNameList | NestedQNameList
+TupleTypeNotQNameList = LParen TypeListNotQNameList RParen
+
+ClosureType = LBrace               TypeList Arrow TypeList ThrowsClause RBrace
+            | LBrace TypeArguments TypeList Arrow TypeList ThrowsClause RBrace
+
+VoidType = VoidKeyword
 
 PrimitiveType = BooleanType | IntegerType | CharacterType | FloatingType
 BooleanType = BooleanKeyword
@@ -604,8 +564,6 @@ WildcardTypeParameterTripleRAngle = QuestionMark TripleRAngle
                                   | QuestionMark ExtendsKeyword PointerType SuperKeyword PointerTypeTripleRAngle
                                   | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerTypeTripleRAngle
 
-VoidType = VoidKeyword
-
 
 TypeArgument = Name
              | Name ExtendsKeyword PointerType
@@ -622,13 +580,64 @@ TypeArgumentList = TypeArgumentList Comma TypeArgument | TypeArgument
 TypeArgumentListRAngle = TypeArgumentRAngle | TypeArgumentList Comma TypeArgumentRAngle
 TypeArguments = LAngle TypeArgumentListRAngle
 
+#################
+  Miscellaneous
+#################
 
-NestedQNameList = LParen QNameList RParen
+Modifier = ModifierNotSynchronized | SynchronizedKeyword
+ModifierNotSynchronized = StaticKeyword   | AbstractKeyword | FinalKeyword     | ImmutableKeyword | MutableKeyword
+                        | NativeSpecifier | SinceSpecifier  | TransientKeyword | VolatileKeyword
+NativeSpecifier = NativeKeyword LParen StringLiteral RParen
+SinceSpecifier = SinceKeyword LParen VersionNumber RParen
+VersionNumber = IntegerLiteral | VersionNumber Dot IntegerLiteral
+Modifiers = Modifier | Modifiers Modifier
+ModifiersNotSynchronized = ModifierNotSynchronized | ModifiersNotSynchronized ModifierNotSynchronized
+
+Argument = Modifiers Type Name
+         | Modifiers Type At Name Equals ExpressionNoTuple
+         | Modifiers Type Ellipsis Name
+         | Type Name
+         | Type At Name Equals ExpressionNoTuple
+         | Type Ellipsis Name
+         | Arguments
+ArgumentList = Argument | ArgumentList Comma Argument
+Arguments = LParen ArgumentList RParen | LParen RParen
+
+Assignee = FieldAccessExpressionNotQName | ArrayAccessExpression | Underscore
+
+// right-recursive list, so that the symbol after the list can be
+// used to decide between TypeList and AssigneeList
+// Assignee excludes QName because including it would cause conflicts
+AssigneeList = Assignee
+             | QName
+             | Assignee Comma AssigneeList
+             | QName    Comma AssigneeList
+
+AssignmentOperator = Equals | PlusEquals | MinusEquals | StarEquals | ForwardSlashEquals | PercentEquals
+                   | DoubleAmpersandEquals | DoublePipeEquals   | DoubleCaretEquals
+                   | AmpersandEquals       | PipeEquals         | CaretEquals
+                   | DoubleLAngleEquals    | DoubleRAngleEquals | TripleRAngleEquals
+
+DeclarationAssignee = Name | Underscore
+DeclarationAssigneeList = DeclarationAssignee | DeclarationAssigneeList Comma DeclarationAssignee
+
+Dimensions = LSquare RSquare | Dimensions LSquare RSquare
+
+Parameter = At Name Equals ExpressionNoTuple
+          | ExpressionNoTuple
+ParameterList = Parameter | ParameterList Comma Parameter
+Parameters = LParen ParameterList RParen
+           | LParen RParen
+
+
+QName = Name | QName Dot Name
 QNameList = QName | NestedQNameList
           | QName Comma QNameList
           | NestedQNameList Comma QNameList
+NestedQNameList = LParen QNameList RParen
 
-QName = Name | QName Dot Name
+ThrowsList = PointerType | ThrowsList Comma PointerType
+ThrowsClause = ThrowsKeyword ThrowsList | epsilon
 
 
 ################################
@@ -641,4 +650,4 @@ Name
 
 *Keyword // anything ending in "Keyword" is a terminal which does not store a value
 
-// any names which sound like a symbol (or DoubleX where X is a symbol) are terminals which do not store values
+// any names which sound like a symbol (or DoubleX or TripleX where X is a symbol) are terminals which do not store values

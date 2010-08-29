@@ -128,13 +128,26 @@ public enum ParseType
   DIMENSION_EXPRESSIONS,          // ParseList<Expression>
 
   // types
+  TYPE,                              // Type
+  TYPE_RANGLE,                       // ParseContainer<Type>
+  TYPE_DOUBLE_RANGLE,                // ParseContainer<ParseContainer<Type>>
+  TYPE_TRIPLE_RANGLE,                // ParseContainer<ParseContainer<ParseContainer<Type>>>
+  TYPE_NOT_QNAME,                    // Type
+  TYPE_NOT_POINTER_TYPE_NOT_TUPLE_TYPE, // Type
+  TYPE_NOT_ARRAY_TYPE,               // Type
+  TYPE_NOT_QNAME_LIST,               // Type
+  TYPE_LIST,                         // ParseList<Type> (length > 0)
+  TYPE_LIST_NOT_QNAME_LIST,          // ParseList<Type> (length > 0)
   ARRAY_TYPE,                        // ArrayType
-  BOOLEAN_TYPE,                      // BooleanType
-  CHARACTER_TYPE,                    // CharacterType
+  TUPLE_TYPE,                        // TupleType
+  TUPLE_TYPE_NOT_QNAME_LIST,         // TupleType
   CLOSURE_TYPE,                      // ClosureType
-  FLOATING_TYPE,                     // FloatingType
-  INTEGER_TYPE,                      // IntegerType
+  VOID_TYPE,                         // VoidType
   PRIMITIVE_TYPE,                    // PrimitiveType
+  BOOLEAN_TYPE,                      // BooleanType
+  INTEGER_TYPE,                      // IntegerType
+  CHARACTER_TYPE,                    // CharacterType
+  FLOATING_TYPE,                     // FloatingType
   POINTER_TYPE,                      // PointerType
   POINTER_TYPE_RANGLE,               // ParseContainer<PointerType>
   POINTER_TYPE_DOUBLE_RANGLE,        // ParseContainer<ParseContainer<PointerType>>
@@ -145,23 +158,6 @@ public enum ParseType
   POINTER_TYPE_TRAILING_PARAMS_RANGLE,        // ParseContainer<PointerType>
   POINTER_TYPE_TRAILING_PARAMS_DOUBLE_RANGLE, // ParseContainer<ParseContainer<PointerType>>
   POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<PointerType>>>
-  TUPLE_TYPE,                        // TupleType
-  TUPLE_TYPE_NOT_QNAME_LIST,         // TupleType
-  TYPE_LIST,                         // ParseList<Type> (length > 0)
-  TYPE_LIST_NOT_QNAME_LIST,          // ParseList<Type> (length > 0)
-  TYPE,                              // Type
-  TYPE_RANGLE,                       // ParseContainer<Type>
-  TYPE_DOUBLE_RANGLE,                // ParseContainer<ParseContainer<Type>>
-  TYPE_TRIPLE_RANGLE,                // ParseContainer<ParseContainer<ParseContainer<Type>>>
-  TYPE_NOT_QNAME,                    // Type
-  TYPE_NOT_POINTER_TYPE_NOT_TUPLE_TYPE, // Type
-  TYPE_NOT_ARRAY_TYPE,               // Type
-  TYPE_NOT_QNAME_LIST,               // Type
-  TYPE_ARGUMENTS,                    // ParseList<TypeArgument> (length > 0)
-  TYPE_ARGUMENT_LIST,                // ParseList<TypeArgument> (length > 0)
-  TYPE_ARGUMENT_LIST_RANGLE,         // ParseContainer<ParseList<TypeArgument>> (length > 0)
-  TYPE_ARGUMENT,                     // TypeArgument
-  TYPE_ARGUMENT_RANGLE,              // ParseContainer<TypeArgument>
   TYPE_PARAMETERS,                   // ParseList<TypeParameter> (length > 0)
   TYPE_PARAMETER_LIST,               // ParseList<TypeParameter> (length > 0)
   TYPE_PARAMETER_LIST_RANGLE,        // ParseContainer<ParseList<TypeParameter>> (length > 0)
@@ -175,15 +171,20 @@ public enum ParseType
   WILDCARD_TYPE_PARAMETER_RANGLE,    // ParseContainer<TypeParameter>
   WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE, // ParseContainer<ParseContainer<TypeParameter>>
   WILDCARD_TYPE_PARAMETER_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>
-  VOID_TYPE,                         // VoidType
+  TYPE_ARGUMENT,                     // TypeArgument
+  TYPE_ARGUMENT_RANGLE,              // ParseContainer<TypeArgument>
+  TYPE_ARGUMENT_LIST,                // ParseList<TypeArgument> (length > 0)
+  TYPE_ARGUMENT_LIST_RANGLE,         // ParseContainer<ParseList<TypeArgument>> (length > 0)
+  TYPE_ARGUMENTS,                    // ParseList<TypeArgument> (length > 0)
 
   // miscellaneous non-terminals
   MODIFIER,                   // Modifier
   MODIFIER_NOT_SYNCHRONIZED,  // Modifier
-  MODIFIERS,                  // ParseList<Modifier> (length > 0)
-  MODIFIERS_NOT_SYNCHRONIZED, // ParseList<Modifier> (length > 0)
   NATIVE_SPECIFIER,           // NativeSpecifier
   SINCE_SPECIFIER,            // SinceSpecifier
+  VERSION_NUMBER,             // VersionNumber
+  MODIFIERS,                  // ParseList<Modifier> (length > 0)
+  MODIFIERS_NOT_SYNCHRONIZED, // ParseList<Modifier> (length > 0)
   ARGUMENT,                   // Argument
   ARGUMENT_LIST,              // ParseList<Argument>
   ARGUMENTS,                  // ArgumentList
@@ -201,7 +202,6 @@ public enum ParseType
   NESTED_QNAME_LIST,          // QNameElement
   THROWS_LIST,                // ParseList<PointerType> (length > 0)
   THROWS_CLAUSE,              // ParseList<PointerType> (length == 0 if none are specified)
-  VERSION_NUMBER,             // VersionNumber
 
   // =============
   //   TERMINALS
