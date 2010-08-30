@@ -1,6 +1,7 @@
 package compiler.language.ast.typeDefinition;
 
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.member.Member;
 import compiler.language.ast.misc.Parameter;
 import compiler.language.ast.terminal.Name;
 
@@ -18,18 +19,21 @@ public class EnumConstant
 
   private Name name;
   private Parameter[] parameters;
+  private Member[] members;
 
   /**
    * Creates a new Enum Constant with the specified name and parameters
    * @param name - the name of the constant
    * @param parameters - the parameters to be passed into the enum's constructor
+   * @param members - the list of members of this enum constant, or null if there is no body for it
    * @param parseInfo - the parsing information
    */
-  public EnumConstant(Name name, Parameter[] parameters, ParseInfo parseInfo)
+  public EnumConstant(Name name, Parameter[] parameters, Member[] members, ParseInfo parseInfo)
   {
     this.parseInfo = parseInfo;
     this.name = name;
     this.parameters = parameters;
+    this.members = members;
   }
 
   /**
@@ -46,6 +50,14 @@ public class EnumConstant
   public Parameter[] getParameters()
   {
     return parameters;
+  }
+
+  /**
+   * @return the members of this enum constant, or null if no body was specified
+   */
+  public Member[] getMembers()
+  {
+    return members;
   }
 
   /**
@@ -76,6 +88,17 @@ public class EnumConstant
         }
       }
       buffer.append(")");
+    }
+    if (members != null)
+    {
+      buffer.append("\n{\n");
+      for (int i = 0; i < members.length; i++)
+      {
+        String memberStr = members[i].toString();
+        buffer.append(memberStr.replaceAll("(?m)^", "   "));
+        buffer.append("\n   ");
+      }
+      buffer.append("\n}");
     }
     return buffer.toString();
   }

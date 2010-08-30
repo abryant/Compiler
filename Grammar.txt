@@ -40,7 +40,10 @@ InterfaceExtendsClause = ExtendsKeyword InterfaceList | epsilon
 
 EnumConstants = EnumConstantList Comma | EnumConstantList | epsilon
 EnumConstantList = EnumConstant | EnumConstantList Comma EnumConstant
-EnumConstant = Name | Name Parameters
+EnumConstant = Name
+             | Name Parameters
+             | Name            LBrace MemberList RBrace
+             | Name Parameters LBrace MemberList RBrace
 
 ###########
   Members

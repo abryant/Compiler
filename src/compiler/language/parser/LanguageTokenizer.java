@@ -312,10 +312,17 @@ public class LanguageTokenizer extends Tokenizer
 
     new Token(ParseType.RPAREN, info(4300)),
     new Token(ParseType.COMMA, info(4310)),
+
     new Token(ParseType.NAME, new Name("CONSTANT_B", info(4320))),
     new Token(ParseType.LPAREN, info(4330)),
     new Token(ParseType.RPAREN, info(4340)),
+    new Token(ParseType.LBRACE, info(4341)),
+    new Token(ParseType.CHARACTER_KEYWORD, info(4342)),
+    new Token(ParseType.NAME, new Name("test", info(4343))),
+    new Token(ParseType.SEMICOLON, info(4344)),
+    new Token(ParseType.RBRACE, info(4349)),
     new Token(ParseType.COMMA, info(4350)),
+
     new Token(ParseType.NAME, new Name("CONSTANT_C", info(4360))),
     new Token(ParseType.SEMICOLON, info(4370)),
 

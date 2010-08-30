@@ -147,8 +147,8 @@ public class EnumDefinition extends TypeDefinition
     buffer.append("\n{\n");
     for (int i = 0; i < constants.length; i++)
     {
-      buffer.append("   ");
-      buffer.append(constants[i]);
+      String constantStr = constants[i].toString();
+      buffer.append(constantStr.replaceAll("(?m)^", "   "));
       if (i != constants.length - 1)
       {
         buffer.append(",\n");
