@@ -133,6 +133,10 @@ import compiler.language.parser.rules.type.TypeArgumentListRule;
 import compiler.language.parser.rules.type.TypeArgumentRAngleRule;
 import compiler.language.parser.rules.type.TypeArgumentRule;
 import compiler.language.parser.rules.type.TypeArgumentsRule;
+import compiler.language.parser.rules.type.TypeBoundListDoubleRAngleRule;
+import compiler.language.parser.rules.type.TypeBoundListRAngleRule;
+import compiler.language.parser.rules.type.TypeBoundListRule;
+import compiler.language.parser.rules.type.TypeBoundListTripleRAngleRule;
 import compiler.language.parser.rules.type.TypeDoubleRAngleRule;
 import compiler.language.parser.rules.type.TypeListNotQNameListRule;
 import compiler.language.parser.rules.type.TypeListRule;
@@ -315,6 +319,10 @@ public class LanguageRules
     new TypeArgumentRAngleRule(),
     new TypeArgumentRule(),
     new TypeArgumentsRule(),
+    new TypeBoundListDoubleRAngleRule(),
+    new TypeBoundListRAngleRule(),
+    new TypeBoundListRule(),
+    new TypeBoundListTripleRAngleRule(),
     new TypeDoubleRAngleRule(),
     new TypeListNotQNameListRule(),
     new TypeListRule(),

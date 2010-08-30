@@ -1,12 +1,13 @@
 package compiler.language.parser.rules.type;
 
 import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
-import static compiler.language.parser.ParseType.POINTER_TYPE;
 import static compiler.language.parser.ParseType.QUESTION_MARK;
 import static compiler.language.parser.ParseType.SUPER_KEYWORD;
+import static compiler.language.parser.ParseType.TYPE_BOUND_LIST;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER;
 
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.WildcardTypeParameter;
 import compiler.parser.ParseException;
@@ -22,11 +23,11 @@ import compiler.parser.Rule;
 public class WildcardTypeParameterRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {QUESTION_MARK};
-  private static final Object[] EXTENDS_PRODUCTION = new Object[] {QUESTION_MARK, EXTENDS_KEYWORD, POINTER_TYPE};
-  private static final Object[] SUPER_PRODUCTION = new Object[] {QUESTION_MARK, SUPER_KEYWORD, POINTER_TYPE};
-  private static final Object[] EXTENDS_SUPER_PRODUCTION = new Object[] {QUESTION_MARK, EXTENDS_KEYWORD, POINTER_TYPE, SUPER_KEYWORD, POINTER_TYPE};
-  private static final Object[] SUPER_EXTENDS_PRODUCTION = new Object[] {QUESTION_MARK, SUPER_KEYWORD, POINTER_TYPE, EXTENDS_KEYWORD, POINTER_TYPE};
+  private static final Object[] PRODUCTION               = new Object[] {QUESTION_MARK};
+  private static final Object[] EXTENDS_PRODUCTION       = new Object[] {QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST};
+  private static final Object[] SUPER_PRODUCTION         = new Object[] {QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST};
+  private static final Object[] EXTENDS_SUPER_PRODUCTION = new Object[] {QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST, SUPER_KEYWORD,   TYPE_BOUND_LIST};
+  private static final Object[] SUPER_EXTENDS_PRODUCTION = new Object[] {QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST, EXTENDS_KEYWORD, TYPE_BOUND_LIST};
 
   public WildcardTypeParameterRule()
   {
@@ -41,29 +42,39 @@ public class WildcardTypeParameterRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      return new WildcardTypeParameter(null, null, (ParseInfo) args[0]);
+      return new WildcardTypeParameter(new PointerType[0], new PointerType[0], (ParseInfo) args[0]);
     }
     if (types == EXTENDS_PRODUCTION)
     {
-      PointerType superType = (PointerType) args[2];
-      return new WildcardTypeParameter(superType, null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo()));
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> superTypes = (ParseList<PointerType>) args[2];
+      return new WildcardTypeParameter(superTypes.toArray(new PointerType[0]), new PointerType[0],
+                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo()));
     }
     if (types == SUPER_PRODUCTION)
     {
-      PointerType subType = (PointerType) args[2];
-      return new WildcardTypeParameter(null, subType, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo()));
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> subTypes = (ParseList<PointerType>) args[2];
+      return new WildcardTypeParameter(new PointerType[0], subTypes.toArray(new PointerType[0]),
+                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo()));
     }
     if (types == EXTENDS_SUPER_PRODUCTION)
     {
-      PointerType superType = (PointerType) args[2];
-      PointerType subType = (PointerType) args[4];
-      return new WildcardTypeParameter(superType, subType, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo(), (ParseInfo) args[3], subType.getParseInfo()));
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> superTypes = (ParseList<PointerType>) args[2];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> subTypes = (ParseList<PointerType>) args[4];
+      return new WildcardTypeParameter(superTypes.toArray(new PointerType[0]), subTypes.toArray(new PointerType[0]),
+                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], subTypes.getParseInfo()));
     }
     if (types == SUPER_EXTENDS_PRODUCTION)
     {
-      PointerType subType = (PointerType) args[2];
-      PointerType superType = (PointerType) args[4];
-      return new WildcardTypeParameter(superType, subType, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo(), (ParseInfo) args[3], superType.getParseInfo()));
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> subTypes = (ParseList<PointerType>) args[2];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> superTypes = (ParseList<PointerType>) args[4];
+      return new WildcardTypeParameter(superTypes.toArray(new PointerType[0]), subTypes.toArray(new PointerType[0]),
+                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], superTypes.getParseInfo()));
     }
     throw badTypeList();
   }

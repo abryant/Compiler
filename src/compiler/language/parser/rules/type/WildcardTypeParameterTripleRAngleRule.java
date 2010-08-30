@@ -1,15 +1,16 @@
 package compiler.language.parser.rules.type;
 
 import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
-import static compiler.language.parser.ParseType.POINTER_TYPE;
-import static compiler.language.parser.ParseType.POINTER_TYPE_TRIPLE_RANGLE;
 import static compiler.language.parser.ParseType.QUESTION_MARK;
 import static compiler.language.parser.ParseType.SUPER_KEYWORD;
 import static compiler.language.parser.ParseType.TRIPLE_RANGLE;
+import static compiler.language.parser.ParseType.TYPE_BOUND_LIST;
+import static compiler.language.parser.ParseType.TYPE_BOUND_LIST_TRIPLE_RANGLE;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER_TRIPLE_RANGLE;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
 import compiler.language.ast.type.WildcardTypeParameter;
@@ -27,11 +28,11 @@ import compiler.parser.Rule;
 public class WildcardTypeParameterTripleRAngleRule extends Rule
 {
 
-  private static final Object[] PRODUCTION = new Object[] {QUESTION_MARK, TRIPLE_RANGLE};
-  private static final Object[] EXTENDS_PRODUCTION = new Object[] {QUESTION_MARK, EXTENDS_KEYWORD, POINTER_TYPE_TRIPLE_RANGLE};
-  private static final Object[] SUPER_PRODUCTION = new Object[] {QUESTION_MARK, SUPER_KEYWORD, POINTER_TYPE_TRIPLE_RANGLE};
-  private static final Object[] EXTENDS_SUPER_PRODUCTION = new Object[] {QUESTION_MARK, EXTENDS_KEYWORD, POINTER_TYPE, SUPER_KEYWORD, POINTER_TYPE_TRIPLE_RANGLE};
-  private static final Object[] SUPER_EXTENDS_PRODUCTION = new Object[] {QUESTION_MARK, SUPER_KEYWORD, POINTER_TYPE, EXTENDS_KEYWORD, POINTER_TYPE_TRIPLE_RANGLE};
+  private static final Object[] PRODUCTION               = new Object[] {QUESTION_MARK, TRIPLE_RANGLE};
+  private static final Object[] EXTENDS_PRODUCTION       = new Object[] {QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST_TRIPLE_RANGLE};
+  private static final Object[] SUPER_PRODUCTION         = new Object[] {QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST_TRIPLE_RANGLE};
+  private static final Object[] EXTENDS_SUPER_PRODUCTION = new Object[] {QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST, SUPER_KEYWORD,   TYPE_BOUND_LIST_TRIPLE_RANGLE};
+  private static final Object[] SUPER_EXTENDS_PRODUCTION = new Object[] {QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST, EXTENDS_KEYWORD, TYPE_BOUND_LIST_TRIPLE_RANGLE};
 
   public WildcardTypeParameterTripleRAngleRule()
   {
@@ -47,7 +48,7 @@ public class WildcardTypeParameterTripleRAngleRule extends Rule
   {
     if (types == PRODUCTION)
     {
-      TypeParameter parameter = new WildcardTypeParameter(null, null, (ParseInfo) args[0]);
+      TypeParameter parameter = new WildcardTypeParameter(new PointerType[0], new PointerType[0], (ParseInfo) args[0]);
       ParseInfo tripleRAngleInfo = (ParseInfo) args[1];
       ParseInfo firstRAngleInfo = ParseUtil.splitTripleRAngleFirst(tripleRAngleInfo);
       ParseInfo firstTwoRAnglesInfo = ParseUtil.splitTripleRAngleFirstTwo(tripleRAngleInfo);
@@ -61,10 +62,10 @@ public class WildcardTypeParameterTripleRAngleRule extends Rule
     if (types == EXTENDS_PRODUCTION)
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<PointerType>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<PointerType>>>) args[2];
-      PointerType superType = oldContainer.getItem().getItem().getItem();
-      TypeParameter typeParameter = new WildcardTypeParameter(superType, null,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo()));
+      ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>>) args[2];
+      ParseList<PointerType> superTypes = oldContainer.getItem().getItem().getItem();
+      TypeParameter typeParameter = new WildcardTypeParameter(superTypes.toArray(new PointerType[0]), new PointerType[0],
+                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo()));
       ParseContainer<TypeParameter> firstContainer = new ParseContainer<TypeParameter>(typeParameter,
                    ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], oldContainer.getItem().getItem().getParseInfo()));
       ParseContainer<ParseContainer<TypeParameter>> secondContainer = new ParseContainer<ParseContainer<TypeParameter>>(firstContainer,
@@ -75,10 +76,10 @@ public class WildcardTypeParameterTripleRAngleRule extends Rule
     if (types == SUPER_PRODUCTION)
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<PointerType>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<PointerType>>>) args[2];
-      PointerType subType = oldContainer.getItem().getItem().getItem();
-      TypeParameter typeParameter = new WildcardTypeParameter(null, subType,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo()));
+      ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>>) args[2];
+      ParseList<PointerType> subTypes = oldContainer.getItem().getItem().getItem();
+      TypeParameter typeParameter = new WildcardTypeParameter(new PointerType[0], subTypes.toArray(new PointerType[0]),
+                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo()));
       ParseContainer<TypeParameter> firstContainer = new ParseContainer<TypeParameter>(typeParameter,
                    ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], oldContainer.getItem().getItem().getParseInfo()));
       ParseContainer<ParseContainer<TypeParameter>> secondContainer = new ParseContainer<ParseContainer<TypeParameter>>(firstContainer,
@@ -88,33 +89,35 @@ public class WildcardTypeParameterTripleRAngleRule extends Rule
     }
     if (types == EXTENDS_SUPER_PRODUCTION)
     {
-      PointerType superType = (PointerType) args[2];
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<PointerType>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<PointerType>>>) args[4];
-      PointerType subType = oldContainer.getItem().getItem().getItem();
-      TypeParameter typeParameter = new WildcardTypeParameter(superType, subType,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo(), (ParseInfo) args[3], subType.getParseInfo()));
+      ParseList<PointerType> superTypes = (ParseList<PointerType>) args[2];
+      @SuppressWarnings("unchecked")
+      ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>>) args[4];
+      ParseList<PointerType> subTypes = oldContainer.getItem().getItem().getItem();
+      TypeParameter typeParameter = new WildcardTypeParameter(superTypes.toArray(new PointerType[0]), subTypes.toArray(new PointerType[0]),
+                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], subTypes.getParseInfo()));
       ParseContainer<TypeParameter> firstContainer = new ParseContainer<TypeParameter>(typeParameter,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo(), (ParseInfo) args[3], oldContainer.getItem().getItem().getParseInfo()));
+                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], oldContainer.getItem().getItem().getParseInfo()));
       ParseContainer<ParseContainer<TypeParameter>> secondContainer = new ParseContainer<ParseContainer<TypeParameter>>(firstContainer,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo(), (ParseInfo) args[3], oldContainer.getItem().getParseInfo()));
+                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], oldContainer.getItem().getParseInfo()));
       return new ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>(secondContainer,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superType.getParseInfo(), (ParseInfo) args[3], oldContainer.getParseInfo()));
+                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], oldContainer.getParseInfo()));
     }
     if (types == SUPER_EXTENDS_PRODUCTION)
     {
-      PointerType subType = (PointerType) args[2];
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<PointerType>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<PointerType>>>) args[4];
-      PointerType superType = oldContainer.getItem().getItem().getItem();
-      TypeParameter typeParameter = new WildcardTypeParameter(superType, subType,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo(), (ParseInfo) args[3], superType.getParseInfo()));
+      ParseList<PointerType> subTypes = (ParseList<PointerType>) args[2];
+      @SuppressWarnings("unchecked")
+      ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>>) args[4];
+      ParseList<PointerType> superTypes = oldContainer.getItem().getItem().getItem();
+      TypeParameter typeParameter = new WildcardTypeParameter(superTypes.toArray(new PointerType[0]), subTypes.toArray(new PointerType[0]),
+                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], superTypes.getParseInfo()));
       ParseContainer<TypeParameter> firstContainer = new ParseContainer<TypeParameter>(typeParameter,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo(), (ParseInfo) args[3], oldContainer.getItem().getItem().getParseInfo()));
+                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], oldContainer.getItem().getItem().getParseInfo()));
       ParseContainer<ParseContainer<TypeParameter>> secondContainer = new ParseContainer<ParseContainer<TypeParameter>>(firstContainer,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo(), (ParseInfo) args[3], oldContainer.getItem().getParseInfo()));
+                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], oldContainer.getItem().getParseInfo()));
       return new ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>(secondContainer,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subType.getParseInfo(), (ParseInfo) args[3], oldContainer.getParseInfo()));
+                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], oldContainer.getParseInfo()));
     }
     throw badTypeList();
   }

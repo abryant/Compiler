@@ -2,14 +2,15 @@ package compiler.language.parser.rules.type;
 
 import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
 import static compiler.language.parser.ParseType.NAME;
-import static compiler.language.parser.ParseType.POINTER_TYPE;
-import static compiler.language.parser.ParseType.POINTER_TYPE_RANGLE;
 import static compiler.language.parser.ParseType.RANGLE;
 import static compiler.language.parser.ParseType.SUPER_KEYWORD;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENT_RANGLE;
+import static compiler.language.parser.ParseType.TYPE_BOUND_LIST;
+import static compiler.language.parser.ParseType.TYPE_BOUND_LIST_RANGLE;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.ParseList;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeArgument;
@@ -26,11 +27,11 @@ import compiler.parser.Rule;
 public class TypeArgumentRAngleRule extends Rule
 {
 
-  private static final Object[] NAME_PRODUCTION = new Object[] {NAME, RANGLE};
-  private static final Object[] EXTENDS_PRODUCTION = new Object[] {NAME, EXTENDS_KEYWORD, POINTER_TYPE_RANGLE};
-  private static final Object[] SUPER_PRODUCTION = new Object[] {NAME, SUPER_KEYWORD, POINTER_TYPE_RANGLE};
-  private static final Object[] EXTENDS_SUPER_PRODUCTION = new Object[] {NAME, EXTENDS_KEYWORD, POINTER_TYPE, SUPER_KEYWORD, POINTER_TYPE_RANGLE};
-  private static final Object[] SUPER_EXTENDS_PRODUCTION = new Object[] {NAME, SUPER_KEYWORD, POINTER_TYPE, EXTENDS_KEYWORD, POINTER_TYPE_RANGLE};
+  private static final Object[] NAME_PRODUCTION          = new Object[] {NAME, RANGLE};
+  private static final Object[] EXTENDS_PRODUCTION       = new Object[] {NAME, EXTENDS_KEYWORD, TYPE_BOUND_LIST_RANGLE};
+  private static final Object[] SUPER_PRODUCTION         = new Object[] {NAME, SUPER_KEYWORD,   TYPE_BOUND_LIST_RANGLE};
+  private static final Object[] EXTENDS_SUPER_PRODUCTION = new Object[] {NAME, EXTENDS_KEYWORD, TYPE_BOUND_LIST, SUPER_KEYWORD,   TYPE_BOUND_LIST_RANGLE};
+  private static final Object[] SUPER_EXTENDS_PRODUCTION = new Object[] {NAME, SUPER_KEYWORD,   TYPE_BOUND_LIST, EXTENDS_KEYWORD, TYPE_BOUND_LIST_RANGLE};
 
   public TypeArgumentRAngleRule()
   {
@@ -49,42 +50,54 @@ public class TypeArgumentRAngleRule extends Rule
     Name name = (Name) args[0];
     if (types == NAME_PRODUCTION)
     {
-      TypeArgument typeArgument = new TypeArgument(name, null, null, name.getParseInfo());
+      TypeArgument typeArgument = new TypeArgument(name, new PointerType[0], new PointerType[0], name.getParseInfo());
       return new ParseContainer<TypeArgument>(typeArgument, ParseInfo.combine(typeArgument.getParseInfo(), (ParseInfo) args[1]));
     }
     if (types == EXTENDS_PRODUCTION)
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<PointerType> container = (ParseContainer<PointerType>) args[2];
-      PointerType superType = container.getItem();
-      TypeArgument typeArgument = new TypeArgument(name, superType, null, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superType.getParseInfo()));
+      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[2];
+      ParseList<PointerType> superTypes = container.getItem();
+      TypeArgument typeArgument = new TypeArgument(name, superTypes.toArray(new PointerType[0]), new PointerType[0],
+                                                   ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo()));
       return new ParseContainer<TypeArgument>(typeArgument, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
     }
     if (types == SUPER_PRODUCTION)
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<PointerType> container = (ParseContainer<PointerType>) args[2];
-      PointerType subType = container.getItem();
-      TypeArgument typeArgument = new TypeArgument(name, null, subType, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subType.getParseInfo()));
+      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[2];
+      ParseList<PointerType> subTypes = container.getItem();
+      TypeArgument typeArgument = new TypeArgument(name, new PointerType[0], subTypes.toArray(new PointerType[0]),
+                                                   ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo()));
       return new ParseContainer<TypeArgument>(typeArgument, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
     }
     if (types == EXTENDS_SUPER_PRODUCTION)
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<PointerType> container = (ParseContainer<PointerType>) args[4];
-      PointerType superType = (PointerType) args[2];
-      PointerType subType = container.getItem();
-      TypeArgument typeArgument = new TypeArgument(name, superType, subType, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superType.getParseInfo(), (ParseInfo) args[3], subType.getParseInfo()));
-      return new ParseContainer<TypeArgument>(typeArgument, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superType.getParseInfo(), (ParseInfo) args[3], container.getParseInfo()));
+      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[4];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> superTypes = (ParseList<PointerType>) args[2];
+      ParseList<PointerType> subTypes = container.getItem();
+      TypeArgument typeArgument = new TypeArgument(name, superTypes.toArray(new PointerType[0]), subTypes.toArray(new PointerType[0]),
+                                                   ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo(),
+                                                                                          (ParseInfo) args[3], subTypes.getParseInfo()));
+      return new ParseContainer<TypeArgument>(typeArgument,
+                                              ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo(),
+                                                                                     (ParseInfo) args[3], container.getParseInfo()));
     }
     if (types == SUPER_EXTENDS_PRODUCTION)
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<PointerType> container = (ParseContainer<PointerType>) args[4];
-      PointerType subType = (PointerType) args[2];
-      PointerType superType = container.getItem();
-      TypeArgument typeArgument = new TypeArgument(name, superType, subType, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subType.getParseInfo(), (ParseInfo) args[3], superType.getParseInfo()));
-      return new ParseContainer<TypeArgument>(typeArgument, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subType.getParseInfo(), (ParseInfo) args[3], container.getParseInfo()));
+      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[4];
+      @SuppressWarnings("unchecked")
+      ParseList<PointerType> subTypes = (ParseList<PointerType>) args[2];
+      ParseList<PointerType> superTypes = container.getItem();
+      TypeArgument typeArgument = new TypeArgument(name, superTypes.toArray(new PointerType[0]), subTypes.toArray(new PointerType[0]),
+                                                   ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo(),
+                                                                                          (ParseInfo) args[3], superTypes.getParseInfo()));
+      return new ParseContainer<TypeArgument>(typeArgument,
+                                              ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo(),
+                                                                                     (ParseInfo) args[3], container.getParseInfo()));
     }
     throw badTypeList();
   }

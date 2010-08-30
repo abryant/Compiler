@@ -13,36 +13,36 @@ import compiler.language.ast.ParseInfo;
 public class WildcardTypeParameter extends TypeParameter
 {
 
-  private PointerType superType;
-  private PointerType subType;
+  private PointerType[] superTypes;
+  private PointerType[] subTypes;
 
   /**
    * Creates a new wildcard type parameter that bounds its type to the specified range of values.
-   * @param superType - the super type of this type parameter
-   * @param subType - the sub type of this type parameter
+   * @param superTypes - the super types of this type parameter
+   * @param subTypes - the sub types of this type parameter
    * @param parseInfo - the parsing information
    */
-  public WildcardTypeParameter(PointerType superType, PointerType subType, ParseInfo parseInfo)
+  public WildcardTypeParameter(PointerType[] superTypes, PointerType[] subTypes, ParseInfo parseInfo)
   {
     super(parseInfo);
-    this.superType = superType;
-    this.subType = subType;
+    this.superTypes = superTypes;
+    this.subTypes = subTypes;
   }
 
   /**
-   * @return the super type
+   * @return the super types
    */
-  public PointerType getSuperType()
+  public PointerType[] getSuperTypes()
   {
-    return superType;
+    return superTypes;
   }
 
   /**
-   * @return the sub type
+   * @return the sub types
    */
-  public PointerType getSubType()
+  public PointerType[] getSubTypes()
   {
-    return subType;
+    return subTypes;
   }
 
   /**
@@ -53,15 +53,29 @@ public class WildcardTypeParameter extends TypeParameter
   {
     StringBuffer buffer = new StringBuffer();
     buffer.append("?");
-    if (superType != null)
+    if (superTypes.length > 0)
     {
       buffer.append(" extends ");
-      buffer.append(superType);
+      for (int i = 0; i < superTypes.length; i++)
+      {
+        buffer.append(superTypes[i]);
+        if (i != superTypes.length - 1)
+        {
+          buffer.append(" & ");
+        }
+      }
     }
-    if (subType != null)
+    if (subTypes.length > 0)
     {
       buffer.append(" super ");
-      buffer.append(subType);
+      for (int i = 0; i < subTypes.length; i++)
+      {
+        buffer.append(subTypes[i]);
+        if (i != subTypes.length - 1)
+        {
+          buffer.append(" & ");
+        }
+      }
     }
     return buffer.toString();
   }

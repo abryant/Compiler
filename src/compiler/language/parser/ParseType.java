@@ -171,6 +171,10 @@ public enum ParseType
   WILDCARD_TYPE_PARAMETER_RANGLE,    // ParseContainer<TypeParameter>
   WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE, // ParseContainer<ParseContainer<TypeParameter>>
   WILDCARD_TYPE_PARAMETER_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>
+  TYPE_BOUND_LIST,                   // ParseList<PointerType> (length > 0)
+  TYPE_BOUND_LIST_RANGLE,            // ParseContainer<ParseList<PointerType>> (length > 0)
+  TYPE_BOUND_LIST_DOUBLE_RANGLE,     // ParseContainer<ParseContainer<ParseList<PointerType>>> (length > 0)
+  TYPE_BOUND_LIST_TRIPLE_RANGLE,     // ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>> (length > 0)
   TYPE_ARGUMENT,                     // TypeArgument
   TYPE_ARGUMENT_RANGLE,              // ParseContainer<TypeArgument>
   TYPE_ARGUMENT_LIST,                // ParseList<TypeArgument> (length > 0)

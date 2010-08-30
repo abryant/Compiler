@@ -542,41 +542,45 @@ TypeParameterDoubleRAngle = TypeDoubleRAngle
 TypeParameterTripleRAngle = TypeTripleRAngle
                           | WildcardTypeParameterTripleRAngle
 WildcardTypeParameter = QuestionMark
-                      | QuestionMark ExtendsKeyword PointerType
-                      | QuestionMark SuperKeyword PointerType
-                      | QuestionMark ExtendsKeyword PointerType SuperKeyword PointerType
-                      | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerType
+                      | QuestionMark ExtendsKeyword TypeBoundList
+                      | QuestionMark SuperKeyword   TypeBoundList
+                      | QuestionMark ExtendsKeyword TypeBoundList SuperKeyword   TypeBoundList
+                      | QuestionMark SuperKeyword   TypeBoundList ExtendsKeyword TypeBoundList
 WildcardTypeParameterRAngle = QuestionMark RAngle
-                            | QuestionMark ExtendsKeyword PointerTypeRAngle
-                            | QuestionMark SuperKeyword PointerTypeRAngle
-                            | QuestionMark ExtendsKeyword PointerType SuperKeyword PointerTypeRAngle
-                            | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerTypeRAngle
+                            | QuestionMark ExtendsKeyword TypeBoundListRAngle
+                            | QuestionMark SuperKeyword   TypeBoundListRAngle
+                            | QuestionMark ExtendsKeyword TypeBoundList SuperKeyword   TypeBoundListRAngle
+                            | QuestionMark SuperKeyword   TypeBoundList ExtendsKeyword TypeBoundListRAngle
 WildcardTypeParameterDoubleRAngle = QuestionMark DoubleRAngle
                                   | QuestionMark RAngle RAngle
-                                  | QuestionMark ExtendsKeyword PointerTypeDoubleRAngle
-                                  | QuestionMark SuperKeyword PointerTypeDoubleRAngle
-                                  | QuestionMark ExtendsKeyword PointerType SuperKeyword PointerTypeDoubleRAngle
-                                  | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerTypeDoubleRAngle
+                                  | QuestionMark ExtendsKeyword TypeBoundListDoubleRAngle
+                                  | QuestionMark SuperKeyword   TypeBoundListDoubleRAngle
+                                  | QuestionMark ExtendsKeyword TypeBoundList SuperKeyword   TypeBoundListDoubleRAngle
+                                  | QuestionMark SuperKeyword   TypeBoundList ExtendsKeyword TypeBoundListDoubleRAngle
 WildcardTypeParameterTripleRAngle = QuestionMark TripleRAngle
                                   | QuestionMark DoubleRAngle RAngle
                                   | QuestionMark RAngle DoubleRAngle
                                   | QuestionMark RAngle RAngle RAngle
-                                  | QuestionMark ExtendsKeyword PointerTypeTripleRAngle
-                                  | QuestionMark SuperKeyword PointerTypeTripleRAngle
-                                  | QuestionMark ExtendsKeyword PointerType SuperKeyword PointerTypeTripleRAngle
-                                  | QuestionMark SuperKeyword PointerType ExtendsKeyword PointerTypeTripleRAngle
+                                  | QuestionMark ExtendsKeyword TypeBoundListTripleRAngle
+                                  | QuestionMark SuperKeyword   TypeBoundListTripleRAngle
+                                  | QuestionMark ExtendsKeyword TypeBoundList SuperKeyword   TypeBoundListTripleRAngle
+                                  | QuestionMark SuperKeyword   TypeBoundList ExtendsKeyword TypeBoundListTripleRAngle
 
+TypeBoundList = PointerType | TypeBoundList Ampersand PointerType
+TypeBoundListRAngle = PointerTypeRAngle | TypeBoundList Ampersand PointerTypeRAngle
+TypeBoundListDoubleRAngle = PointerTypeDoubleRAngle | TypeBoundList Ampersand PointerTypeDoubleRAngle
+TypeBoundListTripleRAngle = PointerTypeTripleRAngle | TypeBoundList Ampersand PointerTypeTripleRAngle
 
 TypeArgument = Name
-             | Name ExtendsKeyword PointerType
-             | Name SuperKeyword PointerType
-             | Name ExtendsKeyword PointerType SuperKeyword PointerType
-             | Name SuperKeyword PointerType ExtendsKeyword PointerType
+             | Name ExtendsKeyword TypeBoundList
+             | Name SuperKeyword   TypeBoundList
+             | Name ExtendsKeyword TypeBoundList SuperKeyword   TypeBoundList
+             | Name SuperKeyword   TypeBoundList ExtendsKeyword TypeBoundList
 TypeArgumentRAngle = Name
-                   | Name ExtendsKeyword PointerTypeRAngle
-                   | Name SuperKeyword PointerTypeRAngle
-                   | Name ExtendsKeyword PointerType SuperKeyword PointerTypeRAngle
-                   | Name SuperKeyword PointerType ExtendsKeyword PointerTypeRAngle
+                   | Name ExtendsKeyword TypeBoundListRAngle
+                   | Name SuperKeyword   TypeBoundListRAngle
+                   | Name ExtendsKeyword TypeBoundList SuperKeyword   TypeBoundListRAngle
+                   | Name SuperKeyword   TypeBoundList ExtendsKeyword TypeBoundListRAngle
 
 TypeArgumentList = TypeArgumentList Comma TypeArgument | TypeArgument
 TypeArgumentListRAngle = TypeArgumentRAngle | TypeArgumentList Comma TypeArgumentRAngle

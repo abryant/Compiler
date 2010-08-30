@@ -16,22 +16,22 @@ public class TypeArgument
   private ParseInfo parseInfo;
 
   private Name name;
-  private PointerType superType; // the type that this type argument extends
-  private PointerType subType;   // the type that this type argument is a superclass of
+  private PointerType[] superTypes; // the types that this type argument extends
+  private PointerType[] subTypes;   // the types that this type argument is a superclass of
 
   /**
    * Creates a new TypeArgument with the specified name, super type and sub type.
    * @param name - the name of this type argument
-   * @param superType - the type that this argument must extend
-   * @param subType - the type that this argument must be a superclass of
+   * @param superTypes - the types that this argument must extend
+   * @param subTypes - the types that this argument must be a superclass of
    * @param parseInfo - the parsing information
    */
-  public TypeArgument(Name name, PointerType superType, PointerType subType, ParseInfo parseInfo)
+  public TypeArgument(Name name, PointerType[] superTypes, PointerType[] subTypes, ParseInfo parseInfo)
   {
     this.parseInfo = parseInfo;
     this.name = name;
-    this.superType = superType;
-    this.subType = subType;
+    this.superTypes = superTypes;
+    this.subTypes = subTypes;
   }
 
   /**
@@ -43,19 +43,19 @@ public class TypeArgument
   }
 
   /**
-   * @return the type that this argument must extend
+   * @return the types that this argument must extend
    */
-  public PointerType getSuperType()
+  public PointerType[] getSuperTypes()
   {
-    return superType;
+    return superTypes;
   }
 
   /**
-   * @return the type that this argument must be a superclass of
+   * @return the types that this argument must be a superclass of
    */
-  public PointerType getSubType()
+  public PointerType[] getSubTypes()
   {
-    return subType;
+    return subTypes;
   }
 
   /**
@@ -74,15 +74,29 @@ public class TypeArgument
   {
     StringBuffer buffer = new StringBuffer();
     buffer.append(name);
-    if (superType != null)
+    if (superTypes.length > 0)
     {
       buffer.append(" extends ");
-      buffer.append(superType);
+      for (int i = 0; i < superTypes.length; i++)
+      {
+        buffer.append(superTypes[i]);
+        if (i != superTypes.length - 1)
+        {
+          buffer.append(" & ");
+        }
+      }
     }
-    if (subType != null)
+    if (subTypes.length > 0)
     {
       buffer.append(" super ");
-      buffer.append(subType);
+      for (int i = 0; i < subTypes.length; i++)
+      {
+        buffer.append(subTypes[i]);
+        if (i != subTypes.length - 1)
+        {
+          buffer.append(" & ");
+        }
+      }
     }
     return buffer.toString();
   }

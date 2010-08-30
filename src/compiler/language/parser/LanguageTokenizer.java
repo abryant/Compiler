@@ -51,6 +51,11 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.NAME, new Name("K", info(350))),
     new Token(ParseType.EXTENDS_KEYWORD, info(360)),
     new Token(ParseType.NAME, new Name("Object", info(370))),
+    new Token(ParseType.AMPERSAND, info(371)),
+    new Token(ParseType.NAME, new Name("Foo", info(375))),
+    new Token(ParseType.LANGLE, info(376)),
+    new Token(ParseType.NAME, new Name("Bar", info(377))),
+    new Token(ParseType.RANGLE, info(378)),
     new Token(ParseType.COMMA, info(380)),
 
     new Token(ParseType.NAME, new Name("V", info(390))),
