@@ -182,7 +182,6 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.RBRACE, info(2270)),
 
     new Token(ParseType.STATIC_KEYWORD, info(2400)),
-    new Token(ParseType.NAME, new Name("Test", info(2405))),
     new Token(ParseType.LBRACE, info(2410)),
     new Token(ParseType.RBRACE, info(2420)),
 
