@@ -1,6 +1,8 @@
-package compiler.language.ast.misc;
+package compiler.language.ast.terminal;
 
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.misc.Modifier;
+import compiler.language.ast.misc.ModifierType;
 
 /*
  * Created on 13 Jul 2010

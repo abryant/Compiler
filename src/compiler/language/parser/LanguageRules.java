@@ -69,10 +69,8 @@ import compiler.language.parser.rules.misc.ParameterRule;
 import compiler.language.parser.rules.misc.ParametersRule;
 import compiler.language.parser.rules.misc.QNameListRule;
 import compiler.language.parser.rules.misc.QNameRule;
-import compiler.language.parser.rules.misc.SinceSpecifierRule;
 import compiler.language.parser.rules.misc.ThrowsClauseRule;
 import compiler.language.parser.rules.misc.ThrowsListRule;
-import compiler.language.parser.rules.misc.VersionNumberRule;
 import compiler.language.parser.rules.statement.AssignmentRule;
 import compiler.language.parser.rules.statement.BlockRule;
 import compiler.language.parser.rules.statement.BreakStatementRule;
@@ -369,10 +367,8 @@ public class LanguageRules
     new ParametersRule(),
     new QNameListRule(),
     new QNameRule(),
-    new SinceSpecifierRule(),
     new ThrowsClauseRule(),
     new ThrowsListRule(),
-    new VersionNumberRule(),
   };
 
   /**

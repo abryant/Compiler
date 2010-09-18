@@ -1,7 +1,6 @@
-package compiler.language.ast.misc;
+package compiler.language.ast.terminal;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.terminal.IntegerLiteral;
 
 /*
  * Created on 13 Jul 2010

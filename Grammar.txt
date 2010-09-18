@@ -597,8 +597,6 @@ Modifier = ModifierNotSynchronized | SynchronizedKeyword
 ModifierNotSynchronized = StaticKeyword   | AbstractKeyword | FinalKeyword     | ImmutableKeyword | MutableKeyword
                         | NativeSpecifier | SinceSpecifier  | TransientKeyword | VolatileKeyword
 NativeSpecifier = NativeKeyword LParen StringLiteral RParen
-SinceSpecifier = SinceKeyword LParen VersionNumber RParen
-VersionNumber = IntegerLiteral | VersionNumber Dot IntegerLiteral
 Modifiers = Modifier | Modifiers Modifier
 ModifiersNotSynchronized = ModifierNotSynchronized | ModifiersNotSynchronized ModifierNotSynchronized
 
@@ -653,9 +651,13 @@ ThrowsClause = ThrowsKeyword ThrowsList | epsilon
   Primitive Tokens (Terminals)
 ################################
 
+// these are terminals which store values
 Name
-
-*Literal // anything ending in "Literal" is a terminal which stores a value
+IntegerLiteral
+FloatingLiteral
+CharacterLiteral
+StringLiteral
+SinceSpecifier
 
 *Keyword // anything ending in "Keyword" is a terminal which does not store a value
 

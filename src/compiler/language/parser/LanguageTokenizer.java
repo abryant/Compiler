@@ -3,7 +3,9 @@ package compiler.language.parser;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.IntegerLiteral;
 import compiler.language.ast.terminal.Name;
+import compiler.language.ast.terminal.SinceSpecifier;
 import compiler.language.ast.terminal.StringLiteral;
+import compiler.language.ast.terminal.VersionNumber;
 import compiler.parser.Token;
 import compiler.parser.Tokenizer;
 
@@ -155,12 +157,9 @@ public class LanguageTokenizer extends Tokenizer
     new Token(ParseType.SEMICOLON, info(1750)),
 
     new Token(ParseType.PRIVATE_KEYWORD, info(1900)),
-    new Token(ParseType.SINCE_KEYWORD, info(1910)),
-    new Token(ParseType.LPAREN, info(1920)),
-    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("1", info(1930))),
-    new Token(ParseType.DOT, info(1940)),
-    new Token(ParseType.INTEGER_LITERAL, new IntegerLiteral("2", info(1950))),
-    new Token(ParseType.RPAREN, info(1960)),
+    new Token(ParseType.SINCE_SPECIFIER, new SinceSpecifier(new VersionNumber(new IntegerLiteral[] {new IntegerLiteral("1", info(1910)),
+                                                                                                    new IntegerLiteral("2", info(1911))},
+                                         info(1914)), info(1915))),
     new Token(ParseType.VOID_KEYWORD, info(1970)),
     new Token(ParseType.NAME, new Name("method", info(1980))),
     new Token(ParseType.LPAREN, info(1990)),

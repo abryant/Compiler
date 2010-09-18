@@ -185,8 +185,6 @@ public enum ParseType
   MODIFIER,                   // Modifier
   MODIFIER_NOT_SYNCHRONIZED,  // Modifier
   NATIVE_SPECIFIER,           // NativeSpecifier
-  SINCE_SPECIFIER,            // SinceSpecifier
-  VERSION_NUMBER,             // VersionNumber
   MODIFIERS,                  // ParseList<Modifier> (length > 0)
   MODIFIERS_NOT_SYNCHRONIZED, // ParseList<Modifier> (length > 0)
   ARGUMENT,                   // Argument
@@ -218,6 +216,7 @@ public enum ParseType
   FLOATING_LITERAL,  // FloatingLiteral
   CHARACTER_LITERAL, // CharacterLiteral
   STRING_LITERAL,    // StringLiteral
+  SINCE_SPECIFIER,   // SinceSpecifier
 
   // keywords (values for these should all be ParseInfo)
   ABSTRACT_KEYWORD,
@@ -265,7 +264,6 @@ public enum ParseType
   RETURN_KEYWORD,
   SHORT_KEYWORD,
   SIGNED_KEYWORD,
-  SINCE_KEYWORD,
   STATIC_KEYWORD,
   SUPER_KEYWORD,
   SWITCH_KEYWORD,
