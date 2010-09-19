@@ -1,4 +1,4 @@
-package test.parser;
+package test.expression;
 
 import compiler.parser.ParseException;
 import compiler.parser.Rule;

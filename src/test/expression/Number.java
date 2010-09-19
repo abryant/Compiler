@@ -1,4 +1,4 @@
-package test.parser;
+package test.expression;
 
 /*
  * Created on 7 Apr 2010

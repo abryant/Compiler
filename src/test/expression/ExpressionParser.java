@@ -1,4 +1,4 @@
-package test.parser;
+package test.expression;
 
 import compiler.parser.BadTokenException;
 import compiler.parser.ParseException;
