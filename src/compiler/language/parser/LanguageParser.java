@@ -4,13 +4,14 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.IntegerLiteral;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.terminal.StringLiteral;
+import compiler.language.ast.topLevel.CompilationUnit;
 import compiler.parser.BadTokenException;
 import compiler.parser.ParseException;
 import compiler.parser.Parser;
 import compiler.parser.Token;
-import compiler.parser.Tokenizer;
 import compiler.parser.lalr.LALRParserGenerator;
 import compiler.parser.lalr.LALRRuleSet;
+import compiler.parser.lalr.LALRState;
 
 /*
  * Created on 30 Jun 2010
@@ -22,20 +23,30 @@ import compiler.parser.lalr.LALRRuleSet;
 public class LanguageParser
 {
 
-  public static void main(String[] args)
+  private LALRState startState;
+
+  public LanguageParser()
   {
     LALRRuleSet rules = LanguageRules.getRuleSet();
 
     LALRParserGenerator generator = new LALRParserGenerator(rules);
     generator.generate();
+    startState = generator.getStartState();
+  }
 
-    Tokenizer tokenizer = new LanguageTokenizer();
-    Parser parser = new Parser(generator.getStartState(), tokenizer);
+  /**
+   * Parses the output of the specified tokenizer.
+   * @param tokenizer - the tokenizer to parse the output of
+   * @return the CompilationUnit generated, or null if there was an error while parsing (which will have been printed out)
+   */
+  public CompilationUnit parse(LanguageTokenizer tokenizer)
+  {
+    Parser parser = new Parser(startState, tokenizer);
     try
     {
       Token result = parser.parse();
-      System.out.println("Success!");
-      System.out.println(result.getValue());
+
+      return (CompilationUnit) result.getValue();
     }
     catch (LanguageParseException e)
     {
@@ -85,6 +96,7 @@ public class LanguageParser
       printParseError(message, parseInfo);
     }
 
+    return null;
   }
 
   /**

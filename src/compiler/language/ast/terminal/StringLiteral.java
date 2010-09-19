@@ -14,25 +14,28 @@ public class StringLiteral
 
   private ParseInfo parseInfo;
 
-  private String literal;
+  private String literalValue;
+  private String stringRepresentation;
 
   /**
    * Creates a new String literal with the specified value
-   * @param literal - the value of the string literal
+   * @param literalValue - the value of the string literal
+   * @param stringRepresentation - the string representation of this literal, including escape sequences and surrounding quotes
    * @param parseInfo - the parsing information
    */
-  public StringLiteral(String literal, ParseInfo parseInfo)
+  public StringLiteral(String literalValue, String stringRepresentation, ParseInfo parseInfo)
   {
     this.parseInfo = parseInfo;
-    this.literal = literal;
+    this.literalValue = literalValue;
+    this.stringRepresentation = stringRepresentation;
   }
 
   /**
    * @return the literal string
    */
-  public String getLiteral()
+  public String getLiteralValue()
   {
-    return literal;
+    return literalValue;
   }
 
   /**
@@ -50,7 +53,7 @@ public class StringLiteral
   @Override
   public String toString()
   {
-    return "\"" + literal + "\"";
+    return stringRepresentation;
   }
 
 }

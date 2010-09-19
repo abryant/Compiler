@@ -27,6 +27,18 @@ public class LanguageParseException extends ParseException
   }
 
   /**
+   * Creates a new LanguageParseException with the specified message, cause, and ParseInfo
+   * @param message - the message to indicate the cause of the parsing error
+   * @param cause - the original cause of this LanguageParseException
+   * @param parseInfo - the ParseInfo to indicate where the parsing error took place
+   */
+  public LanguageParseException(String message, Throwable cause, ParseInfo parseInfo)
+  {
+    super(message, cause);
+    this.parseInfo = parseInfo;
+  }
+
+  /**
    * @return the parseInfo
    */
   public ParseInfo getParseInfo()

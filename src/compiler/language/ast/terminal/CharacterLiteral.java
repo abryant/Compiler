@@ -52,7 +52,7 @@ public class CharacterLiteral
   @Override
   public String toString()
   {
-    return "'" + stringRepresentation + "'";
+    return stringRepresentation;
   }
 
 }
