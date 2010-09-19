@@ -147,9 +147,9 @@ public class InterfaceDefinition extends TypeDefinition
       buffer.append("\n");
       String memberStr = members[i].toString();
       buffer.append(memberStr.replaceAll("(?m)^", "   "));
-      buffer.append("\n   ");
+      buffer.append("\n   \n");
     }
-    buffer.append("\n}");
+    buffer.append("}");
     return buffer.toString();
   }
 }

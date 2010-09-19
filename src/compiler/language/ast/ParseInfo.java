@@ -17,6 +17,27 @@ public class ParseInfo
   private int endPos;
 
   /**
+   * Creates a new ParseInfo object to represent the specified location.
+   * @param line - the line number
+   * @param position - the position in the specified line
+   */
+  public ParseInfo(int line, int position)
+  {
+    this(line, position, line, position);
+  }
+
+  /**
+   * Creates a new ParseInfo object to represent the specified range of characters on a single line
+   * @param line - the line number
+   * @param startPos - the start position on the line
+   * @param endPos - the end position on the line
+   */
+  public ParseInfo(int line, int startPos, int endPos)
+  {
+    this(line, startPos, line, endPos);
+  }
+
+  /**
    * Creates a new ParseInfo object containing the specified start and end positions
    * @param startLine - the start line
    * @param startPos - the starting position on the start line

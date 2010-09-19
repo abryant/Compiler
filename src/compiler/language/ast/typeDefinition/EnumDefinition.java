@@ -167,9 +167,9 @@ public class EnumDefinition extends TypeDefinition
     {
       String memberStr = members[i].toString();
       buffer.append(memberStr.replaceAll("(?m)^", "   "));
-      buffer.append("\n   ");
+      buffer.append("\n   \n");
     }
-    buffer.append("\n}");
+    buffer.append("}");
     return buffer.toString();
   }
 }

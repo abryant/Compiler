@@ -82,10 +82,14 @@ public class CompilationUnit
     {
       buffer.append(importDecl + "\n");
     }
+    if (imports.length > 0)
+    {
+      buffer.append("\n");
+    }
 
     for (TypeDefinition type : types)
     {
-      buffer.append("\n" + type + "\n");
+      buffer.append(type + "\n\n");
     }
     return buffer.toString();
   }
