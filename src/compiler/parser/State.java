@@ -1,5 +1,7 @@
 package compiler.parser;
 
+import java.io.Serializable;
+
 /*
  * Created on 21 Jun 2010
  */
@@ -9,7 +11,7 @@ package compiler.parser;
  *
  * @author Anthony Bryant
  */
-public interface State
+public interface State extends Serializable
 {
 
   /**

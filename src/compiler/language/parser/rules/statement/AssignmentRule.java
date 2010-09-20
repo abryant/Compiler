@@ -13,6 +13,7 @@ import compiler.language.ast.misc.Assignee;
 import compiler.language.ast.misc.AssignmentOperator;
 import compiler.language.ast.statement.AssignmentStatement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -24,8 +25,9 @@ import compiler.parser.Rule;
  */
 public class AssignmentRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {ASSIGNEE_LIST, ASSIGNMENT_OPERATOR, EXPRESSION};
+  private static final Production PRODUCTION = new Production(ASSIGNEE_LIST, ASSIGNMENT_OPERATOR, EXPRESSION);
 
   public AssignmentRule()
   {
@@ -34,12 +36,12 @@ public class AssignmentRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Assignee> assignees = (ParseList<Assignee>) args[0];

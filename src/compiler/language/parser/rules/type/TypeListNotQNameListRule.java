@@ -14,6 +14,7 @@ import compiler.language.ast.misc.QNameElement;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -25,11 +26,12 @@ import compiler.parser.Rule;
  */
 public class TypeListNotQNameListRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME, COMMA, TYPE_LIST_NOT_QNAME_LIST};
-  private static final Object[] NESTED_QNAME_PRODUCTION = new Object[] {NESTED_QNAME_LIST, COMMA, TYPE_LIST_NOT_QNAME_LIST};
-  private static final Object[] REAL_TYPE_LIST_PRODUCTION = new Object[] {TYPE_NOT_QNAME_LIST, COMMA, TYPE_LIST};
-  private static final Object[] REAL_TYPE_PRODUCTION = new Object[] {TYPE_NOT_QNAME_LIST};
+  private static final Production QNAME_PRODUCTION = new Production(QNAME, COMMA, TYPE_LIST_NOT_QNAME_LIST);
+  private static final Production NESTED_QNAME_PRODUCTION = new Production(NESTED_QNAME_LIST, COMMA, TYPE_LIST_NOT_QNAME_LIST);
+  private static final Production REAL_TYPE_LIST_PRODUCTION = new Production(TYPE_NOT_QNAME_LIST, COMMA, TYPE_LIST);
+  private static final Production REAL_TYPE_PRODUCTION = new Production(TYPE_NOT_QNAME_LIST);
 
   public TypeListNotQNameListRule()
   {
@@ -39,12 +41,12 @@ public class TypeListNotQNameListRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == QNAME_PRODUCTION)
+    if (QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       @SuppressWarnings("unchecked")
@@ -53,7 +55,7 @@ public class TypeListNotQNameListRule extends Rule
                     ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
-    if (types == NESTED_QNAME_PRODUCTION)
+    if (NESTED_QNAME_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       @SuppressWarnings("unchecked")
@@ -61,7 +63,7 @@ public class TypeListNotQNameListRule extends Rule
       list.addFirst(element.toType(), ParseInfo.combine(element.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
-    if (types == REAL_TYPE_LIST_PRODUCTION)
+    if (REAL_TYPE_LIST_PRODUCTION.equals(production))
     {
       Type type = (Type) args[0];
       @SuppressWarnings("unchecked")
@@ -69,7 +71,7 @@ public class TypeListNotQNameListRule extends Rule
       list.addFirst(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
-    if (types == REAL_TYPE_PRODUCTION)
+    if (REAL_TYPE_PRODUCTION.equals(production))
     {
       Type type = (Type) args[0];
       return new ParseList<Type>(type, type.getParseInfo());

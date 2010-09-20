@@ -9,6 +9,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.ThisAccessExpression;
 import compiler.language.ast.misc.QName;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,9 +21,10 @@ import compiler.parser.Rule;
  */
 public class ThisAccessExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] THIS_PRODUCTION = new Object[] {THIS_KEYWORD};
-  private static final Object[] QNAME_THIS_PRODUCTION = new Object[] {QNAME, DOT, THIS_KEYWORD};
+  private static final Production THIS_PRODUCTION = new Production(THIS_KEYWORD);
+  private static final Production QNAME_THIS_PRODUCTION = new Production(QNAME, DOT, THIS_KEYWORD);
 
   public ThisAccessExpressionRule()
   {
@@ -31,16 +33,16 @@ public class ThisAccessExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == THIS_PRODUCTION)
+    if (THIS_PRODUCTION.equals(production))
     {
       return new ThisAccessExpression(null, (ParseInfo) args[0]);
     }
-    if (types == QNAME_THIS_PRODUCTION)
+    if (QNAME_THIS_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       return new ThisAccessExpression(qname, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));

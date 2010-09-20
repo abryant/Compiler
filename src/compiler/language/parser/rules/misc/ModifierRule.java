@@ -8,6 +8,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.misc.ModifierType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -19,9 +20,10 @@ import compiler.parser.Rule;
  */
 public class ModifierRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {MODIFIER_NOT_SYNCHRONIZED};
-  private static final Object[] SYNCHRONIZED_PRODUCTION = new Object[] {SYNCHRONIZED_KEYWORD};
+  private static final Production PRODUCTION = new Production(MODIFIER_NOT_SYNCHRONIZED);
+  private static final Production SYNCHRONIZED_PRODUCTION = new Production(SYNCHRONIZED_KEYWORD);
 
   public ModifierRule()
   {
@@ -29,16 +31,16 @@ public class ModifierRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       return args[0];
     }
-    if (types == SYNCHRONIZED_PRODUCTION)
+    if (SYNCHRONIZED_PRODUCTION.equals(production))
     {
       return new Modifier(ModifierType.SYNCHRONIZED, (ParseInfo) args[0]);
     }

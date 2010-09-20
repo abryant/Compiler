@@ -13,6 +13,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.misc.Dimensions;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -24,8 +25,9 @@ import compiler.parser.Rule;
  */
 public class ArrayInstanciationExpressionWithInitializerRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSIONS, ARRAY_INITIALIZER};
+  private static final Production PRODUCTION = new Production(NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSIONS, ARRAY_INITIALIZER);
 
   public ArrayInstanciationExpressionWithInitializerRule()
   {
@@ -34,12 +36,12 @@ public class ArrayInstanciationExpressionWithInitializerRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Dimensions dimensions = (Dimensions) args[2];

@@ -13,6 +13,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.statement.SwitchCase;
 import compiler.language.ast.statement.SwitchStatement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -24,9 +25,10 @@ import compiler.parser.Rule;
  */
 public class SwitchStatementRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION               = new Object[] {SWITCH_KEYWORD, EXPRESSION, LBRACE, SWITCH_CASES, RBRACE};
-  private static final Object[] NO_EXPRESSION_PRODUCTION = new Object[] {SWITCH_KEYWORD,             LBRACE, SWITCH_CASES, RBRACE};
+  private static final Production PRODUCTION               = new Production(SWITCH_KEYWORD, EXPRESSION, LBRACE, SWITCH_CASES, RBRACE);
+  private static final Production NO_EXPRESSION_PRODUCTION = new Production(SWITCH_KEYWORD,             LBRACE, SWITCH_CASES, RBRACE);
 
   public SwitchStatementRule()
   {
@@ -35,12 +37,12 @@ public class SwitchStatementRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[1];
       @SuppressWarnings("unchecked")
@@ -49,7 +51,7 @@ public class SwitchStatementRule extends Rule
                                  ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(),
                                                    (ParseInfo) args[2], cases.getParseInfo(), (ParseInfo) args[4]));
     }
-    if (types == NO_EXPRESSION_PRODUCTION)
+    if (NO_EXPRESSION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<SwitchCase> cases = (ParseList<SwitchCase>) args[2];

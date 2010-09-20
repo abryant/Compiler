@@ -7,6 +7,7 @@ import java.util.Set;
 
 import compiler.parser.AcceptAction;
 import compiler.parser.Action;
+import compiler.parser.Production;
 import compiler.parser.ReduceAction;
 import compiler.parser.Rule;
 import compiler.parser.ShiftAction;
@@ -23,6 +24,8 @@ import compiler.parser.Token;
  */
 public class LALRState implements State
 {
+
+  private static final long serialVersionUID = 1L;
 
   private Map<Object, LALRState> shiftRules;
   private Map<Object, ReduceAction> reduceActions;
@@ -58,7 +61,7 @@ public class LALRState implements State
     if (reduceAction != null)
     {
       Rule rule = reduceAction.getRule();
-      Object[] production = rule.getProductions()[reduceAction.getProductionIndex()];
+      Production production = rule.getProductions()[reduceAction.getProductionIndex()];
       throw shiftReduceConflict(tokenType, rule.getType(), production);
     }
     AcceptAction acceptAction = acceptActions.get(tokenType);
@@ -80,19 +83,19 @@ public class LALRState implements State
   {
     if (shiftRules.containsKey(tokenType))
     {
-      Object[] production = reduceRule.getProductions()[productionIndex];
+      Production production = reduceRule.getProductions()[productionIndex];
       throw shiftReduceConflict(tokenType, reduceRule.getType(), production);
     }
     ReduceAction existingReduce = reduceActions.get(tokenType);
     if (existingReduce != null)
     {
-      Object[] newProduction = reduceRule.getProductions()[productionIndex];
+      Production newProduction = reduceRule.getProductions()[productionIndex];
       throw reduceReduceConflict(tokenType, existingReduce, reduceRule.getType(), newProduction);
     }
     AcceptAction existingAccept = acceptActions.get(tokenType);
     if (existingAccept != null)
     {
-      Object[] newProduction = reduceRule.getProductions()[productionIndex];
+      Production newProduction = reduceRule.getProductions()[productionIndex];
       Rule acceptRule = existingAccept.getRule();
       throw acceptReduceConflict(tokenType, acceptRule.getType(), acceptRule.getProductions()[existingAccept.getProductionIndex()], reduceRule.getType(), newProduction);
     }
@@ -191,6 +194,37 @@ public class LALRState implements State
     return gotoRules.get(nonTerminal.getType());
   }
 
+  /**
+   * @return the shiftRules
+   */
+  public Map<Object, LALRState> getShiftRules()
+  {
+    return shiftRules;
+  }
+
+  /**
+   * @return the reduceActions
+   */
+  public Map<Object, ReduceAction> getReduceActions()
+  {
+    return reduceActions;
+  }
+
+  /**
+   * @return the acceptActions
+   */
+  public Map<Object, AcceptAction> getAcceptActions()
+  {
+    return acceptActions;
+  }
+
+  /**
+   * @return the gotoRules
+   */
+  public Map<Object, LALRState> getGotoRules()
+  {
+    return gotoRules;
+  }
 
   /**
    * Creates an exception representing a shift-reduce conflict.
@@ -202,7 +236,7 @@ public class LALRState implements State
    * @param reduceProduction - the production that the reduce rule uses
    * @return an exception representing the shift-reduce conflict
    */
-  private static IllegalStateException shiftReduceConflict(Object tokenType, Object reduceRuleType, Object[] reduceProduction)
+  private static IllegalStateException shiftReduceConflict(Object tokenType, Object reduceRuleType, Production reduceProduction)
   {
     String production = Rule.getProductionString(reduceRuleType, reduceProduction);
     return new IllegalStateException("Shift-reduce conflict! On input: " + tokenType + ", can either shift or reduce via " + production);
@@ -218,7 +252,7 @@ public class LALRState implements State
    * @param acceptProduction - the production that the accept rule uses
    * @return an exception representing the shift-accept conflict
    */
-  private static IllegalStateException shiftAcceptConflict(Object tokenType, Object acceptRuleType, Object[] acceptProduction)
+  private static IllegalStateException shiftAcceptConflict(Object tokenType, Object acceptRuleType, Production acceptProduction)
   {
     String production = Rule.getProductionString(acceptRuleType, acceptProduction);
     return new IllegalStateException("Shift-accept conflict! On input: " + tokenType + ", can either shift or accept via " + production);
@@ -235,7 +269,7 @@ public class LALRState implements State
    * @param newProduction - the production that the new reduce rule uses
    * @return an exception representing the reduce-reduce conflict
    */
-  private static IllegalStateException reduceReduceConflict(Object tokenType, ReduceAction existingReduce, Object newRuleType, Object[] newProduction)
+  private static IllegalStateException reduceReduceConflict(Object tokenType, ReduceAction existingReduce, Object newRuleType, Production newProduction)
   {
     Rule existingRule = existingReduce.getRule();
     String existingProductionStr = Rule.getProductionString(existingRule.getType(), existingRule.getProductions()[existingReduce.getProductionIndex()]);
@@ -255,7 +289,7 @@ public class LALRState implements State
    * @param reduceProduction - the production that the reduce rule uses
    * @return an exception representing the accept-reduce conflict
    */
-  private static IllegalStateException acceptReduceConflict(Object tokenType, Object acceptRuleType, Object[] acceptProduction, Object reduceRuleType, Object[] reduceProduction)
+  private static IllegalStateException acceptReduceConflict(Object tokenType, Object acceptRuleType, Production acceptProduction, Object reduceRuleType, Production reduceProduction)
   {
     String acceptProductionStr = Rule.getProductionString(acceptRuleType, acceptProduction);
     String productionStr = Rule.getProductionString(reduceRuleType, reduceProduction);
@@ -273,7 +307,7 @@ public class LALRState implements State
    * @param acceptProduction - the production that the accept rule uses
    * @return an exception representing the accept-accept conflict
    */
-  private static IllegalStateException acceptAcceptConflict(Object tokenType, AcceptAction existingAccept, Object acceptRuleType, Object[] acceptProduction)
+  private static IllegalStateException acceptAcceptConflict(Object tokenType, AcceptAction existingAccept, Object acceptRuleType, Production acceptProduction)
   {
     Rule existingRule = existingAccept.getRule();
     String existingProductionStr = Rule.getProductionString(existingRule.getType(), existingRule.getProductions()[existingAccept.getProductionIndex()]);

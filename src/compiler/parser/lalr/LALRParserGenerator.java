@@ -1,5 +1,6 @@
 package compiler.parser.lalr;
 
+import java.io.Serializable;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -8,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -54,26 +56,7 @@ public class LALRParserGenerator
     final Rule startRule = rules.getStartRule();
 
     // create a new start rule to replace the user's start rule
-    Object generatedStartRuleType = new Object()
-    {
-      @Override
-      public String toString()
-      {
-        return "<Generated Start Rule>";
-      }
-    };
-    Rule newStartRule = new Rule(generatedStartRuleType, new Object[] {startRule.getType()})
-    {
-      @Override
-      public Object match(Object[] types, Object[] args) throws ParseException
-      {
-        if (types.length == 1 && types[0] == startRule.getType())
-        {
-          return args[0];
-        }
-        throw badTypeList();
-      }
-    };
+    Rule newStartRule = new GeneratedStartRule(startRule);
     rules.addStartRule(newStartRule);
 
     // create the initial item set
@@ -146,10 +129,11 @@ public class LALRParserGenerator
     Set<LALRItem> items = itemSet.getItems();
     for (LALRItem item : items)
     {
-      Object[] production = item.getProduction();
+      Production production = item.getProduction();
+      Object[] productionTypes = production.getTypes();
       int offset = item.getOffset();
       // there are no transitions from the end of a production
-      if (offset == production.length)
+      if (offset == productionTypes.length)
       {
         continue;
       }
@@ -157,13 +141,13 @@ public class LALRParserGenerator
       LALRItem newItem = new LALRItem(item.getRule(), item.getProductionIndex(), offset + 1);
       newItem.addLookaheads(item.getLookaheads());
 
-      LALRItemSet currentTransition = transitions.get(production[offset]);
+      LALRItemSet currentTransition = transitions.get(productionTypes[offset]);
       if (currentTransition == null)
       {
         currentTransition = new LALRItemSet();
       }
       currentTransition.addKernelItem(newItem);
-      transitions.put(production[offset], currentTransition);
+      transitions.put(productionTypes[offset], currentTransition);
     }
 
     return transitions;
@@ -214,7 +198,7 @@ public class LALRParserGenerator
       // add the reduce actions
       for (LALRItem item : itemSet.getItems())
       {
-        if (item.getOffset() < item.getProduction().length)
+        if (item.getOffset() < item.getProduction().getTypes().length)
         {
           // this item is not at the end of a rule, so skip it
           continue;
@@ -235,6 +219,49 @@ public class LALRParserGenerator
     }
 
     return states.get(initialSet);
+  }
+
+  /**
+   * A class which acts solely as an object that represents the type of the generated start rule.
+   * @author Anthony Bryant
+   */
+  private static class GeneratedStartRuleType implements Serializable
+  {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public String toString()
+    {
+      return "<Generated Start Rule>";
+    }
+  }
+
+  /**
+   * A Rule which is used as an extra top level rule over the top of the original start rule.
+   * @author Anthony Bryant
+   */
+  private static class GeneratedStartRule extends Rule
+  {
+    private static final long serialVersionUID = 1L;
+
+    private Rule startRule;
+
+    public GeneratedStartRule(Rule startRule)
+    {
+      super(new GeneratedStartRuleType(), new Production(startRule.getType()));
+      this.startRule = startRule;
+    }
+
+    @Override
+    public Object match(Production production, Object[] args) throws ParseException
+    {
+      Object[] productionTypes = production.getTypes();
+      if (productionTypes.length == 1 && productionTypes[0] == startRule.getType())
+      {
+        return args[0];
+      }
+      throw badTypeList();
+    }
   }
 
 }

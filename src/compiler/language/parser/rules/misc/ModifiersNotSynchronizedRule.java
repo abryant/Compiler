@@ -7,6 +7,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.Modifier;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -18,9 +19,10 @@ import compiler.parser.Rule;
  */
 public class ModifiersNotSynchronizedRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION        = new Object[] {MODIFIER_NOT_SYNCHRONIZED};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {MODIFIERS_NOT_SYNCHRONIZED, MODIFIER_NOT_SYNCHRONIZED};
+  private static final Production START_PRODUCTION        = new Production(MODIFIER_NOT_SYNCHRONIZED);
+  private static final Production CONTINUATION_PRODUCTION = new Production(MODIFIERS_NOT_SYNCHRONIZED, MODIFIER_NOT_SYNCHRONIZED);
 
   public ModifiersNotSynchronizedRule()
   {
@@ -29,17 +31,17 @@ public class ModifiersNotSynchronizedRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       Modifier modifier = (Modifier) args[0];
       return new ParseList<Modifier>(modifier, modifier.getParseInfo());
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Modifier> list = (ParseList<Modifier>) args[0];

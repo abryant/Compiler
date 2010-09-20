@@ -17,6 +17,7 @@ import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -28,11 +29,12 @@ import compiler.parser.Rule;
  */
 public class TypeParameterListDoubleRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] TYPE_PARAMETER_PRODUCTION      = new Object[] {TYPE_PARAMETER_DOUBLE_RANGLE};
-  private static final Object[] TYPE_PARAMETER_LIST_PRODUCTION = new Object[] {TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
-  private static final Object[] QNAME_LIST_PRODUCTION          = new Object[] {QNAME,                         COMMA, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
-  private static final Object[] NESTED_QNAME_LIST_PRODUCTION   = new Object[] {NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
+  private static final Production TYPE_PARAMETER_PRODUCTION      = new Production(TYPE_PARAMETER_DOUBLE_RANGLE);
+  private static final Production TYPE_PARAMETER_LIST_PRODUCTION = new Production(TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST_DOUBLE_RANGLE);
+  private static final Production QNAME_LIST_PRODUCTION          = new Production(QNAME,                         COMMA, TYPE_PARAMETER_LIST_DOUBLE_RANGLE);
+  private static final Production NESTED_QNAME_LIST_PRODUCTION   = new Production(NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST_DOUBLE_RANGLE);
 
   public TypeParameterListDoubleRAngleRule()
   {
@@ -41,12 +43,12 @@ public class TypeParameterListDoubleRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == TYPE_PARAMETER_PRODUCTION)
+    if (TYPE_PARAMETER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<TypeParameter>> parameter = (ParseContainer<ParseContainer<TypeParameter>>) args[0];
@@ -56,17 +58,17 @@ public class TypeParameterListDoubleRAngleRule extends Rule
     }
 
     TypeParameter parameter;
-    if (types == TYPE_PARAMETER_LIST_PRODUCTION)
+    if (TYPE_PARAMETER_LIST_PRODUCTION.equals(production))
     {
       parameter = (TypeParameter) args[0];
     }
-    else if (types == QNAME_LIST_PRODUCTION)
+    else if (QNAME_LIST_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       Type type = new PointerType(qname, qname.getParseInfo());
       parameter = new NormalTypeParameter(type, type.getParseInfo());
     }
-    else if (types == NESTED_QNAME_LIST_PRODUCTION)
+    else if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       Type type = element.toType();

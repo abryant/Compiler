@@ -15,6 +15,7 @@ import compiler.language.ast.statement.ForEachStatement;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -26,8 +27,9 @@ import compiler.parser.Rule;
  */
 public class ForEachStatementRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {FOR_KEYWORD, TYPE, NAME, COLON, EXPRESSION, BLOCK};
+  private static final Production PRODUCTION = new Production(FOR_KEYWORD, TYPE, NAME, COLON, EXPRESSION, BLOCK);
 
   public ForEachStatementRule()
   {
@@ -36,12 +38,12 @@ public class ForEachStatementRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];

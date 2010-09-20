@@ -5,6 +5,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.statement.Block;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -16,9 +17,10 @@ import compiler.parser.Rule;
  */
 public class ElseClauseRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] PRODUCTION = new Object[] {ParseType.ELSE_KEYWORD, ParseType.BLOCK};
+  private static final Production EMPTY_PRODUCTION = new Production();
+  private static final Production PRODUCTION = new Production(ParseType.ELSE_KEYWORD, ParseType.BLOCK);
 
   public ElseClauseRule()
   {
@@ -27,16 +29,16 @@ public class ElseClauseRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == EMPTY_PRODUCTION)
+    if (EMPTY_PRODUCTION.equals(production))
     {
       return new ParseContainer<Block>(null, null);
     }
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Block block = (Block) args[1];
       return new ParseContainer<Block>(block, ParseInfo.combine((ParseInfo) args[0], block.getParseInfo()));

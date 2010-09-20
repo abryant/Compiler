@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.INTERFACE_DEFINITION;
 import static compiler.language.parser.ParseType.TYPE_DEFINITION;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -17,10 +18,11 @@ import compiler.parser.Rule;
  */
 public class TypeDefinitionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] CLASS_PRODUCTION = new Object[] {CLASS_DEFINITION};
-  private static final Object[] INTERFACE_PRODUCTION = new Object[] {INTERFACE_DEFINITION};
-  private static final Object[] ENUM_PRODUCTION = new Object[] {ENUM_DEFINITION};
+  private static final Production CLASS_PRODUCTION = new Production(CLASS_DEFINITION);
+  private static final Production INTERFACE_PRODUCTION = new Production(INTERFACE_DEFINITION);
+  private static final Production ENUM_PRODUCTION = new Production(ENUM_DEFINITION);
 
   public TypeDefinitionRule()
   {
@@ -28,12 +30,12 @@ public class TypeDefinitionRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == CLASS_PRODUCTION || types == INTERFACE_PRODUCTION || types == ENUM_PRODUCTION)
+    if (CLASS_PRODUCTION.equals(production) || INTERFACE_PRODUCTION.equals(production) || ENUM_PRODUCTION.equals(production))
     {
       // ClassDefinition, InterfaceDefinition and EnumDefinition are all subclasses of TypeDefinition, so just return the argument
       return args[0];

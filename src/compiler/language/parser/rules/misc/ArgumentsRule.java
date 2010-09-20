@@ -10,6 +10,7 @@ import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.Argument;
 import compiler.language.ast.misc.ArgumentList;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -21,9 +22,10 @@ import compiler.parser.Rule;
  */
 public class ArgumentsRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {LPAREN, RPAREN};
-  private static final Object[] PRODUCTION = new Object[] {LPAREN, ARGUMENT_LIST, RPAREN};
+  private static final Production EMPTY_PRODUCTION = new Production(LPAREN, RPAREN);
+  private static final Production PRODUCTION = new Production(LPAREN, ARGUMENT_LIST, RPAREN);
 
   public ArgumentsRule()
   {
@@ -31,16 +33,16 @@ public class ArgumentsRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == EMPTY_PRODUCTION)
+    if (EMPTY_PRODUCTION.equals(production))
     {
       return new ArgumentList(new Argument[0], ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Argument> arguments = (ParseList<Argument>) args[1];

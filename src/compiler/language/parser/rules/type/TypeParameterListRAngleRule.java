@@ -17,6 +17,7 @@ import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -28,11 +29,12 @@ import compiler.parser.Rule;
  */
 public class TypeParameterListRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] TYPE_PARAMETER_PRODUCTION      = new Object[] {TYPE_PARAMETER_RANGLE};
-  private static final Object[] TYPE_PARAMETER_LIST_PRODUCTION = new Object[] {TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST_RANGLE};
-  private static final Object[] QNAME_LIST_PRODUCTION          = new Object[] {QNAME,                         COMMA, TYPE_PARAMETER_LIST_RANGLE};
-  private static final Object[] NESTED_QNAME_LIST_PRODUCTION   = new Object[] {NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST_RANGLE};
+  private static final Production TYPE_PARAMETER_PRODUCTION      = new Production(TYPE_PARAMETER_RANGLE);
+  private static final Production TYPE_PARAMETER_LIST_PRODUCTION = new Production(TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST_RANGLE);
+  private static final Production QNAME_LIST_PRODUCTION          = new Production(QNAME,                         COMMA, TYPE_PARAMETER_LIST_RANGLE);
+  private static final Production NESTED_QNAME_LIST_PRODUCTION   = new Production(NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST_RANGLE);
 
   public TypeParameterListRAngleRule()
   {
@@ -41,19 +43,19 @@ public class TypeParameterListRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == TYPE_PARAMETER_PRODUCTION)
+    if (TYPE_PARAMETER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<TypeParameter> parameter = (ParseContainer<TypeParameter>) args[0];
       ParseList<TypeParameter> list = new ParseList<TypeParameter>(parameter.getItem(), parameter.getItem().getParseInfo());
       return new ParseContainer<ParseList<TypeParameter>>(list, parameter.getParseInfo());
     }
-    if (types == TYPE_PARAMETER_LIST_PRODUCTION)
+    if (TYPE_PARAMETER_LIST_PRODUCTION.equals(production))
     {
       TypeParameter parameter = (TypeParameter) args[0];
       @SuppressWarnings("unchecked")
@@ -63,7 +65,7 @@ public class TypeParameterListRAngleRule extends Rule
       list.addFirst(parameter, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return new ParseContainer<ParseList<TypeParameter>>(list, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
     }
-    if (types == QNAME_LIST_PRODUCTION)
+    if (QNAME_LIST_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       Type type = new PointerType(qname, qname.getParseInfo());
@@ -75,7 +77,7 @@ public class TypeParameterListRAngleRule extends Rule
       list.addFirst(parameter, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return new ParseContainer<ParseList<TypeParameter>>(list, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
     }
-    if (types == NESTED_QNAME_LIST_PRODUCTION)
+    if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       Type type = element.toType();

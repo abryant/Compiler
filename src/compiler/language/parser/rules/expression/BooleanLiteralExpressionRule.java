@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.TRUE_KEYWORD;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BooleanLiteralExpression;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -18,9 +19,10 @@ import compiler.parser.Rule;
  */
 public class BooleanLiteralExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] TRUE_PRODUCTION = new Object[] {TRUE_KEYWORD};
-  private static final Object[] FALSE_PRODUCTION = new Object[] {FALSE_KEYWORD};
+  private static final Production TRUE_PRODUCTION = new Production(TRUE_KEYWORD);
+  private static final Production FALSE_PRODUCTION = new Production(FALSE_KEYWORD);
 
   public BooleanLiteralExpressionRule()
   {
@@ -29,16 +31,16 @@ public class BooleanLiteralExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == TRUE_PRODUCTION)
+    if (TRUE_PRODUCTION.equals(production))
     {
       return new BooleanLiteralExpression(true, (ParseInfo) args[0]);
     }
-    if (types == FALSE_PRODUCTION)
+    if (FALSE_PRODUCTION.equals(production))
     {
       return new BooleanLiteralExpression(false, (ParseInfo) args[0]);
     }

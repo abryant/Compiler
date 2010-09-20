@@ -8,6 +8,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -19,9 +20,10 @@ import compiler.parser.Rule;
  */
 public class ThrowsListRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION = new Object[] {POINTER_TYPE};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {THROWS_LIST, COMMA, POINTER_TYPE};
+  private static final Production START_PRODUCTION = new Production(POINTER_TYPE);
+  private static final Production CONTINUATION_PRODUCTION = new Production(THROWS_LIST, COMMA, POINTER_TYPE);
 
   public ThrowsListRule()
   {
@@ -29,17 +31,17 @@ public class ThrowsListRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       PointerType type = (PointerType) args[0];
       return new ParseList<PointerType>(type, type.getParseInfo());
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<PointerType> list = (ParseList<PointerType>) args[0];

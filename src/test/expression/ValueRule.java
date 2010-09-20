@@ -1,6 +1,7 @@
 package test.expression;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -13,9 +14,10 @@ import compiler.parser.Rule;
  */
 public class ValueRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] NUMBER_PRODUCTION = new Object[] {ExpressionType.NUMBER};
-  private static final Object[] EXPRESSION_PRODUCTION = new Object[] {ExpressionType.LPAREN, ExpressionType.EXPRESSION, ExpressionType.RPAREN};
+  private static final Production NUMBER_PRODUCTION = new Production(ExpressionType.NUMBER);
+  private static final Production EXPRESSION_PRODUCTION = new Production(ExpressionType.LPAREN, ExpressionType.EXPRESSION, ExpressionType.RPAREN);
 
   public ValueRule()
   {
@@ -26,14 +28,14 @@ public class ValueRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == NUMBER_PRODUCTION)
+    if (NUMBER_PRODUCTION.equals(production))
     {
       // just a number
       return new Value((Number) args[0]);
     }
-    if (types == EXPRESSION_PRODUCTION)
+    if (EXPRESSION_PRODUCTION.equals(production))
     {
       // ( Expression )
       return new Value((Expression) args[1]);

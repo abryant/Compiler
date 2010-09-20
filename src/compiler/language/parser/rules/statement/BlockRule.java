@@ -10,6 +10,7 @@ import compiler.language.ast.ParseList;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.statement.Statement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -21,9 +22,10 @@ import compiler.parser.Rule;
  */
 public class BlockRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {LBRACE, RBRACE};
-  private static final Object[] PRODUCTION = new Object[] {LBRACE, STATEMENTS, RBRACE};
+  private static final Production EMPTY_PRODUCTION = new Production(LBRACE, RBRACE);
+  private static final Production PRODUCTION = new Production(LBRACE, STATEMENTS, RBRACE);
 
   public BlockRule()
   {
@@ -31,16 +33,16 @@ public class BlockRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == EMPTY_PRODUCTION)
+    if (EMPTY_PRODUCTION.equals(production))
     {
       return new Block(new Statement[0], ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Statement> statements = (ParseList<Statement>) args[1];

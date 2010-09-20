@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.INTEGER_TYPE;
 import static compiler.language.parser.ParseType.PRIMITIVE_TYPE;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -18,11 +19,12 @@ import compiler.parser.Rule;
  */
 public class PrimitiveTypeRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] BOOLEAN_PRODUCTION = new Object[] {BOOLEAN_TYPE};
-  private static final Object[] INTEGER_PRODUCTION = new Object[] {INTEGER_TYPE};
-  private static final Object[] CHARACTER_PRODUCTION = new Object[] {CHARACTER_TYPE};
-  private static final Object[] FLOATING_PRODUCTION = new Object[] {FLOATING_TYPE};
+  private static final Production BOOLEAN_PRODUCTION = new Production(BOOLEAN_TYPE);
+  private static final Production INTEGER_PRODUCTION = new Production(INTEGER_TYPE);
+  private static final Production CHARACTER_PRODUCTION = new Production(CHARACTER_TYPE);
+  private static final Production FLOATING_PRODUCTION = new Production(FLOATING_TYPE);
 
   public PrimitiveTypeRule()
   {
@@ -30,12 +32,12 @@ public class PrimitiveTypeRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == BOOLEAN_PRODUCTION || types == INTEGER_PRODUCTION || types == CHARACTER_PRODUCTION || types == FLOATING_PRODUCTION)
+    if (BOOLEAN_PRODUCTION.equals(production) || INTEGER_PRODUCTION.equals(production) || CHARACTER_PRODUCTION.equals(production) || FLOATING_PRODUCTION.equals(production))
     {
       // All primitive types that can be reduced to a PrimitiveType are actually subclasses of PrimitiveType, so just return the argument in any case
       return args[0];

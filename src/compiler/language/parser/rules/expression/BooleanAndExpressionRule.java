@@ -9,6 +9,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BooleanAndExpression;
 import compiler.language.ast.expression.Expression;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,12 +21,13 @@ import compiler.parser.Rule;
  */
 public class BooleanAndExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION           = new Object[] {EQUALITY_EXPRESSION};
-  private static final Object[] AND_PRODUCTION             = new Object[] {BOOLEAN_AND_EXPRESSION,        DOUBLE_AMPERSAND, EQUALITY_EXPRESSION};
-  private static final Object[] AND_QNAME_PRODUCTION       = new Object[] {BOOLEAN_AND_EXPRESSION,        DOUBLE_AMPERSAND, QNAME_OR_LESS_THAN_EXPRESSION};
-  private static final Object[] QNAME_AND_PRODUCTION       = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_AMPERSAND, EQUALITY_EXPRESSION};
-  private static final Object[] QNAME_AND_QNAME_PRODUCTION = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_AMPERSAND, QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Production START_PRODUCTION           = new Production(EQUALITY_EXPRESSION);
+  private static final Production AND_PRODUCTION             = new Production(BOOLEAN_AND_EXPRESSION,        DOUBLE_AMPERSAND, EQUALITY_EXPRESSION);
+  private static final Production AND_QNAME_PRODUCTION       = new Production(BOOLEAN_AND_EXPRESSION,        DOUBLE_AMPERSAND, QNAME_OR_LESS_THAN_EXPRESSION);
+  private static final Production QNAME_AND_PRODUCTION       = new Production(QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_AMPERSAND, EQUALITY_EXPRESSION);
+  private static final Production QNAME_AND_QNAME_PRODUCTION = new Production(QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_AMPERSAND, QNAME_OR_LESS_THAN_EXPRESSION);
 
   public BooleanAndExpressionRule()
   {
@@ -34,17 +36,17 @@ public class BooleanAndExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       // return the existing Expression
       return args[0];
     }
-    if (types == AND_PRODUCTION || types == AND_QNAME_PRODUCTION || types == QNAME_AND_PRODUCTION || types == QNAME_AND_QNAME_PRODUCTION)
+    if (AND_PRODUCTION.equals(production) || AND_QNAME_PRODUCTION.equals(production) || QNAME_AND_PRODUCTION.equals(production) || QNAME_AND_QNAME_PRODUCTION.equals(production))
     {
       Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BooleanAndExpression)

@@ -17,6 +17,7 @@ import compiler.language.ast.expression.ShiftExpressionType;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -28,24 +29,25 @@ import compiler.parser.Rule;
  */
 public class ShiftExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION                                     = new Object[] {ADDITIVE_EXPRESSION};
-  private static final Object[] LEFT_SHIFT_PRODUCTION                                = new Object[] {SHIFT_EXPRESSION,  DOUBLE_LANGLE, ADDITIVE_EXPRESSION};
-  private static final Object[] LEFT_SHIFT_QNAME_PRODUCTION                          = new Object[] {SHIFT_EXPRESSION,  DOUBLE_LANGLE, QNAME_EXPRESSION};
-  private static final Object[] QNAME_LEFT_SHIFT_PRODUCTION                          = new Object[] {QNAME_EXPRESSION,  DOUBLE_LANGLE, ADDITIVE_EXPRESSION};
-  private static final Object[] QNAME_LEFT_SHIFT_QNAME_PRODUCTION                    = new Object[] {QNAME_EXPRESSION,  DOUBLE_LANGLE, QNAME_EXPRESSION};
-  private static final Object[] ARITHMETIC_RIGHT_SHIFT_PRODUCTION                    = new Object[] {SHIFT_EXPRESSION,  DOUBLE_RANGLE, ADDITIVE_EXPRESSION};
-  private static final Object[] ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION              = new Object[] {SHIFT_EXPRESSION,  DOUBLE_RANGLE, QNAME_EXPRESSION};
-  private static final Object[] QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION              = new Object[] {QNAME,             DOUBLE_RANGLE, ADDITIVE_EXPRESSION};
-  private static final Object[] QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION        = new Object[] {QNAME,             DOUBLE_RANGLE, QNAME_EXPRESSION};
-  private static final Object[] NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION       = new Object[] {NESTED_QNAME_LIST, DOUBLE_RANGLE, ADDITIVE_EXPRESSION};
-  private static final Object[] NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION = new Object[] {NESTED_QNAME_LIST, DOUBLE_RANGLE, QNAME_EXPRESSION};
-  private static final Object[] LOGICAL_RIGHT_SHIFT_PRODUCTION                       = new Object[] {SHIFT_EXPRESSION,  TRIPLE_RANGLE, ADDITIVE_EXPRESSION};
-  private static final Object[] LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION                 = new Object[] {SHIFT_EXPRESSION,  TRIPLE_RANGLE, QNAME_EXPRESSION};
-  private static final Object[] QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION                 = new Object[] {QNAME,             TRIPLE_RANGLE, ADDITIVE_EXPRESSION};
-  private static final Object[] QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION           = new Object[] {QNAME,             TRIPLE_RANGLE, QNAME_EXPRESSION};
-  private static final Object[] NESTED_QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION          = new Object[] {NESTED_QNAME_LIST, TRIPLE_RANGLE, ADDITIVE_EXPRESSION};
-  private static final Object[] NESTED_QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION    = new Object[] {NESTED_QNAME_LIST, TRIPLE_RANGLE, QNAME_EXPRESSION};
+  private static final Production START_PRODUCTION                                     = new Production(ADDITIVE_EXPRESSION);
+  private static final Production LEFT_SHIFT_PRODUCTION                                = new Production(SHIFT_EXPRESSION,  DOUBLE_LANGLE, ADDITIVE_EXPRESSION);
+  private static final Production LEFT_SHIFT_QNAME_PRODUCTION                          = new Production(SHIFT_EXPRESSION,  DOUBLE_LANGLE, QNAME_EXPRESSION);
+  private static final Production QNAME_LEFT_SHIFT_PRODUCTION                          = new Production(QNAME_EXPRESSION,  DOUBLE_LANGLE, ADDITIVE_EXPRESSION);
+  private static final Production QNAME_LEFT_SHIFT_QNAME_PRODUCTION                    = new Production(QNAME_EXPRESSION,  DOUBLE_LANGLE, QNAME_EXPRESSION);
+  private static final Production ARITHMETIC_RIGHT_SHIFT_PRODUCTION                    = new Production(SHIFT_EXPRESSION,  DOUBLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION              = new Production(SHIFT_EXPRESSION,  DOUBLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION              = new Production(QNAME,             DOUBLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION        = new Production(QNAME,             DOUBLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION       = new Production(NESTED_QNAME_LIST, DOUBLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION = new Production(NESTED_QNAME_LIST, DOUBLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production LOGICAL_RIGHT_SHIFT_PRODUCTION                       = new Production(SHIFT_EXPRESSION,  TRIPLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION                 = new Production(SHIFT_EXPRESSION,  TRIPLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION                 = new Production(QNAME,             TRIPLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION           = new Production(QNAME,             TRIPLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production NESTED_QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION          = new Production(NESTED_QNAME_LIST, TRIPLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production NESTED_QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION    = new Production(NESTED_QNAME_LIST, TRIPLE_RANGLE, QNAME_EXPRESSION);
 
   public ShiftExpressionRule()
   {
@@ -62,12 +64,12 @@ public class ShiftExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       // return the existing Expression
       return args[0];
@@ -75,41 +77,41 @@ public class ShiftExpressionRule extends Rule
 
     Expression firstExpression;
     ShiftExpressionType separator;
-    if (types == LEFT_SHIFT_PRODUCTION       || types == LEFT_SHIFT_QNAME_PRODUCTION ||
-        types == QNAME_LEFT_SHIFT_PRODUCTION || types == QNAME_LEFT_SHIFT_QNAME_PRODUCTION)
+    if (LEFT_SHIFT_PRODUCTION.equals(production)       || LEFT_SHIFT_QNAME_PRODUCTION.equals(production) ||
+        QNAME_LEFT_SHIFT_PRODUCTION.equals(production) || QNAME_LEFT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       firstExpression = (Expression) args[0];
       separator = ShiftExpressionType.LEFT_SHIFT;
     }
-    else if (types == ARITHMETIC_RIGHT_SHIFT_PRODUCTION              || types == ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION)
+    else if (ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production)              || ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       firstExpression = (Expression) args[0];
       separator = ShiftExpressionType.ARITHMETIC_RIGHT_SHIFT;
     }
-    else if (types == QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION        || types == QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION)
+    else if (QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production)        || QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       firstExpression = new FieldAccessExpression(qname, qname.getParseInfo());
       separator = ShiftExpressionType.ARITHMETIC_RIGHT_SHIFT;
     }
-    else if (types == NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION || types == NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION)
+    else if (NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production) || NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       firstExpression = element.toExpression();
       separator = ShiftExpressionType.ARITHMETIC_RIGHT_SHIFT;
     }
-    else if (types == LOGICAL_RIGHT_SHIFT_PRODUCTION                 || types == LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION)
+    else if (LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)                 || LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       firstExpression = (Expression) args[0];
       separator = ShiftExpressionType.LOGICAL_RIGHT_SHIFT;
     }
-    else if (types == QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION           || types == QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION)
+    else if (QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)           || QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       firstExpression = new FieldAccessExpression(qname, qname.getParseInfo());
       separator = ShiftExpressionType.LOGICAL_RIGHT_SHIFT;
     }
-    else if (types == NESTED_QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION    || types == NESTED_QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION)
+    else if (NESTED_QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)    || NESTED_QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       firstExpression = element.toExpression();

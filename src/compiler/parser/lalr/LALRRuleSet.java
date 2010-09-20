@@ -7,9 +7,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import compiler.parser.Production;
 import compiler.parser.Rule;
 import compiler.parser.RuleSet;
 import compiler.parser.TypeUseEntry;
@@ -95,14 +96,15 @@ public class LALRRuleSet extends RuleSet
         result.put(resultItem.getNextTypeUse(), resultItem);
       }
 
-      Object[] production = item.getProduction();
-      if (offset == production.length)
+      Production production = item.getProduction();
+      Object[] productionTypes = production.getTypes();
+      if (offset == productionTypes.length)
       {
         // this item represents the end of a production, so it cannot generate any closure items
         continue;
       }
 
-      Rule rule = rules.get(production[offset]);
+      Rule rule = rules.get(productionTypes[offset]);
       if (rule != null)
       {
         // work out the lookahead set for the new stack items that are about to be generated
@@ -110,10 +112,10 @@ public class LALRRuleSet extends RuleSet
         // but advances on to the subsequent tokens in the list until a non-nullable one is found
         Set<Object> lookaheads = new HashSet<Object>();
         boolean nullable = true;
-        for (int lookahead = offset + 1; lookahead < production.length; lookahead++)
+        for (int lookahead = offset + 1; lookahead < productionTypes.length; lookahead++)
         {
-          lookaheads.addAll(getFirstSet(production[lookahead]));
-          if (!isNullable(production[lookahead]))
+          lookaheads.addAll(getFirstSet(productionTypes[lookahead]));
+          if (!isNullable(productionTypes[lookahead]))
           {
             nullable = false;
             break;
@@ -125,7 +127,7 @@ public class LALRRuleSet extends RuleSet
         }
 
         // this is a non-terminal, so add the productions of its rule to the stack for processing
-        Object[][] subProductions = rule.getProductions();
+        Production[] subProductions = rule.getProductions();
         for (int j = 0; j < subProductions.length; j++)
         {
           LALRItem stackItem = new LALRItem(rule, j, 0);

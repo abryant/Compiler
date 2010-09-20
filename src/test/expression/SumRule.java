@@ -1,6 +1,7 @@
 package test.expression;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -13,10 +14,11 @@ import compiler.parser.Rule;
  */
 public class SumRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCT_PRODUCTION = new Object[] {ExpressionType.PRODUCT};
-  private static final Object[] PLUS_PRODUCTION = new Object[] {ExpressionType.SUM, ExpressionType.PLUS, ExpressionType.PRODUCT};
-  private static final Object[] MINUS_PRODUCTION = new Object[] {ExpressionType.SUM, ExpressionType.MINUS, ExpressionType.PRODUCT};
+  private static final Production PRODUCT_PRODUCTION = new Production(ExpressionType.PRODUCT);
+  private static final Production PLUS_PRODUCTION = new Production(ExpressionType.SUM, ExpressionType.PLUS, ExpressionType.PRODUCT);
+  private static final Production MINUS_PRODUCTION = new Production(ExpressionType.SUM, ExpressionType.MINUS, ExpressionType.PRODUCT);
 
   public SumRule()
   {
@@ -27,14 +29,14 @@ public class SumRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCT_PRODUCTION)
+    if (PRODUCT_PRODUCTION.equals(production))
     {
       // just a product
       return new Sum(new Product[] {(Product) args[0]}, new boolean[] {true});
     }
-    if (types == PLUS_PRODUCTION || types == MINUS_PRODUCTION)
+    if (PLUS_PRODUCTION.equals(production) || MINUS_PRODUCTION.equals(production))
     {
       // Sum + Product or Sum - Product
       Sum old = (Sum) args[0];

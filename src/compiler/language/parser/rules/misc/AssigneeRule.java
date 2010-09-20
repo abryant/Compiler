@@ -12,6 +12,7 @@ import compiler.language.ast.misc.ArrayElementAssignee;
 import compiler.language.ast.misc.Assignee;
 import compiler.language.ast.misc.FieldAssignee;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -23,10 +24,11 @@ import compiler.parser.Rule;
  */
 public class AssigneeRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] BLANK_PRODUCTION = new Object[] {UNDERSCORE};
-  private static final Object[] FIELD_PRODUCTION = new Object[] {FIELD_ACCESS_EXPRESSION_NOT_QNAME};
-  private static final Object[] ARRAY_ELEMENT_PRODUCTION = new Object[] {ARRAY_ACCESS_EXPRESSION};
+  private static final Production BLANK_PRODUCTION = new Production(UNDERSCORE);
+  private static final Production FIELD_PRODUCTION = new Production(FIELD_ACCESS_EXPRESSION_NOT_QNAME);
+  private static final Production ARRAY_ELEMENT_PRODUCTION = new Production(ARRAY_ACCESS_EXPRESSION);
 
   public AssigneeRule()
   {
@@ -34,21 +36,21 @@ public class AssigneeRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == BLANK_PRODUCTION)
+    if (BLANK_PRODUCTION.equals(production))
     {
       return new Assignee((ParseInfo) args[0]);
     }
-    if (types == FIELD_PRODUCTION)
+    if (FIELD_PRODUCTION.equals(production))
     {
       FieldAccessExpression field = (FieldAccessExpression) args[0];
       return new FieldAssignee(field, field.getParseInfo());
     }
-    if (types == ARRAY_ELEMENT_PRODUCTION)
+    if (ARRAY_ELEMENT_PRODUCTION.equals(production))
     {
       ArrayAccessExpression arrayElement = (ArrayAccessExpression) args[0];
       return new ArrayElementAssignee(arrayElement, arrayElement.getParseInfo());

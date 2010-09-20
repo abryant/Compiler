@@ -12,6 +12,7 @@ import compiler.language.ast.misc.DefaultParameter;
 import compiler.language.ast.misc.NormalParameter;
 import compiler.language.ast.terminal.Name;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -23,9 +24,10 @@ import compiler.parser.Rule;
  */
 public class ParameterRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] NORMAL_PRODUCTION = new Object[] {EXPRESSION_NO_TUPLE};
-  private static final Object[] DEFAULT_PRODUCTION = new Object[] {AT, NAME, EQUALS, EXPRESSION_NO_TUPLE};
+  private static final Production NORMAL_PRODUCTION = new Production(EXPRESSION_NO_TUPLE);
+  private static final Production DEFAULT_PRODUCTION = new Production(AT, NAME, EQUALS, EXPRESSION_NO_TUPLE);
 
   public ParameterRule()
   {
@@ -33,17 +35,17 @@ public class ParameterRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == NORMAL_PRODUCTION)
+    if (NORMAL_PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[0];
       return new NormalParameter(expression, expression.getParseInfo());
     }
-    if (types == DEFAULT_PRODUCTION)
+    if (DEFAULT_PRODUCTION.equals(production))
     {
       Name name = (Name) args[1];
       Expression expression = (Expression) args[3];

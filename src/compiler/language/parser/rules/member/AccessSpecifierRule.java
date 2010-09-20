@@ -10,6 +10,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.AccessSpecifierType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -21,14 +22,15 @@ import compiler.parser.Rule;
  */
 public class AccessSpecifierRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] EMPTY_PRODUCTION             = new Object[] {};
-  private static final Object[] PUBLIC_PRODUCTION            = new Object[] {PUBLIC_KEYWORD};
-  private static final Object[] PACKAGE_PRODUCTION           = new Object[] {PACKAGE_KEYWORD};
-  private static final Object[] PACKAGE_PROTECTED_PRODUCTION = new Object[] {PACKAGE_KEYWORD, PROTECTED_KEYWORD};
-  private static final Object[] PROTECTED_PACKAGE_PRODUCTION = new Object[] {PROTECTED_KEYWORD, PACKAGE_KEYWORD};
-  private static final Object[] PROTECTED_PRODUCTION         = new Object[] {PROTECTED_KEYWORD};
-  private static final Object[] PRIVATE_PRODUCTION           = new Object[] {PRIVATE_KEYWORD};
+  private static final Production EMPTY_PRODUCTION             = new Production();
+  private static final Production PUBLIC_PRODUCTION            = new Production(PUBLIC_KEYWORD);
+  private static final Production PACKAGE_PRODUCTION           = new Production(PACKAGE_KEYWORD);
+  private static final Production PACKAGE_PROTECTED_PRODUCTION = new Production(PACKAGE_KEYWORD, PROTECTED_KEYWORD);
+  private static final Production PROTECTED_PACKAGE_PRODUCTION = new Production(PROTECTED_KEYWORD, PACKAGE_KEYWORD);
+  private static final Production PROTECTED_PRODUCTION         = new Production(PROTECTED_KEYWORD);
+  private static final Production PRIVATE_PRODUCTION           = new Production(PRIVATE_KEYWORD);
 
   public AccessSpecifierRule()
   {
@@ -42,33 +44,33 @@ public class AccessSpecifierRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
 
-    if (types == EMPTY_PRODUCTION)
+    if (EMPTY_PRODUCTION.equals(production))
     {
       return null;
     }
-    if (types == PUBLIC_PRODUCTION)
+    if (PUBLIC_PRODUCTION.equals(production))
     {
       return new AccessSpecifier(AccessSpecifierType.PUBLIC, (ParseInfo) args[0]);
     }
-    if (types == PACKAGE_PRODUCTION)
+    if (PACKAGE_PRODUCTION.equals(production))
     {
       return new AccessSpecifier(AccessSpecifierType.PACKAGE, (ParseInfo) args[0]);
     }
-    if (types == PACKAGE_PROTECTED_PRODUCTION || types == PROTECTED_PACKAGE_PRODUCTION)
+    if (PACKAGE_PROTECTED_PRODUCTION.equals(production) || PROTECTED_PACKAGE_PRODUCTION.equals(production))
     {
       return new AccessSpecifier(AccessSpecifierType.PACKAGE_PROTECTED, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
-    if (types == PROTECTED_PRODUCTION)
+    if (PROTECTED_PRODUCTION.equals(production))
     {
       return new AccessSpecifier(AccessSpecifierType.PROTECTED, (ParseInfo) args[0]);
     }
-    if (types == PRIVATE_PRODUCTION)
+    if (PRIVATE_PRODUCTION.equals(production))
     {
       return new AccessSpecifier(AccessSpecifierType.PRIVATE, (ParseInfo) args[0]);
     }

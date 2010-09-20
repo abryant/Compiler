@@ -9,6 +9,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.statement.FallthroughStatement;
 import compiler.language.ast.terminal.IntegerLiteral;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,9 +21,10 @@ import compiler.parser.Rule;
  */
 public class FallthroughStatementRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION        = new Object[] {FALLTHROUGH_KEYWORD,                  SEMICOLON};
-  private static final Object[] NUMBER_PRODUCTION = new Object[] {FALLTHROUGH_KEYWORD, INTEGER_LITERAL, SEMICOLON};
+  private static final Production PRODUCTION        = new Production(FALLTHROUGH_KEYWORD,                  SEMICOLON);
+  private static final Production NUMBER_PRODUCTION = new Production(FALLTHROUGH_KEYWORD, INTEGER_LITERAL, SEMICOLON);
 
   public FallthroughStatementRule()
   {
@@ -31,16 +33,16 @@ public class FallthroughStatementRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       return new FallthroughStatement(null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
-    if (types == NUMBER_PRODUCTION)
+    if (NUMBER_PRODUCTION.equals(production))
     {
       IntegerLiteral fallthroughLevels = (IntegerLiteral) args[1];
       return new FallthroughStatement(fallthroughLevels, ParseInfo.combine((ParseInfo) args[0], fallthroughLevels.getParseInfo(), (ParseInfo) args[2]));

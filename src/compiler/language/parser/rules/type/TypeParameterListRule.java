@@ -15,6 +15,7 @@ import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -26,13 +27,14 @@ import compiler.parser.Rule;
  */
 public class TypeParameterListRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] TYPE_PARAMETER_PRODUCTION                 = new Object[] {TYPE_PARAMETER_NOT_QNAME_LIST};
-  private static final Object[] QNAME_PRODUCTION                          = new Object[] {QNAME};
-  private static final Object[] NESTED_QNAME_LIST_PRODUCTION              = new Object[] {NESTED_QNAME_LIST};
-  private static final Object[] CONTINUATION_TYPE_PARAMETER_PRODUCTION    = new Object[] {TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST};
-  private static final Object[] CONTINUATION_QNAME_PRODUCTION             = new Object[] {QNAME,                         COMMA, TYPE_PARAMETER_LIST};
-  private static final Object[] CONTINUATION_NESTED_QNAME_LIST_PRODUCTION = new Object[] {NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST};
+  private static final Production TYPE_PARAMETER_PRODUCTION                 = new Production(TYPE_PARAMETER_NOT_QNAME_LIST);
+  private static final Production QNAME_PRODUCTION                          = new Production(QNAME);
+  private static final Production NESTED_QNAME_LIST_PRODUCTION              = new Production(NESTED_QNAME_LIST);
+  private static final Production CONTINUATION_TYPE_PARAMETER_PRODUCTION    = new Production(TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST);
+  private static final Production CONTINUATION_QNAME_PRODUCTION             = new Production(QNAME,                         COMMA, TYPE_PARAMETER_LIST);
+  private static final Production CONTINUATION_NESTED_QNAME_LIST_PRODUCTION = new Production(NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST);
 
   public TypeParameterListRule()
   {
@@ -41,31 +43,31 @@ public class TypeParameterListRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == TYPE_PARAMETER_PRODUCTION)
+    if (TYPE_PARAMETER_PRODUCTION.equals(production))
     {
       TypeParameter typeParameter = (TypeParameter) args[0];
       return new ParseList<TypeParameter>(typeParameter, typeParameter.getParseInfo());
     }
-    if (types == QNAME_PRODUCTION)
+    if (QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       Type type = new PointerType(qname, qname.getParseInfo());
       TypeParameter parameter = new NormalTypeParameter(type, type.getParseInfo());
       return new ParseList<TypeParameter>(parameter, parameter.getParseInfo());
     }
-    if (types == NESTED_QNAME_LIST_PRODUCTION)
+    if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       Type type = element.toType();
       TypeParameter parameter = new NormalTypeParameter(type, type.getParseInfo());
       return new ParseList<TypeParameter>(parameter, parameter.getParseInfo());
     }
-    if (types == CONTINUATION_TYPE_PARAMETER_PRODUCTION)
+    if (CONTINUATION_TYPE_PARAMETER_PRODUCTION.equals(production))
     {
       TypeParameter newTypeParameter = (TypeParameter) args[0];
       @SuppressWarnings("unchecked")
@@ -73,7 +75,7 @@ public class TypeParameterListRule extends Rule
       list.addFirst(newTypeParameter, ParseInfo.combine(newTypeParameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
-    if (types == CONTINUATION_QNAME_PRODUCTION)
+    if (CONTINUATION_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       PointerType type = new PointerType(qname, qname.getParseInfo());
@@ -83,7 +85,7 @@ public class TypeParameterListRule extends Rule
       list.addFirst(newTypeParameter, ParseInfo.combine(newTypeParameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
-    if (types == CONTINUATION_NESTED_QNAME_LIST_PRODUCTION)
+    if (CONTINUATION_NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       Type type = element.toType();

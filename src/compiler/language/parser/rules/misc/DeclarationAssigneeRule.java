@@ -8,6 +8,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.DeclarationAssignee;
 import compiler.language.ast.terminal.Name;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -19,9 +20,10 @@ import compiler.parser.Rule;
  */
 public class DeclarationAssigneeRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {NAME};
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {UNDERSCORE};
+  private static final Production PRODUCTION = new Production(NAME);
+  private static final Production EMPTY_PRODUCTION = new Production(UNDERSCORE);
 
   public DeclarationAssigneeRule()
   {
@@ -30,17 +32,17 @@ public class DeclarationAssigneeRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Name name = (Name) args[0];
       return new DeclarationAssignee(name, name.getParseInfo());
     }
-    if (types == EMPTY_PRODUCTION)
+    if (EMPTY_PRODUCTION.equals(production))
     {
       return new DeclarationAssignee(null, (ParseInfo) args[0]);
     }

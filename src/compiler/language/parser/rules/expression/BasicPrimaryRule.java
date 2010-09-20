@@ -26,6 +26,7 @@ import compiler.language.ast.terminal.FloatingLiteral;
 import compiler.language.ast.terminal.IntegerLiteral;
 import compiler.language.ast.terminal.StringLiteral;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -37,20 +38,21 @@ import compiler.parser.Rule;
  */
 public class BasicPrimaryRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] INTEGER_LITERAL_PRODUCTION = new Object[] {INTEGER_LITERAL};
-  private static final Object[] FLOATING_LITERAL_PRODUCTION = new Object[] {FLOATING_LITERAL};
-  private static final Object[] BOOLEAN_LITERAL_PRODUCTION = new Object[] {BOOLEAN_LITERAL_EXPRESSION};
-  private static final Object[] CHARACTER_LITERAL_PRODUCTION = new Object[] {CHARACTER_LITERAL};
-  private static final Object[] STRING_LITERAL_PRODUCTION = new Object[] {STRING_LITERAL};
-  private static final Object[] NIL_LITERAL_PRODUCTION = new Object[] {NIL_KEYWORD};
-  private static final Object[] FIELD_ACCESS_PRODUCTION = new Object[] {FIELD_ACCESS_EXPRESSION_NOT_QNAME};
-  private static final Object[] STATEMENT_EXPRESSION_PRODUCTION = new Object[] {STATEMENT_EXPRESSION};
-  private static final Object[] THIS_ACCESS_PRODUCTION = new Object[] {THIS_ACCESS_EXPRESSION};
-  private static final Object[] SUPER_ACCESS_PRODUCTION = new Object[] {SUPER_ACCESS_EXPRESSION};
-  private static final Object[] ARRAY_ACCESS_PRODUCTION = new Object[] {ARRAY_ACCESS_EXPRESSION};
-  private static final Object[] CLOSURE_CREATION_PRODUCTION = new Object[] {CLOSURE_CREATION_EXPRESSION};
-  private static final Object[] ARRAY_INSTANCIATION_PRODUCTION = new Object[] {ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER};
+  private static final Production INTEGER_LITERAL_PRODUCTION = new Production(INTEGER_LITERAL);
+  private static final Production FLOATING_LITERAL_PRODUCTION = new Production(FLOATING_LITERAL);
+  private static final Production BOOLEAN_LITERAL_PRODUCTION = new Production(BOOLEAN_LITERAL_EXPRESSION);
+  private static final Production CHARACTER_LITERAL_PRODUCTION = new Production(CHARACTER_LITERAL);
+  private static final Production STRING_LITERAL_PRODUCTION = new Production(STRING_LITERAL);
+  private static final Production NIL_LITERAL_PRODUCTION = new Production(NIL_KEYWORD);
+  private static final Production FIELD_ACCESS_PRODUCTION = new Production(FIELD_ACCESS_EXPRESSION_NOT_QNAME);
+  private static final Production STATEMENT_EXPRESSION_PRODUCTION = new Production(STATEMENT_EXPRESSION);
+  private static final Production THIS_ACCESS_PRODUCTION = new Production(THIS_ACCESS_EXPRESSION);
+  private static final Production SUPER_ACCESS_PRODUCTION = new Production(SUPER_ACCESS_EXPRESSION);
+  private static final Production ARRAY_ACCESS_PRODUCTION = new Production(ARRAY_ACCESS_EXPRESSION);
+  private static final Production CLOSURE_CREATION_PRODUCTION = new Production(CLOSURE_CREATION_EXPRESSION);
+  private static final Production ARRAY_INSTANCIATION_PRODUCTION = new Production(ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER);
 
   public BasicPrimaryRule()
   {
@@ -67,39 +69,39 @@ public class BasicPrimaryRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == INTEGER_LITERAL_PRODUCTION)
+    if (INTEGER_LITERAL_PRODUCTION.equals(production))
     {
       IntegerLiteral literal = (IntegerLiteral) args[0];
       return new IntegerLiteralExpression(literal, literal.getParseInfo());
     }
-    if (types == FLOATING_LITERAL_PRODUCTION)
+    if (FLOATING_LITERAL_PRODUCTION.equals(production))
     {
       FloatingLiteral literal = (FloatingLiteral) args[0];
       return new FloatingLiteralExpression(literal, literal.getParseInfo());
     }
-    if (types == CHARACTER_LITERAL_PRODUCTION)
+    if (CHARACTER_LITERAL_PRODUCTION.equals(production))
     {
       CharacterLiteral literal = (CharacterLiteral) args[0];
       return new CharacterLiteralExpression(literal, literal.getParseInfo());
     }
-    if (types == STRING_LITERAL_PRODUCTION)
+    if (STRING_LITERAL_PRODUCTION.equals(production))
     {
       StringLiteral literal = (StringLiteral) args[0];
       return new StringLiteralExpression(literal, literal.getParseInfo());
     }
-    if (types == NIL_LITERAL_PRODUCTION)
+    if (NIL_LITERAL_PRODUCTION.equals(production))
     {
       return new NilLiteralExpression((ParseInfo) args[0]);
     }
-    if (types == FIELD_ACCESS_PRODUCTION        || types == STATEMENT_EXPRESSION_PRODUCTION ||
-        types == THIS_ACCESS_PRODUCTION         || types == SUPER_ACCESS_PRODUCTION         ||
-        types == ARRAY_ACCESS_PRODUCTION        || types == CLOSURE_CREATION_PRODUCTION     ||
-        types == ARRAY_INSTANCIATION_PRODUCTION || types == BOOLEAN_LITERAL_PRODUCTION)
+    if (FIELD_ACCESS_PRODUCTION.equals(production)        || STATEMENT_EXPRESSION_PRODUCTION.equals(production) ||
+        THIS_ACCESS_PRODUCTION.equals(production)         || SUPER_ACCESS_PRODUCTION.equals(production)         ||
+        ARRAY_ACCESS_PRODUCTION.equals(production)        || CLOSURE_CREATION_PRODUCTION.equals(production)     ||
+        ARRAY_INSTANCIATION_PRODUCTION.equals(production) || BOOLEAN_LITERAL_PRODUCTION.equals(production))
     {
       // an Expression has already been generated, so return it
       return args[0];

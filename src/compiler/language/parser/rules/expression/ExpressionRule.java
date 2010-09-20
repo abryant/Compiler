@@ -9,6 +9,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.TupleExpression;
 import compiler.language.ast.misc.QNameElement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,9 +21,10 @@ import compiler.parser.Rule;
  */
 public class ExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {TUPLE_EXPRESSION};
-  private static final Object[] QNAME_LIST_PRODUCTION = new Object[] {QNAME_LIST};
+  private static final Production PRODUCTION = new Production(TUPLE_EXPRESSION);
+  private static final Production QNAME_LIST_PRODUCTION = new Production(QNAME_LIST);
 
   public ExpressionRule()
   {
@@ -31,17 +33,17 @@ public class ExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       // return the already generated expression
       return args[0];
     }
-    if (types == QNAME_LIST_PRODUCTION)
+    if (QNAME_LIST_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<QNameElement> qnameElements = (ParseList<QNameElement>) args[0];

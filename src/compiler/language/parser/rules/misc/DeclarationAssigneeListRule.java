@@ -8,6 +8,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.DeclarationAssignee;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -19,9 +20,10 @@ import compiler.parser.Rule;
  */
 public class DeclarationAssigneeListRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION = new Object[] {DECLARATION_ASSIGNEE};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {DECLARATION_ASSIGNEE_LIST, COMMA, DECLARATION_ASSIGNEE};
+  private static final Production START_PRODUCTION = new Production(DECLARATION_ASSIGNEE);
+  private static final Production CONTINUATION_PRODUCTION = new Production(DECLARATION_ASSIGNEE_LIST, COMMA, DECLARATION_ASSIGNEE);
 
   public DeclarationAssigneeListRule()
   {
@@ -30,17 +32,17 @@ public class DeclarationAssigneeListRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       DeclarationAssignee assignee = (DeclarationAssignee) args[0];
       return new ParseList<DeclarationAssignee>(assignee, assignee.getParseInfo());
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<DeclarationAssignee> list = (ParseList<DeclarationAssignee>) args[0];

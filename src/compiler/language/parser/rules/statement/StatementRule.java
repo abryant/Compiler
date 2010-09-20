@@ -28,6 +28,7 @@ import compiler.language.ast.expression.StatementExpression;
 import compiler.language.ast.statement.ExpressionStatement;
 import compiler.language.ast.statement.Statement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -39,27 +40,28 @@ import compiler.parser.Rule;
  */
 public class StatementRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] BLOCK_PRODUCTION                  = new Object[] {BLOCK};
-  private static final Object[] EMPTY_PRODUCTION                  = new Object[] {EMPTY_STATEMENT};
-  private static final Object[] LOCAL_DECLARATION_PRODUCTION      = new Object[] {LOCAL_DECLARATION, SEMICOLON};
-  private static final Object[] ASSIGNMENT_PRODUCTION             = new Object[] {ASSIGNMENT,        SEMICOLON};
-  private static final Object[] IF_PRODUCTION                     = new Object[] {IF_STATEMENT};
-  private static final Object[] WHILE_PRODUCTION                  = new Object[] {WHILE_STATEMENT};
-  private static final Object[] DO_PRODUCTION                     = new Object[] {DO_STATEMENT};
-  private static final Object[] FOR_PRODUCTION                    = new Object[] {FOR_STATEMENT};
-  private static final Object[] FOR_EACH_PRODUCTION               = new Object[] {FOR_EACH_STATEMENT};
-  private static final Object[] SWITCH_PRODUCTION                 = new Object[] {SWITCH_STATEMENT};
-  private static final Object[] BREAK_PRODUCTION                  = new Object[] {BREAK_STATEMENT};
-  private static final Object[] CONTINUE_PRODUCTION               = new Object[] {CONTINUE_STATEMENT};
-  private static final Object[] FALLTHROUGH_PRODUCTION            = new Object[] {FALLTHROUGH_STATEMENT};
-  private static final Object[] RETURN_PRODUCTION                 = new Object[] {RETURN_STATEMENT};
-  private static final Object[] SYNCHRONIZED_PRODUCTION           = new Object[] {SYNCHRONIZED_STATEMENT};
-  private static final Object[] THROW_PRODUCTION                  = new Object[] {THROW_STATEMENT};
-  private static final Object[] TRY_PRODUCTION                    = new Object[] {TRY_STATEMENT};
-  private static final Object[] INCREMENT_PRODUCTION              = new Object[] {INCREMENT,            SEMICOLON};
-  private static final Object[] DECREMENT_PRODUCTION              = new Object[] {DECREMENT,            SEMICOLON};
-  private static final Object[] STATEMENT_EXPRESSION_PRODUCTION   = new Object[] {STATEMENT_EXPRESSION, SEMICOLON};
+  private static final Production BLOCK_PRODUCTION                  = new Production(BLOCK);
+  private static final Production EMPTY_PRODUCTION                  = new Production(EMPTY_STATEMENT);
+  private static final Production LOCAL_DECLARATION_PRODUCTION      = new Production(LOCAL_DECLARATION, SEMICOLON);
+  private static final Production ASSIGNMENT_PRODUCTION             = new Production(ASSIGNMENT,        SEMICOLON);
+  private static final Production IF_PRODUCTION                     = new Production(IF_STATEMENT);
+  private static final Production WHILE_PRODUCTION                  = new Production(WHILE_STATEMENT);
+  private static final Production DO_PRODUCTION                     = new Production(DO_STATEMENT);
+  private static final Production FOR_PRODUCTION                    = new Production(FOR_STATEMENT);
+  private static final Production FOR_EACH_PRODUCTION               = new Production(FOR_EACH_STATEMENT);
+  private static final Production SWITCH_PRODUCTION                 = new Production(SWITCH_STATEMENT);
+  private static final Production BREAK_PRODUCTION                  = new Production(BREAK_STATEMENT);
+  private static final Production CONTINUE_PRODUCTION               = new Production(CONTINUE_STATEMENT);
+  private static final Production FALLTHROUGH_PRODUCTION            = new Production(FALLTHROUGH_STATEMENT);
+  private static final Production RETURN_PRODUCTION                 = new Production(RETURN_STATEMENT);
+  private static final Production SYNCHRONIZED_PRODUCTION           = new Production(SYNCHRONIZED_STATEMENT);
+  private static final Production THROW_PRODUCTION                  = new Production(THROW_STATEMENT);
+  private static final Production TRY_PRODUCTION                    = new Production(TRY_STATEMENT);
+  private static final Production INCREMENT_PRODUCTION              = new Production(INCREMENT,            SEMICOLON);
+  private static final Production DECREMENT_PRODUCTION              = new Production(DECREMENT,            SEMICOLON);
+  private static final Production STATEMENT_EXPRESSION_PRODUCTION   = new Production(STATEMENT_EXPRESSION, SEMICOLON);
 
   public StatementRule()
   {
@@ -86,23 +88,23 @@ public class StatementRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == BLOCK_PRODUCTION    || types == EMPTY_PRODUCTION        || types == IF_PRODUCTION          ||
-        types == WHILE_PRODUCTION    || types == DO_PRODUCTION           || types == FOR_PRODUCTION         ||
-        types == FOR_EACH_PRODUCTION || types == SWITCH_PRODUCTION       || types == TRY_PRODUCTION         ||
-        types == BREAK_PRODUCTION    || types == CONTINUE_PRODUCTION     || types == FALLTHROUGH_PRODUCTION ||
-        types == RETURN_PRODUCTION   || types == SYNCHRONIZED_PRODUCTION || types == THROW_PRODUCTION)
+    if (BLOCK_PRODUCTION.equals(production)    || EMPTY_PRODUCTION.equals(production)        || IF_PRODUCTION.equals(production)          ||
+        WHILE_PRODUCTION.equals(production)    || DO_PRODUCTION.equals(production)           || FOR_PRODUCTION.equals(production)         ||
+        FOR_EACH_PRODUCTION.equals(production) || SWITCH_PRODUCTION.equals(production)       || TRY_PRODUCTION.equals(production)         ||
+        BREAK_PRODUCTION.equals(production)    || CONTINUE_PRODUCTION.equals(production)     || FALLTHROUGH_PRODUCTION.equals(production) ||
+        RETURN_PRODUCTION.equals(production)   || SYNCHRONIZED_PRODUCTION.equals(production) || THROW_PRODUCTION.equals(production))
     {
       // these productions only take one argument and all return a Statement, so return the argument
       return args[0];
     }
 
-    if (types == LOCAL_DECLARATION_PRODUCTION || types == ASSIGNMENT_PRODUCTION ||
-        types == INCREMENT_PRODUCTION         || types == DECREMENT_PRODUCTION)
+    if (LOCAL_DECLARATION_PRODUCTION.equals(production) || ASSIGNMENT_PRODUCTION.equals(production) ||
+        INCREMENT_PRODUCTION.equals(production)         || DECREMENT_PRODUCTION.equals(production))
     {
       // add the semicolon's ParseInfo to the statement before returning it
       Statement statement = (Statement) args[0];
@@ -110,7 +112,7 @@ public class StatementRule extends Rule
       return statement;
     }
 
-    if (types == STATEMENT_EXPRESSION_PRODUCTION)
+    if (STATEMENT_EXPRESSION_PRODUCTION.equals(production))
     {
       StatementExpression expression = (StatementExpression) args[0];
       return new ExpressionStatement(expression, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1]));

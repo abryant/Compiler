@@ -13,6 +13,7 @@ import compiler.language.ast.statement.Block;
 import compiler.language.ast.statement.CatchClause;
 import compiler.language.ast.statement.TryStatement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -24,8 +25,9 @@ import compiler.parser.Rule;
  */
 public class TryStatementRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {TRY_KEYWORD, BLOCK, CATCH_CLAUSES, FINALLY_CLAUSE};
+  private static final Production PRODUCTION = new Production(TRY_KEYWORD, BLOCK, CATCH_CLAUSES, FINALLY_CLAUSE);
 
   public TryStatementRule()
   {
@@ -34,12 +36,12 @@ public class TryStatementRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Block block = (Block) args[1];
       @SuppressWarnings("unchecked")

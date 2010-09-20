@@ -18,6 +18,7 @@ import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
 import compiler.language.parser.ParseUtil;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -29,11 +30,12 @@ import compiler.parser.Rule;
  */
 public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] MUTABLE_PRODUCTION = new Object[] {QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE};
-  private static final Object[] IMMUTABLE_PRODUCTION = new Object[] {HASH, QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE};
-  private static final Object[] TRAILING_PARAMS_PRODUCTION = new Object[] {POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE};
-  private static final Object[] DOUBLE_RANGLE_PRODUCTION = new Object[] {POINTER_TYPE_TRAILING_PARAMS, DOUBLE_RANGLE};
+  private static final Production MUTABLE_PRODUCTION = new Production(QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE);
+  private static final Production IMMUTABLE_PRODUCTION = new Production(HASH, QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE);
+  private static final Production TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE);
+  private static final Production DOUBLE_RANGLE_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS, DOUBLE_RANGLE);
 
   public PointerTypeTrailingParamsDoubleRAngleRule()
   {
@@ -42,12 +44,12 @@ public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == DOUBLE_RANGLE_PRODUCTION)
+    if (DOUBLE_RANGLE_PRODUCTION.equals(production))
     {
       PointerType type = (PointerType) args[0];
       ParseInfo doubleRAngleInfo = (ParseInfo) args[1];
@@ -58,15 +60,15 @@ public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
 
     // find the index of the TYPE_PARAMETER_LIST_TRIPLE_RANGLE based on which production this is
     int parameterListIndex;
-    if (types == MUTABLE_PRODUCTION)
+    if (MUTABLE_PRODUCTION.equals(production))
     {
       parameterListIndex = 2;
     }
-    else if (types == IMMUTABLE_PRODUCTION)
+    else if (IMMUTABLE_PRODUCTION.equals(production))
     {
       parameterListIndex = 3;
     }
-    else if (types == TRAILING_PARAMS_PRODUCTION)
+    else if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
       parameterListIndex = 4;
     }
@@ -86,7 +88,7 @@ public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
     // create the PointerType to encapsulate, and the ParseInfo of everything but the trailing type parameter list
     PointerType type;
     ParseInfo startInfo;
-    if (types == MUTABLE_PRODUCTION)
+    if (MUTABLE_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
 
@@ -102,7 +104,7 @@ public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
       type = new PointerType(false, names, typeParameterLists,
                              ParseInfo.combine(startInfo, thirdParamsContainer.getParseInfo()));
     }
-    else if (types == IMMUTABLE_PRODUCTION)
+    else if (IMMUTABLE_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[1];
 
@@ -118,7 +120,7 @@ public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
       type = new PointerType(true, names, typeParameterLists,
                    ParseInfo.combine(startInfo, thirdParamsContainer.getParseInfo()));
     }
-    else if (types == TRAILING_PARAMS_PRODUCTION)
+    else if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
       PointerType baseType = (PointerType) args[0];
       QName qname = (QName) args[2];

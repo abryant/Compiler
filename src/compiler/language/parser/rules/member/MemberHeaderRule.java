@@ -10,6 +10,7 @@ import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.MemberHeader;
 import compiler.language.ast.misc.Modifier;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -21,9 +22,10 @@ import compiler.parser.Rule;
  */
 public class MemberHeaderRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {ACCESS_SPECIFIER, MODIFIERS};
-  private static final Object[] NO_MODIFIERS_PRODUCTION = new Object[] {ACCESS_SPECIFIER};
+  private static final Production PRODUCTION = new Production(ACCESS_SPECIFIER, MODIFIERS);
+  private static final Production NO_MODIFIERS_PRODUCTION = new Production(ACCESS_SPECIFIER);
 
   public MemberHeaderRule()
   {
@@ -31,12 +33,12 @@ public class MemberHeaderRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       AccessSpecifier access = (AccessSpecifier) args[0];
       @SuppressWarnings("unchecked")
@@ -52,7 +54,7 @@ public class MemberHeaderRule extends Rule
       }
       return new MemberHeader(access, modifiers.toArray(new Modifier[0]), parseInfo);
     }
-    if (types == NO_MODIFIERS_PRODUCTION)
+    if (NO_MODIFIERS_PRODUCTION.equals(production))
     {
       AccessSpecifier access = (AccessSpecifier) args[0];
       ParseInfo parseInfo = access != null ? access.getParseInfo() : null;

@@ -16,6 +16,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.UnaryMinusExpression;
 import compiler.language.ast.expression.UnaryPlusExpression;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -27,18 +28,19 @@ import compiler.parser.Rule;
  */
 public class UnaryExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRIMARY_PRODUCTION = new Object[] {PRIMARY};
-  private static final Object[] CAST_PRODUCTION = new Object[] {CAST_EXPRESSION};
+  private static final Production PRIMARY_PRODUCTION = new Production(PRIMARY);
+  private static final Production CAST_PRODUCTION = new Production(CAST_EXPRESSION);
 
-  private static final Object[] UNARY_PLUS_PRODUCTION = new Object[] {PLUS, UNARY_EXPRESSION};
-  private static final Object[] UNARY_PLUS_QNAME_PRODUCTION = new Object[] {PLUS, QNAME_EXPRESSION};
-  private static final Object[] UNARY_MINUS_PRODUCTION = new Object[] {MINUS, UNARY_EXPRESSION};
-  private static final Object[] UNARY_MINUS_QNAME_PRODUCTION = new Object[] {MINUS, QNAME_EXPRESSION};
-  private static final Object[] BOOLEAN_NOT_PRODUCTION = new Object[] {EXCLAIMATION_MARK, UNARY_EXPRESSION};
-  private static final Object[] BOOLEAN_NOT_QNAME_PRODUCTION = new Object[] {EXCLAIMATION_MARK, QNAME_EXPRESSION};
-  private static final Object[] BITWISE_NOT_PRODUCTION = new Object[] {TILDE, UNARY_EXPRESSION};
-  private static final Object[] BITWISE_NOT_QNAME_PRODUCTION = new Object[] {TILDE, QNAME_EXPRESSION};
+  private static final Production UNARY_PLUS_PRODUCTION = new Production(PLUS, UNARY_EXPRESSION);
+  private static final Production UNARY_PLUS_QNAME_PRODUCTION = new Production(PLUS, QNAME_EXPRESSION);
+  private static final Production UNARY_MINUS_PRODUCTION = new Production(MINUS, UNARY_EXPRESSION);
+  private static final Production UNARY_MINUS_QNAME_PRODUCTION = new Production(MINUS, QNAME_EXPRESSION);
+  private static final Production BOOLEAN_NOT_PRODUCTION = new Production(EXCLAIMATION_MARK, UNARY_EXPRESSION);
+  private static final Production BOOLEAN_NOT_QNAME_PRODUCTION = new Production(EXCLAIMATION_MARK, QNAME_EXPRESSION);
+  private static final Production BITWISE_NOT_PRODUCTION = new Production(TILDE, UNARY_EXPRESSION);
+  private static final Production BITWISE_NOT_QNAME_PRODUCTION = new Production(TILDE, QNAME_EXPRESSION);
 
 
   public UnaryExpressionRule()
@@ -52,32 +54,32 @@ public class UnaryExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRIMARY_PRODUCTION || types == CAST_PRODUCTION)
+    if (PRIMARY_PRODUCTION.equals(production) || CAST_PRODUCTION.equals(production))
     {
       // the expression has already been built, so return it
       return args[0];
     }
-    if (types == UNARY_PLUS_PRODUCTION || types == UNARY_PLUS_QNAME_PRODUCTION)
+    if (UNARY_PLUS_PRODUCTION.equals(production) || UNARY_PLUS_QNAME_PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[1];
       return new UnaryPlusExpression(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
     }
-    if (types == UNARY_MINUS_PRODUCTION || types == UNARY_MINUS_QNAME_PRODUCTION)
+    if (UNARY_MINUS_PRODUCTION.equals(production) || UNARY_MINUS_QNAME_PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[1];
       return new UnaryMinusExpression(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
     }
-    if (types == BOOLEAN_NOT_PRODUCTION || types == BOOLEAN_NOT_QNAME_PRODUCTION)
+    if (BOOLEAN_NOT_PRODUCTION.equals(production) || BOOLEAN_NOT_QNAME_PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[1];
       return new BooleanNotExpression(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
     }
-    if (types == BITWISE_NOT_PRODUCTION || types == BITWISE_NOT_QNAME_PRODUCTION)
+    if (BITWISE_NOT_PRODUCTION.equals(production) || BITWISE_NOT_QNAME_PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[1];
       return new BitwiseNotExpression(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));

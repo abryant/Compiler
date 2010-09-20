@@ -10,6 +10,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.Expression;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -21,10 +22,11 @@ import compiler.parser.Rule;
  */
 public class ArrayInitializerRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {LBRACE, EXPRESSION_LIST, RBRACE};
-  private static final Object[] TRAILING_COMMA_PRODUCTION = new Object[] {LBRACE, EXPRESSION_LIST, COMMA, RBRACE};
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {LBRACE, RBRACE};
+  private static final Production PRODUCTION = new Production(LBRACE, EXPRESSION_LIST, RBRACE);
+  private static final Production TRAILING_COMMA_PRODUCTION = new Production(LBRACE, EXPRESSION_LIST, COMMA, RBRACE);
+  private static final Production EMPTY_PRODUCTION = new Production(LBRACE, RBRACE);
 
   public ArrayInitializerRule()
   {
@@ -33,26 +35,26 @@ public class ArrayInitializerRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Expression> list = (ParseList<Expression>) args[1];
       list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
       return list;
     }
-    if (types == TRAILING_COMMA_PRODUCTION)
+    if (TRAILING_COMMA_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Expression> list = (ParseList<Expression>) args[1];
       list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2], (ParseInfo) args[3]));
       return list;
     }
-    if (types == EMPTY_PRODUCTION)
+    if (EMPTY_PRODUCTION.equals(production))
     {
       return new ParseList<Expression>(ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }

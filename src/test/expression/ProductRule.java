@@ -1,6 +1,7 @@
 package test.expression;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -13,9 +14,10 @@ import compiler.parser.Rule;
  */
 public class ProductRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] VALUE_PRODUCTION = new Object[] {ExpressionType.VALUE};
-  private static final Object[] TIMES_PRODUCTION = new Object[] {ExpressionType.PRODUCT, ExpressionType.TIMES, ExpressionType.VALUE};
+  private static final Production VALUE_PRODUCTION = new Production(ExpressionType.VALUE);
+  private static final Production TIMES_PRODUCTION = new Production(ExpressionType.PRODUCT, ExpressionType.TIMES, ExpressionType.VALUE);
 
   public ProductRule()
   {
@@ -26,14 +28,14 @@ public class ProductRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == VALUE_PRODUCTION)
+    if (VALUE_PRODUCTION.equals(production))
     {
       // just a value
       return new Product(new Value[] {(Value) args[0]});
     }
-    if (types == TIMES_PRODUCTION)
+    if (TIMES_PRODUCTION.equals(production))
     {
       // Product * Value
       Value[] oldValues = ((Product) args[0]).getValues();

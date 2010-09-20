@@ -1,5 +1,6 @@
 package compiler.parser;
 
+import java.io.Serializable;
 import java.util.Deque;
 
 /*
@@ -11,8 +12,10 @@ import java.util.Deque;
  *
  * @author Anthony Bryant
  */
-public abstract class Action
+public abstract class Action implements Serializable
 {
+
+  private static final long serialVersionUID = 1L;
 
   /**
    * Returns whether this action is an accept action.

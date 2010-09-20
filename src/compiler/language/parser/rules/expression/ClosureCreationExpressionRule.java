@@ -22,6 +22,7 @@ import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeArgument;
 import compiler.language.ast.type.VoidType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -33,11 +34,12 @@ import compiler.parser.Rule;
  */
 public class ClosureCreationExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {CLOSURE_KEYWORD, LPAREN, ARGUMENT_LIST, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK};
-  private static final Object[] TYPE_ARGUMENTS_PRODUCTION = new Object[] {CLOSURE_KEYWORD, TYPE_ARGUMENTS, LPAREN, ARGUMENT_LIST, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK};
-  private static final Object[] VOID_PRODUCTION = new Object[] {CLOSURE_KEYWORD, LPAREN, VOID_TYPE, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK};
-  private static final Object[] TYPE_ARGUMENTS_VOID_PRODUCTION = new Object[] {CLOSURE_KEYWORD, TYPE_ARGUMENTS, LPAREN, VOID_TYPE, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK};
+  private static final Production PRODUCTION = new Production(CLOSURE_KEYWORD, LPAREN, ARGUMENT_LIST, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
+  private static final Production TYPE_ARGUMENTS_PRODUCTION = new Production(CLOSURE_KEYWORD, TYPE_ARGUMENTS, LPAREN, ARGUMENT_LIST, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
+  private static final Production VOID_PRODUCTION = new Production(CLOSURE_KEYWORD, LPAREN, VOID_TYPE, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
+  private static final Production TYPE_ARGUMENTS_VOID_PRODUCTION = new Production(CLOSURE_KEYWORD, TYPE_ARGUMENTS, LPAREN, VOID_TYPE, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
 
   public ClosureCreationExpressionRule()
   {
@@ -47,12 +49,12 @@ public class ClosureCreationExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Argument> arguments = (ParseList<Argument>) args[2];
@@ -67,7 +69,7 @@ public class ClosureCreationExpressionRule extends Rule
                                                              (ParseInfo) args[3], returnTypes.getParseInfo(), (ParseInfo) args[5],
                                                              thrownTypes.getParseInfo(), block.getParseInfo()));
     }
-    if (types == TYPE_ARGUMENTS_PRODUCTION)
+    if (TYPE_ARGUMENTS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<TypeArgument> typeArguments = (ParseList<TypeArgument>) args[1];
@@ -84,7 +86,7 @@ public class ClosureCreationExpressionRule extends Rule
                                                              (ParseInfo) args[4], returnTypes.getParseInfo(), (ParseInfo) args[6],
                                                              thrownTypes.getParseInfo(), block.getParseInfo()));
     }
-    if (types == VOID_PRODUCTION)
+    if (VOID_PRODUCTION.equals(production))
     {
       VoidType voidType = (VoidType) args[2];
       @SuppressWarnings("unchecked")
@@ -98,7 +100,7 @@ public class ClosureCreationExpressionRule extends Rule
                                                              (ParseInfo) args[3], returnTypes.getParseInfo(), (ParseInfo) args[5],
                                                              thrownTypes.getParseInfo(), block.getParseInfo()));
     }
-    if (types == TYPE_ARGUMENTS_VOID_PRODUCTION)
+    if (TYPE_ARGUMENTS_VOID_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<TypeArgument> typeArguments = (ParseList<TypeArgument>) args[1];

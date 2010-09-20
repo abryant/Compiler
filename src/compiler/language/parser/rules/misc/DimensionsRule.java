@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.RSQUARE;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.Dimensions;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -18,9 +19,10 @@ import compiler.parser.Rule;
  */
 public class DimensionsRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION = new Object[] {LSQUARE, RSQUARE};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {DIMENSIONS, LSQUARE, RSQUARE};
+  private static final Production START_PRODUCTION = new Production(LSQUARE, RSQUARE);
+  private static final Production CONTINUATION_PRODUCTION = new Production(DIMENSIONS, LSQUARE, RSQUARE);
 
   public DimensionsRule()
   {
@@ -29,16 +31,16 @@ public class DimensionsRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       return new Dimensions(1, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (CONTINUATION_PRODUCTION.equals(production))
     {
       Dimensions oldDimensions = (Dimensions) args[0];
       return new Dimensions(oldDimensions.getDimensions() + 1, ParseInfo.combine(oldDimensions.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));

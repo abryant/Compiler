@@ -22,6 +22,7 @@ import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -33,32 +34,33 @@ import compiler.parser.Rule;
  */
 public class RelationalExpressionNotLessThanQNameRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] NO_CHANGE_PRODUCTION                       = new Object[] {BITWISE_OR_EXPRESSION};
+  private static final Production NO_CHANGE_PRODUCTION                       = new Production(BITWISE_OR_EXPRESSION);
 
-  private static final Object[] LESS_THAN_PRODUCTION                       = new Object[] {BITWISE_OR_EXPRESSION, LANGLE,        BITWISE_OR_EXPRESSION};
-  private static final Object[] LESS_THAN_QNAME_PRODUCTION                 = new Object[] {BITWISE_OR_EXPRESSION, LANGLE,        QNAME_EXPRESSION};
-  private static final Object[] QNAME_LESS_THAN_PRODUCTION                 = new Object[] {QNAME,                 LANGLE,        BITWISE_OR_EXPRESSION};
-  private static final Object[] NESTED_QNAME_LESS_THAN_PRODUCTION          = new Object[] {NESTED_QNAME_LIST,     LANGLE,        BITWISE_OR_EXPRESSION};
+  private static final Production LESS_THAN_PRODUCTION                       = new Production(BITWISE_OR_EXPRESSION, LANGLE,        BITWISE_OR_EXPRESSION);
+  private static final Production LESS_THAN_QNAME_PRODUCTION                 = new Production(BITWISE_OR_EXPRESSION, LANGLE,        QNAME_EXPRESSION);
+  private static final Production QNAME_LESS_THAN_PRODUCTION                 = new Production(QNAME,                 LANGLE,        BITWISE_OR_EXPRESSION);
+  private static final Production NESTED_QNAME_LESS_THAN_PRODUCTION          = new Production(NESTED_QNAME_LIST,     LANGLE,        BITWISE_OR_EXPRESSION);
 
 
-  private static final Object[] GREATER_THAN_PRODUCTION                    = new Object[] {BITWISE_OR_EXPRESSION, RANGLE,        BITWISE_OR_EXPRESSION};
-  private static final Object[] GREATER_THAN_QNAME_PRODUCTION              = new Object[] {BITWISE_OR_EXPRESSION, RANGLE,        QNAME_EXPRESSION};
-  private static final Object[] QNAME_GREATER_THAN_PRODUCTION              = new Object[] {QNAME,                 RANGLE,        BITWISE_OR_EXPRESSION};
-  private static final Object[] QNAME_GREATER_THAN_QNAME_PRODUCTION        = new Object[] {QNAME,                 RANGLE,        QNAME_EXPRESSION};
-  private static final Object[] NESTED_QNAME_GREATER_THAN_PRODUCTION       = new Object[] {NESTED_QNAME_LIST,     RANGLE,        BITWISE_OR_EXPRESSION};
-  private static final Object[] NESTED_QNAME_GREATER_THAN_QNAME_PRODUCTION = new Object[] {NESTED_QNAME_LIST,     RANGLE,        QNAME_EXPRESSION};
-  private static final Object[] LESS_THAN_EQUAL_PRODUCTION                 = new Object[] {BITWISE_OR_EXPRESSION, LANGLE_EQUALS, BITWISE_OR_EXPRESSION};
-  private static final Object[] LESS_THAN_EQUAL_QNAME_PRODUCTION           = new Object[] {BITWISE_OR_EXPRESSION, LANGLE_EQUALS, QNAME_EXPRESSION};
-  private static final Object[] QNAME_LESS_THAN_EQUAL_PRODUCTION           = new Object[] {QNAME_EXPRESSION,      LANGLE_EQUALS, BITWISE_OR_EXPRESSION};
-  private static final Object[] QNAME_LESS_THAN_EQUAL_QNAME_PRODUCTION     = new Object[] {QNAME_EXPRESSION,      LANGLE_EQUALS, QNAME_EXPRESSION};
-  private static final Object[] GREATER_THAN_EQUAL_PRODUCTION              = new Object[] {BITWISE_OR_EXPRESSION, RANGLE_EQUALS, BITWISE_OR_EXPRESSION};
-  private static final Object[] GREATER_THAN_EQUAL_QNAME_PRODUCTION        = new Object[] {BITWISE_OR_EXPRESSION, RANGLE_EQUALS, QNAME_EXPRESSION};
-  private static final Object[] QNAME_GREATER_THAN_EQUAL_PRODUCTION        = new Object[] {QNAME_EXPRESSION,      RANGLE_EQUALS, BITWISE_OR_EXPRESSION};
-  private static final Object[] QNAME_GREATER_THAN_EQUAL_QNAME_PRODUCTION  = new Object[] {QNAME_EXPRESSION,      RANGLE_EQUALS, QNAME_EXPRESSION};
+  private static final Production GREATER_THAN_PRODUCTION                    = new Production(BITWISE_OR_EXPRESSION, RANGLE,        BITWISE_OR_EXPRESSION);
+  private static final Production GREATER_THAN_QNAME_PRODUCTION              = new Production(BITWISE_OR_EXPRESSION, RANGLE,        QNAME_EXPRESSION);
+  private static final Production QNAME_GREATER_THAN_PRODUCTION              = new Production(QNAME,                 RANGLE,        BITWISE_OR_EXPRESSION);
+  private static final Production QNAME_GREATER_THAN_QNAME_PRODUCTION        = new Production(QNAME,                 RANGLE,        QNAME_EXPRESSION);
+  private static final Production NESTED_QNAME_GREATER_THAN_PRODUCTION       = new Production(NESTED_QNAME_LIST,     RANGLE,        BITWISE_OR_EXPRESSION);
+  private static final Production NESTED_QNAME_GREATER_THAN_QNAME_PRODUCTION = new Production(NESTED_QNAME_LIST,     RANGLE,        QNAME_EXPRESSION);
+  private static final Production LESS_THAN_EQUAL_PRODUCTION                 = new Production(BITWISE_OR_EXPRESSION, LANGLE_EQUALS, BITWISE_OR_EXPRESSION);
+  private static final Production LESS_THAN_EQUAL_QNAME_PRODUCTION           = new Production(BITWISE_OR_EXPRESSION, LANGLE_EQUALS, QNAME_EXPRESSION);
+  private static final Production QNAME_LESS_THAN_EQUAL_PRODUCTION           = new Production(QNAME_EXPRESSION,      LANGLE_EQUALS, BITWISE_OR_EXPRESSION);
+  private static final Production QNAME_LESS_THAN_EQUAL_QNAME_PRODUCTION     = new Production(QNAME_EXPRESSION,      LANGLE_EQUALS, QNAME_EXPRESSION);
+  private static final Production GREATER_THAN_EQUAL_PRODUCTION              = new Production(BITWISE_OR_EXPRESSION, RANGLE_EQUALS, BITWISE_OR_EXPRESSION);
+  private static final Production GREATER_THAN_EQUAL_QNAME_PRODUCTION        = new Production(BITWISE_OR_EXPRESSION, RANGLE_EQUALS, QNAME_EXPRESSION);
+  private static final Production QNAME_GREATER_THAN_EQUAL_PRODUCTION        = new Production(QNAME_EXPRESSION,      RANGLE_EQUALS, BITWISE_OR_EXPRESSION);
+  private static final Production QNAME_GREATER_THAN_EQUAL_QNAME_PRODUCTION  = new Production(QNAME_EXPRESSION,      RANGLE_EQUALS, QNAME_EXPRESSION);
 
-  private static final Object[] INSTANCE_OF_PRODUCTION                     = new Object[] {BITWISE_OR_EXPRESSION, INSTANCEOF_KEYWORD, TYPE};
-  private static final Object[] QNAME_INSTANCE_OF_PRODUCTION               = new Object[] {QNAME_EXPRESSION,      INSTANCEOF_KEYWORD, TYPE};
+  private static final Production INSTANCE_OF_PRODUCTION                     = new Production(BITWISE_OR_EXPRESSION, INSTANCEOF_KEYWORD, TYPE);
+  private static final Production QNAME_INSTANCE_OF_PRODUCTION               = new Production(QNAME_EXPRESSION,      INSTANCEOF_KEYWORD, TYPE);
 
   public RelationalExpressionNotLessThanQNameRule()
   {
@@ -77,24 +79,24 @@ public class RelationalExpressionNotLessThanQNameRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == NO_CHANGE_PRODUCTION)
+    if (NO_CHANGE_PRODUCTION.equals(production))
     {
       // return the existing Expression
       return args[0];
     }
-    if (types == INSTANCE_OF_PRODUCTION || types == QNAME_INSTANCE_OF_PRODUCTION)
+    if (INSTANCE_OF_PRODUCTION.equals(production) || QNAME_INSTANCE_OF_PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[0];
       Type type = (Type) args[2];
       return new InstanceOfExpression(expression, type, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1], type.getParseInfo()));
     }
     // handle the special case QName rules for Less Than
-    if (types == QNAME_LESS_THAN_PRODUCTION)
+    if (QNAME_LESS_THAN_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       Expression firstExpression = new FieldAccessExpression(qname, qname.getParseInfo());
@@ -102,7 +104,7 @@ public class RelationalExpressionNotLessThanQNameRule extends Rule
       return new RelationalExpression(firstExpression, RelationalExpressionType.LESS_THAN, secondExpression,
                                       ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
-    if (types == NESTED_QNAME_LESS_THAN_PRODUCTION)
+    if (NESTED_QNAME_LESS_THAN_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       Expression firstExpression = element.toExpression();
@@ -111,7 +113,7 @@ public class RelationalExpressionNotLessThanQNameRule extends Rule
                                       ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     // handle the special case QName rules for Greater Than
-    if (types == QNAME_GREATER_THAN_PRODUCTION || types == QNAME_GREATER_THAN_QNAME_PRODUCTION)
+    if (QNAME_GREATER_THAN_PRODUCTION.equals(production) || QNAME_GREATER_THAN_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       Expression firstExpression = new FieldAccessExpression(qname, qname.getParseInfo());
@@ -119,7 +121,7 @@ public class RelationalExpressionNotLessThanQNameRule extends Rule
       return new RelationalExpression(firstExpression, RelationalExpressionType.GREATER_THAN, secondExpression,
                                       ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
-    if (types == NESTED_QNAME_GREATER_THAN_PRODUCTION || types == NESTED_QNAME_GREATER_THAN_QNAME_PRODUCTION)
+    if (NESTED_QNAME_GREATER_THAN_PRODUCTION.equals(production) || NESTED_QNAME_GREATER_THAN_QNAME_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       Expression firstExpression = element.toExpression();
@@ -131,21 +133,21 @@ public class RelationalExpressionNotLessThanQNameRule extends Rule
 
     // the only remaining productions are RelationalExpression productions
     RelationalExpressionType separator = null;
-    if (types == LESS_THAN_PRODUCTION || types == LESS_THAN_QNAME_PRODUCTION)
+    if (LESS_THAN_PRODUCTION.equals(production) || LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
       separator = RelationalExpressionType.LESS_THAN;
     }
-    else if (types == GREATER_THAN_PRODUCTION       || types == GREATER_THAN_QNAME_PRODUCTION)
+    else if (GREATER_THAN_PRODUCTION.equals(production)       || GREATER_THAN_QNAME_PRODUCTION.equals(production))
     {
       separator = RelationalExpressionType.GREATER_THAN;
     }
-    else if (types == LESS_THAN_EQUAL_PRODUCTION       || types == LESS_THAN_EQUAL_QNAME_PRODUCTION ||
-             types == QNAME_LESS_THAN_EQUAL_PRODUCTION || types == QNAME_LESS_THAN_EQUAL_QNAME_PRODUCTION)
+    else if (LESS_THAN_EQUAL_PRODUCTION.equals(production)       || LESS_THAN_EQUAL_QNAME_PRODUCTION.equals(production) ||
+             QNAME_LESS_THAN_EQUAL_PRODUCTION.equals(production) || QNAME_LESS_THAN_EQUAL_QNAME_PRODUCTION.equals(production))
     {
       separator = RelationalExpressionType.LESS_THAN_EQUAL;
     }
-    else if (types == GREATER_THAN_EQUAL_PRODUCTION       || types == GREATER_THAN_EQUAL_QNAME_PRODUCTION ||
-             types == QNAME_GREATER_THAN_EQUAL_PRODUCTION || types == QNAME_GREATER_THAN_EQUAL_QNAME_PRODUCTION)
+    else if (GREATER_THAN_EQUAL_PRODUCTION.equals(production)       || GREATER_THAN_EQUAL_QNAME_PRODUCTION.equals(production) ||
+             QNAME_GREATER_THAN_EQUAL_PRODUCTION.equals(production) || QNAME_GREATER_THAN_EQUAL_QNAME_PRODUCTION.equals(production))
     {
       separator = RelationalExpressionType.GREATER_THAN_EQUAL;
     }

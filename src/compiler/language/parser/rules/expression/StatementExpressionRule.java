@@ -5,6 +5,7 @@ import static compiler.language.parser.ParseType.METHOD_CALL_EXPRESSION;
 import static compiler.language.parser.ParseType.STATEMENT_EXPRESSION;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -16,9 +17,10 @@ import compiler.parser.Rule;
  */
 public class StatementExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] METHOD_CALL_PRODUCTION = new Object[] {METHOD_CALL_EXPRESSION};
-  private static final Object[] INSTANCIATION_PRODUCTION = new Object[] {INSTANCIATION_EXPRESSION};
+  private static final Production METHOD_CALL_PRODUCTION = new Production(METHOD_CALL_EXPRESSION);
+  private static final Production INSTANCIATION_PRODUCTION = new Production(INSTANCIATION_EXPRESSION);
 
   public StatementExpressionRule()
   {
@@ -27,12 +29,12 @@ public class StatementExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == METHOD_CALL_PRODUCTION || types == INSTANCIATION_PRODUCTION)
+    if (METHOD_CALL_PRODUCTION.equals(production) || INSTANCIATION_PRODUCTION.equals(production))
     {
       // return the already created StatementExpression
       return args[0];

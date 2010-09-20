@@ -19,6 +19,7 @@ import compiler.language.ast.expression.TupleExpression;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -30,17 +31,18 @@ import compiler.parser.Rule;
  */
 public class TupleExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] QNAME_PRODUCTION                               = new Object[] {QNAME,                                        COMMA, TUPLE_EXPRESSION};
-  private static final Object[] NESTED_QNAME_LIST_PRODUCTION                   = new Object[] {NESTED_QNAME_LIST,                            COMMA, TUPLE_EXPRESSION};
-  private static final Object[] QNAME_LESS_THAN_QNAME_PRODUCTION               = new Object[] {QNAME,             LANGLE, QNAME,             COMMA, TUPLE_EXPRESSION};
-  private static final Object[] QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION        = new Object[] {QNAME,             LANGLE, NESTED_QNAME_LIST, COMMA, TUPLE_EXPRESSION};
-  private static final Object[] NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION        = new Object[] {NESTED_QNAME_LIST, LANGLE, QNAME,             COMMA, TUPLE_EXPRESSION};
-  private static final Object[] NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION = new Object[] {NESTED_QNAME_LIST, LANGLE, NESTED_QNAME_LIST, COMMA, TUPLE_EXPRESSION};
-  private static final Object[] INLINE_IF_TUPLE_PRODUCTION                     = new Object[] {INLINE_IF_EXPRESSION,                         COMMA, TUPLE_EXPRESSION};
-  private static final Object[] INLINE_IF_QNAME_LIST_PRODUCTION                = new Object[] {INLINE_IF_EXPRESSION,                         COMMA, QNAME_LIST};
-  private static final Object[] INLINE_IF_PRODUCTION                           = new Object[] {INLINE_IF_EXPRESSION};
-  private static final Object[] LESS_THAN_PRODUCTION                           = new Object[] {RELATIONAL_EXPRESSION_LESS_THAN_QNAME};
+  private static final Production QNAME_PRODUCTION                               = new Production(QNAME,                                        COMMA, TUPLE_EXPRESSION);
+  private static final Production NESTED_QNAME_LIST_PRODUCTION                   = new Production(NESTED_QNAME_LIST,                            COMMA, TUPLE_EXPRESSION);
+  private static final Production QNAME_LESS_THAN_QNAME_PRODUCTION               = new Production(QNAME,             LANGLE, QNAME,             COMMA, TUPLE_EXPRESSION);
+  private static final Production QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION        = new Production(QNAME,             LANGLE, NESTED_QNAME_LIST, COMMA, TUPLE_EXPRESSION);
+  private static final Production NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION        = new Production(NESTED_QNAME_LIST, LANGLE, QNAME,             COMMA, TUPLE_EXPRESSION);
+  private static final Production NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION = new Production(NESTED_QNAME_LIST, LANGLE, NESTED_QNAME_LIST, COMMA, TUPLE_EXPRESSION);
+  private static final Production INLINE_IF_TUPLE_PRODUCTION                     = new Production(INLINE_IF_EXPRESSION,                         COMMA, TUPLE_EXPRESSION);
+  private static final Production INLINE_IF_QNAME_LIST_PRODUCTION                = new Production(INLINE_IF_EXPRESSION,                         COMMA, QNAME_LIST);
+  private static final Production INLINE_IF_PRODUCTION                           = new Production(INLINE_IF_EXPRESSION);
+  private static final Production LESS_THAN_PRODUCTION                           = new Production(RELATIONAL_EXPRESSION_LESS_THAN_QNAME);
 
   public TupleExpressionRule()
   {
@@ -58,17 +60,17 @@ public class TupleExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == INLINE_IF_PRODUCTION || types == LESS_THAN_PRODUCTION)
+    if (INLINE_IF_PRODUCTION.equals(production) || LESS_THAN_PRODUCTION.equals(production))
     {
       // return the existing expression
       return args[0];
     }
-    if (types == INLINE_IF_QNAME_LIST_PRODUCTION)
+    if (INLINE_IF_QNAME_LIST_PRODUCTION.equals(production))
     {
       Expression firstExpression = (Expression) args[0];
       @SuppressWarnings("unchecked")
@@ -90,27 +92,27 @@ public class TupleExpressionRule extends Rule
     Expression firstExpression;
     Expression secondExpression;
     ParseInfo finalParseInfo;
-    if (types == QNAME_PRODUCTION)
+    if (QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       firstExpression = new FieldAccessExpression(qname, qname.getParseInfo());
       secondExpression = (Expression) args[2];
       finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo());
     }
-    else if (types == NESTED_QNAME_LIST_PRODUCTION)
+    else if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       firstExpression = element.toExpression();
       secondExpression = (Expression) args[2];
       finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo());
     }
-    else if (types == INLINE_IF_TUPLE_PRODUCTION)
+    else if (INLINE_IF_TUPLE_PRODUCTION.equals(production))
     {
       firstExpression = (Expression) args[0];
       secondExpression = (Expression) args[2];
       finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo());
     }
-    else if (types == QNAME_LESS_THAN_QNAME_PRODUCTION)
+    else if (QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
       QName firstQName = (QName) args[0];
       QName secondQName = (QName) args[2];
@@ -121,7 +123,7 @@ public class TupleExpressionRule extends Rule
       secondExpression = (Expression) args[4];
       finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[3], secondExpression.getParseInfo());
     }
-    else if (types == QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION)
+    else if (QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       QNameElement element = (QNameElement) args[2];
@@ -132,7 +134,7 @@ public class TupleExpressionRule extends Rule
       secondExpression = (Expression) args[4];
       finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[3], secondExpression.getParseInfo());
     }
-    else if (types == NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION)
+    else if (NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       QName qname = (QName) args[2];
@@ -143,7 +145,7 @@ public class TupleExpressionRule extends Rule
       secondExpression = (Expression) args[4];
       finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[3], secondExpression.getParseInfo());
     }
-    else if (types == NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION)
+    else if (NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
       QNameElement firstElement = (QNameElement) args[0];
       QNameElement secondElement = (QNameElement) args[2];

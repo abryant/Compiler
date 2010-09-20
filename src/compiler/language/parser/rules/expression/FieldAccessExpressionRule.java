@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.QNAME;
 import compiler.language.ast.expression.FieldAccessExpression;
 import compiler.language.ast.misc.QName;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -18,9 +19,10 @@ import compiler.parser.Rule;
  */
 public class FieldAccessExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME};
-  private static final Object[] PRODUCTION = new Object[] {FIELD_ACCESS_EXPRESSION_NOT_QNAME};
+  private static final Production QNAME_PRODUCTION = new Production(QNAME);
+  private static final Production PRODUCTION = new Production(FIELD_ACCESS_EXPRESSION_NOT_QNAME);
 
   public FieldAccessExpressionRule()
   {
@@ -29,17 +31,17 @@ public class FieldAccessExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == QNAME_PRODUCTION)
+    if (QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       return new FieldAccessExpression(qname, qname.getParseInfo());
     }
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       // return the existing FieldAccessExpression
       return args[0];

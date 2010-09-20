@@ -15,6 +15,7 @@ import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
 import compiler.language.ast.type.WildcardTypeParameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -26,12 +27,13 @@ import compiler.parser.Rule;
  */
 public class WildcardTypeParameterRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION               = new Object[] {QUESTION_MARK, RANGLE};
-  private static final Object[] EXTENDS_PRODUCTION       = new Object[] {QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST_RANGLE};
-  private static final Object[] SUPER_PRODUCTION         = new Object[] {QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST_RANGLE};
-  private static final Object[] EXTENDS_SUPER_PRODUCTION = new Object[] {QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST, SUPER_KEYWORD,   TYPE_BOUND_LIST_RANGLE};
-  private static final Object[] SUPER_EXTENDS_PRODUCTION = new Object[] {QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST, EXTENDS_KEYWORD, TYPE_BOUND_LIST_RANGLE};
+  private static final Production PRODUCTION               = new Production(QUESTION_MARK, RANGLE);
+  private static final Production EXTENDS_PRODUCTION       = new Production(QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST_RANGLE);
+  private static final Production SUPER_PRODUCTION         = new Production(QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST_RANGLE);
+  private static final Production EXTENDS_SUPER_PRODUCTION = new Production(QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST, SUPER_KEYWORD,   TYPE_BOUND_LIST_RANGLE);
+  private static final Production SUPER_EXTENDS_PRODUCTION = new Production(QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST, EXTENDS_KEYWORD, TYPE_BOUND_LIST_RANGLE);
 
   public WildcardTypeParameterRAngleRule()
   {
@@ -40,17 +42,17 @@ public class WildcardTypeParameterRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       WildcardTypeParameter typeParameter = new WildcardTypeParameter(new PointerType[0], new PointerType[0], (ParseInfo) args[0]);
       return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
-    if (types == EXTENDS_PRODUCTION)
+    if (EXTENDS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[2];
@@ -59,7 +61,7 @@ public class WildcardTypeParameterRAngleRule extends Rule
                                                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo()));
       return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], container.getParseInfo()));
     }
-    if (types == SUPER_PRODUCTION)
+    if (SUPER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[2];
@@ -68,7 +70,7 @@ public class WildcardTypeParameterRAngleRule extends Rule
                                                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo()));
       return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], container.getParseInfo()));
     }
-    if (types == EXTENDS_SUPER_PRODUCTION)
+    if (EXTENDS_SUPER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[4];
@@ -81,7 +83,7 @@ public class WildcardTypeParameterRAngleRule extends Rule
       return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(),
                                                                                         (ParseInfo) args[3], container.getParseInfo()));
     }
-    if (types == SUPER_EXTENDS_PRODUCTION)
+    if (SUPER_EXTENDS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[4];

@@ -10,6 +10,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.FieldAccessExpression;
 import compiler.language.ast.terminal.Name;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -21,8 +22,9 @@ import compiler.parser.Rule;
  */
 public class FieldAccessExpressionNotQNameRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRIMARY_PRODUCTION = new Object[] {PRIMARY, DOT, NAME};
+  private static final Production PRIMARY_PRODUCTION = new Production(PRIMARY, DOT, NAME);
 
   public FieldAccessExpressionNotQNameRule()
   {
@@ -31,12 +33,12 @@ public class FieldAccessExpressionNotQNameRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRIMARY_PRODUCTION)
+    if (PRIMARY_PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[0];
       Name name = (Name) args[2];

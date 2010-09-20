@@ -9,6 +9,7 @@ package compiler.parser;
  */
 public class BadTokenException extends Exception
 {
+  private static final long serialVersionUID = 1L;
 
   private Token badToken;
   private Object[] expectedTokenTypes;

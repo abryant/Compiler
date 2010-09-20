@@ -21,6 +21,7 @@ import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeArgument;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -32,16 +33,18 @@ import compiler.parser.Rule;
  */
 public class MethodRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
+
   // methods can either be a declaration or a definition
   // declarations end in a semicolon, definitions end in a block
 
   // without type arguments
-  private static final Object[] DECLARATION_PRODUCTION = new Object[] {MEMBER_HEADER, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, SEMICOLON};
-  private static final Object[] DEFINITION_PRODUCTION  = new Object[] {MEMBER_HEADER, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, BLOCK};
+  private static final Production DECLARATION_PRODUCTION = new Production(MEMBER_HEADER, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, SEMICOLON);
+  private static final Production DEFINITION_PRODUCTION  = new Production(MEMBER_HEADER, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, BLOCK);
 
   // with type arguments
-  private static final Object[] TYPE_ARGUMENTS_DECLARATION_PRODUCTION = new Object[] {MEMBER_HEADER, TYPE_ARGUMENTS, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, SEMICOLON};
-  private static final Object[] TYPE_ARGUMENTS_DEFINITION_PRODUCTION  = new Object[] {MEMBER_HEADER, TYPE_ARGUMENTS, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, BLOCK};
+  private static final Production TYPE_ARGUMENTS_DECLARATION_PRODUCTION = new Production(MEMBER_HEADER, TYPE_ARGUMENTS, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, SEMICOLON);
+  private static final Production TYPE_ARGUMENTS_DEFINITION_PRODUCTION  = new Production(MEMBER_HEADER, TYPE_ARGUMENTS, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, BLOCK);
 
   public MethodRule()
   {
@@ -50,12 +53,12 @@ public class MethodRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == DECLARATION_PRODUCTION)
+    if (DECLARATION_PRODUCTION.equals(production))
     {
       MemberHeader header = (MemberHeader) args[0];
       Type type = (Type) args[1];
@@ -66,7 +69,7 @@ public class MethodRule extends Rule
       return new Method(header.getAccessSpecifier(), header.getModifiers(), new TypeArgument[0], type, name, arguments, throwsClause.toArray(new PointerType[0]), null,
                         ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), name.getParseInfo(), arguments.getParseInfo(), throwsClause.getParseInfo(), (ParseInfo) args[5]));
     }
-    if (types == DEFINITION_PRODUCTION)
+    if (DEFINITION_PRODUCTION.equals(production))
     {
       MemberHeader header = (MemberHeader) args[0];
       Type type = (Type) args[1];
@@ -78,7 +81,7 @@ public class MethodRule extends Rule
       return new Method(header.getAccessSpecifier(), header.getModifiers(), new TypeArgument[0], type, name, arguments, throwsClause.toArray(new PointerType[0]), block,
                         ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), name.getParseInfo(), arguments.getParseInfo(), throwsClause.getParseInfo(), block.getParseInfo()));
     }
-    if (types == TYPE_ARGUMENTS_DECLARATION_PRODUCTION)
+    if (TYPE_ARGUMENTS_DECLARATION_PRODUCTION.equals(production))
     {
       MemberHeader header = (MemberHeader) args[0];
       @SuppressWarnings("unchecked")
@@ -91,7 +94,7 @@ public class MethodRule extends Rule
       return new Method(header.getAccessSpecifier(), header.getModifiers(), typeArguments.toArray(new TypeArgument[0]), type, name, arguments, throwsClause.toArray(new PointerType[0]), null,
                         ParseInfo.combine(header.getParseInfo(), typeArguments.getParseInfo(), type.getParseInfo(), name.getParseInfo(), arguments.getParseInfo(), throwsClause.getParseInfo(), (ParseInfo) args[6]));
     }
-    if (types == TYPE_ARGUMENTS_DEFINITION_PRODUCTION)
+    if (TYPE_ARGUMENTS_DEFINITION_PRODUCTION.equals(production))
     {
       MemberHeader header = (MemberHeader) args[0];
       @SuppressWarnings("unchecked")

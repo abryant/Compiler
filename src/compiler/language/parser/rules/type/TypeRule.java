@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.TYPE_NOT_QNAME;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.type.PointerType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -18,9 +19,10 @@ import compiler.parser.Rule;
  */
 public class TypeRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {TYPE_NOT_QNAME};
-  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME};
+  private static final Production PRODUCTION = new Production(TYPE_NOT_QNAME);
+  private static final Production QNAME_PRODUCTION = new Production(QNAME);
 
   public TypeRule()
   {
@@ -28,17 +30,17 @@ public class TypeRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       // All types are actually subclasses of Type, so just return the argument
       return args[0];
     }
-    if (types == QNAME_PRODUCTION)
+    if (QNAME_PRODUCTION.equals(production))
     {
       // create a new PointerType from the QName
       QName qname = (QName) args[0];

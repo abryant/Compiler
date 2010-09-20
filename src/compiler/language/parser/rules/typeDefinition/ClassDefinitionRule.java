@@ -20,6 +20,7 @@ import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeArgument;
 import compiler.language.ast.typeDefinition.ClassDefinition;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -31,9 +32,10 @@ import compiler.parser.Rule;
  */
 public class ClassDefinitionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {MEMBER_HEADER, CLASS_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
-  private static final Object[] TYPE_ARGUMENTS_PRODUCTION = new Object[] {MEMBER_HEADER, CLASS_KEYWORD, NAME, TYPE_ARGUMENTS, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE};
+  private static final Production PRODUCTION = new Production(MEMBER_HEADER, CLASS_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE);
+  private static final Production TYPE_ARGUMENTS_PRODUCTION = new Production(MEMBER_HEADER, CLASS_KEYWORD, NAME, TYPE_ARGUMENTS, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE);
 
   public ClassDefinitionRule()
   {
@@ -41,12 +43,12 @@ public class ClassDefinitionRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       MemberHeader header = (MemberHeader) args[0];
       Name name = (Name) args[2];
@@ -61,7 +63,7 @@ public class ClassDefinitionRule extends Rule
                                                    interfaces.getParseInfo(),
                                                    (ParseInfo) args[5], members.getParseInfo(), (ParseInfo) args[7]));
     }
-    if (types == TYPE_ARGUMENTS_PRODUCTION)
+    if (TYPE_ARGUMENTS_PRODUCTION.equals(production))
     {
       MemberHeader header = (MemberHeader) args[0];
       Name name = (Name) args[2];

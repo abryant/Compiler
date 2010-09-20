@@ -5,6 +5,7 @@ import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
 import static compiler.language.parser.ParseType.RELATIONAL_EXPRESSION_LESS_THAN_QNAME;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -16,9 +17,10 @@ import compiler.parser.Rule;
  */
 public class QNameOrLessThanExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME_EXPRESSION};
-  private static final Object[] LESS_THAN_PRODUCTION = new Object[] {RELATIONAL_EXPRESSION_LESS_THAN_QNAME};
+  private static final Production QNAME_PRODUCTION = new Production(QNAME_EXPRESSION);
+  private static final Production LESS_THAN_PRODUCTION = new Production(RELATIONAL_EXPRESSION_LESS_THAN_QNAME);
 
   public QNameOrLessThanExpressionRule()
   {
@@ -27,12 +29,12 @@ public class QNameOrLessThanExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == QNAME_PRODUCTION || types == LESS_THAN_PRODUCTION)
+    if (QNAME_PRODUCTION.equals(production) || LESS_THAN_PRODUCTION.equals(production))
     {
       // both of the productions result in an Expression, so just return it
       return args[0];

@@ -12,6 +12,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.topLevel.ImportDeclaration;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -23,11 +24,12 @@ import compiler.parser.Rule;
  */
 public class ImportDeclarationRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] NORMAL_PRODUCTION = new Object[] {IMPORT_KEYWORD, QNAME, SEMICOLON};
-  private static final Object[] ALL_PRODUCTION = new Object[] {IMPORT_KEYWORD, QNAME, DOT, STAR, SEMICOLON};
-  private static final Object[] STATIC_NORMAL_PRODUCTION = new Object[] {IMPORT_KEYWORD, STATIC_KEYWORD, QNAME, SEMICOLON};
-  private static final Object[] STATIC_ALL_PRODUCTION = new Object[] {IMPORT_KEYWORD, STATIC_KEYWORD, QNAME, DOT, STAR, SEMICOLON};
+  private static final Production NORMAL_PRODUCTION = new Production(IMPORT_KEYWORD, QNAME, SEMICOLON);
+  private static final Production ALL_PRODUCTION = new Production(IMPORT_KEYWORD, QNAME, DOT, STAR, SEMICOLON);
+  private static final Production STATIC_NORMAL_PRODUCTION = new Production(IMPORT_KEYWORD, STATIC_KEYWORD, QNAME, SEMICOLON);
+  private static final Production STATIC_ALL_PRODUCTION = new Production(IMPORT_KEYWORD, STATIC_KEYWORD, QNAME, DOT, STAR, SEMICOLON);
 
   public ImportDeclarationRule()
   {
@@ -35,27 +37,27 @@ public class ImportDeclarationRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == NORMAL_PRODUCTION)
+    if (NORMAL_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[1];
       return new ImportDeclaration(qname, false, false, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2]));
     }
-    if (types == ALL_PRODUCTION)
+    if (ALL_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[1];
       return new ImportDeclaration(qname, true, false, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], (ParseInfo) args[3], (ParseInfo) args[4]));
     }
-    if (types == STATIC_NORMAL_PRODUCTION)
+    if (STATIC_NORMAL_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[2];
       return new ImportDeclaration(qname, false, true, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3]));
     }
-    if (types == STATIC_ALL_PRODUCTION)
+    if (STATIC_ALL_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[2];
       return new ImportDeclaration(qname, true, true, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3], (ParseInfo) args[4], (ParseInfo) args[5]));

@@ -14,6 +14,7 @@ import compiler.language.ast.statement.Block;
 import compiler.language.ast.statement.ForStatement;
 import compiler.language.ast.statement.Statement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -25,9 +26,10 @@ import compiler.parser.Rule;
  */
 public class ForStatementRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION               = new Object[] {FOR_KEYWORD, FOR_INIT, SEMICOLON, EXPRESSION, SEMICOLON, FOR_UPDATE, BLOCK};
-  private static final Object[] NO_EXPRESSION_PRODUCTION = new Object[] {FOR_KEYWORD, FOR_INIT, SEMICOLON,             SEMICOLON, FOR_UPDATE, BLOCK};
+  private static final Production PRODUCTION               = new Production(FOR_KEYWORD, FOR_INIT, SEMICOLON, EXPRESSION, SEMICOLON, FOR_UPDATE, BLOCK);
+  private static final Production NO_EXPRESSION_PRODUCTION = new Production(FOR_KEYWORD, FOR_INIT, SEMICOLON,             SEMICOLON, FOR_UPDATE, BLOCK);
 
   public ForStatementRule()
   {
@@ -36,12 +38,12 @@ public class ForStatementRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Statement init = (Statement) args[1];
       Expression condition = (Expression) args[3];
@@ -56,7 +58,7 @@ public class ForStatementRule extends Rule
                                                 update != null ? update.getParseInfo() : null,
                                                 block.getParseInfo()));
     }
-    if (types == NO_EXPRESSION_PRODUCTION)
+    if (NO_EXPRESSION_PRODUCTION.equals(production))
     {
       Statement init = (Statement) args[1];
       Statement update = (Statement) args[4];

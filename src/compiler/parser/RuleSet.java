@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /*
  * Created on 21 Jun 2010
@@ -122,11 +122,11 @@ public class RuleSet
       for (Entry<Object, Rule> entry : rules.entrySet())
       {
         Object type = entry.getKey();
-        Object[][] productions = entry.getValue().getProductions();
-        for (Object[] production : productions)
+        Production[] productions = entry.getValue().getProductions();
+        for (Production production : productions)
         {
           boolean nullable = true;
-          for (Object subType : production)
+          for (Object subType : production.getTypes())
           {
             if (!nullableTypes.contains(subType))
             {
@@ -170,12 +170,13 @@ public class RuleSet
     for (Rule rule : rules.values())
     {
       // add type uses for all of the right hand sides of the Rule
-      Object[][] productions = rule.getProductions();
+      Production[] productions = rule.getProductions();
       for (int i = 0; i < productions.length; i++)
       {
-        for (int j = 0; j < productions[i].length; j++)
+        Object[] productionTypes = productions[i].getTypes();
+        for (int j = 0; j < productionTypes.length; j++)
         {
-          Object type = productions[i][j];
+          Object type = productionTypes[j];
           Set<TypeUseEntry> uses = typeUses.get(type);
           if (uses == null)
           {
@@ -245,14 +246,14 @@ public class RuleSet
         continue;
       }
 
-      Object[][] productions = rule.getProductions();
+      Production[] productions = rule.getProductions();
 
       // for each production, add the applicable subtypes (from the RHS of the rule) to the stack
-      for (Object[] production : productions)
+      for (Production production : productions)
       {
         // iterate through the production in order, and break when a non-nullable type is reached
         // this adds all reachable types to the stack, to be computed later on
-        for (Object type : production)
+        for (Object type : production.getTypes())
         {
           stack.push(type);
           if (!isNullable(type))

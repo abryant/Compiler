@@ -12,6 +12,9 @@ package compiler.parser;
  */
 public class AcceptAction extends ReduceAction
 {
+
+  private static final long serialVersionUID = 1L;
+
   /**
    * Creates a new AcceptAction to reduce on the specified rule and then accept.
    * @param rule - the rule to reduce on

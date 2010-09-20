@@ -5,6 +5,7 @@ import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -16,9 +17,10 @@ import compiler.parser.Rule;
  */
 public class QNameExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] QNAME_PRODUCTION = new Object[] {ParseType.QNAME};
-  private static final Object[] NESTED_QNAME_PRODUCTION = new Object[] {ParseType.NESTED_QNAME_LIST};
+  private static final Production QNAME_PRODUCTION = new Production(ParseType.QNAME);
+  private static final Production NESTED_QNAME_PRODUCTION = new Production(ParseType.NESTED_QNAME_LIST);
 
   public QNameExpressionRule()
   {
@@ -27,17 +29,17 @@ public class QNameExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == QNAME_PRODUCTION)
+    if (QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       return new FieldAccessExpression(qname, qname.getParseInfo());
     }
-    if (types == NESTED_QNAME_PRODUCTION)
+    if (NESTED_QNAME_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       return element.toExpression();

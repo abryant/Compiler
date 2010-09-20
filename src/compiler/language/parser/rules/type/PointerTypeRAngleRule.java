@@ -11,6 +11,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.type.PointerType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -22,10 +23,11 @@ import compiler.parser.Rule;
  */
 public class PointerTypeRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME, RANGLE};
-  private static final Object[] NO_TRAILING_PARAMS_PRODUCTION = new Object[] {POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME, RANGLE};
-  private static final Object[] TRAILING_PARAMS_PRODUCTION = new Object[] {POINTER_TYPE_TRAILING_PARAMS_RANGLE};
+  private static final Production QNAME_PRODUCTION = new Production(QNAME, RANGLE);
+  private static final Production NO_TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME, RANGLE);
+  private static final Production TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS_RANGLE);
 
   public PointerTypeRAngleRule()
   {
@@ -34,23 +36,23 @@ public class PointerTypeRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == QNAME_PRODUCTION)
+    if (QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       PointerType type = new PointerType(qname, qname.getParseInfo());
       return new ParseContainer<PointerType>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
     }
-    if (types == NO_TRAILING_PARAMS_PRODUCTION)
+    if (NO_TRAILING_PARAMS_PRODUCTION.equals(production))
     {
       PointerType type = (PointerType) args[0];
       return new ParseContainer<PointerType>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
     }
-    if (types == TRAILING_PARAMS_PRODUCTION)
+    if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
       // POINTER_TYPE_TRAILING_PARAMS_RANGLE has already built the ParseContainer<PointerType>, so return it
       return args[0];

@@ -12,6 +12,7 @@ import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -23,9 +24,10 @@ import compiler.parser.Rule;
  */
 public class PointerTypeNoTrailingParamsNotQNameRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] IMMUTABLE_PRODUCTION = new Object[] {HASH, QNAME};
-  private static final Object[] TRAILING_PARAMS_QNAME_PRODUCTION = new Object[] {POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME};
+  private static final Production IMMUTABLE_PRODUCTION = new Production(HASH, QNAME);
+  private static final Production TRAILING_PARAMS_QNAME_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME);
 
   public PointerTypeNoTrailingParamsNotQNameRule()
   {
@@ -34,12 +36,12 @@ public class PointerTypeNoTrailingParamsNotQNameRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == IMMUTABLE_PRODUCTION)
+    if (IMMUTABLE_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[1];
       Name[] names = qname.getNames();
@@ -50,7 +52,7 @@ public class PointerTypeNoTrailingParamsNotQNameRule extends Rule
       }
       return new PointerType(true, names, typeParameterLists, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo()));
     }
-    if (types == TRAILING_PARAMS_QNAME_PRODUCTION)
+    if (TRAILING_PARAMS_QNAME_PRODUCTION.equals(production))
     {
       PointerType oldType = (PointerType) args[0];
       QName qname = (QName) args[2];

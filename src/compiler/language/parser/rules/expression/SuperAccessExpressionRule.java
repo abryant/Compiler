@@ -9,6 +9,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.SuperAccessExpression;
 import compiler.language.ast.misc.QName;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,9 +21,10 @@ import compiler.parser.Rule;
  */
 public class SuperAccessExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] SUPER_PRODUCTION = new Object[] {SUPER_KEYWORD};
-  private static final Object[] QNAME_SUPER_PRODUCTION = new Object[] {QNAME, DOT, SUPER_KEYWORD};
+  private static final Production SUPER_PRODUCTION = new Production(SUPER_KEYWORD);
+  private static final Production QNAME_SUPER_PRODUCTION = new Production(QNAME, DOT, SUPER_KEYWORD);
 
   public SuperAccessExpressionRule()
   {
@@ -31,16 +33,16 @@ public class SuperAccessExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == SUPER_PRODUCTION)
+    if (SUPER_PRODUCTION.equals(production))
     {
       return new SuperAccessExpression(null, (ParseInfo) args[0]);
     }
-    if (types == QNAME_SUPER_PRODUCTION)
+    if (QNAME_SUPER_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       return new SuperAccessExpression(qname, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));

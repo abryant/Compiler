@@ -12,6 +12,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.statement.DoStatement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 
@@ -24,8 +25,9 @@ import compiler.parser.Rule;
  */
 public class DoStatementRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {DO_KEYWORD, BLOCK, WHILE_KEYWORD, EXPRESSION, SEMICOLON};
+  private static final Production PRODUCTION = new Production(DO_KEYWORD, BLOCK, WHILE_KEYWORD, EXPRESSION, SEMICOLON);
 
   public DoStatementRule()
   {
@@ -34,12 +36,12 @@ public class DoStatementRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Block block = (Block) args[1];
       Expression condition = (Expression) args[3];

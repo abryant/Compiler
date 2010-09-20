@@ -9,6 +9,7 @@ import compiler.language.ast.type.NormalTypeParameter;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,9 +21,10 @@ import compiler.parser.Rule;
  */
 public class TypeParameterDoubleRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] TYPE_PRODUCTION = new Object[] {TYPE_DOUBLE_RANGLE};
-  private static final Object[] WILDCARD_PRODUCTION = new Object[] {WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE};
+  private static final Production TYPE_PRODUCTION = new Production(TYPE_DOUBLE_RANGLE);
+  private static final Production WILDCARD_PRODUCTION = new Production(WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE);
 
   public TypeParameterDoubleRAngleRule()
   {
@@ -31,12 +33,12 @@ public class TypeParameterDoubleRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == TYPE_PRODUCTION)
+    if (TYPE_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<Type>> oldContainer = (ParseContainer<ParseContainer<Type>>) args[0];
@@ -45,7 +47,7 @@ public class TypeParameterDoubleRAngleRule extends Rule
       ParseContainer<TypeParameter> firstContainer = new ParseContainer<TypeParameter>(parameter, oldContainer.getItem().getParseInfo());
       return new ParseContainer<ParseContainer<TypeParameter>>(firstContainer, oldContainer.getParseInfo());
     }
-    if (types == WILDCARD_PRODUCTION)
+    if (WILDCARD_PRODUCTION.equals(production))
     {
       // the rule for WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE has already created
       // a ParseContainer<ParseContainer<TypeParameter>>, so return it

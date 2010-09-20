@@ -13,6 +13,8 @@ import compiler.parser.ParseException;
 public class LanguageParseException extends ParseException
 {
 
+  private static final long serialVersionUID = 1L;
+
   private ParseInfo parseInfo;
 
   /**

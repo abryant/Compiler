@@ -5,6 +5,7 @@ import static compiler.language.parser.ParseType.POINTER_TYPE_NO_TRAILING_PARAMS
 import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_PARAMS;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -16,9 +17,10 @@ import compiler.parser.Rule;
  */
 public class PointerTypeNotQNameRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] NO_TRAILING_PARAMS_PRODUCTION = new Object[] {POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME};
-  private static final Object[] TRAILING_PARAMS_PRODUCTION = new Object[] {POINTER_TYPE_TRAILING_PARAMS};
+  private static final Production NO_TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME);
+  private static final Production TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS);
 
   public PointerTypeNotQNameRule()
   {
@@ -27,12 +29,12 @@ public class PointerTypeNotQNameRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == NO_TRAILING_PARAMS_PRODUCTION || types == TRAILING_PARAMS_PRODUCTION)
+    if (NO_TRAILING_PARAMS_PRODUCTION.equals(production) || TRAILING_PARAMS_PRODUCTION.equals(production))
     {
       // A PointerType has already been built by one of the rules, so return it
       return args[0];

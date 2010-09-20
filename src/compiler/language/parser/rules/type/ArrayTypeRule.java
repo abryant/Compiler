@@ -14,6 +14,7 @@ import compiler.language.ast.type.ArrayType;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -25,10 +26,11 @@ import compiler.parser.Rule;
  */
 public class ArrayTypeRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {TYPE_NOT_QNAME_LIST, LSQUARE, RSQUARE};
-  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME, LSQUARE, RSQUARE};
-  private static final Object[] NESTED_QNAME_PRODUCTION = new Object[] {NESTED_QNAME_LIST, LSQUARE, RSQUARE};
+  private static final Production PRODUCTION = new Production(TYPE_NOT_QNAME_LIST, LSQUARE, RSQUARE);
+  private static final Production QNAME_PRODUCTION = new Production(QNAME, LSQUARE, RSQUARE);
+  private static final Production NESTED_QNAME_PRODUCTION = new Production(NESTED_QNAME_LIST, LSQUARE, RSQUARE);
 
   public ArrayTypeRule()
   {
@@ -37,22 +39,22 @@ public class ArrayTypeRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Type type = (Type) args[0];
       return new ArrayType(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
     }
-    if (types == QNAME_PRODUCTION)
+    if (QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       return new ArrayType(new PointerType(qname, qname.getParseInfo()), ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
     }
-    if (types == NESTED_QNAME_PRODUCTION)
+    if (NESTED_QNAME_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       Type baseType = element.toType();

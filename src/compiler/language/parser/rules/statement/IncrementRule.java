@@ -12,6 +12,7 @@ import compiler.language.ast.misc.FieldAssignee;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.statement.IncrementStatement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -23,11 +24,12 @@ import compiler.parser.Rule;
  */
 public class IncrementRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRE_PRODUCTION        = new Object[] {DOUBLE_PLUS, ASSIGNEE};
-  private static final Object[] PRE_QNAME_PRODUCTION  = new Object[] {DOUBLE_PLUS, QNAME};
-  private static final Object[] POST_PRODUCTION       = new Object[] {ASSIGNEE, DOUBLE_PLUS};
-  private static final Object[] POST_QNAME_PRODUCTION = new Object[] {QNAME,    DOUBLE_PLUS};
+  private static final Production PRE_PRODUCTION        = new Production(DOUBLE_PLUS, ASSIGNEE);
+  private static final Production PRE_QNAME_PRODUCTION  = new Production(DOUBLE_PLUS, QNAME);
+  private static final Production POST_PRODUCTION       = new Production(ASSIGNEE, DOUBLE_PLUS);
+  private static final Production POST_QNAME_PRODUCTION = new Production(QNAME,    DOUBLE_PLUS);
 
   public IncrementRule()
   {
@@ -36,29 +38,29 @@ public class IncrementRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRE_PRODUCTION)
+    if (PRE_PRODUCTION.equals(production))
     {
       Assignee assignee = (Assignee) args[1];
       return new IncrementStatement(assignee, ParseInfo.combine((ParseInfo) args[0], assignee.getParseInfo()));
     }
-    if (types == PRE_QNAME_PRODUCTION)
+    if (PRE_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[1];
       FieldAccessExpression fieldAccess = new FieldAccessExpression(qname, qname.getParseInfo());
       Assignee assignee = new FieldAssignee(fieldAccess, fieldAccess.getParseInfo());
       return new IncrementStatement(assignee, ParseInfo.combine((ParseInfo) args[0], assignee.getParseInfo()));
     }
-    if (types == POST_PRODUCTION)
+    if (POST_PRODUCTION.equals(production))
     {
       Assignee assignee = (Assignee) args[0];
       return new IncrementStatement(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1]));
     }
-    if (types == POST_QNAME_PRODUCTION)
+    if (POST_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       FieldAccessExpression fieldAccess = new FieldAccessExpression(qname, qname.getParseInfo());

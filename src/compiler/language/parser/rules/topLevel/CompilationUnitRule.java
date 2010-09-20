@@ -12,6 +12,7 @@ import compiler.language.ast.topLevel.PackageDeclaration;
 import compiler.language.ast.topLevel.TypeDefinition;
 import compiler.language.parser.LanguageParseException;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -23,10 +24,12 @@ import compiler.parser.Rule;
  */
 public class CompilationUnitRule extends Rule
 {
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] PACKAGE_PRODUCTION = new Object[] {COMPILATION_UNIT, PACKAGE_DECLARATION};
-  private static final Object[] IMPORT_PRODUCTION = new Object[] {COMPILATION_UNIT, IMPORT_DECLARATION};
-  private static final Object[] TYPE_DEFINITION_PRODUCTION = new Object[] {COMPILATION_UNIT, TYPE_DEFINITION};
+  private static final long serialVersionUID = 1L;
+
+  private static final Production EMPTY_PRODUCTION = new Production();
+  private static final Production PACKAGE_PRODUCTION = new Production(COMPILATION_UNIT, PACKAGE_DECLARATION);
+  private static final Production IMPORT_PRODUCTION = new Production(COMPILATION_UNIT, IMPORT_DECLARATION);
+  private static final Production TYPE_DEFINITION_PRODUCTION = new Production(COMPILATION_UNIT, TYPE_DEFINITION);
 
   public CompilationUnitRule()
   {
@@ -34,16 +37,16 @@ public class CompilationUnitRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == EMPTY_PRODUCTION)
+    if (EMPTY_PRODUCTION.equals(production))
     {
       return new CompilationUnit(null, new ImportDeclaration[0], new TypeDefinition[0], null);
     }
-    if (types == PACKAGE_PRODUCTION)
+    if (PACKAGE_PRODUCTION.equals(production))
     {
       CompilationUnit oldUnit = (CompilationUnit) args[0];
       PackageDeclaration packageDeclaration = (PackageDeclaration) args[1];
@@ -63,7 +66,7 @@ public class CompilationUnitRule extends Rule
       }
       return new CompilationUnit(packageDeclaration, imports, typeDefinitions, ParseInfo.combine(oldUnit.getParseInfo(), packageDeclaration.getParseInfo()));
     }
-    if (types == IMPORT_PRODUCTION)
+    if (IMPORT_PRODUCTION.equals(production))
     {
       CompilationUnit oldUnit = (CompilationUnit) args[0];
       ImportDeclaration newImport = (ImportDeclaration) args[1];
@@ -78,7 +81,7 @@ public class CompilationUnitRule extends Rule
       newImports[oldImports.length] = newImport;
       return new CompilationUnit(oldUnit.getPackageDeclaration(), newImports, typeDefinitions, ParseInfo.combine(oldUnit.getParseInfo(), newImport.getParseInfo()));
     }
-    if (types == TYPE_DEFINITION_PRODUCTION)
+    if (TYPE_DEFINITION_PRODUCTION.equals(production))
     {
       CompilationUnit oldUnit = (CompilationUnit) args[0];
       TypeDefinition[] oldTypes = oldUnit.getTypes();

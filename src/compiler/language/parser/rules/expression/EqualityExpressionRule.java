@@ -11,6 +11,7 @@ import compiler.language.ast.expression.EqualityExpression;
 import compiler.language.ast.expression.EqualityExpressionType;
 import compiler.language.ast.expression.Expression;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -22,16 +23,17 @@ import compiler.parser.Rule;
  */
 public class EqualityExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION                  = new Object[] {RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME};
-  private static final Object[] EQUALS_PRODUCTION                 = new Object[] {EQUALITY_EXPRESSION,           DOUBLE_EQUALS,            RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME};
-  private static final Object[] EQUALS_QNAME_PRODUCTION           = new Object[] {EQUALITY_EXPRESSION,           DOUBLE_EQUALS,            QNAME_OR_LESS_THAN_EXPRESSION};
-  private static final Object[] QNAME_EQUALS_PRODUCTION           = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_EQUALS,            RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME};
-  private static final Object[] QNAME_EQUALS_QNAME_PRODUCTION     = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_EQUALS,            QNAME_OR_LESS_THAN_EXPRESSION};
-  private static final Object[] NOT_EQUALS_PRODUCTION             = new Object[] {EQUALITY_EXPRESSION,           EXCLAIMATION_MARK_EQUALS, RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME};
-  private static final Object[] NOT_EQUALS_QNAME_PRODUCTION       = new Object[] {EQUALITY_EXPRESSION,           EXCLAIMATION_MARK_EQUALS, QNAME_OR_LESS_THAN_EXPRESSION};
-  private static final Object[] QNAME_NOT_EQUALS_PRODUCTION       = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, EXCLAIMATION_MARK_EQUALS, RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME};
-  private static final Object[] QNAME_NOT_EQUALS_QNAME_PRODUCTION = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, EXCLAIMATION_MARK_EQUALS, QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Production START_PRODUCTION                  = new Production(RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME);
+  private static final Production EQUALS_PRODUCTION                 = new Production(EQUALITY_EXPRESSION,           DOUBLE_EQUALS,            RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME);
+  private static final Production EQUALS_QNAME_PRODUCTION           = new Production(EQUALITY_EXPRESSION,           DOUBLE_EQUALS,            QNAME_OR_LESS_THAN_EXPRESSION);
+  private static final Production QNAME_EQUALS_PRODUCTION           = new Production(QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_EQUALS,            RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME);
+  private static final Production QNAME_EQUALS_QNAME_PRODUCTION     = new Production(QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_EQUALS,            QNAME_OR_LESS_THAN_EXPRESSION);
+  private static final Production NOT_EQUALS_PRODUCTION             = new Production(EQUALITY_EXPRESSION,           EXCLAIMATION_MARK_EQUALS, RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME);
+  private static final Production NOT_EQUALS_QNAME_PRODUCTION       = new Production(EQUALITY_EXPRESSION,           EXCLAIMATION_MARK_EQUALS, QNAME_OR_LESS_THAN_EXPRESSION);
+  private static final Production QNAME_NOT_EQUALS_PRODUCTION       = new Production(QNAME_OR_LESS_THAN_EXPRESSION, EXCLAIMATION_MARK_EQUALS, RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME);
+  private static final Production QNAME_NOT_EQUALS_QNAME_PRODUCTION = new Production(QNAME_OR_LESS_THAN_EXPRESSION, EXCLAIMATION_MARK_EQUALS, QNAME_OR_LESS_THAN_EXPRESSION);
 
   public EqualityExpressionRule()
   {
@@ -42,23 +44,23 @@ public class EqualityExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       // return the existing expression
       return args[0];
     }
 
     EqualityExpressionType separator = null;
-    if (types == EQUALS_PRODUCTION || types == EQUALS_QNAME_PRODUCTION || types == QNAME_EQUALS_PRODUCTION || types == QNAME_EQUALS_QNAME_PRODUCTION)
+    if (EQUALS_PRODUCTION.equals(production) || EQUALS_QNAME_PRODUCTION.equals(production) || QNAME_EQUALS_PRODUCTION.equals(production) || QNAME_EQUALS_QNAME_PRODUCTION.equals(production))
     {
       separator = EqualityExpressionType.EQUAL;
     }
-    else if (types == NOT_EQUALS_PRODUCTION || types == NOT_EQUALS_QNAME_PRODUCTION || types == QNAME_NOT_EQUALS_PRODUCTION || types == QNAME_NOT_EQUALS_QNAME_PRODUCTION)
+    else if (NOT_EQUALS_PRODUCTION.equals(production) || NOT_EQUALS_QNAME_PRODUCTION.equals(production) || QNAME_NOT_EQUALS_PRODUCTION.equals(production) || QNAME_NOT_EQUALS_QNAME_PRODUCTION.equals(production))
     {
       separator = EqualityExpressionType.NOT_EQUAL;
     }

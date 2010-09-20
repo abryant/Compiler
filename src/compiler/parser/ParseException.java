@@ -11,6 +11,8 @@ package compiler.parser;
 public class ParseException extends Exception
 {
 
+  private static final long serialVersionUID = 1L;
+
   /**
    * Creates a new ParseException with the specified message.
    * @param message - the message for the ParseException

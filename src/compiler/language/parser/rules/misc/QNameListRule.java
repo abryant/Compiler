@@ -10,6 +10,7 @@ import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -21,11 +22,12 @@ import compiler.parser.Rule;
  */
 public class QNameListRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] END_QNAME_PRODUCTION = new Object[] {QNAME};
-  private static final Object[] END_NESTED_QNAME_LIST_PRODUCTION = new Object[] {NESTED_QNAME_LIST};
-  private static final Object[] CONTINUATION_QNAME_PRODUCTION = new Object[] {QNAME, COMMA, QNAME_LIST};
-  private static final Object[] CONTINUATION_NESTED_QNAME_LIST_PRODUCTION = new Object[] {NESTED_QNAME_LIST, COMMA, QNAME_LIST};
+  private static final Production END_QNAME_PRODUCTION = new Production(QNAME);
+  private static final Production END_NESTED_QNAME_LIST_PRODUCTION = new Production(NESTED_QNAME_LIST);
+  private static final Production CONTINUATION_QNAME_PRODUCTION = new Production(QNAME, COMMA, QNAME_LIST);
+  private static final Production CONTINUATION_NESTED_QNAME_LIST_PRODUCTION = new Production(NESTED_QNAME_LIST, COMMA, QNAME_LIST);
 
   public QNameListRule()
   {
@@ -35,22 +37,22 @@ public class QNameListRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == END_QNAME_PRODUCTION)
+    if (END_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       return new ParseList<QNameElement>(new QNameElement(qname), qname.getParseInfo());
     }
-    if (types == END_NESTED_QNAME_LIST_PRODUCTION)
+    if (END_NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       return new ParseList<QNameElement>(element, element.getParseInfo());
     }
-    if (types == CONTINUATION_QNAME_PRODUCTION)
+    if (CONTINUATION_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       @SuppressWarnings("unchecked")
@@ -58,7 +60,7 @@ public class QNameListRule extends Rule
       list.addFirst(new QNameElement(qname), ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
-    if (types == CONTINUATION_NESTED_QNAME_LIST_PRODUCTION)
+    if (CONTINUATION_NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElement nestedList = (QNameElement) args[0];
       @SuppressWarnings("unchecked")

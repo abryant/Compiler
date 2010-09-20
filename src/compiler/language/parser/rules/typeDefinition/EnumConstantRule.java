@@ -14,6 +14,7 @@ import compiler.language.ast.misc.Parameter;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.typeDefinition.EnumConstant;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -25,11 +26,12 @@ import compiler.parser.Rule;
  */
 public class EnumConstantRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION                    = new Object[] {NAME};
-  private static final Object[] PARAMETERS_PRODUCTION         = new Object[] {NAME, PARAMETERS};
-  private static final Object[] MEMBERS_PRODUCTION            = new Object[] {NAME,             LBRACE, MEMBER_LIST, RBRACE};
-  private static final Object[] PARAMETERS_MEMBERS_PRODUCTION = new Object[] {NAME, PARAMETERS, LBRACE, MEMBER_LIST, RBRACE};
+  private static final Production PRODUCTION                    = new Production(NAME);
+  private static final Production PARAMETERS_PRODUCTION         = new Production(NAME, PARAMETERS);
+  private static final Production MEMBERS_PRODUCTION            = new Production(NAME,             LBRACE, MEMBER_LIST, RBRACE);
+  private static final Production PARAMETERS_MEMBERS_PRODUCTION = new Production(NAME, PARAMETERS, LBRACE, MEMBER_LIST, RBRACE);
 
   public EnumConstantRule()
   {
@@ -37,24 +39,24 @@ public class EnumConstantRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Name name = (Name) args[0];
       return new EnumConstant(name, new Parameter[0], null, name.getParseInfo());
     }
-    if (types == PARAMETERS_PRODUCTION)
+    if (PARAMETERS_PRODUCTION.equals(production))
     {
       Name name = (Name) args[0];
       @SuppressWarnings("unchecked")
       ParseList<Parameter> parameters = (ParseList<Parameter>) args[1];
       return new EnumConstant(name, parameters.toArray(new Parameter[0]), null, ParseInfo.combine(name.getParseInfo(), parameters.getParseInfo()));
     }
-    if (types == MEMBERS_PRODUCTION)
+    if (MEMBERS_PRODUCTION.equals(production))
     {
       Name name = (Name) args[0];
       @SuppressWarnings("unchecked")
@@ -62,7 +64,7 @@ public class EnumConstantRule extends Rule
       return new EnumConstant(name, new Parameter[0], members.toArray(new Member[0]),
                               ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], members.getParseInfo(), (ParseInfo) args[3]));
     }
-    if (types == PARAMETERS_MEMBERS_PRODUCTION)
+    if (PARAMETERS_MEMBERS_PRODUCTION.equals(production))
     {
       Name name = (Name) args[0];
       @SuppressWarnings("unchecked")

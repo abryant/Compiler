@@ -13,6 +13,7 @@ import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -24,10 +25,11 @@ import compiler.parser.Rule;
  */
 public class PointerTypeTrailingParamsRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION = new Object[] {QNAME, TYPE_PARAMETERS};
-  private static final Object[] IMMUTABLE_START_PRODUCTION = new Object[] {HASH, QNAME, TYPE_PARAMETERS};
-  private static final Object[] CONTINUATION_PRODUCTION = new Object[] {POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, TYPE_PARAMETERS};
+  private static final Production START_PRODUCTION = new Production(QNAME, TYPE_PARAMETERS);
+  private static final Production IMMUTABLE_START_PRODUCTION = new Production(HASH, QNAME, TYPE_PARAMETERS);
+  private static final Production CONTINUATION_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, TYPE_PARAMETERS);
 
   public PointerTypeTrailingParamsRule()
   {
@@ -36,12 +38,12 @@ public class PointerTypeTrailingParamsRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       @SuppressWarnings("unchecked")
@@ -55,7 +57,7 @@ public class PointerTypeTrailingParamsRule extends Rule
       typeParameterLists[typeParameterLists.length - 1] = typeParameters.toArray(new TypeParameter[0]);
       return new PointerType(false, names, typeParameterLists, ParseInfo.combine(qname.getParseInfo(), typeParameters.getParseInfo()));
     }
-    if (types == IMMUTABLE_START_PRODUCTION)
+    if (IMMUTABLE_START_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[1];
       @SuppressWarnings("unchecked")
@@ -69,7 +71,7 @@ public class PointerTypeTrailingParamsRule extends Rule
       typeParameterLists[typeParameterLists.length - 1] = typeParameters.toArray(new TypeParameter[0]);
       return new PointerType(true, names, typeParameterLists, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), typeParameters.getParseInfo()));
     }
-    if (types == CONTINUATION_PRODUCTION)
+    if (CONTINUATION_PRODUCTION.equals(production))
     {
       PointerType oldType = (PointerType) args[0];
       QName qname = (QName) args[2];

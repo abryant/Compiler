@@ -7,6 +7,7 @@ import compiler.language.ast.misc.QNameElement;
 import compiler.language.ast.type.Type;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -18,9 +19,10 @@ import compiler.parser.Rule;
  */
 public class TypeListRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] TYPE_LIST_PRODUCTION = new Object[] {ParseType.TYPE_LIST_NOT_QNAME_LIST};
-  private static final Object[] QNAME_LIST_PRODUCTION = new Object[] {ParseType.QNAME_LIST};
+  private static final Production TYPE_LIST_PRODUCTION = new Production(ParseType.TYPE_LIST_NOT_QNAME_LIST);
+  private static final Production QNAME_LIST_PRODUCTION = new Production(ParseType.QNAME_LIST);
 
   public TypeListRule()
   {
@@ -28,17 +30,17 @@ public class TypeListRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == TYPE_LIST_PRODUCTION)
+    if (TYPE_LIST_PRODUCTION.equals(production))
     {
       // return the existing ParseList<Type>
       return args[0];
     }
-    if (types == QNAME_LIST_PRODUCTION)
+    if (QNAME_LIST_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<QNameElement> elements = (ParseList<QNameElement>) args[0];

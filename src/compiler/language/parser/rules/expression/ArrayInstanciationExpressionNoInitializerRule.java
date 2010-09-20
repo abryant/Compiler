@@ -13,6 +13,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.misc.Dimensions;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -24,9 +25,10 @@ import compiler.parser.Rule;
  */
 public class ArrayInstanciationExpressionNoInitializerRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSION_EXPRESSIONS};
-  private static final Object[] DIMENSIONS_PRODUCTION = new Object[] {NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSION_EXPRESSIONS, DIMENSIONS};
+  private static final Production PRODUCTION = new Production(NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSION_EXPRESSIONS);
+  private static final Production DIMENSIONS_PRODUCTION = new Production(NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSION_EXPRESSIONS, DIMENSIONS);
 
   public ArrayInstanciationExpressionNoInitializerRule()
   {
@@ -35,12 +37,12 @@ public class ArrayInstanciationExpressionNoInitializerRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       @SuppressWarnings("unchecked")
@@ -48,7 +50,7 @@ public class ArrayInstanciationExpressionNoInitializerRule extends Rule
       return new ArrayInstanciationExpression(type, dimensionExpressions.toArray(new Expression[0]), dimensionExpressions.size(), null,
                                               ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), dimensionExpressions.getParseInfo()));
     }
-    if (types == DIMENSIONS_PRODUCTION)
+    if (DIMENSIONS_PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       @SuppressWarnings("unchecked")

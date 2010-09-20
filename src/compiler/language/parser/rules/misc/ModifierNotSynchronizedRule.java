@@ -15,6 +15,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.misc.ModifierType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -26,16 +27,17 @@ import compiler.parser.Rule;
  */
 public class ModifierNotSynchronizedRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] STATIC_PRODUCTION = new Object[] {STATIC_KEYWORD};
-  private static final Object[] ABSTRACT_PRODUCTION = new Object[] {ABSTRACT_KEYWORD};
-  private static final Object[] FINAL_PRODUCTION = new Object[] {FINAL_KEYWORD};
-  private static final Object[] MUTABLE_PRODUCTION = new Object[] {MUTABLE_KEYWORD};
-  private static final Object[] IMMUTABLE_PRODUCTION = new Object[] {IMMUTABLE_KEYWORD};
-  private static final Object[] TRANSIENT_PRODUCTION = new Object[] {TRANSIENT_KEYWORD};
-  private static final Object[] VOLATILE_PRODUCTION = new Object[] {VOLATILE_KEYWORD};
-  private static final Object[] NATIVE_SPECIFIER_PRODUCTION = new Object[] {NATIVE_SPECIFIER};
-  private static final Object[] SINCE_SPECIFIER_PRODUCTION = new Object[] {SINCE_SPECIFIER};
+  private static final Production STATIC_PRODUCTION = new Production(STATIC_KEYWORD);
+  private static final Production ABSTRACT_PRODUCTION = new Production(ABSTRACT_KEYWORD);
+  private static final Production FINAL_PRODUCTION = new Production(FINAL_KEYWORD);
+  private static final Production MUTABLE_PRODUCTION = new Production(MUTABLE_KEYWORD);
+  private static final Production IMMUTABLE_PRODUCTION = new Production(IMMUTABLE_KEYWORD);
+  private static final Production TRANSIENT_PRODUCTION = new Production(TRANSIENT_KEYWORD);
+  private static final Production VOLATILE_PRODUCTION = new Production(VOLATILE_KEYWORD);
+  private static final Production NATIVE_SPECIFIER_PRODUCTION = new Production(NATIVE_SPECIFIER);
+  private static final Production SINCE_SPECIFIER_PRODUCTION = new Production(SINCE_SPECIFIER);
 
   public ModifierNotSynchronizedRule()
   {
@@ -45,40 +47,40 @@ public class ModifierNotSynchronizedRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == STATIC_PRODUCTION)
+    if (STATIC_PRODUCTION.equals(production))
     {
       return new Modifier(ModifierType.STATIC, (ParseInfo) args[0]);
     }
-    if (types == ABSTRACT_PRODUCTION)
+    if (ABSTRACT_PRODUCTION.equals(production))
     {
       return new Modifier(ModifierType.ABSTRACT, (ParseInfo) args[0]);
     }
-    if (types == FINAL_PRODUCTION)
+    if (FINAL_PRODUCTION.equals(production))
     {
       return new Modifier(ModifierType.FINAL, (ParseInfo) args[0]);
     }
-    if (types == MUTABLE_PRODUCTION)
+    if (MUTABLE_PRODUCTION.equals(production))
     {
       return new Modifier(ModifierType.MUTABLE, (ParseInfo) args[0]);
     }
-    if (types == IMMUTABLE_PRODUCTION)
+    if (IMMUTABLE_PRODUCTION.equals(production))
     {
       return new Modifier(ModifierType.IMMUTABLE, (ParseInfo) args[0]);
     }
-    if (types == TRANSIENT_PRODUCTION)
+    if (TRANSIENT_PRODUCTION.equals(production))
     {
       return new Modifier(ModifierType.TRANSIENT, (ParseInfo) args[0]);
     }
-    if (types == VOLATILE_PRODUCTION)
+    if (VOLATILE_PRODUCTION.equals(production))
     {
       return new Modifier(ModifierType.VOLATILE, (ParseInfo) args[0]);
     }
-    if (types == NATIVE_SPECIFIER_PRODUCTION || types == SINCE_SPECIFIER_PRODUCTION)
+    if (NATIVE_SPECIFIER_PRODUCTION.equals(production) || SINCE_SPECIFIER_PRODUCTION.equals(production))
     {
       // NativeSpecifier and SinceSpecifier are subclasses of Modifier, so we can just return them directly
       return args[0];

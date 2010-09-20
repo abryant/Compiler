@@ -1,6 +1,7 @@
 package test.brackets;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -12,9 +13,10 @@ import compiler.parser.Rule;
  */
 public class BracketsRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {};
-  private static final Object[] LIST_PRODUCTION = new Object[] {BracketsType.BRACKET, BracketsType.BRACKETS};
+  private static final Production EMPTY_PRODUCTION = new Production();
+  private static final Production LIST_PRODUCTION = new Production(BracketsType.BRACKET, BracketsType.BRACKETS);
 
   public BracketsRule()
   {
@@ -22,16 +24,16 @@ public class BracketsRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == EMPTY_PRODUCTION)
+    if (production.equals(EMPTY_PRODUCTION))
     {
       return new Bracket[0];
     }
-    if (types == LIST_PRODUCTION)
+    if (production.equals(LIST_PRODUCTION))
     {
       Bracket[] oldList = (Bracket[]) args[1];
       Bracket[] newList = new Bracket[oldList.length + 1];

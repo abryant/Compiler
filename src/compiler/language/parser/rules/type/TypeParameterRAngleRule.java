@@ -9,6 +9,7 @@ import compiler.language.ast.type.NormalTypeParameter;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,9 +21,10 @@ import compiler.parser.Rule;
  */
 public class TypeParameterRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] NORMAL_PRODUCTION = new Object[] {TYPE_RANGLE};
-  private static final Object[] WILDCARD_PRODUCTION = new Object[] {WILDCARD_TYPE_PARAMETER_RANGLE};
+  private static final Production NORMAL_PRODUCTION = new Production(TYPE_RANGLE);
+  private static final Production WILDCARD_PRODUCTION = new Production(WILDCARD_TYPE_PARAMETER_RANGLE);
 
   public TypeParameterRAngleRule()
   {
@@ -31,19 +33,19 @@ public class TypeParameterRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == NORMAL_PRODUCTION)
+    if (NORMAL_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<Type> container = (ParseContainer<Type>) args[0];
       TypeParameter typeParameter = new NormalTypeParameter(container.getItem(), container.getItem().getParseInfo());
       return new ParseContainer<TypeParameter>(typeParameter, container.getParseInfo());
     }
-    if (types == WILDCARD_PRODUCTION)
+    if (WILDCARD_PRODUCTION.equals(production))
     {
       // the rule for WILDCARD_TYPE_PARAMETER_RANGLE has already created
       // a ParseContainer<TypeParameter>, so return it

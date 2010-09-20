@@ -9,6 +9,7 @@ import static compiler.language.parser.ParseType.STATIC_INITIALIZER;
 import static compiler.language.parser.ParseType.TYPE_DEFINITION;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,13 +21,14 @@ import compiler.parser.Rule;
  */
 public class MemberRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] FIELD_PRODUCTION = new Object[] {FIELD};
-  private static final Object[] PROPERTY_PRODUCTION = new Object[] {PROPERTY};
-  private static final Object[] STATIC_INITIALIZER_PRODUCTION = new Object[] {STATIC_INITIALIZER};
-  private static final Object[] CONSTRUCTOR_PRODUCTION = new Object[] {CONSTRUCTOR};
-  private static final Object[] METHOD_PRODUCTION = new Object[] {METHOD};
-  private static final Object[] TYPE_DEFINITION_PRODUCTION = new Object[] {TYPE_DEFINITION};
+  private static final Production FIELD_PRODUCTION = new Production(FIELD);
+  private static final Production PROPERTY_PRODUCTION = new Production(PROPERTY);
+  private static final Production STATIC_INITIALIZER_PRODUCTION = new Production(STATIC_INITIALIZER);
+  private static final Production CONSTRUCTOR_PRODUCTION = new Production(CONSTRUCTOR);
+  private static final Production METHOD_PRODUCTION = new Production(METHOD);
+  private static final Production TYPE_DEFINITION_PRODUCTION = new Production(TYPE_DEFINITION);
 
 
   public MemberRule()
@@ -35,13 +37,13 @@ public class MemberRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == FIELD_PRODUCTION || types == PROPERTY_PRODUCTION || types == STATIC_INITIALIZER_PRODUCTION ||
-        types == CONSTRUCTOR_PRODUCTION || types == METHOD_PRODUCTION || types == TYPE_DEFINITION_PRODUCTION)
+    if (FIELD_PRODUCTION.equals(production) || PROPERTY_PRODUCTION.equals(production) || STATIC_INITIALIZER_PRODUCTION.equals(production) ||
+        CONSTRUCTOR_PRODUCTION.equals(production) || METHOD_PRODUCTION.equals(production) || TYPE_DEFINITION_PRODUCTION.equals(production))
     {
       // All members that can be reduced to a Member are actually subclasses of Member, so just return the argument in any case
       return args[0];

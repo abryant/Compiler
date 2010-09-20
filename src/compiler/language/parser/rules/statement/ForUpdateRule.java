@@ -9,6 +9,7 @@ import static compiler.language.parser.ParseType.STATEMENT_EXPRESSION;
 import compiler.language.ast.expression.StatementExpression;
 import compiler.language.ast.statement.ExpressionStatement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,12 +21,13 @@ import compiler.parser.Rule;
  */
 public class ForUpdateRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] EMPTY_PRODUCTION      = new Object[] {};
-  private static final Object[] EXPRESSION_PRODUCTION = new Object[] {STATEMENT_EXPRESSION};
-  private static final Object[] ASSIGNMENT_PRODUCTION = new Object[] {ASSIGNMENT};
-  private static final Object[] INCREMENT_PRODUCTION  = new Object[] {INCREMENT};
-  private static final Object[] DECREMENT_PRODUCTION  = new Object[] {DECREMENT};
+  private static final Production EMPTY_PRODUCTION      = new Production();
+  private static final Production EXPRESSION_PRODUCTION = new Production(STATEMENT_EXPRESSION);
+  private static final Production ASSIGNMENT_PRODUCTION = new Production(ASSIGNMENT);
+  private static final Production INCREMENT_PRODUCTION  = new Production(INCREMENT);
+  private static final Production DECREMENT_PRODUCTION  = new Production(DECREMENT);
 
   public ForUpdateRule()
   {
@@ -34,21 +36,21 @@ public class ForUpdateRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == EMPTY_PRODUCTION)
+    if (EMPTY_PRODUCTION.equals(production))
     {
       return null;
     }
-    if (types == EXPRESSION_PRODUCTION)
+    if (EXPRESSION_PRODUCTION.equals(production))
     {
       StatementExpression expression = (StatementExpression) args[0];
       return new ExpressionStatement(expression, expression.getParseInfo());
     }
-    if (types == ASSIGNMENT_PRODUCTION || types == INCREMENT_PRODUCTION || types == DECREMENT_PRODUCTION)
+    if (ASSIGNMENT_PRODUCTION.equals(production) || INCREMENT_PRODUCTION.equals(production) || DECREMENT_PRODUCTION.equals(production))
     {
       // a Statement has already been created, so return it
       return args[0];

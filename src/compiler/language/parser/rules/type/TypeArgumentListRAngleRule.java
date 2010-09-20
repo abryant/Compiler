@@ -10,6 +10,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.TypeArgument;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -21,9 +22,10 @@ import compiler.parser.Rule;
  */
 public class TypeArgumentListRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] TYPE_ARGUMENT_PRODUCTION = new Object[] {TYPE_ARGUMENT_RANGLE};
-  private static final Object[] LIST_END_PRODUCTION = new Object[] {TYPE_ARGUMENT_LIST, COMMA, TYPE_ARGUMENT_RANGLE};
+  private static final Production TYPE_ARGUMENT_PRODUCTION = new Production(TYPE_ARGUMENT_RANGLE);
+  private static final Production LIST_END_PRODUCTION = new Production(TYPE_ARGUMENT_LIST, COMMA, TYPE_ARGUMENT_RANGLE);
 
   public TypeArgumentListRAngleRule()
   {
@@ -32,19 +34,19 @@ public class TypeArgumentListRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == TYPE_ARGUMENT_PRODUCTION)
+    if (TYPE_ARGUMENT_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<TypeArgument> typeArgument = (ParseContainer<TypeArgument>) args[0];
       ParseList<TypeArgument> list = new ParseList<TypeArgument>(typeArgument.getItem(), typeArgument.getItem().getParseInfo());
       return new ParseContainer<ParseList<TypeArgument>>(list, typeArgument.getParseInfo());
     }
-    if (types == LIST_END_PRODUCTION)
+    if (LIST_END_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<TypeArgument> list = (ParseList<TypeArgument>) args[0];

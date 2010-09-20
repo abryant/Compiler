@@ -8,6 +8,7 @@ import static compiler.language.parser.ParseType.TYPE_NOT_ARRAY_TYPE;
 import static compiler.language.parser.ParseType.VOID_TYPE;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -19,12 +20,13 @@ import compiler.parser.Rule;
  */
 public class TypeNotArrayTypeRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] CLOSURE_TYPE_PRODUCTION = new Object[] {CLOSURE_TYPE};
-  private static final Object[] POINTER_TYPE_PRODUCTION = new Object[] {POINTER_TYPE};
-  private static final Object[] PRIMITIVE_TYPE_PRODUCTION = new Object[] {PRIMITIVE_TYPE};
-  private static final Object[] TUPLE_TYPE_PRODUCTION = new Object[] {TUPLE_TYPE};
-  private static final Object[] VOID_TYPE_PRODUCTION = new Object[] {VOID_TYPE};
+  private static final Production CLOSURE_TYPE_PRODUCTION = new Production(CLOSURE_TYPE);
+  private static final Production POINTER_TYPE_PRODUCTION = new Production(POINTER_TYPE);
+  private static final Production PRIMITIVE_TYPE_PRODUCTION = new Production(PRIMITIVE_TYPE);
+  private static final Production TUPLE_TYPE_PRODUCTION = new Production(TUPLE_TYPE);
+  private static final Production VOID_TYPE_PRODUCTION = new Production(VOID_TYPE);
 
   public TypeNotArrayTypeRule()
   {
@@ -33,13 +35,13 @@ public class TypeNotArrayTypeRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == CLOSURE_TYPE_PRODUCTION || types == POINTER_TYPE_PRODUCTION || types == PRIMITIVE_TYPE_PRODUCTION ||
-        types == TUPLE_TYPE_PRODUCTION   || types == VOID_TYPE_PRODUCTION)
+    if (CLOSURE_TYPE_PRODUCTION.equals(production) || POINTER_TYPE_PRODUCTION.equals(production) || PRIMITIVE_TYPE_PRODUCTION.equals(production) ||
+        TUPLE_TYPE_PRODUCTION.equals(production)   || VOID_TYPE_PRODUCTION.equals(production))
     {
       // All types are actually subclasses of Type, so just return the argument
       return args[0];

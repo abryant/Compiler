@@ -14,6 +14,7 @@ import compiler.language.ast.expression.FieldAccessExpression;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -25,10 +26,11 @@ import compiler.parser.Rule;
  */
 public class ArrayAccessExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION                   = new Object[] {PRIMARY_NO_TRAILING_DIMENSIONS_NOT_QNAME, DIMENSION_EXPRESSION};
-  private static final Object[] QNAME_PRODUCTION             = new Object[] {QNAME,                                    DIMENSION_EXPRESSION};
-  private static final Object[] NESTED_QNAME_LIST_PRODUCTION = new Object[] {NESTED_QNAME_LIST,                        DIMENSION_EXPRESSION};
+  private static final Production PRODUCTION                   = new Production(PRIMARY_NO_TRAILING_DIMENSIONS_NOT_QNAME, DIMENSION_EXPRESSION);
+  private static final Production QNAME_PRODUCTION             = new Production(QNAME,                                    DIMENSION_EXPRESSION);
+  private static final Production NESTED_QNAME_LIST_PRODUCTION = new Production(NESTED_QNAME_LIST,                        DIMENSION_EXPRESSION);
 
   public ArrayAccessExpressionRule()
   {
@@ -37,12 +39,12 @@ public class ArrayAccessExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[0];
       @SuppressWarnings("unchecked")
@@ -50,7 +52,7 @@ public class ArrayAccessExpressionRule extends Rule
       return new ArrayAccessExpression(expression, dimensionExpression.getItem(),
                                        ParseInfo.combine(expression.getParseInfo(), dimensionExpression.getParseInfo()));
     }
-    if (types == QNAME_PRODUCTION)
+    if (QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       FieldAccessExpression fieldAccessExpression = new FieldAccessExpression(qname, qname.getParseInfo());
@@ -59,7 +61,7 @@ public class ArrayAccessExpressionRule extends Rule
       return new ArrayAccessExpression(fieldAccessExpression, dimensionExpression.getItem(),
                                        ParseInfo.combine(qname.getParseInfo(), dimensionExpression.getParseInfo()));
     }
-    if (types == NESTED_QNAME_LIST_PRODUCTION)
+    if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       Expression expression = element.toExpression();

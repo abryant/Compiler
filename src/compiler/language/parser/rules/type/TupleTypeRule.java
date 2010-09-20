@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.TUPLE_TYPE_NOT_QNAME_LIST;
 
 import compiler.language.ast.misc.QNameElement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -17,9 +18,10 @@ import compiler.parser.Rule;
  */
 public class TupleTypeRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {TUPLE_TYPE_NOT_QNAME_LIST};
-  private static final Object[] QNAME_LIST_PRODUCTION = new Object[] {NESTED_QNAME_LIST};
+  private static final Production PRODUCTION = new Production(TUPLE_TYPE_NOT_QNAME_LIST);
+  private static final Production QNAME_LIST_PRODUCTION = new Production(NESTED_QNAME_LIST);
 
   public TupleTypeRule()
   {
@@ -27,17 +29,17 @@ public class TupleTypeRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       // return the existing TupleType
       return args[0];
     }
-    if (types == QNAME_LIST_PRODUCTION)
+    if (QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       // since this QNameElement is from the NESTED_QNAME_LIST rule, it must be

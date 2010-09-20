@@ -9,6 +9,7 @@ import compiler.language.ast.type.NormalTypeParameter;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,9 +21,10 @@ import compiler.parser.Rule;
  */
 public class TypeParameterTripleRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] TYPE_PRODUCTION = new Object[] {TYPE_TRIPLE_RANGLE};
-  private static final Object[] WILDCARD_PRODUCTION = new Object[] {WILDCARD_TYPE_PARAMETER_TRIPLE_RANGLE};
+  private static final Production TYPE_PRODUCTION = new Production(TYPE_TRIPLE_RANGLE);
+  private static final Production WILDCARD_PRODUCTION = new Production(WILDCARD_TYPE_PARAMETER_TRIPLE_RANGLE);
 
   public TypeParameterTripleRAngleRule()
   {
@@ -31,12 +33,12 @@ public class TypeParameterTripleRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == TYPE_PRODUCTION)
+    if (TYPE_PRODUCTION.equals(production))
     {
       // repackage the Type into a ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>
       @SuppressWarnings("unchecked")
@@ -47,7 +49,7 @@ public class TypeParameterTripleRAngleRule extends Rule
       ParseContainer<ParseContainer<TypeParameter>> secondContainer = new ParseContainer<ParseContainer<TypeParameter>>(firstContainer, oldContainer.getItem().getParseInfo());
       return new ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>(secondContainer, oldContainer.getParseInfo());
     }
-    if (types == WILDCARD_PRODUCTION)
+    if (WILDCARD_PRODUCTION.equals(production))
     {
       // the ParseContainer<ParseContainer<ParseContainer<TypeParameter>>> has already been built be the wildcard rule, so return it
       return args[0];

@@ -11,6 +11,7 @@ import compiler.language.ast.expression.AdditiveExpression;
 import compiler.language.ast.expression.AdditiveExpressionType;
 import compiler.language.ast.expression.Expression;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -22,16 +23,17 @@ import compiler.parser.Rule;
  */
 public class AdditiveExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION             = new Object[] {MULTIPLICATIVE_EXPRESSION};
-  private static final Object[] PLUS_PRODUCTION              = new Object[] {ADDITIVE_EXPRESSION, PLUS,  MULTIPLICATIVE_EXPRESSION};
-  private static final Object[] PLUS_QNAME_PRODUCTION        = new Object[] {ADDITIVE_EXPRESSION, PLUS,  QNAME_EXPRESSION};
-  private static final Object[] QNAME_PLUS_PRODUCTION        = new Object[] {QNAME_EXPRESSION,    PLUS,  MULTIPLICATIVE_EXPRESSION};
-  private static final Object[] QNAME_PLUS_QNAME_PRODUCTION  = new Object[] {QNAME_EXPRESSION,    PLUS,  QNAME_EXPRESSION};
-  private static final Object[] MINUS_PRODUCTION             = new Object[] {ADDITIVE_EXPRESSION, MINUS, MULTIPLICATIVE_EXPRESSION};
-  private static final Object[] MINUS_QNAME_PRODUCTION       = new Object[] {ADDITIVE_EXPRESSION, MINUS, QNAME_EXPRESSION};
-  private static final Object[] QNAME_MINUS_PRODUCTION       = new Object[] {QNAME_EXPRESSION,    MINUS, MULTIPLICATIVE_EXPRESSION};
-  private static final Object[] QNAME_MINUS_QNAME_PRODUCTION = new Object[] {QNAME_EXPRESSION,    MINUS, QNAME_EXPRESSION};
+  private static final Production START_PRODUCTION             = new Production(MULTIPLICATIVE_EXPRESSION);
+  private static final Production PLUS_PRODUCTION              = new Production(ADDITIVE_EXPRESSION, PLUS,  MULTIPLICATIVE_EXPRESSION);
+  private static final Production PLUS_QNAME_PRODUCTION        = new Production(ADDITIVE_EXPRESSION, PLUS,  QNAME_EXPRESSION);
+  private static final Production QNAME_PLUS_PRODUCTION        = new Production(QNAME_EXPRESSION,    PLUS,  MULTIPLICATIVE_EXPRESSION);
+  private static final Production QNAME_PLUS_QNAME_PRODUCTION  = new Production(QNAME_EXPRESSION,    PLUS,  QNAME_EXPRESSION);
+  private static final Production MINUS_PRODUCTION             = new Production(ADDITIVE_EXPRESSION, MINUS, MULTIPLICATIVE_EXPRESSION);
+  private static final Production MINUS_QNAME_PRODUCTION       = new Production(ADDITIVE_EXPRESSION, MINUS, QNAME_EXPRESSION);
+  private static final Production QNAME_MINUS_PRODUCTION       = new Production(QNAME_EXPRESSION,    MINUS, MULTIPLICATIVE_EXPRESSION);
+  private static final Production QNAME_MINUS_QNAME_PRODUCTION = new Production(QNAME_EXPRESSION,    MINUS, QNAME_EXPRESSION);
 
   public AdditiveExpressionRule()
   {
@@ -42,23 +44,23 @@ public class AdditiveExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       // return the existing Expression
       return args[0];
     }
 
     AdditiveExpressionType type = null;
-    if (types == PLUS_PRODUCTION || types == PLUS_QNAME_PRODUCTION || types == QNAME_PLUS_PRODUCTION || types == QNAME_PLUS_QNAME_PRODUCTION)
+    if (PLUS_PRODUCTION.equals(production) || PLUS_QNAME_PRODUCTION.equals(production) || QNAME_PLUS_PRODUCTION.equals(production) || QNAME_PLUS_QNAME_PRODUCTION.equals(production))
     {
       type = AdditiveExpressionType.PLUS;
     }
-    else if (types == MINUS_PRODUCTION || types == MINUS_QNAME_PRODUCTION || types == QNAME_MINUS_PRODUCTION || types == QNAME_MINUS_QNAME_PRODUCTION)
+    else if (MINUS_PRODUCTION.equals(production) || MINUS_QNAME_PRODUCTION.equals(production) || QNAME_MINUS_PRODUCTION.equals(production) || QNAME_MINUS_QNAME_PRODUCTION.equals(production))
     {
       type = AdditiveExpressionType.MINUS;
     }

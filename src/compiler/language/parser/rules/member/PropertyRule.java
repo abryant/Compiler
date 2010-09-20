@@ -20,6 +20,7 @@ import compiler.language.ast.statement.Block;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -31,18 +32,19 @@ import compiler.parser.Rule;
  */
 public class PropertyRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {PROPERTY_KEYWORD, TYPE, NAME, SEMICOLON};
-  private static final Object[] RETRIEVE_PRODUCTION = new Object[] {PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON};
-  private static final Object[] ASSIGN_PRODUCTION = new Object[] {PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON};
-  private static final Object[] ASSIGN_RETRIEVE_PRODUCTION = new Object[] {PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON};
-  private static final Object[] RETRIEVE_ASSIGN_PRODUCTION = new Object[] {PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON};
+  private static final Production PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, SEMICOLON);
+  private static final Production RETRIEVE_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production ASSIGN_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production ASSIGN_RETRIEVE_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production RETRIEVE_ASSIGN_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
 
-  private static final Object[] EQUALS_PRODUCTION = new Object[] {PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, SEMICOLON};
-  private static final Object[] EQUALS_RETRIEVE_PRODUCTION = new Object[] {PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON};
-  private static final Object[] EQUALS_ASSIGN_PRODUCTION = new Object[] {PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON};
-  private static final Object[] EQUALS_ASSIGN_RETRIEVE_PRODUCTION = new Object[] {PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON};
-  private static final Object[] EQUALS_RETRIEVE_ASSIGN_PRODUCTION = new Object[] {PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON};
+  private static final Production EQUALS_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, SEMICOLON);
+  private static final Production EQUALS_RETRIEVE_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production EQUALS_ASSIGN_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production EQUALS_ASSIGN_RETRIEVE_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production EQUALS_RETRIEVE_ASSIGN_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
 
   public PropertyRule()
   {
@@ -51,19 +53,19 @@ public class PropertyRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
       return new Property(type, name, null, null, null, null, null,
                           ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(), (ParseInfo) args[3]));
     }
-    if (types == RETRIEVE_PRODUCTION)
+    if (RETRIEVE_PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
@@ -76,7 +78,7 @@ public class PropertyRule extends Rule
                                          (ParseInfo) args[6]);
       return new Property(type, name, null, null, null, retrieveAccess, retrieveBlock, info);
     }
-    if (types == ASSIGN_PRODUCTION)
+    if (ASSIGN_PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
@@ -89,7 +91,7 @@ public class PropertyRule extends Rule
                                          (ParseInfo) args[6]);
       return new Property(type, name, null, assignAccess, assignBlock, null, null, info);
     }
-    if (types == ASSIGN_RETRIEVE_PRODUCTION)
+    if (ASSIGN_RETRIEVE_PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
@@ -107,7 +109,7 @@ public class PropertyRule extends Rule
                                          (ParseInfo) args[9]);
       return new Property(type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
     }
-    if (types == RETRIEVE_ASSIGN_PRODUCTION)
+    if (RETRIEVE_ASSIGN_PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
@@ -125,7 +127,7 @@ public class PropertyRule extends Rule
                                          (ParseInfo) args[9]);
       return new Property(type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
     }
-    if (types == EQUALS_PRODUCTION)
+    if (EQUALS_PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
@@ -136,7 +138,7 @@ public class PropertyRule extends Rule
                                          (ParseInfo) args[5]);
       return new Property(type, name, expression, null, null, null, null, info);
     }
-    if (types == EQUALS_RETRIEVE_PRODUCTION)
+    if (EQUALS_RETRIEVE_PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
@@ -152,7 +154,7 @@ public class PropertyRule extends Rule
                                          (ParseInfo) args[8]);
       return new Property(type, name, expression, null, null, retrieveAccess, retrieveBlock, info);
     }
-    if (types == EQUALS_ASSIGN_PRODUCTION)
+    if (EQUALS_ASSIGN_PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
@@ -168,7 +170,7 @@ public class PropertyRule extends Rule
                                          (ParseInfo) args[8]);
       return new Property(type, name, expression, assignAccess, assignBlock, null, null, info);
     }
-    if (types == EQUALS_ASSIGN_RETRIEVE_PRODUCTION)
+    if (EQUALS_ASSIGN_RETRIEVE_PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];
@@ -189,7 +191,7 @@ public class PropertyRule extends Rule
                                          (ParseInfo) args[11]);
       return new Property(type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
     }
-    if (types == EQUALS_RETRIEVE_ASSIGN_PRODUCTION)
+    if (EQUALS_RETRIEVE_ASSIGN_PRODUCTION.equals(production))
     {
       Type type = (Type) args[1];
       Name name = (Name) args[2];

@@ -13,6 +13,7 @@ import compiler.language.ast.expression.CastExpression;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -24,9 +25,10 @@ import compiler.parser.Rule;
  */
 public class CastExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {CAST_KEYWORD, LANGLE, TYPE_RANGLE, UNARY_EXPRESSION};
-  private static final Object[] QNAME_PRODUCTION = new Object[] {CAST_KEYWORD, LANGLE, TYPE_RANGLE, QNAME_EXPRESSION};
+  private static final Production PRODUCTION = new Production(CAST_KEYWORD, LANGLE, TYPE_RANGLE, UNARY_EXPRESSION);
+  private static final Production QNAME_PRODUCTION = new Production(CAST_KEYWORD, LANGLE, TYPE_RANGLE, QNAME_EXPRESSION);
 
   public CastExpressionRule()
   {
@@ -35,12 +37,12 @@ public class CastExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION || types == QNAME_PRODUCTION)
+    if (PRODUCTION.equals(production) || QNAME_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<Type> type = (ParseContainer<Type>) args[2];

@@ -5,6 +5,7 @@ import static compiler.language.parser.ParseType.INLINE_IF_EXPRESSION;
 import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
 
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -16,9 +17,10 @@ import compiler.parser.Rule;
  */
 public class ExpressionNoTupleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {INLINE_IF_EXPRESSION};
-  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Production PRODUCTION = new Production(INLINE_IF_EXPRESSION);
+  private static final Production QNAME_PRODUCTION = new Production(QNAME_OR_LESS_THAN_EXPRESSION);
 
   public ExpressionNoTupleRule()
   {
@@ -27,12 +29,12 @@ public class ExpressionNoTupleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION || types == QNAME_PRODUCTION)
+    if (PRODUCTION.equals(production) || QNAME_PRODUCTION.equals(production))
     {
       // return the already created Expression
       return args[0];

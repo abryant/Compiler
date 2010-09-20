@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import compiler.parser.Production;
 import compiler.parser.Rule;
 import compiler.parser.TypeUseEntry;
 
@@ -97,7 +98,7 @@ public final class LALRItem
    * A convenience method for <code>item.getRule().getProductions()[item.getProductionIndex()]</code>
    * @return the production that this LALR item represents.
    */
-  public Object[] getProduction()
+  public Production getProduction()
   {
     return getRule().getProductions()[getProductionIndex()];
   }
@@ -198,21 +199,22 @@ public final class LALRItem
     buffer.append("[");
     buffer.append(nextTypeUse.getRule().getType());
     buffer.append(" <- ");
-    Object[] production = nextTypeUse.getRule().getProductions()[nextTypeUse.getProductionIndex()];
+    Production production = nextTypeUse.getRule().getProductions()[nextTypeUse.getProductionIndex()];
+    Object[] productionTypes = production.getTypes();
     int offset = nextTypeUse.getOffset();
-    for (int i = 0; i < production.length; i++)
+    for (int i = 0; i < productionTypes.length; i++)
     {
       if (offset == i)
       {
         buffer.append(". ");
       }
-      buffer.append(production[i]);
-      if (i != production.length - 1)
+      buffer.append(productionTypes[i]);
+      if (i != productionTypes.length - 1)
       {
         buffer.append(" ");
       }
     }
-    if (offset == production.length)
+    if (offset == productionTypes.length)
     {
       buffer.append(" .");
     }

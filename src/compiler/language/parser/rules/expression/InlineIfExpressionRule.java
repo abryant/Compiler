@@ -11,6 +11,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.InlineIfExpression;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -22,12 +23,13 @@ import compiler.parser.Rule;
  */
 public class InlineIfExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] NO_CHANGE_PRODUCTION      = new Object[] {BOOLEAN_OR_EXPRESSION};
-  private static final Object[] IF_PRODUCTION             = new Object[] {BOOLEAN_OR_EXPRESSION,         QUESTION_MARK, EXPRESSION, COLON, INLINE_IF_EXPRESSION};
-  private static final Object[] IF_QNAME_PRODUCTION       = new Object[] {BOOLEAN_OR_EXPRESSION,         QUESTION_MARK, EXPRESSION, COLON, QNAME_OR_LESS_THAN_EXPRESSION};
-  private static final Object[] QNAME_IF_PRODUCTION       = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, QUESTION_MARK, EXPRESSION, COLON, INLINE_IF_EXPRESSION};
-  private static final Object[] QNAME_IF_QNAME_PRODUCTION = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, QUESTION_MARK, EXPRESSION, COLON, QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Production NO_CHANGE_PRODUCTION      = new Production(BOOLEAN_OR_EXPRESSION);
+  private static final Production IF_PRODUCTION             = new Production(BOOLEAN_OR_EXPRESSION,         QUESTION_MARK, EXPRESSION, COLON, INLINE_IF_EXPRESSION);
+  private static final Production IF_QNAME_PRODUCTION       = new Production(BOOLEAN_OR_EXPRESSION,         QUESTION_MARK, EXPRESSION, COLON, QNAME_OR_LESS_THAN_EXPRESSION);
+  private static final Production QNAME_IF_PRODUCTION       = new Production(QNAME_OR_LESS_THAN_EXPRESSION, QUESTION_MARK, EXPRESSION, COLON, INLINE_IF_EXPRESSION);
+  private static final Production QNAME_IF_QNAME_PRODUCTION = new Production(QNAME_OR_LESS_THAN_EXPRESSION, QUESTION_MARK, EXPRESSION, COLON, QNAME_OR_LESS_THAN_EXPRESSION);
 
   public InlineIfExpressionRule()
   {
@@ -37,17 +39,17 @@ public class InlineIfExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == NO_CHANGE_PRODUCTION)
+    if (NO_CHANGE_PRODUCTION.equals(production))
     {
       // return the existing Expression
       return args[0];
     }
-    if (types == IF_PRODUCTION || types == IF_QNAME_PRODUCTION || types == QNAME_IF_PRODUCTION || types == QNAME_IF_QNAME_PRODUCTION)
+    if (IF_PRODUCTION.equals(production) || IF_QNAME_PRODUCTION.equals(production) || QNAME_IF_PRODUCTION.equals(production) || QNAME_IF_QNAME_PRODUCTION.equals(production))
     {
       Expression firstExpression = (Expression) args[0];
       Expression secondExpression = (Expression) args[2];

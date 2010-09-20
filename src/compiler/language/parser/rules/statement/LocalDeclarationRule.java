@@ -15,6 +15,7 @@ import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.statement.LocalDeclarationStatement;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -26,11 +27,12 @@ import compiler.parser.Rule;
  */
 public class LocalDeclarationRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION                      = new Object[] {                            TYPE, DECLARATION_ASSIGNEE_LIST};
-  private static final Object[] ASSIGNMENT_PRODUCTION           = new Object[] {                            TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION};
-  private static final Object[] MODIFIERS_PRODUCTION            = new Object[] {MODIFIERS_NOT_SYNCHRONIZED, TYPE, DECLARATION_ASSIGNEE_LIST};
-  private static final Object[] MODIFIERS_ASSIGNMENT_PRODUCTION = new Object[] {MODIFIERS_NOT_SYNCHRONIZED, TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION};
+  private static final Production PRODUCTION                      = new Production(                            TYPE, DECLARATION_ASSIGNEE_LIST);
+  private static final Production ASSIGNMENT_PRODUCTION           = new Production(                            TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION);
+  private static final Production MODIFIERS_PRODUCTION            = new Production(MODIFIERS_NOT_SYNCHRONIZED, TYPE, DECLARATION_ASSIGNEE_LIST);
+  private static final Production MODIFIERS_ASSIGNMENT_PRODUCTION = new Production(MODIFIERS_NOT_SYNCHRONIZED, TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION);
 
   public LocalDeclarationRule()
   {
@@ -39,12 +41,12 @@ public class LocalDeclarationRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Type type = (Type) args[0];
       @SuppressWarnings("unchecked")
@@ -52,7 +54,7 @@ public class LocalDeclarationRule extends Rule
       return new LocalDeclarationStatement(new Modifier[0], type, assignees.toArray(new DeclarationAssignee[0]), null,
                                            ParseInfo.combine(type.getParseInfo(), assignees.getParseInfo()));
     }
-    if (types == ASSIGNMENT_PRODUCTION)
+    if (ASSIGNMENT_PRODUCTION.equals(production))
     {
       Type type = (Type) args[0];
       @SuppressWarnings("unchecked")
@@ -61,7 +63,7 @@ public class LocalDeclarationRule extends Rule
       return new LocalDeclarationStatement(new Modifier[0], type, assignees.toArray(new DeclarationAssignee[0]), expression,
                                            ParseInfo.combine(type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[2], expression.getParseInfo()));
     }
-    if (types == MODIFIERS_PRODUCTION)
+    if (MODIFIERS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Modifier> modifiers = (ParseList<Modifier>) args[0];
@@ -71,7 +73,7 @@ public class LocalDeclarationRule extends Rule
       return new LocalDeclarationStatement(modifiers.toArray(new Modifier[0]), type, assignees.toArray(new DeclarationAssignee[0]), null,
                                            ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), assignees.getParseInfo()));
     }
-    if (types == MODIFIERS_ASSIGNMENT_PRODUCTION)
+    if (MODIFIERS_ASSIGNMENT_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Modifier> modifiers = (ParseList<Modifier>) args[0];

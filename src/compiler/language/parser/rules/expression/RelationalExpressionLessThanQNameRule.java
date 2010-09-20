@@ -13,6 +13,7 @@ import compiler.language.ast.expression.RelationalExpressionType;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -24,11 +25,12 @@ import compiler.parser.Rule;
  */
 public class RelationalExpressionLessThanQNameRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] QNAME_LESS_THAN_QNAME_PRODUCTION               = new Object[] {QNAME,             LANGLE, QNAME};
-  private static final Object[] QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION        = new Object[] {QNAME,             LANGLE, NESTED_QNAME_LIST};
-  private static final Object[] NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION        = new Object[] {NESTED_QNAME_LIST, LANGLE, QNAME};
-  private static final Object[] NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION = new Object[] {NESTED_QNAME_LIST, LANGLE, NESTED_QNAME_LIST};
+  private static final Production QNAME_LESS_THAN_QNAME_PRODUCTION               = new Production(QNAME,             LANGLE, QNAME);
+  private static final Production QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION        = new Production(QNAME,             LANGLE, NESTED_QNAME_LIST);
+  private static final Production NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION        = new Production(NESTED_QNAME_LIST, LANGLE, QNAME);
+  private static final Production NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION = new Production(NESTED_QNAME_LIST, LANGLE, NESTED_QNAME_LIST);
 
   public RelationalExpressionLessThanQNameRule()
   {
@@ -40,12 +42,12 @@ public class RelationalExpressionLessThanQNameRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == QNAME_LESS_THAN_QNAME_PRODUCTION)
+    if (QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
       QName firstQName = (QName) args[0];
       QName secondQName = (QName) args[2];
@@ -54,7 +56,7 @@ public class RelationalExpressionLessThanQNameRule extends Rule
       return new RelationalExpression(firstExpression, RelationalExpressionType.LESS_THAN, secondExpression,
                                       ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
-    if (types == QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION)
+    if (QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       QNameElement element = (QNameElement) args[2];
@@ -63,7 +65,7 @@ public class RelationalExpressionLessThanQNameRule extends Rule
       return new RelationalExpression(firstExpression, RelationalExpressionType.LESS_THAN, secondExpression,
                                       ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
-    if (types == NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION)
+    if (NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
       QNameElement element = (QNameElement) args[0];
       QName qname = (QName) args[2];
@@ -72,7 +74,7 @@ public class RelationalExpressionLessThanQNameRule extends Rule
       return new RelationalExpression(firstExpression, RelationalExpressionType.LESS_THAN, secondExpression,
                                       ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
-    if (types == NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION)
+    if (NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
       QNameElement firstElement = (QNameElement) args[0];
       QNameElement secondElement = (QNameElement) args[2];

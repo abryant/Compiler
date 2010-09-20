@@ -9,6 +9,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.Parameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,9 +21,10 @@ import compiler.parser.Rule;
  */
 public class ParametersRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] EMPTY_PRODUCTION = new Object[] {LPAREN, RPAREN};
-  private static final Object[] PRODUCTION = new Object[] {LPAREN, PARAMETER_LIST, RPAREN};
+  private static final Production EMPTY_PRODUCTION = new Production(LPAREN, RPAREN);
+  private static final Production PRODUCTION = new Production(LPAREN, PARAMETER_LIST, RPAREN);
 
   public ParametersRule()
   {
@@ -30,16 +32,16 @@ public class ParametersRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == EMPTY_PRODUCTION)
+    if (EMPTY_PRODUCTION.equals(production))
     {
       return new ParseList<Parameter>(ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Parameter> list = (ParseList<Parameter>) args[1];

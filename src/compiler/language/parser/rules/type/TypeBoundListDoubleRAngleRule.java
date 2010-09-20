@@ -10,6 +10,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -21,9 +22,10 @@ import compiler.parser.Rule;
  */
 public class TypeBoundListDoubleRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION      = new Object[] {POINTER_TYPE_DOUBLE_RANGLE};
-  private static final Object[] LIST_PRODUCTION = new Object[] {TYPE_BOUND_LIST, AMPERSAND, POINTER_TYPE_DOUBLE_RANGLE};
+  private static final Production PRODUCTION      = new Production(POINTER_TYPE_DOUBLE_RANGLE);
+  private static final Production LIST_PRODUCTION = new Production(TYPE_BOUND_LIST, AMPERSAND, POINTER_TYPE_DOUBLE_RANGLE);
 
   public TypeBoundListDoubleRAngleRule()
   {
@@ -32,12 +34,12 @@ public class TypeBoundListDoubleRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<PointerType>> container = (ParseContainer<ParseContainer<PointerType>>) args[0];
@@ -45,7 +47,7 @@ public class TypeBoundListDoubleRAngleRule extends Rule
       ParseContainer<ParseList<PointerType>> firstContainer = new ParseContainer<ParseList<PointerType>>(list, container.getItem().getParseInfo());
       return new ParseContainer<ParseContainer<ParseList<PointerType>>>(firstContainer, container.getParseInfo());
     }
-    if (types == LIST_PRODUCTION)
+    if (LIST_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<PointerType> list = (ParseList<PointerType>) args[0];

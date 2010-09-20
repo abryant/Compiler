@@ -20,6 +20,7 @@ import compiler.language.ast.misc.VariadicArgument;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.Type;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -31,14 +32,15 @@ import compiler.parser.Rule;
  */
 public class ArgumentRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] SINGLE_PRODUCTION = new Object[] {MODIFIERS, TYPE, NAME};
-  private static final Object[] DEFAULT_PRODUCTION = new Object[] {MODIFIERS, TYPE, AT, NAME, EQUALS, EXPRESSION_NO_TUPLE};
-  private static final Object[] VARIADIC_PRODUCTION = new Object[] {MODIFIERS, TYPE, ELLIPSIS, NAME};
-  private static final Object[] SINGLE_NO_MODIFIERS_PRODUCTION = new Object[] {TYPE, NAME};
-  private static final Object[] DEFAULT_NO_MODIFIERS_PRODUCTION = new Object[] {TYPE, AT, NAME, EQUALS, EXPRESSION_NO_TUPLE};
-  private static final Object[] VARIADIC_NO_MODIFIERS_PRODUCTION = new Object[] {TYPE, ELLIPSIS, NAME};
-  private static final Object[] MULTIPLE_PRODUCTION = new Object[] {ARGUMENTS};
+  private static final Production SINGLE_PRODUCTION = new Production(MODIFIERS, TYPE, NAME);
+  private static final Production DEFAULT_PRODUCTION = new Production(MODIFIERS, TYPE, AT, NAME, EQUALS, EXPRESSION_NO_TUPLE);
+  private static final Production VARIADIC_PRODUCTION = new Production(MODIFIERS, TYPE, ELLIPSIS, NAME);
+  private static final Production SINGLE_NO_MODIFIERS_PRODUCTION = new Production(TYPE, NAME);
+  private static final Production DEFAULT_NO_MODIFIERS_PRODUCTION = new Production(TYPE, AT, NAME, EQUALS, EXPRESSION_NO_TUPLE);
+  private static final Production VARIADIC_NO_MODIFIERS_PRODUCTION = new Production(TYPE, ELLIPSIS, NAME);
+  private static final Production MULTIPLE_PRODUCTION = new Production(ARGUMENTS);
 
   // TODO: variadic default arguments? they would apply when the length of the passed in array is 0
 
@@ -50,12 +52,12 @@ public class ArgumentRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == SINGLE_PRODUCTION)
+    if (SINGLE_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Modifier> modifiers = (ParseList<Modifier>) args[0];
@@ -63,7 +65,7 @@ public class ArgumentRule extends Rule
       Name name = (Name) args[2];
       return new SingleArgument(modifiers.toArray(new Modifier[0]), type, name, ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), name.getParseInfo()));
     }
-    if (types == DEFAULT_PRODUCTION)
+    if (DEFAULT_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Modifier> modifiers = (ParseList<Modifier>) args[0];
@@ -73,7 +75,7 @@ public class ArgumentRule extends Rule
       return new DefaultArgument(modifiers.toArray(new Modifier[0]), type, name, expression,
                                  ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), (ParseInfo) args[2], name.getParseInfo(), (ParseInfo) args[4], expression.getParseInfo()));
     }
-    if (types == VARIADIC_PRODUCTION)
+    if (VARIADIC_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<Modifier> modifiers = (ParseList<Modifier>) args[0];
@@ -82,14 +84,14 @@ public class ArgumentRule extends Rule
       return new VariadicArgument(modifiers.toArray(new Modifier[0]), type, name,
                                   ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), (ParseInfo) args[2], name.getParseInfo()));
     }
-    if (types == SINGLE_NO_MODIFIERS_PRODUCTION)
+    if (SINGLE_NO_MODIFIERS_PRODUCTION.equals(production))
     {
       Type type = (Type) args[0];
       Name name = (Name) args[1];
       return new SingleArgument(new Modifier[0], type, name,
                                 ParseInfo.combine(type.getParseInfo(), name.getParseInfo()));
     }
-    if (types == DEFAULT_NO_MODIFIERS_PRODUCTION)
+    if (DEFAULT_NO_MODIFIERS_PRODUCTION.equals(production))
     {
       Type type = (Type) args[0];
       Name name = (Name) args[2];
@@ -97,14 +99,14 @@ public class ArgumentRule extends Rule
       return new DefaultArgument(new Modifier[0], type, name, expression,
                                  ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(), (ParseInfo) args[3], expression.getParseInfo()));
     }
-    if (types == VARIADIC_NO_MODIFIERS_PRODUCTION)
+    if (VARIADIC_NO_MODIFIERS_PRODUCTION.equals(production))
     {
       Type type = (Type) args[0];
       Name name = (Name) args[2];
       return new VariadicArgument(new Modifier[0], type, name,
                                   ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], name.getParseInfo()));
     }
-    if (types == MULTIPLE_PRODUCTION)
+    if (MULTIPLE_PRODUCTION.equals(production))
     {
       // ArgumentList is a subclass of Argument, so just return what has been passed in
       return args[0];

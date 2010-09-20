@@ -13,6 +13,9 @@ import java.util.Deque;
  */
 public class ShiftAction extends Action
 {
+
+  private static final long serialVersionUID = 1L;
+
   private State state;
 
   /**

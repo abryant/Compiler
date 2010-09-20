@@ -9,6 +9,7 @@ import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,8 +21,9 @@ import compiler.parser.Rule;
  */
 public class DimensionExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {LSQUARE, EXPRESSION, RSQUARE};
+  private static final Production PRODUCTION = new Production(LSQUARE, EXPRESSION, RSQUARE);
 
   public DimensionExpressionRule()
   {
@@ -30,12 +32,12 @@ public class DimensionExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[1];
       return new ParseContainer<Expression>(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), (ParseInfo) args[2]));

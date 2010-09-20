@@ -16,6 +16,7 @@ import compiler.language.ast.member.Member;
 import compiler.language.ast.misc.Parameter;
 import compiler.language.ast.type.PointerType;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -27,9 +28,10 @@ import compiler.parser.Rule;
  */
 public class InstanciationExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {NEW_KEYWORD, POINTER_TYPE, PARAMETERS};
-  private static final Object[] MEMBER_LIST_PRODUCTION = new Object[] {NEW_KEYWORD, POINTER_TYPE, PARAMETERS, CLASS_KEYWORD, LBRACE, MEMBER_LIST, RBRACE};
+  private static final Production PRODUCTION = new Production(NEW_KEYWORD, POINTER_TYPE, PARAMETERS);
+  private static final Production MEMBER_LIST_PRODUCTION = new Production(NEW_KEYWORD, POINTER_TYPE, PARAMETERS, CLASS_KEYWORD, LBRACE, MEMBER_LIST, RBRACE);
 
   public InstanciationExpressionRule()
   {
@@ -38,12 +40,12 @@ public class InstanciationExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       PointerType type = (PointerType) args[1];
       @SuppressWarnings("unchecked")
@@ -51,7 +53,7 @@ public class InstanciationExpressionRule extends Rule
       return new InstanciationExpression(type, parameters.toArray(new Parameter[0]), null,
                                          ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), parameters.getParseInfo()));
     }
-    if (types == MEMBER_LIST_PRODUCTION)
+    if (MEMBER_LIST_PRODUCTION.equals(production))
     {
       PointerType type = (PointerType) args[1];
       @SuppressWarnings("unchecked")

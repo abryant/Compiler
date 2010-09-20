@@ -9,6 +9,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BooleanXorExpression;
 import compiler.language.ast.expression.Expression;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,12 +21,13 @@ import compiler.parser.Rule;
  */
 public class BooleanXorExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION           = new Object[] {BOOLEAN_AND_EXPRESSION};
-  private static final Object[] XOR_PRODUCTION             = new Object[] {BOOLEAN_XOR_EXPRESSION,        DOUBLE_CARET, BOOLEAN_AND_EXPRESSION};
-  private static final Object[] XOR_QNAME_PRODUCTION       = new Object[] {BOOLEAN_XOR_EXPRESSION,        DOUBLE_CARET, QNAME_OR_LESS_THAN_EXPRESSION};
-  private static final Object[] QNAME_XOR_PRODUCTION       = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_CARET, BOOLEAN_AND_EXPRESSION};
-  private static final Object[] QNAME_XOR_QNAME_PRODUCTION = new Object[] {QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_CARET, QNAME_OR_LESS_THAN_EXPRESSION};
+  private static final Production START_PRODUCTION           = new Production(BOOLEAN_AND_EXPRESSION);
+  private static final Production XOR_PRODUCTION             = new Production(BOOLEAN_XOR_EXPRESSION,        DOUBLE_CARET, BOOLEAN_AND_EXPRESSION);
+  private static final Production XOR_QNAME_PRODUCTION       = new Production(BOOLEAN_XOR_EXPRESSION,        DOUBLE_CARET, QNAME_OR_LESS_THAN_EXPRESSION);
+  private static final Production QNAME_XOR_PRODUCTION       = new Production(QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_CARET, BOOLEAN_AND_EXPRESSION);
+  private static final Production QNAME_XOR_QNAME_PRODUCTION = new Production(QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_CARET, QNAME_OR_LESS_THAN_EXPRESSION);
 
   public BooleanXorExpressionRule()
   {
@@ -34,17 +36,17 @@ public class BooleanXorExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       // return the existing Expression
       return args[0];
     }
-    if (types == XOR_PRODUCTION || types == XOR_QNAME_PRODUCTION || types == QNAME_XOR_PRODUCTION || types == QNAME_XOR_QNAME_PRODUCTION)
+    if (XOR_PRODUCTION.equals(production) || XOR_QNAME_PRODUCTION.equals(production) || QNAME_XOR_PRODUCTION.equals(production) || QNAME_XOR_QNAME_PRODUCTION.equals(production))
     {
       Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BooleanXorExpression)

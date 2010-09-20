@@ -13,6 +13,9 @@ import java.util.Deque;
  */
 public class ReduceAction extends Action
 {
+
+  private static final long serialVersionUID = 1L;
+
   private Rule rule;
   private int productionIndex;
 
@@ -49,19 +52,21 @@ public class ReduceAction extends Action
   @Override
   public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack) throws ParseException
   {
-    Object[] production = rule.getProductions()[productionIndex];
+    Production production = rule.getProductions()[productionIndex];
     System.out.println("Reducing via production " + Rule.getProductionString(rule.getType(), production) + " (lookahead " + (token == null ? null : token.getType()) + ")"); // TODO: remove debug output
-    if (stateStack.size() <= production.length || tokenStack.size() < production.length)
+
+    Object[] productionTypes = production.getTypes();
+    if (stateStack.size() <= productionTypes.length || tokenStack.size() < productionTypes.length)
     {
       throw new ParseException("Bad reduction of rule, not enough elements");
     }
 
     // get the list of token values
-    Object[] values = new Object[production.length];
+    Object[] values = new Object[productionTypes.length];
     for (int i = values.length - 1; i >= 0; i--)
     {
       Token t = tokenStack.removeFirst();
-      if (!t.getType().equals(production[i]))
+      if (!t.getType().equals(productionTypes[i]))
       {
         throw new ParseException("Bad reduction of rule, invalid token type");
       }

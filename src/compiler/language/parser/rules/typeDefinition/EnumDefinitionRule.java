@@ -21,6 +21,7 @@ import compiler.language.ast.type.PointerType;
 import compiler.language.ast.typeDefinition.EnumConstant;
 import compiler.language.ast.typeDefinition.EnumDefinition;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -32,9 +33,10 @@ import compiler.parser.Rule;
  */
 public class EnumDefinitionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] PRODUCTION = new Object[] {MEMBER_HEADER, ENUM_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, ENUM_CONSTANTS, RBRACE};
-  private static final Object[] MEMBERS_PRODUCTION = new Object[] {MEMBER_HEADER, ENUM_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, ENUM_CONSTANTS, SEMICOLON, MEMBER_LIST, RBRACE};
+  private static final Production PRODUCTION = new Production(MEMBER_HEADER, ENUM_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, ENUM_CONSTANTS, RBRACE);
+  private static final Production MEMBERS_PRODUCTION = new Production(MEMBER_HEADER, ENUM_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, ENUM_CONSTANTS, SEMICOLON, MEMBER_LIST, RBRACE);
 
   public EnumDefinitionRule()
   {
@@ -42,12 +44,12 @@ public class EnumDefinitionRule extends Rule
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == PRODUCTION)
+    if (PRODUCTION.equals(production))
     {
       MemberHeader header = (MemberHeader) args[0];
       Name name = (Name) args[2];
@@ -62,7 +64,7 @@ public class EnumDefinitionRule extends Rule
                                                   interfaces.getParseInfo(),
                                                   (ParseInfo) args[5], enumConstants.getParseInfo(), (ParseInfo) args[7]));
     }
-    if (types == MEMBERS_PRODUCTION)
+    if (MEMBERS_PRODUCTION.equals(production))
     {
       MemberHeader header = (MemberHeader) args[0];
       Name name = (Name) args[2];

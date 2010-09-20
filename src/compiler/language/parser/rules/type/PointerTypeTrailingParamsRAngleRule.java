@@ -17,6 +17,7 @@ import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -28,11 +29,12 @@ import compiler.parser.Rule;
  */
 public class PointerTypeTrailingParamsRAngleRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] MUTABLE_PRODUCTION         = new Object[] {      QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
-  private static final Object[] IMMUTABLE_PRODUCTION       = new Object[] {HASH, QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
-  private static final Object[] TRAILING_PARAMS_PRODUCTION = new Object[] {POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE};
-  private static final Object[] RANGLE_PRODUCTION          = new Object[] {POINTER_TYPE_TRAILING_PARAMS, RANGLE};
+  private static final Production MUTABLE_PRODUCTION         = new Production(      QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE);
+  private static final Production IMMUTABLE_PRODUCTION       = new Production(HASH, QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE);
+  private static final Production TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, LANGLE, TYPE_PARAMETER_LIST_DOUBLE_RANGLE);
+  private static final Production RANGLE_PRODUCTION          = new Production(POINTER_TYPE_TRAILING_PARAMS, RANGLE);
 
   public PointerTypeTrailingParamsRAngleRule()
   {
@@ -41,12 +43,12 @@ public class PointerTypeTrailingParamsRAngleRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == MUTABLE_PRODUCTION)
+    if (MUTABLE_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
       @SuppressWarnings("unchecked")
@@ -62,7 +64,7 @@ public class PointerTypeTrailingParamsRAngleRule extends Rule
                                          ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], typeParameters.getItem().getParseInfo()));
       return new ParseContainer<PointerType>(type, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], typeParameters.getParseInfo()));
     }
-    if (types == IMMUTABLE_PRODUCTION)
+    if (IMMUTABLE_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[1];
       @SuppressWarnings("unchecked")
@@ -78,7 +80,7 @@ public class PointerTypeTrailingParamsRAngleRule extends Rule
                                          ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], typeParameters.getItem().getParseInfo()));
       return new ParseContainer<PointerType>(type, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], typeParameters.getParseInfo()));
     }
-    if (types == TRAILING_PARAMS_PRODUCTION)
+    if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
       PointerType oldType = (PointerType) args[0];
       QName qname = (QName) args[2];
@@ -97,7 +99,7 @@ public class PointerTypeTrailingParamsRAngleRule extends Rule
       return new ParseContainer<PointerType>(type, ParseInfo.combine(oldType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3],
                                                                      typeParameters.getItem().getParseInfo()));
     }
-    if (types == RANGLE_PRODUCTION)
+    if (RANGLE_PRODUCTION.equals(production))
     {
       PointerType type = (PointerType) args[0];
       return new ParseContainer<PointerType>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));

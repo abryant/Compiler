@@ -9,6 +9,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BitwiseOrExpression;
 import compiler.language.ast.expression.Expression;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -20,12 +21,13 @@ import compiler.parser.Rule;
  */
 public class BitwiseOrExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] START_PRODUCTION          = new Object[] {BITWISE_XOR_EXPRESSION};
-  private static final Object[] OR_PRODUCTION             = new Object[] {BITWISE_OR_EXPRESSION, PIPE, BITWISE_XOR_EXPRESSION};
-  private static final Object[] OR_QNAME_PRODUCTION       = new Object[] {BITWISE_OR_EXPRESSION, PIPE, QNAME_EXPRESSION};
-  private static final Object[] QNAME_OR_PRODUCTION       = new Object[] {QNAME_EXPRESSION,      PIPE, BITWISE_XOR_EXPRESSION};
-  private static final Object[] QNAME_OR_QNAME_PRODUCTION = new Object[] {QNAME_EXPRESSION,      PIPE, QNAME_EXPRESSION};
+  private static final Production START_PRODUCTION          = new Production(BITWISE_XOR_EXPRESSION);
+  private static final Production OR_PRODUCTION             = new Production(BITWISE_OR_EXPRESSION, PIPE, BITWISE_XOR_EXPRESSION);
+  private static final Production OR_QNAME_PRODUCTION       = new Production(BITWISE_OR_EXPRESSION, PIPE, QNAME_EXPRESSION);
+  private static final Production QNAME_OR_PRODUCTION       = new Production(QNAME_EXPRESSION,      PIPE, BITWISE_XOR_EXPRESSION);
+  private static final Production QNAME_OR_QNAME_PRODUCTION = new Production(QNAME_EXPRESSION,      PIPE, QNAME_EXPRESSION);
 
   public BitwiseOrExpressionRule()
   {
@@ -34,17 +36,17 @@ public class BitwiseOrExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == START_PRODUCTION)
+    if (START_PRODUCTION.equals(production))
     {
       // return the existing Expression
       return args[0];
     }
-    if (types == OR_PRODUCTION || types == OR_QNAME_PRODUCTION || types == QNAME_OR_PRODUCTION || types == QNAME_OR_QNAME_PRODUCTION)
+    if (OR_PRODUCTION.equals(production) || OR_QNAME_PRODUCTION.equals(production) || QNAME_OR_PRODUCTION.equals(production) || QNAME_OR_QNAME_PRODUCTION.equals(production))
     {
       Expression secondExpression = (Expression) args[2];
       if (args[0] instanceof BitwiseOrExpression)

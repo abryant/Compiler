@@ -11,6 +11,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.TupleIndexExpression;
 import compiler.language.ast.terminal.IntegerLiteral;
 import compiler.parser.ParseException;
+import compiler.parser.Production;
 import compiler.parser.Rule;
 
 /*
@@ -22,10 +23,11 @@ import compiler.parser.Rule;
  */
 public class TupleIndexExpressionRule extends Rule
 {
+  private static final long serialVersionUID = 1L;
 
-  private static final Object[] NO_CHANGE_PRODUCTION = new Object[] {UNARY_EXPRESSION};
-  private static final Object[] PRODUCTION = new Object[] {TUPLE_INDEX_EXPRESSION, EXCLAIMATION_MARK, INTEGER_LITERAL};
-  private static final Object[] QNAME_PRODUCTION = new Object[] {QNAME_EXPRESSION, EXCLAIMATION_MARK, INTEGER_LITERAL};
+  private static final Production NO_CHANGE_PRODUCTION = new Production(UNARY_EXPRESSION);
+  private static final Production PRODUCTION = new Production(TUPLE_INDEX_EXPRESSION, EXCLAIMATION_MARK, INTEGER_LITERAL);
+  private static final Production QNAME_PRODUCTION = new Production(QNAME_EXPRESSION, EXCLAIMATION_MARK, INTEGER_LITERAL);
 
   public TupleIndexExpressionRule()
   {
@@ -34,17 +36,17 @@ public class TupleIndexExpressionRule extends Rule
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Object[] types, Object[] args) throws ParseException
+  public Object match(Production production, Object[] args) throws ParseException
   {
-    if (types == NO_CHANGE_PRODUCTION)
+    if (NO_CHANGE_PRODUCTION.equals(production))
     {
       // return the existing expression
       return args[0];
     }
-    if (types == PRODUCTION || types == QNAME_PRODUCTION)
+    if (PRODUCTION.equals(production) || QNAME_PRODUCTION.equals(production))
     {
       Expression expression = (Expression) args[0];
       IntegerLiteral index = (IntegerLiteral) args[2];
