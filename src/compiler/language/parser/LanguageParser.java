@@ -9,8 +9,6 @@ import compiler.parser.BadTokenException;
 import compiler.parser.ParseException;
 import compiler.parser.Parser;
 import compiler.parser.Token;
-import compiler.parser.lalr.LALRParserGenerator;
-import compiler.parser.lalr.LALRRuleSet;
 import compiler.parser.lalr.LALRState;
 
 /*
@@ -27,11 +25,7 @@ public class LanguageParser
 
   public LanguageParser()
   {
-    LALRRuleSet rules = LanguageRules.getRuleSet();
-
-    LALRParserGenerator generator = new LALRParserGenerator(rules);
-    generator.generate();
-    startState = generator.getStartState();
+    startState = LanguageParseTableLoader.loadParseTable();
   }
 
   /**
