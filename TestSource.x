@@ -1253,10 +1253,6 @@ public class LanguageTokenizer extends Tokenizer
     {
       throw new LanguageParseException("An IO Exception occured while reading the source code.", e, new ParseInfo(currentLine, currentColumn));
     }
-    finally
-    {
-      // TODO: fix the parser to not require this
-    }
   }
 
   /**

@@ -24,11 +24,12 @@ public final class FinallyClauseRule extends Rule<ParseType>
   private static final long serialVersionUID = 1L;
 
   private static final Production<ParseType> PRODUCTION = new Production<ParseType>(FINALLY_KEYWORD, BLOCK);
+  private static final Production<ParseType> EMPTY_PRODUCTION = new Production<ParseType>();
 
   @SuppressWarnings("unchecked")
   public FinallyClauseRule()
   {
-    super(FINALLY_CLAUSE, PRODUCTION);
+    super(FINALLY_CLAUSE, PRODUCTION, EMPTY_PRODUCTION);
   }
 
   /**
@@ -42,6 +43,10 @@ public final class FinallyClauseRule extends Rule<ParseType>
     {
       Block block = (Block) args[1];
       return new ParseContainer<Block>(block, ParseInfo.combine((ParseInfo) args[0], block.getParseInfo()));
+    }
+    if (EMPTY_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<Block>(null, null);
     }
     throw badTypeList();
   }
