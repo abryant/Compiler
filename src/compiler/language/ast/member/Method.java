@@ -154,7 +154,7 @@ public class Method extends Member
     buffer.append(arguments);
     if (thrownTypes.length > 0)
     {
-      buffer.append("throws ");
+      buffer.append(" throws ");
       for (int i = 0; i < thrownTypes.length; i++)
       {
         buffer.append(thrownTypes[i]);
