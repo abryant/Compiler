@@ -12,6 +12,7 @@ import compiler.language.ast.misc.QName;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -23,14 +24,15 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class PointerTypeTrailingParamsRule extends Rule
+public final class PointerTypeTrailingParamsRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION = new Production(QNAME, TYPE_PARAMETERS);
-  private static final Production IMMUTABLE_START_PRODUCTION = new Production(HASH, QNAME, TYPE_PARAMETERS);
-  private static final Production CONTINUATION_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, TYPE_PARAMETERS);
+  private static final Production<ParseType> START_PRODUCTION = new Production<ParseType>(QNAME, TYPE_PARAMETERS);
+  private static final Production<ParseType> IMMUTABLE_START_PRODUCTION = new Production<ParseType>(HASH, QNAME, TYPE_PARAMETERS);
+  private static final Production<ParseType> CONTINUATION_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, TYPE_PARAMETERS);
 
+  @SuppressWarnings("unchecked")
   public PointerTypeTrailingParamsRule()
   {
     super(POINTER_TYPE_TRAILING_PARAMS, START_PRODUCTION, IMMUTABLE_START_PRODUCTION, CONTINUATION_PRODUCTION);
@@ -41,7 +43,7 @@ public class PointerTypeTrailingParamsRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

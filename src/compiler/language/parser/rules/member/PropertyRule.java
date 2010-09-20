@@ -19,6 +19,7 @@ import compiler.language.ast.member.Property;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.Type;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -30,22 +31,23 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class PropertyRule extends Rule
+public final class PropertyRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, SEMICOLON);
-  private static final Production RETRIEVE_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
-  private static final Production ASSIGN_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
-  private static final Production ASSIGN_RETRIEVE_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
-  private static final Production RETRIEVE_ASSIGN_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(PROPERTY_KEYWORD, TYPE, NAME, SEMICOLON);
+  private static final Production<ParseType> RETRIEVE_PRODUCTION = new Production<ParseType>(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production<ParseType> ASSIGN_PRODUCTION = new Production<ParseType>(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production<ParseType> ASSIGN_RETRIEVE_PRODUCTION = new Production<ParseType>(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production<ParseType> RETRIEVE_ASSIGN_PRODUCTION = new Production<ParseType>(PROPERTY_KEYWORD, TYPE, NAME, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
 
-  private static final Production EQUALS_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, SEMICOLON);
-  private static final Production EQUALS_RETRIEVE_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
-  private static final Production EQUALS_ASSIGN_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
-  private static final Production EQUALS_ASSIGN_RETRIEVE_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
-  private static final Production EQUALS_RETRIEVE_ASSIGN_PRODUCTION = new Production(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production<ParseType> EQUALS_PRODUCTION = new Production<ParseType>(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, SEMICOLON);
+  private static final Production<ParseType> EQUALS_RETRIEVE_PRODUCTION = new Production<ParseType>(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production<ParseType> EQUALS_ASSIGN_PRODUCTION = new Production<ParseType>(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production<ParseType> EQUALS_ASSIGN_RETRIEVE_PRODUCTION = new Production<ParseType>(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
+  private static final Production<ParseType> EQUALS_RETRIEVE_ASSIGN_PRODUCTION = new Production<ParseType>(PROPERTY_KEYWORD, TYPE, NAME, EQUALS, EXPRESSION, ACCESS_SPECIFIER, RETRIEVE_KEYWORD, OPTIONAL_BLOCK, ACCESS_SPECIFIER, ASSIGN_KEYWORD, OPTIONAL_BLOCK, SEMICOLON);
 
+  @SuppressWarnings("unchecked")
   public PropertyRule()
   {
     super(PROPERTY, PRODUCTION, RETRIEVE_PRODUCTION, ASSIGN_PRODUCTION, ASSIGN_RETRIEVE_PRODUCTION, RETRIEVE_ASSIGN_PRODUCTION,
@@ -56,7 +58,7 @@ public class PropertyRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

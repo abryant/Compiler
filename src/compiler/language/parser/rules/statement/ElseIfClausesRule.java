@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.ELSE_IF_CLAUSES;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.statement.ElseIfClause;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -17,13 +18,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ElseIfClausesRule extends Rule
+public final class ElseIfClausesRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION        = new Production();
-  private static final Production CONTINUATION_PRODUCTION = new Production(ELSE_IF_CLAUSES, ELSE_IF_CLAUSE);
+  private static final Production<ParseType> START_PRODUCTION        = new Production<ParseType>();
+  private static final Production<ParseType> CONTINUATION_PRODUCTION = new Production<ParseType>(ELSE_IF_CLAUSES, ELSE_IF_CLAUSE);
 
+  @SuppressWarnings("unchecked")
   public ElseIfClausesRule()
   {
     super(ELSE_IF_CLAUSES, START_PRODUCTION, CONTINUATION_PRODUCTION);
@@ -34,7 +36,7 @@ public class ElseIfClausesRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

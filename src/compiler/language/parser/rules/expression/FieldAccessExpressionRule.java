@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.QNAME;
 
 import compiler.language.ast.expression.FieldAccessExpression;
 import compiler.language.ast.misc.QName;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -17,13 +18,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class FieldAccessExpressionRule extends Rule
+public final class FieldAccessExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production QNAME_PRODUCTION = new Production(QNAME);
-  private static final Production PRODUCTION = new Production(FIELD_ACCESS_EXPRESSION_NOT_QNAME);
+  private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(QNAME);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(FIELD_ACCESS_EXPRESSION_NOT_QNAME);
 
+  @SuppressWarnings("unchecked")
   public FieldAccessExpressionRule()
   {
     super(FIELD_ACCESS_EXPRESSION, QNAME_PRODUCTION, PRODUCTION);
@@ -34,7 +36,7 @@ public class FieldAccessExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (QNAME_PRODUCTION.equals(production))
     {

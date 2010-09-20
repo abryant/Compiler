@@ -11,13 +11,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class BracketsRule extends Rule
+public class BracketsRule extends Rule<BracketsType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production EMPTY_PRODUCTION = new Production();
-  private static final Production LIST_PRODUCTION = new Production(BracketsType.BRACKET, BracketsType.BRACKETS);
+  private static final Production<BracketsType> EMPTY_PRODUCTION = new Production<BracketsType>();
+  private static final Production<BracketsType> LIST_PRODUCTION = new Production<BracketsType>(BracketsType.BRACKET, BracketsType.BRACKETS);
 
+  @SuppressWarnings("unchecked")
   public BracketsRule()
   {
     super(BracketsType.BRACKETS, EMPTY_PRODUCTION, LIST_PRODUCTION);
@@ -27,7 +28,7 @@ public class BracketsRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<BracketsType> production, Object[] args) throws ParseException
   {
     if (production.equals(EMPTY_PRODUCTION))
     {

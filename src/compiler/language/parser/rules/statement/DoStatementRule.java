@@ -11,6 +11,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.statement.DoStatement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -23,12 +24,13 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class DoStatementRule extends Rule
+public final class DoStatementRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(DO_KEYWORD, BLOCK, WHILE_KEYWORD, EXPRESSION, SEMICOLON);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(DO_KEYWORD, BLOCK, WHILE_KEYWORD, EXPRESSION, SEMICOLON);
 
+  @SuppressWarnings("unchecked")
   public DoStatementRule()
   {
     super(DO_STATEMENT, PRODUCTION);
@@ -39,7 +41,7 @@ public class DoStatementRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

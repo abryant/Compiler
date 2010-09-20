@@ -8,6 +8,7 @@ import static compiler.language.parser.ParseType.SEMICOLON;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.statement.ReturnStatement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -19,13 +20,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ReturnStatementRule extends Rule
+public final class ReturnStatementRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION            = new Production(RETURN_KEYWORD,             SEMICOLON);
-  private static final Production EXPRESSION_PRODUCTION = new Production(RETURN_KEYWORD, EXPRESSION, SEMICOLON);
+  private static final Production<ParseType> PRODUCTION            = new Production<ParseType>(RETURN_KEYWORD,             SEMICOLON);
+  private static final Production<ParseType> EXPRESSION_PRODUCTION = new Production<ParseType>(RETURN_KEYWORD, EXPRESSION, SEMICOLON);
 
+  @SuppressWarnings("unchecked")
   public ReturnStatementRule()
   {
     super(RETURN_STATEMENT, PRODUCTION, EXPRESSION_PRODUCTION);
@@ -36,7 +38,7 @@ public class ReturnStatementRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.TRUE_KEYWORD;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BooleanLiteralExpression;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -17,13 +18,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class BooleanLiteralExpressionRule extends Rule
+public final class BooleanLiteralExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production TRUE_PRODUCTION = new Production(TRUE_KEYWORD);
-  private static final Production FALSE_PRODUCTION = new Production(FALSE_KEYWORD);
+  private static final Production<ParseType> TRUE_PRODUCTION = new Production<ParseType>(TRUE_KEYWORD);
+  private static final Production<ParseType> FALSE_PRODUCTION = new Production<ParseType>(FALSE_KEYWORD);
 
+  @SuppressWarnings("unchecked")
   public BooleanLiteralExpressionRule()
   {
     super(BOOLEAN_LITERAL_EXPRESSION, TRUE_PRODUCTION, FALSE_PRODUCTION);
@@ -34,7 +36,7 @@ public class BooleanLiteralExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (TRUE_PRODUCTION.equals(production))
     {

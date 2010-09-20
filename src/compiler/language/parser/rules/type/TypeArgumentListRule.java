@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.TYPE_ARGUMENT_LIST;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.TypeArgument;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -18,13 +19,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeArgumentListRule extends Rule
+public final class TypeArgumentListRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION = new Production(TYPE_ARGUMENT);
-  private static final Production CONTINUATION_PRODUCTION = new Production(TYPE_ARGUMENT_LIST, COMMA, TYPE_ARGUMENT);
+  private static final Production<ParseType> START_PRODUCTION = new Production<ParseType>(TYPE_ARGUMENT);
+  private static final Production<ParseType> CONTINUATION_PRODUCTION = new Production<ParseType>(TYPE_ARGUMENT_LIST, COMMA, TYPE_ARGUMENT);
 
+  @SuppressWarnings("unchecked")
   public TypeArgumentListRule()
   {
     super(TYPE_ARGUMENT_LIST, START_PRODUCTION, CONTINUATION_PRODUCTION);
@@ -34,7 +36,7 @@ public class TypeArgumentListRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

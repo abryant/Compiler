@@ -9,10 +9,11 @@ package compiler.parser;
  * An immutable value object which represents a particular type in a production in a Rule.
  *
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  */
-public final class TypeUseEntry
+public final class TypeUseEntry<T extends Enum<T>>
 {
-  private Rule rule;
+  private Rule<T> rule;
   private int productionIndex;
   private int offset;
 
@@ -22,7 +23,7 @@ public final class TypeUseEntry
    * @param productionIndex - the index to store
    * @param offset - the offset to store
    */
-  public TypeUseEntry(Rule rule, int productionIndex, int offset)
+  public TypeUseEntry(Rule<T> rule, int productionIndex, int offset)
   {
     this.rule = rule;
     this.productionIndex = productionIndex;
@@ -32,7 +33,7 @@ public final class TypeUseEntry
   /**
    * @return the rule
    */
-  public Rule getRule()
+  public Rule<T> getRule()
   {
     return rule;
   }
@@ -63,7 +64,10 @@ public final class TypeUseEntry
     {
       return false;
     }
-    TypeUseEntry other = (TypeUseEntry) o;
+    // this is not nice, but is necessary to check whether the TypeUseEntrys
+    // are equal without knowing their generic type parameters
+    @SuppressWarnings("unchecked")
+    TypeUseEntry<T> other = (TypeUseEntry<T>) o;
     return rule.equals(other.rule) &&
            productionIndex == other.productionIndex &&
            offset == other.offset;

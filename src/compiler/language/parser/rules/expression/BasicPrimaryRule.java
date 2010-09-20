@@ -25,6 +25,7 @@ import compiler.language.ast.terminal.CharacterLiteral;
 import compiler.language.ast.terminal.FloatingLiteral;
 import compiler.language.ast.terminal.IntegerLiteral;
 import compiler.language.ast.terminal.StringLiteral;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -36,24 +37,25 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class BasicPrimaryRule extends Rule
+public final class BasicPrimaryRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production INTEGER_LITERAL_PRODUCTION = new Production(INTEGER_LITERAL);
-  private static final Production FLOATING_LITERAL_PRODUCTION = new Production(FLOATING_LITERAL);
-  private static final Production BOOLEAN_LITERAL_PRODUCTION = new Production(BOOLEAN_LITERAL_EXPRESSION);
-  private static final Production CHARACTER_LITERAL_PRODUCTION = new Production(CHARACTER_LITERAL);
-  private static final Production STRING_LITERAL_PRODUCTION = new Production(STRING_LITERAL);
-  private static final Production NIL_LITERAL_PRODUCTION = new Production(NIL_KEYWORD);
-  private static final Production FIELD_ACCESS_PRODUCTION = new Production(FIELD_ACCESS_EXPRESSION_NOT_QNAME);
-  private static final Production STATEMENT_EXPRESSION_PRODUCTION = new Production(STATEMENT_EXPRESSION);
-  private static final Production THIS_ACCESS_PRODUCTION = new Production(THIS_ACCESS_EXPRESSION);
-  private static final Production SUPER_ACCESS_PRODUCTION = new Production(SUPER_ACCESS_EXPRESSION);
-  private static final Production ARRAY_ACCESS_PRODUCTION = new Production(ARRAY_ACCESS_EXPRESSION);
-  private static final Production CLOSURE_CREATION_PRODUCTION = new Production(CLOSURE_CREATION_EXPRESSION);
-  private static final Production ARRAY_INSTANCIATION_PRODUCTION = new Production(ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER);
+  private static final Production<ParseType> INTEGER_LITERAL_PRODUCTION = new Production<ParseType>(INTEGER_LITERAL);
+  private static final Production<ParseType> FLOATING_LITERAL_PRODUCTION = new Production<ParseType>(FLOATING_LITERAL);
+  private static final Production<ParseType> BOOLEAN_LITERAL_PRODUCTION = new Production<ParseType>(BOOLEAN_LITERAL_EXPRESSION);
+  private static final Production<ParseType> CHARACTER_LITERAL_PRODUCTION = new Production<ParseType>(CHARACTER_LITERAL);
+  private static final Production<ParseType> STRING_LITERAL_PRODUCTION = new Production<ParseType>(STRING_LITERAL);
+  private static final Production<ParseType> NIL_LITERAL_PRODUCTION = new Production<ParseType>(NIL_KEYWORD);
+  private static final Production<ParseType> FIELD_ACCESS_PRODUCTION = new Production<ParseType>(FIELD_ACCESS_EXPRESSION_NOT_QNAME);
+  private static final Production<ParseType> STATEMENT_EXPRESSION_PRODUCTION = new Production<ParseType>(STATEMENT_EXPRESSION);
+  private static final Production<ParseType> THIS_ACCESS_PRODUCTION = new Production<ParseType>(THIS_ACCESS_EXPRESSION);
+  private static final Production<ParseType> SUPER_ACCESS_PRODUCTION = new Production<ParseType>(SUPER_ACCESS_EXPRESSION);
+  private static final Production<ParseType> ARRAY_ACCESS_PRODUCTION = new Production<ParseType>(ARRAY_ACCESS_EXPRESSION);
+  private static final Production<ParseType> CLOSURE_CREATION_PRODUCTION = new Production<ParseType>(CLOSURE_CREATION_EXPRESSION);
+  private static final Production<ParseType> ARRAY_INSTANCIATION_PRODUCTION = new Production<ParseType>(ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER);
 
+  @SuppressWarnings("unchecked")
   public BasicPrimaryRule()
   {
     super(BASIC_PRIMARY, INTEGER_LITERAL_PRODUCTION,   FLOATING_LITERAL_PRODUCTION,
@@ -72,7 +74,7 @@ public class BasicPrimaryRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (INTEGER_LITERAL_PRODUCTION.equals(production))
     {

@@ -21,21 +21,21 @@ public class ExpressionParser
 
   public static void main(String[] args) throws ParseException, BadTokenException
   {
-    LALRRuleSet ruleSet = new LALRRuleSet();
+    LALRRuleSet<ExpressionType> ruleSet = new LALRRuleSet<ExpressionType>();
     ruleSet.addStartRule(new ExpressionRule());
     ruleSet.addRule(new SumRule());
     ruleSet.addRule(new ProductRule());
     ruleSet.addRule(new ValueRule());
 
-    LALRParserGenerator generator = new LALRParserGenerator(ruleSet);
-    generator.generate();
+    LALRParserGenerator<ExpressionType> generator = new LALRParserGenerator<ExpressionType>(ruleSet);
+    generator.generate(ExpressionType.GENERATED_START_RULE);
 
-    LALRState startState = generator.getStartState();
+    LALRState<ExpressionType> startState = generator.getStartState();
 
     ExpressionTokenizer tokenizer = new ExpressionTokenizer();
 
-    Parser parser = new Parser(startState, tokenizer);
-    Token result = parser.parse();
+    Parser<ExpressionType> parser = new Parser<ExpressionType>(startState, tokenizer);
+    Token<ExpressionType> result = parser.parse();
     if (result.getType() != ExpressionType.EXPRESSION)
     {
       System.err.println("Resulted in non-expression type: " + result.getType());

@@ -23,8 +23,9 @@ import compiler.parser.TypeUseEntry;
  * A RuleSet with extra methods for LALR parsers.
  *
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  */
-public class LALRRuleSet extends RuleSet
+public class LALRRuleSet<T extends Enum<T>> extends RuleSet<T>
 {
 
   /**
@@ -39,7 +40,7 @@ public class LALRRuleSet extends RuleSet
    * Creates a new LALRRuleSet with the specified rules.
    * @param rules - the rules for this LALRRuleSet to initially contain
    */
-  public LALRRuleSet(Set<Rule> rules)
+  public LALRRuleSet(Set<Rule<T>> rules)
   {
     super(rules);
   }
@@ -49,40 +50,40 @@ public class LALRRuleSet extends RuleSet
    * @param startItems - the set of kernel items to calculate the closure of
    * @return the set of closure items that must be added to the kernel set to produce the closure. These will be updated with any additional lookaheads they require
    */
-  public Map<TypeUseEntry, LALRItem> calculateClosureItems(Collection<LALRItem> startItems)
+  public Map<TypeUseEntry<T>, LALRItem<T>> calculateClosureItems(Collection<LALRItem<T>> startItems)
   {
-    Deque<LALRItem> queue = new LinkedList<LALRItem>();
+    Deque<LALRItem<T>> queue = new LinkedList<LALRItem<T>>();
     queue.addAll(startItems);
 
-    Map<TypeUseEntry, LALRItem> result = new HashMap<TypeUseEntry, LALRItem>();
+    Map<TypeUseEntry<T>, LALRItem<T>> result = new HashMap<TypeUseEntry<T>, LALRItem<T>>();
     // add the kernel items to the result.
     // they will be removed again at the end of this method, but they need to
     // be added so that their lookaheads can be updated when an existing item
     // is found in the result set
-    for (LALRItem startItem : startItems)
+    for (LALRItem<T> startItem : startItems)
     {
       result.put(startItem.getNextTypeUse(), startItem);
     }
 
-    Map<TypeUseEntry, LALRItem> visited = new HashMap<TypeUseEntry, LALRItem>();
+    Map<TypeUseEntry<T>, LALRItem<T>> visited = new HashMap<TypeUseEntry<T>, LALRItem<T>>();
 
     while (!queue.isEmpty())
     {
-      LALRItem item = queue.pollFirst();
-      LALRItem visitedItem = visited.get(item.getNextTypeUse());
+      LALRItem<T> item = queue.pollFirst();
+      LALRItem<T> visitedItem = visited.get(item.getNextTypeUse());
       if (visitedItem != null && visitedItem.containsLookaheads(item))
       {
         continue;
       }
-      LALRItem itemCopy = new LALRItem(item);
+      LALRItem<T> itemCopy = new LALRItem<T>(item);
       visited.put(itemCopy.getNextTypeUse(), itemCopy);
 
       int offset = item.getOffset();
 
       // we have reached an item that should be added to the result
       // (unless it is one of startItems, but in that case it will be removed later)
-      LALRItem resultItem = new LALRItem(item.getRule(), item.getProductionIndex(), offset);
-      LALRItem existing = result.get(resultItem.getNextTypeUse());
+      LALRItem<T> resultItem = new LALRItem<T>(item.getRule(), item.getProductionIndex(), offset);
+      LALRItem<T> existing = result.get(resultItem.getNextTypeUse());
       if (existing != null)
       {
         existing.addLookaheads(item.getLookaheads());
@@ -96,21 +97,21 @@ public class LALRRuleSet extends RuleSet
         result.put(resultItem.getNextTypeUse(), resultItem);
       }
 
-      Production production = item.getProduction();
-      Object[] productionTypes = production.getTypes();
+      Production<T> production = item.getProduction();
+      T[] productionTypes = production.getTypes();
       if (offset == productionTypes.length)
       {
         // this item represents the end of a production, so it cannot generate any closure items
         continue;
       }
 
-      Rule rule = rules.get(productionTypes[offset]);
+      Rule<T> rule = rules.get(productionTypes[offset]);
       if (rule != null)
       {
         // work out the lookahead set for the new stack items that are about to be generated
         // this is the first set of the item after the current token,
         // but advances on to the subsequent tokens in the list until a non-nullable one is found
-        Set<Object> lookaheads = new HashSet<Object>();
+        Set<T> lookaheads = new HashSet<T>();
         boolean nullable = true;
         for (int lookahead = offset + 1; lookahead < productionTypes.length; lookahead++)
         {
@@ -127,10 +128,10 @@ public class LALRRuleSet extends RuleSet
         }
 
         // this is a non-terminal, so add the productions of its rule to the stack for processing
-        Production[] subProductions = rule.getProductions();
+        Production<T>[] subProductions = rule.getProductions();
         for (int j = 0; j < subProductions.length; j++)
         {
-          LALRItem stackItem = new LALRItem(rule, j, 0);
+          LALRItem<T> stackItem = new LALRItem<T>(rule, j, 0);
           stackItem.addLookaheads(lookaheads);
           queue.addLast(stackItem);
         }
@@ -138,10 +139,10 @@ public class LALRRuleSet extends RuleSet
     }
 
     // remove all items that are already in startItems (they do not count as closure items)
-    Iterator<Entry<TypeUseEntry, LALRItem>> it = result.entrySet().iterator();
+    Iterator<Entry<TypeUseEntry<T>, LALRItem<T>>> it = result.entrySet().iterator();
     while (it.hasNext())
     {
-      Entry<TypeUseEntry, LALRItem> entry = it.next();
+      Entry<TypeUseEntry<T>, LALRItem<T>> entry = it.next();
       if (startItems.contains(entry.getValue()))
       {
         it.remove();

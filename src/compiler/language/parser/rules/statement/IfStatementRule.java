@@ -14,6 +14,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.statement.ElseIfClause;
 import compiler.language.ast.statement.IfStatement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -25,12 +26,13 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class IfStatementRule extends Rule
+public final class IfStatementRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(IF_KEYWORD, EXPRESSION, BLOCK, ELSE_IF_CLAUSES, ELSE_CLAUSE);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(IF_KEYWORD, EXPRESSION, BLOCK, ELSE_IF_CLAUSES, ELSE_CLAUSE);
 
+  @SuppressWarnings("unchecked")
   public IfStatementRule()
   {
     super(IF_STATEMENT, PRODUCTION);
@@ -41,7 +43,7 @@ public class IfStatementRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

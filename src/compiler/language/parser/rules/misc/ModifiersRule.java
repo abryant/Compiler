@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.MODIFIERS;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.Modifier;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -17,13 +18,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ModifiersRule extends Rule
+public final class ModifiersRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION = new Production(MODIFIER);
-  private static final Production CONTINUATION_PRODUCTION = new Production(MODIFIERS, MODIFIER);
+  private static final Production<ParseType> START_PRODUCTION = new Production<ParseType>(MODIFIER);
+  private static final Production<ParseType> CONTINUATION_PRODUCTION = new Production<ParseType>(MODIFIERS, MODIFIER);
 
+  @SuppressWarnings("unchecked")
   public ModifiersRule()
   {
     super(MODIFIERS, START_PRODUCTION, CONTINUATION_PRODUCTION);
@@ -33,7 +35,7 @@ public class ModifiersRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

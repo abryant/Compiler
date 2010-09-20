@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.INSTANCIATION_EXPRESSION;
 import static compiler.language.parser.ParseType.METHOD_CALL_EXPRESSION;
 import static compiler.language.parser.ParseType.STATEMENT_EXPRESSION;
 
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -15,13 +16,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class StatementExpressionRule extends Rule
+public final class StatementExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production METHOD_CALL_PRODUCTION = new Production(METHOD_CALL_EXPRESSION);
-  private static final Production INSTANCIATION_PRODUCTION = new Production(INSTANCIATION_EXPRESSION);
+  private static final Production<ParseType> METHOD_CALL_PRODUCTION = new Production<ParseType>(METHOD_CALL_EXPRESSION);
+  private static final Production<ParseType> INSTANCIATION_PRODUCTION = new Production<ParseType>(INSTANCIATION_EXPRESSION);
 
+  @SuppressWarnings("unchecked")
   public StatementExpressionRule()
   {
     super(STATEMENT_EXPRESSION, METHOD_CALL_PRODUCTION, INSTANCIATION_PRODUCTION);
@@ -32,7 +34,7 @@ public class StatementExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (METHOD_CALL_PRODUCTION.equals(production) || INSTANCIATION_PRODUCTION.equals(production))
     {

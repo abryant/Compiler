@@ -15,6 +15,7 @@ import compiler.language.ast.expression.InstanciationExpression;
 import compiler.language.ast.member.Member;
 import compiler.language.ast.misc.Parameter;
 import compiler.language.ast.type.PointerType;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -26,13 +27,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class InstanciationExpressionRule extends Rule
+public final class InstanciationExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(NEW_KEYWORD, POINTER_TYPE, PARAMETERS);
-  private static final Production MEMBER_LIST_PRODUCTION = new Production(NEW_KEYWORD, POINTER_TYPE, PARAMETERS, CLASS_KEYWORD, LBRACE, MEMBER_LIST, RBRACE);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(NEW_KEYWORD, POINTER_TYPE, PARAMETERS);
+  private static final Production<ParseType> MEMBER_LIST_PRODUCTION = new Production<ParseType>(NEW_KEYWORD, POINTER_TYPE, PARAMETERS, CLASS_KEYWORD, LBRACE, MEMBER_LIST, RBRACE);
 
+  @SuppressWarnings("unchecked")
   public InstanciationExpressionRule()
   {
     super(INSTANCIATION_EXPRESSION, PRODUCTION, MEMBER_LIST_PRODUCTION);
@@ -43,7 +45,7 @@ public class InstanciationExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

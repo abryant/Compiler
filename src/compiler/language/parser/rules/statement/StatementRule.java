@@ -27,6 +27,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.StatementExpression;
 import compiler.language.ast.statement.ExpressionStatement;
 import compiler.language.ast.statement.Statement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -38,31 +39,32 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class StatementRule extends Rule
+public final class StatementRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production BLOCK_PRODUCTION                  = new Production(BLOCK);
-  private static final Production EMPTY_PRODUCTION                  = new Production(EMPTY_STATEMENT);
-  private static final Production LOCAL_DECLARATION_PRODUCTION      = new Production(LOCAL_DECLARATION, SEMICOLON);
-  private static final Production ASSIGNMENT_PRODUCTION             = new Production(ASSIGNMENT,        SEMICOLON);
-  private static final Production IF_PRODUCTION                     = new Production(IF_STATEMENT);
-  private static final Production WHILE_PRODUCTION                  = new Production(WHILE_STATEMENT);
-  private static final Production DO_PRODUCTION                     = new Production(DO_STATEMENT);
-  private static final Production FOR_PRODUCTION                    = new Production(FOR_STATEMENT);
-  private static final Production FOR_EACH_PRODUCTION               = new Production(FOR_EACH_STATEMENT);
-  private static final Production SWITCH_PRODUCTION                 = new Production(SWITCH_STATEMENT);
-  private static final Production BREAK_PRODUCTION                  = new Production(BREAK_STATEMENT);
-  private static final Production CONTINUE_PRODUCTION               = new Production(CONTINUE_STATEMENT);
-  private static final Production FALLTHROUGH_PRODUCTION            = new Production(FALLTHROUGH_STATEMENT);
-  private static final Production RETURN_PRODUCTION                 = new Production(RETURN_STATEMENT);
-  private static final Production SYNCHRONIZED_PRODUCTION           = new Production(SYNCHRONIZED_STATEMENT);
-  private static final Production THROW_PRODUCTION                  = new Production(THROW_STATEMENT);
-  private static final Production TRY_PRODUCTION                    = new Production(TRY_STATEMENT);
-  private static final Production INCREMENT_PRODUCTION              = new Production(INCREMENT,            SEMICOLON);
-  private static final Production DECREMENT_PRODUCTION              = new Production(DECREMENT,            SEMICOLON);
-  private static final Production STATEMENT_EXPRESSION_PRODUCTION   = new Production(STATEMENT_EXPRESSION, SEMICOLON);
+  private static final Production<ParseType> BLOCK_PRODUCTION                  = new Production<ParseType>(BLOCK);
+  private static final Production<ParseType> EMPTY_PRODUCTION                  = new Production<ParseType>(EMPTY_STATEMENT);
+  private static final Production<ParseType> LOCAL_DECLARATION_PRODUCTION      = new Production<ParseType>(LOCAL_DECLARATION, SEMICOLON);
+  private static final Production<ParseType> ASSIGNMENT_PRODUCTION             = new Production<ParseType>(ASSIGNMENT,        SEMICOLON);
+  private static final Production<ParseType> IF_PRODUCTION                     = new Production<ParseType>(IF_STATEMENT);
+  private static final Production<ParseType> WHILE_PRODUCTION                  = new Production<ParseType>(WHILE_STATEMENT);
+  private static final Production<ParseType> DO_PRODUCTION                     = new Production<ParseType>(DO_STATEMENT);
+  private static final Production<ParseType> FOR_PRODUCTION                    = new Production<ParseType>(FOR_STATEMENT);
+  private static final Production<ParseType> FOR_EACH_PRODUCTION               = new Production<ParseType>(FOR_EACH_STATEMENT);
+  private static final Production<ParseType> SWITCH_PRODUCTION                 = new Production<ParseType>(SWITCH_STATEMENT);
+  private static final Production<ParseType> BREAK_PRODUCTION                  = new Production<ParseType>(BREAK_STATEMENT);
+  private static final Production<ParseType> CONTINUE_PRODUCTION               = new Production<ParseType>(CONTINUE_STATEMENT);
+  private static final Production<ParseType> FALLTHROUGH_PRODUCTION            = new Production<ParseType>(FALLTHROUGH_STATEMENT);
+  private static final Production<ParseType> RETURN_PRODUCTION                 = new Production<ParseType>(RETURN_STATEMENT);
+  private static final Production<ParseType> SYNCHRONIZED_PRODUCTION           = new Production<ParseType>(SYNCHRONIZED_STATEMENT);
+  private static final Production<ParseType> THROW_PRODUCTION                  = new Production<ParseType>(THROW_STATEMENT);
+  private static final Production<ParseType> TRY_PRODUCTION                    = new Production<ParseType>(TRY_STATEMENT);
+  private static final Production<ParseType> INCREMENT_PRODUCTION              = new Production<ParseType>(INCREMENT,            SEMICOLON);
+  private static final Production<ParseType> DECREMENT_PRODUCTION              = new Production<ParseType>(DECREMENT,            SEMICOLON);
+  private static final Production<ParseType> STATEMENT_EXPRESSION_PRODUCTION   = new Production<ParseType>(STATEMENT_EXPRESSION, SEMICOLON);
 
+  @SuppressWarnings("unchecked")
   public StatementRule()
   {
     super(STATEMENT, BLOCK_PRODUCTION,
@@ -91,7 +93,7 @@ public class StatementRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (BLOCK_PRODUCTION.equals(production)    || EMPTY_PRODUCTION.equals(production)        || IF_PRODUCTION.equals(production)          ||
         WHILE_PRODUCTION.equals(production)    || DO_PRODUCTION.equals(production)           || FOR_PRODUCTION.equals(production)         ||

@@ -9,6 +9,7 @@ import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.AccessSpecifierType;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -20,18 +21,19 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class AccessSpecifierRule extends Rule
+public final class AccessSpecifierRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production EMPTY_PRODUCTION             = new Production();
-  private static final Production PUBLIC_PRODUCTION            = new Production(PUBLIC_KEYWORD);
-  private static final Production PACKAGE_PRODUCTION           = new Production(PACKAGE_KEYWORD);
-  private static final Production PACKAGE_PROTECTED_PRODUCTION = new Production(PACKAGE_KEYWORD, PROTECTED_KEYWORD);
-  private static final Production PROTECTED_PACKAGE_PRODUCTION = new Production(PROTECTED_KEYWORD, PACKAGE_KEYWORD);
-  private static final Production PROTECTED_PRODUCTION         = new Production(PROTECTED_KEYWORD);
-  private static final Production PRIVATE_PRODUCTION           = new Production(PRIVATE_KEYWORD);
+  private static final Production<ParseType> EMPTY_PRODUCTION             = new Production<ParseType>();
+  private static final Production<ParseType> PUBLIC_PRODUCTION            = new Production<ParseType>(PUBLIC_KEYWORD);
+  private static final Production<ParseType> PACKAGE_PRODUCTION           = new Production<ParseType>(PACKAGE_KEYWORD);
+  private static final Production<ParseType> PACKAGE_PROTECTED_PRODUCTION = new Production<ParseType>(PACKAGE_KEYWORD, PROTECTED_KEYWORD);
+  private static final Production<ParseType> PROTECTED_PACKAGE_PRODUCTION = new Production<ParseType>(PROTECTED_KEYWORD, PACKAGE_KEYWORD);
+  private static final Production<ParseType> PROTECTED_PRODUCTION         = new Production<ParseType>(PROTECTED_KEYWORD);
+  private static final Production<ParseType> PRIVATE_PRODUCTION           = new Production<ParseType>(PRIVATE_KEYWORD);
 
+  @SuppressWarnings("unchecked")
   public AccessSpecifierRule()
   {
     super(ACCESS_SPECIFIER, EMPTY_PRODUCTION,
@@ -47,7 +49,7 @@ public class AccessSpecifierRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
 
     if (EMPTY_PRODUCTION.equals(production))

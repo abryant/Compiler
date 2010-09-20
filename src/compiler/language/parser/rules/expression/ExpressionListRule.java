@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.EXPRESSION_NO_TUPLE;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.Expression;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -18,13 +19,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ExpressionListRule extends Rule
+public final class ExpressionListRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION = new Production(EXPRESSION_NO_TUPLE);
-  private static final Production CONTINUATION_PRODUCTION = new Production(EXPRESSION_LIST, COMMA, EXPRESSION_NO_TUPLE);
+  private static final Production<ParseType> START_PRODUCTION = new Production<ParseType>(EXPRESSION_NO_TUPLE);
+  private static final Production<ParseType> CONTINUATION_PRODUCTION = new Production<ParseType>(EXPRESSION_LIST, COMMA, EXPRESSION_NO_TUPLE);
 
+  @SuppressWarnings("unchecked")
   public ExpressionListRule()
   {
     super(EXPRESSION_LIST, START_PRODUCTION, CONTINUATION_PRODUCTION);
@@ -35,7 +37,7 @@ public class ExpressionListRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

@@ -11,6 +11,7 @@ import compiler.language.ast.expression.FieldAccessExpression;
 import compiler.language.ast.misc.Assignee;
 import compiler.language.ast.misc.FieldAssignee;
 import compiler.language.ast.misc.QName;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -22,17 +23,18 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class AssigneeListRule extends Rule
+public final class AssigneeListRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
   // this is a right-recursive list, so that the symbol after the list can be
   // used to decide between TypeList and AssigneeList
-  private static final Production ASSIGNEE_END_PRODUCTION  = new Production(ASSIGNEE);
-  private static final Production QNAME_END_PRODUCTION     = new Production(QNAME);
-  private static final Production ASSIGNEE_LIST_PRODUCTION = new Production(ASSIGNEE, COMMA, ASSIGNEE_LIST);
-  private static final Production QNAME_LIST_PRODUCTION    = new Production(QNAME,    COMMA, ASSIGNEE_LIST);
+  private static final Production<ParseType> ASSIGNEE_END_PRODUCTION  = new Production<ParseType>(ASSIGNEE);
+  private static final Production<ParseType> QNAME_END_PRODUCTION     = new Production<ParseType>(QNAME);
+  private static final Production<ParseType> ASSIGNEE_LIST_PRODUCTION = new Production<ParseType>(ASSIGNEE, COMMA, ASSIGNEE_LIST);
+  private static final Production<ParseType> QNAME_LIST_PRODUCTION    = new Production<ParseType>(QNAME,    COMMA, ASSIGNEE_LIST);
 
+  @SuppressWarnings("unchecked")
   public AssigneeListRule()
   {
     super(ASSIGNEE_LIST, ASSIGNEE_END_PRODUCTION, QNAME_END_PRODUCTION, ASSIGNEE_LIST_PRODUCTION, QNAME_LIST_PRODUCTION);
@@ -42,7 +44,7 @@ public class AssigneeListRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (ASSIGNEE_END_PRODUCTION.equals(production))
     {

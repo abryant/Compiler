@@ -12,12 +12,13 @@ import compiler.parser.Rule;
  * @author Anthony Bryant
  *
  */
-public class ExpressionRule extends Rule
+public class ExpressionRule extends Rule<ExpressionType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production SUM_PRODUCTION = new Production(ExpressionType.SUM);
+  private static final Production<ExpressionType> SUM_PRODUCTION = new Production<ExpressionType>(ExpressionType.SUM);
 
+  @SuppressWarnings("unchecked")
   public ExpressionRule()
   {
     super(ExpressionType.EXPRESSION, SUM_PRODUCTION);
@@ -27,7 +28,7 @@ public class ExpressionRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ExpressionType> production, Object[] args) throws ParseException
   {
     if (SUM_PRODUCTION.equals(production))
     {

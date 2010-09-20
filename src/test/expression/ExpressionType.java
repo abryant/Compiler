@@ -6,10 +6,12 @@ package test.expression;
 
 /**
  * @author Anthony Bryant
- * 
+ *
  */
 public enum ExpressionType
 {
+  GENERATED_START_RULE,
+
   NUMBER,
   VALUE,
   PRODUCT,

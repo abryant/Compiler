@@ -19,18 +19,18 @@ public class BracketTest
 
   public static void main(String[] args) throws ParseException, BadTokenException
   {
-    LALRRuleSet rules = new LALRRuleSet();
+    LALRRuleSet<BracketsType> rules = new LALRRuleSet<BracketsType>();
     rules.addStartRule(new BracketsRule());
     rules.addRule(new BracketRule());
 
-    LALRParserGenerator generator = new LALRParserGenerator(rules);
-    generator.generate();
+    LALRParserGenerator<BracketsType> generator = new LALRParserGenerator<BracketsType>(rules);
+    generator.generate(BracketsType.GENERATED_START_RULE);
 
     BracketTokenizer tokenizer = new BracketTokenizer();
 
-    Parser parser = new Parser(generator.getStartState(), tokenizer);
+    Parser<BracketsType> parser = new Parser<BracketsType>(generator.getStartState(), tokenizer);
 
-    Token result = parser.parse();
+    Token<BracketsType> result = parser.parse();
     System.out.println("Success! got: " + result.getType());
     Bracket[] brackets = (Bracket[]) result.getValue();
     for (Bracket b : brackets)

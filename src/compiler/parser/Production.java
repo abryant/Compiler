@@ -8,18 +8,19 @@ import java.io.Serializable;
 
 /**
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  */
-public final class Production implements Serializable
+public final class Production<T extends Enum<T>> implements Serializable
 {
   private static final long serialVersionUID = 1L;
 
-  private Object[] types;
+  private T[] types;
 
   /**
    * Creates a new Production with the specified types
    * @param types - the types that this production requires
    */
-  public Production(Object... types)
+  public Production(T... types)
   {
     this.types = types;
   }
@@ -27,7 +28,7 @@ public final class Production implements Serializable
   /**
    * @return the types
    */
-  public Object[] getTypes()
+  public T[] getTypes()
   {
     return types;
   }
@@ -43,7 +44,10 @@ public final class Production implements Serializable
     {
       return false;
     }
-    Production production = (Production) o;
+    // this is not nice, but is necessary to check whether the productions
+    // are equal without knowing their generic type parameters
+    @SuppressWarnings("unchecked")
+    Production<T> production = (Production<T>) o;
     if (types.length != production.types.length)
     {
       return false;

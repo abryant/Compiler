@@ -18,6 +18,7 @@ import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeArgument;
 import compiler.language.ast.typeDefinition.InterfaceDefinition;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -29,13 +30,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class InterfaceDefinitionRule extends Rule
+public final class InterfaceDefinitionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(MEMBER_HEADER, INTERFACE_KEYWORD, NAME, INTERFACE_EXTENDS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE);
-  private static final Production TYPE_ARGUMENTS_PRODUCTION = new Production(MEMBER_HEADER, INTERFACE_KEYWORD, NAME, TYPE_ARGUMENTS, INTERFACE_EXTENDS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(MEMBER_HEADER, INTERFACE_KEYWORD, NAME, INTERFACE_EXTENDS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE);
+  private static final Production<ParseType> TYPE_ARGUMENTS_PRODUCTION = new Production<ParseType>(MEMBER_HEADER, INTERFACE_KEYWORD, NAME, TYPE_ARGUMENTS, INTERFACE_EXTENDS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE);
 
+  @SuppressWarnings("unchecked")
   public InterfaceDefinitionRule()
   {
     super(INTERFACE_DEFINITION, PRODUCTION);
@@ -45,7 +47,7 @@ public class InterfaceDefinitionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

@@ -14,6 +14,7 @@ import compiler.language.ast.type.ClosureType;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeArgument;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -25,13 +26,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ClosureTypeRule extends Rule
+public final class ClosureTypeRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(LBRACE, TYPE_LIST, ARROW, TYPE_LIST, THROWS_CLAUSE, RBRACE);
-  private static final Production TYPE_ARGUMENTS_PRODUCTION = new Production(LBRACE, TYPE_ARGUMENTS, TYPE_LIST, ARROW, TYPE_LIST, THROWS_CLAUSE, RBRACE);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(LBRACE, TYPE_LIST, ARROW, TYPE_LIST, THROWS_CLAUSE, RBRACE);
+  private static final Production<ParseType> TYPE_ARGUMENTS_PRODUCTION = new Production<ParseType>(LBRACE, TYPE_ARGUMENTS, TYPE_LIST, ARROW, TYPE_LIST, THROWS_CLAUSE, RBRACE);
 
+  @SuppressWarnings("unchecked")
   public ClosureTypeRule()
   {
     super(CLOSURE_TYPE, PRODUCTION, TYPE_ARGUMENTS_PRODUCTION);
@@ -41,7 +43,7 @@ public class ClosureTypeRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

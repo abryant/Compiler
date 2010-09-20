@@ -13,6 +13,7 @@ import compiler.language.ast.member.Member;
 import compiler.language.ast.misc.Parameter;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.typeDefinition.EnumConstant;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -24,15 +25,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class EnumConstantRule extends Rule
+public final class EnumConstantRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION                    = new Production(NAME);
-  private static final Production PARAMETERS_PRODUCTION         = new Production(NAME, PARAMETERS);
-  private static final Production MEMBERS_PRODUCTION            = new Production(NAME,             LBRACE, MEMBER_LIST, RBRACE);
-  private static final Production PARAMETERS_MEMBERS_PRODUCTION = new Production(NAME, PARAMETERS, LBRACE, MEMBER_LIST, RBRACE);
+  private static final Production<ParseType> PRODUCTION                    = new Production<ParseType>(NAME);
+  private static final Production<ParseType> PARAMETERS_PRODUCTION         = new Production<ParseType>(NAME, PARAMETERS);
+  private static final Production<ParseType> MEMBERS_PRODUCTION            = new Production<ParseType>(NAME,             LBRACE, MEMBER_LIST, RBRACE);
+  private static final Production<ParseType> PARAMETERS_MEMBERS_PRODUCTION = new Production<ParseType>(NAME, PARAMETERS, LBRACE, MEMBER_LIST, RBRACE);
 
+  @SuppressWarnings("unchecked")
   public EnumConstantRule()
   {
     super(ENUM_CONSTANT, PRODUCTION, PARAMETERS_PRODUCTION, MEMBERS_PRODUCTION, PARAMETERS_MEMBERS_PRODUCTION);
@@ -42,7 +44,7 @@ public class EnumConstantRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

@@ -11,8 +11,9 @@ import java.util.Deque;
  * Represents an action in the parse table.
  *
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  */
-public abstract class Action implements Serializable
+public abstract class Action<T extends Enum<T>> implements Serializable
 {
 
   private static final long serialVersionUID = 1L;
@@ -35,5 +36,5 @@ public abstract class Action implements Serializable
    * @return true if the token was added to the token stack (or used in some other way), false otherwise
    * @throws ParseException - if there is an error while performing the action
    */
-  public abstract boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack) throws ParseException;
+  public abstract boolean perform(Token<T> token, Deque<State<T>> stateStack, Deque<Token<T>> tokenStack) throws ParseException;
 }

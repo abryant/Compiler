@@ -17,13 +17,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeListRule extends Rule
+public final class TypeListRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production TYPE_LIST_PRODUCTION = new Production(ParseType.TYPE_LIST_NOT_QNAME_LIST);
-  private static final Production QNAME_LIST_PRODUCTION = new Production(ParseType.QNAME_LIST);
+  private static final Production<ParseType> TYPE_LIST_PRODUCTION = new Production<ParseType>(ParseType.TYPE_LIST_NOT_QNAME_LIST);
+  private static final Production<ParseType> QNAME_LIST_PRODUCTION = new Production<ParseType>(ParseType.QNAME_LIST);
 
+  @SuppressWarnings("unchecked")
   public TypeListRule()
   {
     super(TYPE_LIST, TYPE_LIST_PRODUCTION, QNAME_LIST_PRODUCTION);
@@ -33,7 +34,7 @@ public class TypeListRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (TYPE_LIST_PRODUCTION.equals(production))
     {

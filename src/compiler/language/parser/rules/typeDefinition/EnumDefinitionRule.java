@@ -20,6 +20,7 @@ import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.typeDefinition.EnumConstant;
 import compiler.language.ast.typeDefinition.EnumDefinition;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -31,13 +32,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class EnumDefinitionRule extends Rule
+public final class EnumDefinitionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(MEMBER_HEADER, ENUM_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, ENUM_CONSTANTS, RBRACE);
-  private static final Production MEMBERS_PRODUCTION = new Production(MEMBER_HEADER, ENUM_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, ENUM_CONSTANTS, SEMICOLON, MEMBER_LIST, RBRACE);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(MEMBER_HEADER, ENUM_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, ENUM_CONSTANTS, RBRACE);
+  private static final Production<ParseType> MEMBERS_PRODUCTION = new Production<ParseType>(MEMBER_HEADER, ENUM_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, ENUM_CONSTANTS, SEMICOLON, MEMBER_LIST, RBRACE);
 
+  @SuppressWarnings("unchecked")
   public EnumDefinitionRule()
   {
     super(ENUM_DEFINITION, PRODUCTION, MEMBERS_PRODUCTION);
@@ -47,7 +49,7 @@ public class EnumDefinitionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

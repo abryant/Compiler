@@ -9,6 +9,7 @@ import static compiler.language.parser.ParseType.RBRACE;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.Expression;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -20,14 +21,15 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ArrayInitializerRule extends Rule
+public final class ArrayInitializerRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(LBRACE, EXPRESSION_LIST, RBRACE);
-  private static final Production TRAILING_COMMA_PRODUCTION = new Production(LBRACE, EXPRESSION_LIST, COMMA, RBRACE);
-  private static final Production EMPTY_PRODUCTION = new Production(LBRACE, RBRACE);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(LBRACE, EXPRESSION_LIST, RBRACE);
+  private static final Production<ParseType> TRAILING_COMMA_PRODUCTION = new Production<ParseType>(LBRACE, EXPRESSION_LIST, COMMA, RBRACE);
+  private static final Production<ParseType> EMPTY_PRODUCTION = new Production<ParseType>(LBRACE, RBRACE);
 
+  @SuppressWarnings("unchecked")
   public ArrayInitializerRule()
   {
     super(ARRAY_INITIALIZER, PRODUCTION, TRAILING_COMMA_PRODUCTION, EMPTY_PRODUCTION);
@@ -38,7 +40,7 @@ public class ArrayInitializerRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

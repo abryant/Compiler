@@ -26,7 +26,8 @@ public class LanguageParseTableLoader
    * Loads the parse table from disk, or if that fails (either because the file does not exist, or because of some deserialization problem)
    * @return the start state of the parse table
    */
-  public static LALRState loadParseTable()
+  @SuppressWarnings("unchecked")
+  public static LALRState<ParseType> loadParseTable()
   {
     String filePath = System.getProperty(PARSE_TABLE_LOCATION_PROPERTY, DEFAULT_PARSE_TABLE_LOCATION);
     File file = new File(filePath);
@@ -42,7 +43,7 @@ public class LanguageParseTableLoader
       fileIn = new FileInputStream(file);
       ObjectInputStream objectIn = new ObjectInputStream(fileIn);
       Object startState = objectIn.readObject();
-      return (LALRState) startState;
+      return (LALRState<ParseType>) startState;
     }
     catch (Exception e)
     {
@@ -71,13 +72,13 @@ public class LanguageParseTableLoader
    * Generates the parse table and returns it.
    * @return the start state of the generated parse table
    */
-  public static LALRState generateParseTable()
+  public static LALRState<ParseType> generateParseTable()
   {
     System.err.println("Generating parse table, this could take some time...");
-    LALRRuleSet rules = LanguageRules.getRuleSet();
+    LALRRuleSet<ParseType> rules = LanguageRules.getRuleSet();
 
-    LALRParserGenerator generator = new LALRParserGenerator(rules);
-    generator.generate();
+    LALRParserGenerator<ParseType> generator = new LALRParserGenerator<ParseType>(rules);
+    generator.generate(ParseType.GENERATED_START_RULE);
     return generator.getStartState();
   }
 

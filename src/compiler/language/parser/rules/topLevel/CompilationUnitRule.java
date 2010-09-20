@@ -11,6 +11,7 @@ import compiler.language.ast.topLevel.ImportDeclaration;
 import compiler.language.ast.topLevel.PackageDeclaration;
 import compiler.language.ast.topLevel.TypeDefinition;
 import compiler.language.parser.LanguageParseException;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -22,15 +23,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class CompilationUnitRule extends Rule
+public final class CompilationUnitRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production EMPTY_PRODUCTION = new Production();
-  private static final Production PACKAGE_PRODUCTION = new Production(COMPILATION_UNIT, PACKAGE_DECLARATION);
-  private static final Production IMPORT_PRODUCTION = new Production(COMPILATION_UNIT, IMPORT_DECLARATION);
-  private static final Production TYPE_DEFINITION_PRODUCTION = new Production(COMPILATION_UNIT, TYPE_DEFINITION);
+  private static final Production<ParseType> EMPTY_PRODUCTION = new Production<ParseType>();
+  private static final Production<ParseType> PACKAGE_PRODUCTION = new Production<ParseType>(COMPILATION_UNIT, PACKAGE_DECLARATION);
+  private static final Production<ParseType> IMPORT_PRODUCTION = new Production<ParseType>(COMPILATION_UNIT, IMPORT_DECLARATION);
+  private static final Production<ParseType> TYPE_DEFINITION_PRODUCTION = new Production<ParseType>(COMPILATION_UNIT, TYPE_DEFINITION);
 
+  @SuppressWarnings("unchecked")
   public CompilationUnitRule()
   {
     super(COMPILATION_UNIT, EMPTY_PRODUCTION, PACKAGE_PRODUCTION, IMPORT_PRODUCTION, TYPE_DEFINITION_PRODUCTION);
@@ -40,7 +42,7 @@ public class CompilationUnitRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (EMPTY_PRODUCTION.equals(production))
     {

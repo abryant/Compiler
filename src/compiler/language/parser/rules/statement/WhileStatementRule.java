@@ -9,6 +9,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.statement.Block;
 import compiler.language.ast.statement.WhileStatement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -20,12 +21,13 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class WhileStatementRule extends Rule
+public final class WhileStatementRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(WHILE_KEYWORD, EXPRESSION, BLOCK);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(WHILE_KEYWORD, EXPRESSION, BLOCK);
 
+  @SuppressWarnings("unchecked")
   public WhileStatementRule()
   {
     super(WHILE_STATEMENT, PRODUCTION);
@@ -36,7 +38,7 @@ public class WhileStatementRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

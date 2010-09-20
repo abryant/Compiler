@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.TRIPLE_RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.PointerType;
+import compiler.language.parser.ParseType;
 import compiler.language.parser.ParseUtil;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -19,12 +20,13 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class PointerTypeTrailingParamsTripleRAngleRule extends Rule
+public final class PointerTypeTrailingParamsTripleRAngleRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS, TRIPLE_RANGLE);
+  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_PARAMS, TRIPLE_RANGLE);
 
+  @SuppressWarnings("unchecked")
   public PointerTypeTrailingParamsTripleRAngleRule()
   {
     super(POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE, TRAILING_PARAMS_PRODUCTION);
@@ -35,7 +37,7 @@ public class PointerTypeTrailingParamsTripleRAngleRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {

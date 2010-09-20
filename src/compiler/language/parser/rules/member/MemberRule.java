@@ -8,6 +8,7 @@ import static compiler.language.parser.ParseType.PROPERTY;
 import static compiler.language.parser.ParseType.STATIC_INITIALIZER;
 import static compiler.language.parser.ParseType.TYPE_DEFINITION;
 
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -19,18 +20,19 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class MemberRule extends Rule
+public final class MemberRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production FIELD_PRODUCTION = new Production(FIELD);
-  private static final Production PROPERTY_PRODUCTION = new Production(PROPERTY);
-  private static final Production STATIC_INITIALIZER_PRODUCTION = new Production(STATIC_INITIALIZER);
-  private static final Production CONSTRUCTOR_PRODUCTION = new Production(CONSTRUCTOR);
-  private static final Production METHOD_PRODUCTION = new Production(METHOD);
-  private static final Production TYPE_DEFINITION_PRODUCTION = new Production(TYPE_DEFINITION);
+  private static final Production<ParseType> FIELD_PRODUCTION = new Production<ParseType>(FIELD);
+  private static final Production<ParseType> PROPERTY_PRODUCTION = new Production<ParseType>(PROPERTY);
+  private static final Production<ParseType> STATIC_INITIALIZER_PRODUCTION = new Production<ParseType>(STATIC_INITIALIZER);
+  private static final Production<ParseType> CONSTRUCTOR_PRODUCTION = new Production<ParseType>(CONSTRUCTOR);
+  private static final Production<ParseType> METHOD_PRODUCTION = new Production<ParseType>(METHOD);
+  private static final Production<ParseType> TYPE_DEFINITION_PRODUCTION = new Production<ParseType>(TYPE_DEFINITION);
 
 
+  @SuppressWarnings("unchecked")
   public MemberRule()
   {
     super(MEMBER, FIELD_PRODUCTION, PROPERTY_PRODUCTION, STATIC_INITIALIZER_PRODUCTION, CONSTRUCTOR_PRODUCTION, METHOD_PRODUCTION, TYPE_DEFINITION_PRODUCTION);
@@ -40,7 +42,7 @@ public class MemberRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (FIELD_PRODUCTION.equals(production) || PROPERTY_PRODUCTION.equals(production) || STATIC_INITIALIZER_PRODUCTION.equals(production) ||
         CONSTRUCTOR_PRODUCTION.equals(production) || METHOD_PRODUCTION.equals(production) || TYPE_DEFINITION_PRODUCTION.equals(production))

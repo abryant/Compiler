@@ -9,6 +9,7 @@ import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerType;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -20,13 +21,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeBoundListRAngleRule extends Rule
+public final class TypeBoundListRAngleRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION      = new Production(POINTER_TYPE_RANGLE);
-  private static final Production LIST_PRODUCTION = new Production(TYPE_BOUND_LIST, AMPERSAND, POINTER_TYPE_RANGLE);
+  private static final Production<ParseType> PRODUCTION      = new Production<ParseType>(POINTER_TYPE_RANGLE);
+  private static final Production<ParseType> LIST_PRODUCTION = new Production<ParseType>(TYPE_BOUND_LIST, AMPERSAND, POINTER_TYPE_RANGLE);
 
+  @SuppressWarnings("unchecked")
   public TypeBoundListRAngleRule()
   {
     super(TYPE_BOUND_LIST_RANGLE, PRODUCTION, LIST_PRODUCTION);
@@ -37,7 +39,7 @@ public class TypeBoundListRAngleRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

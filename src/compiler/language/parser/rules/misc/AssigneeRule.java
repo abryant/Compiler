@@ -11,6 +11,7 @@ import compiler.language.ast.expression.FieldAccessExpression;
 import compiler.language.ast.misc.ArrayElementAssignee;
 import compiler.language.ast.misc.Assignee;
 import compiler.language.ast.misc.FieldAssignee;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -22,14 +23,15 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class AssigneeRule extends Rule
+public final class AssigneeRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production BLANK_PRODUCTION = new Production(UNDERSCORE);
-  private static final Production FIELD_PRODUCTION = new Production(FIELD_ACCESS_EXPRESSION_NOT_QNAME);
-  private static final Production ARRAY_ELEMENT_PRODUCTION = new Production(ARRAY_ACCESS_EXPRESSION);
+  private static final Production<ParseType> BLANK_PRODUCTION = new Production<ParseType>(UNDERSCORE);
+  private static final Production<ParseType> FIELD_PRODUCTION = new Production<ParseType>(FIELD_ACCESS_EXPRESSION_NOT_QNAME);
+  private static final Production<ParseType> ARRAY_ELEMENT_PRODUCTION = new Production<ParseType>(ARRAY_ACCESS_EXPRESSION);
 
+  @SuppressWarnings("unchecked")
   public AssigneeRule()
   {
     super(ASSIGNEE, BLANK_PRODUCTION, FIELD_PRODUCTION, ARRAY_ELEMENT_PRODUCTION);
@@ -39,7 +41,7 @@ public class AssigneeRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (BLANK_PRODUCTION.equals(production))
     {

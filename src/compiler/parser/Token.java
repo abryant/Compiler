@@ -9,12 +9,13 @@ package compiler.parser;
  * Each token has an associated type which corresponds to the types used in the rules that this token can be part of.
  *
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  *
  */
-public final class Token
+public final class Token<T extends Enum<T>>
 {
 
-  private Object type;
+  private T type;
   private Object value;
 
   /**
@@ -22,7 +23,7 @@ public final class Token
    * @param type - the type of this token
    * @param value - the value of this token
    */
-  public Token(Object type, Object value)
+  public Token(T type, Object value)
   {
     this.type = type;
     this.value = value;
@@ -31,7 +32,7 @@ public final class Token
   /**
    * @return the type of this token
    */
-  public Object getType()
+  public T getType()
   {
     return type;
   }

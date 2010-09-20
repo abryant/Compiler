@@ -34,15 +34,16 @@ public class LanguageParserTest
     }
     LanguageTokenizer tokenizer = new LanguageTokenizer(new FileReader(file));
 
-    long startTime = System.currentTimeMillis();
     LanguageParser parser = new LanguageParser();
-    System.out.println("LALR Parser generation time: " + (System.currentTimeMillis() - startTime) + "ms");
 
     CompilationUnit compilationUnit = parser.parse(tokenizer);
     tokenizer.close();
 
-    System.out.println("Successfully parsed " + file.getAbsolutePath());
-    System.out.println(compilationUnit);
+    if (compilationUnit != null)
+    {
+      System.out.println("Successfully parsed " + file.getAbsolutePath());
+      System.out.println(compilationUnit);
+    }
   }
 
 }

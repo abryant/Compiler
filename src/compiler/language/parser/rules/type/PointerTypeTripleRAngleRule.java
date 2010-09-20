@@ -11,6 +11,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.type.PointerType;
 import compiler.language.parser.LanguageParseException;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -22,14 +23,15 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class PointerTypeTripleRAngleRule extends Rule
+public final class PointerTypeTripleRAngleRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production QNAME_PRODUCTION = new Production(QNAME, TRIPLE_RANGLE);
-  private static final Production NO_TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME, TRIPLE_RANGLE);
-  private static final Production TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE);
+  private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(QNAME, TRIPLE_RANGLE);
+  private static final Production<ParseType> NO_TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME, TRIPLE_RANGLE);
+  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE);
 
+  @SuppressWarnings("unchecked")
   public PointerTypeTripleRAngleRule()
   {
     super(POINTER_TYPE_TRIPLE_RANGLE, QNAME_PRODUCTION, NO_TRAILING_PARAMS_PRODUCTION, TRAILING_PARAMS_PRODUCTION);
@@ -40,7 +42,7 @@ public class PointerTypeTripleRAngleRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {

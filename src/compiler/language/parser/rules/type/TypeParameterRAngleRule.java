@@ -8,6 +8,7 @@ import compiler.language.ast.ParseContainer;
 import compiler.language.ast.type.NormalTypeParameter;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -19,13 +20,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeParameterRAngleRule extends Rule
+public final class TypeParameterRAngleRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production NORMAL_PRODUCTION = new Production(TYPE_RANGLE);
-  private static final Production WILDCARD_PRODUCTION = new Production(WILDCARD_TYPE_PARAMETER_RANGLE);
+  private static final Production<ParseType> NORMAL_PRODUCTION = new Production<ParseType>(TYPE_RANGLE);
+  private static final Production<ParseType> WILDCARD_PRODUCTION = new Production<ParseType>(WILDCARD_TYPE_PARAMETER_RANGLE);
 
+  @SuppressWarnings("unchecked")
   public TypeParameterRAngleRule()
   {
     super(TYPE_PARAMETER_RANGLE, NORMAL_PRODUCTION, WILDCARD_PRODUCTION);
@@ -36,7 +38,7 @@ public class TypeParameterRAngleRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (NORMAL_PRODUCTION.equals(production))
     {

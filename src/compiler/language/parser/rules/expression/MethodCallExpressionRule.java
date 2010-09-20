@@ -10,6 +10,7 @@ import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.MethodCallExpression;
 import compiler.language.ast.misc.Parameter;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -21,13 +22,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class MethodCallExpressionRule extends Rule
+public final class MethodCallExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(PRIMARY, PARAMETERS);
-  private static final Production QNAME_PRODUCTION = new Production(QNAME_EXPRESSION, PARAMETERS);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(PRIMARY, PARAMETERS);
+  private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(QNAME_EXPRESSION, PARAMETERS);
 
+  @SuppressWarnings("unchecked")
   public MethodCallExpressionRule()
   {
     super(METHOD_CALL_EXPRESSION, PRODUCTION, QNAME_PRODUCTION);
@@ -38,7 +40,7 @@ public class MethodCallExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production) || QNAME_PRODUCTION.equals(production))
     {

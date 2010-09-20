@@ -19,6 +19,7 @@ import compiler.language.ast.misc.SingleArgument;
 import compiler.language.ast.misc.VariadicArgument;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.Type;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -30,20 +31,21 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ArgumentRule extends Rule
+public final class ArgumentRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production SINGLE_PRODUCTION = new Production(MODIFIERS, TYPE, NAME);
-  private static final Production DEFAULT_PRODUCTION = new Production(MODIFIERS, TYPE, AT, NAME, EQUALS, EXPRESSION_NO_TUPLE);
-  private static final Production VARIADIC_PRODUCTION = new Production(MODIFIERS, TYPE, ELLIPSIS, NAME);
-  private static final Production SINGLE_NO_MODIFIERS_PRODUCTION = new Production(TYPE, NAME);
-  private static final Production DEFAULT_NO_MODIFIERS_PRODUCTION = new Production(TYPE, AT, NAME, EQUALS, EXPRESSION_NO_TUPLE);
-  private static final Production VARIADIC_NO_MODIFIERS_PRODUCTION = new Production(TYPE, ELLIPSIS, NAME);
-  private static final Production MULTIPLE_PRODUCTION = new Production(ARGUMENTS);
+  private static final Production<ParseType> SINGLE_PRODUCTION = new Production<ParseType>(MODIFIERS, TYPE, NAME);
+  private static final Production<ParseType> DEFAULT_PRODUCTION = new Production<ParseType>(MODIFIERS, TYPE, AT, NAME, EQUALS, EXPRESSION_NO_TUPLE);
+  private static final Production<ParseType> VARIADIC_PRODUCTION = new Production<ParseType>(MODIFIERS, TYPE, ELLIPSIS, NAME);
+  private static final Production<ParseType> SINGLE_NO_MODIFIERS_PRODUCTION = new Production<ParseType>(TYPE, NAME);
+  private static final Production<ParseType> DEFAULT_NO_MODIFIERS_PRODUCTION = new Production<ParseType>(TYPE, AT, NAME, EQUALS, EXPRESSION_NO_TUPLE);
+  private static final Production<ParseType> VARIADIC_NO_MODIFIERS_PRODUCTION = new Production<ParseType>(TYPE, ELLIPSIS, NAME);
+  private static final Production<ParseType> MULTIPLE_PRODUCTION = new Production<ParseType>(ARGUMENTS);
 
   // TODO: variadic default arguments? they would apply when the length of the passed in array is 0
 
+  @SuppressWarnings("unchecked")
   public ArgumentRule()
   {
     super(ARGUMENT, SINGLE_PRODUCTION, DEFAULT_PRODUCTION, VARIADIC_PRODUCTION,
@@ -55,7 +57,7 @@ public class ArgumentRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (SINGLE_PRODUCTION.equals(production))
     {

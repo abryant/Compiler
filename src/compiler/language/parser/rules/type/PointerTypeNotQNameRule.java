@@ -4,6 +4,7 @@ import static compiler.language.parser.ParseType.POINTER_TYPE_NOT_QNAME;
 import static compiler.language.parser.ParseType.POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME;
 import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_PARAMS;
 
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -15,13 +16,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class PointerTypeNotQNameRule extends Rule
+public final class PointerTypeNotQNameRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production NO_TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME);
-  private static final Production TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS);
+  private static final Production<ParseType> NO_TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME);
+  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_PARAMS);
 
+  @SuppressWarnings("unchecked")
   public PointerTypeNotQNameRule()
   {
     super(POINTER_TYPE_NOT_QNAME, NO_TRAILING_PARAMS_PRODUCTION, TRAILING_PARAMS_PRODUCTION);
@@ -32,7 +34,7 @@ public class PointerTypeNotQNameRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (NO_TRAILING_PARAMS_PRODUCTION.equals(production) || TRAILING_PARAMS_PRODUCTION.equals(production))
     {

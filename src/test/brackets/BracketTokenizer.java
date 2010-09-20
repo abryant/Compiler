@@ -10,44 +10,46 @@ import compiler.parser.Tokenizer;
 /**
  * @author Anthony Bryant
  */
-public class BracketTokenizer extends Tokenizer
+public class BracketTokenizer extends Tokenizer<BracketsType>
 {
   private int state = 0;
 
+  @SuppressWarnings("rawtypes")
   private static final Token[] TEST1 =
   {
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.RPAREN, null),
-    new Token(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
     //new Token(BracketsType.RPAREN, null),
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.RPAREN, null),
-    new Token(BracketsType.RPAREN, null),
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.RPAREN, null),
-    new Token(BracketsType.RPAREN, null),
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.RPAREN, null),
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.RPAREN, null),
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.RPAREN, null),
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.RPAREN, null),
-    new Token(BracketsType.LPAREN, null),
-    new Token(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
+    new Token<BracketsType>(BracketsType.LPAREN, null),
+    new Token<BracketsType>(BracketsType.RPAREN, null),
   };
 
-  private Token[] tokens = TEST1;
+  @SuppressWarnings("unchecked")
+  private Token<BracketsType>[] tokens = TEST1;
 
   /**
    * @see compiler.parser.Tokenizer#generateToken()
    */
   @Override
-  protected Token generateToken()
+  protected Token<BracketsType> generateToken()
   {
     if (state < tokens.length)
     {

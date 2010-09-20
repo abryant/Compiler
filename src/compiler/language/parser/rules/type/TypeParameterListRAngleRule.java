@@ -16,6 +16,7 @@ import compiler.language.ast.type.NormalTypeParameter;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -27,15 +28,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeParameterListRAngleRule extends Rule
+public final class TypeParameterListRAngleRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production TYPE_PARAMETER_PRODUCTION      = new Production(TYPE_PARAMETER_RANGLE);
-  private static final Production TYPE_PARAMETER_LIST_PRODUCTION = new Production(TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST_RANGLE);
-  private static final Production QNAME_LIST_PRODUCTION          = new Production(QNAME,                         COMMA, TYPE_PARAMETER_LIST_RANGLE);
-  private static final Production NESTED_QNAME_LIST_PRODUCTION   = new Production(NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST_RANGLE);
+  private static final Production<ParseType> TYPE_PARAMETER_PRODUCTION      = new Production<ParseType>(TYPE_PARAMETER_RANGLE);
+  private static final Production<ParseType> TYPE_PARAMETER_LIST_PRODUCTION = new Production<ParseType>(TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST_RANGLE);
+  private static final Production<ParseType> QNAME_LIST_PRODUCTION          = new Production<ParseType>(QNAME,                         COMMA, TYPE_PARAMETER_LIST_RANGLE);
+  private static final Production<ParseType> NESTED_QNAME_LIST_PRODUCTION   = new Production<ParseType>(NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST_RANGLE);
 
+  @SuppressWarnings("unchecked")
   public TypeParameterListRAngleRule()
   {
     super(TYPE_PARAMETER_LIST_RANGLE, TYPE_PARAMETER_PRODUCTION, TYPE_PARAMETER_LIST_PRODUCTION, QNAME_LIST_PRODUCTION, NESTED_QNAME_LIST_PRODUCTION);
@@ -46,7 +48,7 @@ public class TypeParameterListRAngleRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (TYPE_PARAMETER_PRODUCTION.equals(production))
     {

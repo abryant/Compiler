@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.THROWS_LIST;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerType;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -18,13 +19,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ThrowsClauseRule extends Rule
+public final class ThrowsClauseRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production EMPTY_PRODUCTION = new Production();
-  private static final Production PRODUCTION = new Production(THROWS_KEYWORD, THROWS_LIST);
+  private static final Production<ParseType> EMPTY_PRODUCTION = new Production<ParseType>();
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(THROWS_KEYWORD, THROWS_LIST);
 
+  @SuppressWarnings("unchecked")
   public ThrowsClauseRule()
   {
     super(THROWS_CLAUSE, EMPTY_PRODUCTION, PRODUCTION);
@@ -34,7 +36,7 @@ public class ThrowsClauseRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (EMPTY_PRODUCTION.equals(production))
     {

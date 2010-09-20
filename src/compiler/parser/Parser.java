@@ -11,19 +11,20 @@ import java.util.LinkedList;
  * Implements a parser, which parses input from a tokenizer according to a parse table (which is implemented as a set of states and their associated actions)
  *
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  */
-public class Parser
+public class Parser<T extends Enum<T>>
 {
 
-  private State startState;
-  private Tokenizer tokenizer;
+  private State<T> startState;
+  private Tokenizer<T> tokenizer;
 
   /**
    * Creates a new parser to parse the input from the specified Tokenizer, starting in the specified start state.
    * @param startState - the state to start the parser in
    * @param tokenizer - the tokenizer to read input from
    */
-  public Parser(State startState, Tokenizer tokenizer)
+  public Parser(State<T> startState, Tokenizer<T> tokenizer)
   {
     this.startState = startState;
     this.tokenizer = tokenizer;
@@ -35,19 +36,19 @@ public class Parser
    * @throws ParseException - if an error occurs while parsing
    * @throws BadTokenException - if an unexpected token was found while parsing
    */
-  public Token parse() throws ParseException, BadTokenException
+  public Token<T> parse() throws ParseException, BadTokenException
   {
-    Deque<State> stateStack = new LinkedList<State>();
-    Deque<Token> tokenStack = new LinkedList<Token>();
+    Deque<State<T>> stateStack = new LinkedList<State<T>>();
+    Deque<Token<T>> tokenStack = new LinkedList<Token<T>>();
     stateStack.addFirst(startState);
 
-    Token lookahead = tokenizer.next();
+    Token<T> lookahead = tokenizer.next();
 
     while (true)
     {
-      State state = stateStack.peekFirst();
+      State<T> state = stateStack.peekFirst();
 
-      Action action = state.getAction(lookahead);
+      Action<T> action = state.getAction(lookahead);
       if (action == null)
       {
         throw new BadTokenException(lookahead, state.getExpectedTerminalTypes());
@@ -55,7 +56,6 @@ public class Parser
 
       if (action.isAccept())
       {
-        System.out.println("Accepting on " + lookahead); // TODO: remove debug output
         // perform the reduction that the accept action does
         action.perform(lookahead, stateStack, tokenStack);
         return tokenStack.removeFirst();

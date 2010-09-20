@@ -13,6 +13,7 @@ import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.FieldAccessExpression;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -24,14 +25,15 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ArrayAccessExpressionRule extends Rule
+public final class ArrayAccessExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION                   = new Production(PRIMARY_NO_TRAILING_DIMENSIONS_NOT_QNAME, DIMENSION_EXPRESSION);
-  private static final Production QNAME_PRODUCTION             = new Production(QNAME,                                    DIMENSION_EXPRESSION);
-  private static final Production NESTED_QNAME_LIST_PRODUCTION = new Production(NESTED_QNAME_LIST,                        DIMENSION_EXPRESSION);
+  private static final Production<ParseType> PRODUCTION                   = new Production<ParseType>(PRIMARY_NO_TRAILING_DIMENSIONS_NOT_QNAME, DIMENSION_EXPRESSION);
+  private static final Production<ParseType> QNAME_PRODUCTION             = new Production<ParseType>(QNAME,                                    DIMENSION_EXPRESSION);
+  private static final Production<ParseType> NESTED_QNAME_LIST_PRODUCTION = new Production<ParseType>(NESTED_QNAME_LIST,                        DIMENSION_EXPRESSION);
 
+  @SuppressWarnings("unchecked")
   public ArrayAccessExpressionRule()
   {
     super(ARRAY_ACCESS_EXPRESSION, PRODUCTION, QNAME_PRODUCTION, NESTED_QNAME_LIST_PRODUCTION);
@@ -42,7 +44,7 @@ public class ArrayAccessExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

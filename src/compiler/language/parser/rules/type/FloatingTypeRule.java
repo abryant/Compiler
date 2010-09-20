@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.FLOAT_KEYWORD;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.FloatingType;
 import compiler.language.ast.type.FloatingTypeLength;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -18,13 +19,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class FloatingTypeRule extends Rule
+public final class FloatingTypeRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production FLOAT_PRODUCTION = new Production(FLOAT_KEYWORD);
-  private static final Production DOUBLE_PRODUCTION = new Production(DOUBLE_KEYWORD);
+  private static final Production<ParseType> FLOAT_PRODUCTION = new Production<ParseType>(FLOAT_KEYWORD);
+  private static final Production<ParseType> DOUBLE_PRODUCTION = new Production<ParseType>(DOUBLE_KEYWORD);
 
+  @SuppressWarnings("unchecked")
   public FloatingTypeRule()
   {
     super(FLOATING_TYPE, FLOAT_PRODUCTION, DOUBLE_PRODUCTION);
@@ -34,7 +36,7 @@ public class FloatingTypeRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (FLOAT_PRODUCTION.equals(production))
     {

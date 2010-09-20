@@ -14,6 +14,7 @@ import compiler.language.ast.misc.DeclarationAssignee;
 import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.statement.LocalDeclarationStatement;
 import compiler.language.ast.type.Type;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -25,15 +26,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class LocalDeclarationRule extends Rule
+public final class LocalDeclarationRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION                      = new Production(                            TYPE, DECLARATION_ASSIGNEE_LIST);
-  private static final Production ASSIGNMENT_PRODUCTION           = new Production(                            TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION);
-  private static final Production MODIFIERS_PRODUCTION            = new Production(MODIFIERS_NOT_SYNCHRONIZED, TYPE, DECLARATION_ASSIGNEE_LIST);
-  private static final Production MODIFIERS_ASSIGNMENT_PRODUCTION = new Production(MODIFIERS_NOT_SYNCHRONIZED, TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION);
+  private static final Production<ParseType> PRODUCTION                      = new Production<ParseType>(                            TYPE, DECLARATION_ASSIGNEE_LIST);
+  private static final Production<ParseType> ASSIGNMENT_PRODUCTION           = new Production<ParseType>(                            TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION);
+  private static final Production<ParseType> MODIFIERS_PRODUCTION            = new Production<ParseType>(MODIFIERS_NOT_SYNCHRONIZED, TYPE, DECLARATION_ASSIGNEE_LIST);
+  private static final Production<ParseType> MODIFIERS_ASSIGNMENT_PRODUCTION = new Production<ParseType>(MODIFIERS_NOT_SYNCHRONIZED, TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION);
 
+  @SuppressWarnings("unchecked")
   public LocalDeclarationRule()
   {
     super(LOCAL_DECLARATION, PRODUCTION, ASSIGNMENT_PRODUCTION, MODIFIERS_PRODUCTION, MODIFIERS_ASSIGNMENT_PRODUCTION);
@@ -44,7 +46,7 @@ public class LocalDeclarationRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

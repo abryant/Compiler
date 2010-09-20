@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.RSQUARE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.Dimensions;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -17,13 +18,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class DimensionsRule extends Rule
+public final class DimensionsRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION = new Production(LSQUARE, RSQUARE);
-  private static final Production CONTINUATION_PRODUCTION = new Production(DIMENSIONS, LSQUARE, RSQUARE);
+  private static final Production<ParseType> START_PRODUCTION = new Production<ParseType>(LSQUARE, RSQUARE);
+  private static final Production<ParseType> CONTINUATION_PRODUCTION = new Production<ParseType>(DIMENSIONS, LSQUARE, RSQUARE);
 
+  @SuppressWarnings("unchecked")
   public DimensionsRule()
   {
     super(DIMENSIONS, START_PRODUCTION, CONTINUATION_PRODUCTION);
@@ -34,7 +36,7 @@ public class DimensionsRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

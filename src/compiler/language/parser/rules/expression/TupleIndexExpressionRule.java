@@ -10,6 +10,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.TupleIndexExpression;
 import compiler.language.ast.terminal.IntegerLiteral;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -21,14 +22,15 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TupleIndexExpressionRule extends Rule
+public final class TupleIndexExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production NO_CHANGE_PRODUCTION = new Production(UNARY_EXPRESSION);
-  private static final Production PRODUCTION = new Production(TUPLE_INDEX_EXPRESSION, EXCLAIMATION_MARK, INTEGER_LITERAL);
-  private static final Production QNAME_PRODUCTION = new Production(QNAME_EXPRESSION, EXCLAIMATION_MARK, INTEGER_LITERAL);
+  private static final Production<ParseType> NO_CHANGE_PRODUCTION = new Production<ParseType>(UNARY_EXPRESSION);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(TUPLE_INDEX_EXPRESSION, EXCLAIMATION_MARK, INTEGER_LITERAL);
+  private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(QNAME_EXPRESSION, EXCLAIMATION_MARK, INTEGER_LITERAL);
 
+  @SuppressWarnings("unchecked")
   public TupleIndexExpressionRule()
   {
     super(TUPLE_INDEX_EXPRESSION, NO_CHANGE_PRODUCTION, PRODUCTION, QNAME_PRODUCTION);
@@ -39,7 +41,7 @@ public class TupleIndexExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (NO_CHANGE_PRODUCTION.equals(production))
     {

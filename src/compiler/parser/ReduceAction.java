@@ -10,13 +10,14 @@ import java.util.Deque;
  * Represents a reduce action in the parser.
  *
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  */
-public class ReduceAction extends Action
+public class ReduceAction<T extends Enum<T>> extends Action<T>
 {
 
   private static final long serialVersionUID = 1L;
 
-  private Rule rule;
+  private Rule<T> rule;
   private int productionIndex;
 
   /**
@@ -24,7 +25,7 @@ public class ReduceAction extends Action
    * @param rule - the rule to reduce with
    * @param productionIndex - the index of the production within the rule to reduce with
    */
-  public ReduceAction(Rule rule, int productionIndex)
+  public ReduceAction(Rule<T> rule, int productionIndex)
   {
     this.rule = rule;
     this.productionIndex = productionIndex;
@@ -33,7 +34,7 @@ public class ReduceAction extends Action
   /**
    * @return the rule that this ReduceAction will reduce through
    */
-  public Rule getRule()
+  public Rule<T> getRule()
   {
     return rule;
   }
@@ -50,12 +51,11 @@ public class ReduceAction extends Action
    * @see compiler.parser.Action#perform(compiler.parser.Token, java.util.Deque, java.util.Deque)
    */
   @Override
-  public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack) throws ParseException
+  public boolean perform(Token<T> token, Deque<State<T>> stateStack, Deque<Token<T>> tokenStack) throws ParseException
   {
-    Production production = rule.getProductions()[productionIndex];
-    System.out.println("Reducing via production " + Rule.getProductionString(rule.getType(), production) + " (lookahead " + (token == null ? null : token.getType()) + ")"); // TODO: remove debug output
+    Production<T> production = rule.getProductions()[productionIndex];
 
-    Object[] productionTypes = production.getTypes();
+    T[] productionTypes = production.getTypes();
     if (stateStack.size() <= productionTypes.length || tokenStack.size() < productionTypes.length)
     {
       throw new ParseException("Bad reduction of rule, not enough elements");
@@ -65,7 +65,7 @@ public class ReduceAction extends Action
     Object[] values = new Object[productionTypes.length];
     for (int i = values.length - 1; i >= 0; i--)
     {
-      Token t = tokenStack.removeFirst();
+      Token<T> t = tokenStack.removeFirst();
       if (!t.getType().equals(productionTypes[i]))
       {
         throw new ParseException("Bad reduction of rule, invalid token type");
@@ -77,10 +77,10 @@ public class ReduceAction extends Action
     }
 
     Object result = rule.match(production, values);
-    Token nonTerminal = new Token(rule.getType(), result);
+    Token<T> nonTerminal = new Token<T>(rule.getType(), result);
 
-    State topState = stateStack.peekFirst();
-    State gotoState = topState.getGoto(nonTerminal);
+    State<T> topState = stateStack.peekFirst();
+    State<T> gotoState = topState.getGoto(nonTerminal);
 
     stateStack.addFirst(gotoState);
     tokenStack.addFirst(nonTerminal);

@@ -21,6 +21,7 @@ import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeArgument;
 import compiler.language.ast.type.VoidType;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -32,15 +33,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ClosureCreationExpressionRule extends Rule
+public final class ClosureCreationExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(CLOSURE_KEYWORD, LPAREN, ARGUMENT_LIST, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
-  private static final Production TYPE_ARGUMENTS_PRODUCTION = new Production(CLOSURE_KEYWORD, TYPE_ARGUMENTS, LPAREN, ARGUMENT_LIST, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
-  private static final Production VOID_PRODUCTION = new Production(CLOSURE_KEYWORD, LPAREN, VOID_TYPE, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
-  private static final Production TYPE_ARGUMENTS_VOID_PRODUCTION = new Production(CLOSURE_KEYWORD, TYPE_ARGUMENTS, LPAREN, VOID_TYPE, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(CLOSURE_KEYWORD, LPAREN, ARGUMENT_LIST, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
+  private static final Production<ParseType> TYPE_ARGUMENTS_PRODUCTION = new Production<ParseType>(CLOSURE_KEYWORD, TYPE_ARGUMENTS, LPAREN, ARGUMENT_LIST, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
+  private static final Production<ParseType> VOID_PRODUCTION = new Production<ParseType>(CLOSURE_KEYWORD, LPAREN, VOID_TYPE, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
+  private static final Production<ParseType> TYPE_ARGUMENTS_VOID_PRODUCTION = new Production<ParseType>(CLOSURE_KEYWORD, TYPE_ARGUMENTS, LPAREN, VOID_TYPE, ARROW, TYPE_LIST, RPAREN, THROWS_CLAUSE, BLOCK);
 
+  @SuppressWarnings("unchecked")
   public ClosureCreationExpressionRule()
   {
     super(CLOSURE_CREATION_EXPRESSION, PRODUCTION, TYPE_ARGUMENTS_PRODUCTION,
@@ -52,7 +54,7 @@ public class ClosureCreationExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

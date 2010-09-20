@@ -15,6 +15,7 @@ import compiler.language.ast.member.Field;
 import compiler.language.ast.member.MemberHeader;
 import compiler.language.ast.misc.DeclarationAssignee;
 import compiler.language.ast.type.Type;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -26,13 +27,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class FieldRule extends Rule
+public final class FieldRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production DECLARE_PRODUCTION = new Production(MEMBER_HEADER, TYPE, DECLARATION_ASSIGNEE_LIST, SEMICOLON);
-  private static final Production ASSIGN_PRODUCTION = new Production(MEMBER_HEADER, TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION, SEMICOLON);
+  private static final Production<ParseType> DECLARE_PRODUCTION = new Production<ParseType>(MEMBER_HEADER, TYPE, DECLARATION_ASSIGNEE_LIST, SEMICOLON);
+  private static final Production<ParseType> ASSIGN_PRODUCTION = new Production<ParseType>(MEMBER_HEADER, TYPE, DECLARATION_ASSIGNEE_LIST, EQUALS, EXPRESSION, SEMICOLON);
 
+  @SuppressWarnings("unchecked")
   public FieldRule()
   {
     super(FIELD, DECLARE_PRODUCTION, ASSIGN_PRODUCTION);
@@ -42,7 +44,7 @@ public class FieldRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (DECLARE_PRODUCTION.equals(production))
     {

@@ -11,22 +11,24 @@ import java.io.Serializable;
  * The parser condenses lists of input tokens into tokens using rules.
  *
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  *
  */
-public abstract class Rule implements Serializable
+public abstract class Rule<T extends Enum<T>> implements Serializable
 {
 
   private static final long serialVersionUID = 1L;
 
-  private Object type;
-  private Production[] productions;
+  private T type;
+  private Production<T>[] productions;
 
   /**
    * Creates a new rule with the specified type and possible productions.
+   * NOTE: the list of productions should be in a predictable order.
    * @param type - the type that this rule reduces to
    * @param productions - the list of productions that can reduce via this rule
    */
-  public Rule(Object type, Production... productions)
+  public Rule(T type, Production<T>... productions)
   {
     this.type = type;
     this.productions = productions;
@@ -35,7 +37,7 @@ public abstract class Rule implements Serializable
   /**
    * @return the type that this rule will reduce to
    */
-  public final Object getType()
+  public final T getType()
   {
     return type;
   }
@@ -43,7 +45,7 @@ public abstract class Rule implements Serializable
   /**
    * @return the list of productions that this rule can be used to reduce.
    */
-  public final Production[] getProductions()
+  public final Production<T>[] getProductions()
   {
     return productions;
   }
@@ -58,7 +60,7 @@ public abstract class Rule implements Serializable
    * @return the resulting value object
    * @throws ParseException - if an error occurs while matching
    */
-  public abstract Object match(Production production, Object[] args) throws ParseException;
+  public abstract Object match(Production<T> production, Object[] args) throws ParseException;
 
   /**
    * @see java.lang.Object#equals(java.lang.Object)
@@ -70,7 +72,10 @@ public abstract class Rule implements Serializable
     {
       return false;
     }
-    Rule rule = (Rule) o;
+    // this is not nice, but is necessary to check whether the rules
+    // are equal without knowing their generic type parameters
+    @SuppressWarnings("unchecked")
+    Rule<T> rule = (Rule<T>) o;
     if (type != rule.type || productions.length != rule.productions.length)
     {
       return false;
@@ -100,11 +105,12 @@ public abstract class Rule implements Serializable
 
   /**
    * Returns a string representation of a production.
+   * @param <T> - the enum type that holds all possible values for the token type
    * @param type - the type that the production reduces to
    * @param production - the list of types in the production
    * @return a string representation of the production
    */
-  public static String getProductionString(Object type, Production production)
+  public static <T extends Enum<T>> String getProductionString(T type, Production<T> production)
   {
     StringBuffer existingBuffer = new StringBuffer();
     existingBuffer.append("[");

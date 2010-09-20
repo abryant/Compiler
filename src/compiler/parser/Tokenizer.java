@@ -11,12 +11,13 @@ import java.util.LinkedList;
  * Subclasses will implement the actual tokenizing stage. This class provides a higher level interface to the parser by allowing the parser to lookahead.
  *
  * @author Anthony Bryant
+ * @param <T> - the enum that holds all possible values for the token type
  *
  */
-public abstract class Tokenizer
+public abstract class Tokenizer<T extends Enum<T>>
 {
 
-  private LinkedList<Token> tokens;
+  private LinkedList<Token<T>> tokens;
   private boolean finished = false;
 
   /**
@@ -24,7 +25,7 @@ public abstract class Tokenizer
    */
   public Tokenizer()
   {
-    tokens = new LinkedList<Token>();
+    tokens = new LinkedList<Token<T>>();
   }
 
   /**
@@ -32,7 +33,7 @@ public abstract class Tokenizer
    * @return the generated token
    * @throws ParseException - if an Exception occurs while reading the token
    */
-  protected abstract Token generateToken() throws ParseException;
+  protected abstract Token<T> generateToken() throws ParseException;
 
   /**
    * Generates the next token and adds it to the list.
@@ -40,7 +41,7 @@ public abstract class Tokenizer
    */
   private final void readNextToken() throws ParseException
   {
-    Token generated = generateToken();
+    Token<T> generated = generateToken();
     if (generated == null)
     {
       finished = true;
@@ -68,7 +69,7 @@ public abstract class Tokenizer
    * @return the next token to be parsed, or null if there are no more tokens.
    * @throws ParseException - if an Exception occurs while reading the next token
    */
-  public final Token next() throws ParseException
+  public final Token<T> next() throws ParseException
   {
     if (tokens.isEmpty())
     {
@@ -85,7 +86,7 @@ public abstract class Tokenizer
    * @return the nth token after the current one, or null if the end of input is reached before n tokens of lookahead have been reached
    * @throws ParseException - if an Exception occurs while reading the next token
    */
-  public final Token lookahead(int offset) throws ParseException
+  public final Token<T> lookahead(int offset) throws ParseException
   {
     if (offset < 1)
     {

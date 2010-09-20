@@ -15,26 +15,27 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class IntegerTypeRule extends Rule
+public final class IntegerTypeRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production UNSPECIFIED_BYTE_PRODUCTION = new Production(ParseType.BYTE_KEYWORD);
-  private static final Production SIGNED_BYTE_PRODUCTION = new Production(ParseType.SIGNED_KEYWORD, ParseType.BYTE_KEYWORD);
-  private static final Production UNSIGNED_BYTE_PRODUCTION = new Production(ParseType.UNSIGNED_KEYWORD, ParseType.BYTE_KEYWORD);
+  private static final Production<ParseType> UNSPECIFIED_BYTE_PRODUCTION = new Production<ParseType>(ParseType.BYTE_KEYWORD);
+  private static final Production<ParseType> SIGNED_BYTE_PRODUCTION = new Production<ParseType>(ParseType.SIGNED_KEYWORD, ParseType.BYTE_KEYWORD);
+  private static final Production<ParseType> UNSIGNED_BYTE_PRODUCTION = new Production<ParseType>(ParseType.UNSIGNED_KEYWORD, ParseType.BYTE_KEYWORD);
 
-  private static final Production UNSPECIFIED_SHORT_PRODUCTION = new Production(ParseType.SHORT_KEYWORD);
-  private static final Production SIGNED_SHORT_PRODUCTION = new Production(ParseType.SIGNED_KEYWORD, ParseType.SHORT_KEYWORD);
-  private static final Production UNSIGNED_SHORT_PRODUCTION = new Production(ParseType.UNSIGNED_KEYWORD, ParseType.SHORT_KEYWORD);
+  private static final Production<ParseType> UNSPECIFIED_SHORT_PRODUCTION = new Production<ParseType>(ParseType.SHORT_KEYWORD);
+  private static final Production<ParseType> SIGNED_SHORT_PRODUCTION = new Production<ParseType>(ParseType.SIGNED_KEYWORD, ParseType.SHORT_KEYWORD);
+  private static final Production<ParseType> UNSIGNED_SHORT_PRODUCTION = new Production<ParseType>(ParseType.UNSIGNED_KEYWORD, ParseType.SHORT_KEYWORD);
 
-  private static final Production UNSPECIFIED_INT_PRODUCTION = new Production(ParseType.INT_KEYWORD);
-  private static final Production SIGNED_INT_PRODUCTION = new Production(ParseType.SIGNED_KEYWORD, ParseType.INT_KEYWORD);
-  private static final Production UNSIGNED_INT_PRODUCTION = new Production(ParseType.UNSIGNED_KEYWORD, ParseType.INT_KEYWORD);
+  private static final Production<ParseType> UNSPECIFIED_INT_PRODUCTION = new Production<ParseType>(ParseType.INT_KEYWORD);
+  private static final Production<ParseType> SIGNED_INT_PRODUCTION = new Production<ParseType>(ParseType.SIGNED_KEYWORD, ParseType.INT_KEYWORD);
+  private static final Production<ParseType> UNSIGNED_INT_PRODUCTION = new Production<ParseType>(ParseType.UNSIGNED_KEYWORD, ParseType.INT_KEYWORD);
 
-  private static final Production UNSPECIFIED_LONG_PRODUCTION = new Production(ParseType.LONG_KEYWORD);
-  private static final Production SIGNED_LONG_PRODUCTION = new Production(ParseType.SIGNED_KEYWORD, ParseType.LONG_KEYWORD);
-  private static final Production UNSIGNED_LONG_PRODUCTION = new Production(ParseType.UNSIGNED_KEYWORD, ParseType.LONG_KEYWORD);
+  private static final Production<ParseType> UNSPECIFIED_LONG_PRODUCTION = new Production<ParseType>(ParseType.LONG_KEYWORD);
+  private static final Production<ParseType> SIGNED_LONG_PRODUCTION = new Production<ParseType>(ParseType.SIGNED_KEYWORD, ParseType.LONG_KEYWORD);
+  private static final Production<ParseType> UNSIGNED_LONG_PRODUCTION = new Production<ParseType>(ParseType.UNSIGNED_KEYWORD, ParseType.LONG_KEYWORD);
 
+  @SuppressWarnings("unchecked")
   public IntegerTypeRule()
   {
     super(ParseType.INTEGER_TYPE, UNSPECIFIED_BYTE_PRODUCTION,  SIGNED_BYTE_PRODUCTION,  UNSIGNED_BYTE_PRODUCTION,
@@ -47,7 +48,7 @@ public class IntegerTypeRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (UNSPECIFIED_BYTE_PRODUCTION.equals(production))
     {

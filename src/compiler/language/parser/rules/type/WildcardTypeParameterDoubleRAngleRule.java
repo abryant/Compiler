@@ -14,6 +14,7 @@ import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
 import compiler.language.ast.type.WildcardTypeParameter;
+import compiler.language.parser.ParseType;
 import compiler.language.parser.ParseUtil;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -26,16 +27,17 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class WildcardTypeParameterDoubleRAngleRule extends Rule
+public final class WildcardTypeParameterDoubleRAngleRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION               = new Production(QUESTION_MARK, DOUBLE_RANGLE);
-  private static final Production EXTENDS_PRODUCTION       = new Production(QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST_DOUBLE_RANGLE);
-  private static final Production SUPER_PRODUCTION         = new Production(QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST_DOUBLE_RANGLE);
-  private static final Production EXTENDS_SUPER_PRODUCTION = new Production(QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST, SUPER_KEYWORD,   TYPE_BOUND_LIST_DOUBLE_RANGLE);
-  private static final Production SUPER_EXTENDS_PRODUCTION = new Production(QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST, EXTENDS_KEYWORD, TYPE_BOUND_LIST_DOUBLE_RANGLE);
+  private static final Production<ParseType> PRODUCTION               = new Production<ParseType>(QUESTION_MARK, DOUBLE_RANGLE);
+  private static final Production<ParseType> EXTENDS_PRODUCTION       = new Production<ParseType>(QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST_DOUBLE_RANGLE);
+  private static final Production<ParseType> SUPER_PRODUCTION         = new Production<ParseType>(QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST_DOUBLE_RANGLE);
+  private static final Production<ParseType> EXTENDS_SUPER_PRODUCTION = new Production<ParseType>(QUESTION_MARK, EXTENDS_KEYWORD, TYPE_BOUND_LIST, SUPER_KEYWORD,   TYPE_BOUND_LIST_DOUBLE_RANGLE);
+  private static final Production<ParseType> SUPER_EXTENDS_PRODUCTION = new Production<ParseType>(QUESTION_MARK, SUPER_KEYWORD,   TYPE_BOUND_LIST, EXTENDS_KEYWORD, TYPE_BOUND_LIST_DOUBLE_RANGLE);
 
+  @SuppressWarnings("unchecked")
   public WildcardTypeParameterDoubleRAngleRule()
   {
     super(WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE, PRODUCTION, EXTENDS_PRODUCTION, SUPER_PRODUCTION, EXTENDS_SUPER_PRODUCTION, SUPER_EXTENDS_PRODUCTION);
@@ -46,7 +48,7 @@ public class WildcardTypeParameterDoubleRAngleRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

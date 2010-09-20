@@ -11,6 +11,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.MultiplicativeExpression;
 import compiler.language.ast.expression.MultiplicativeExpressionType;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -22,24 +23,25 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class MultiplicativeExpressionRule extends Rule
+public final class MultiplicativeExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION               = new Production(TUPLE_INDEX_EXPRESSION);
-  private static final Production TIMES_PRODUCTION               = new Production(MULTIPLICATIVE_EXPRESSION, STAR,          TUPLE_INDEX_EXPRESSION);
-  private static final Production TIMES_QNAME_PRODUCTION         = new Production(MULTIPLICATIVE_EXPRESSION, STAR,          QNAME_EXPRESSION);
-  private static final Production QNAME_TIMES_PRODUCTION         = new Production(QNAME_EXPRESSION,          STAR,          TUPLE_INDEX_EXPRESSION);
-  private static final Production QNAME_TIMES_QNAME_PRODUCTION   = new Production(QNAME_EXPRESSION,          STAR,          QNAME_EXPRESSION);
-  private static final Production DIVIDE_PRODUCTION              = new Production(MULTIPLICATIVE_EXPRESSION, FORWARD_SLASH, TUPLE_INDEX_EXPRESSION);
-  private static final Production DIVIDE_QNAME_PRODUCTION        = new Production(MULTIPLICATIVE_EXPRESSION, FORWARD_SLASH, QNAME_EXPRESSION);
-  private static final Production QNAME_DIVIDE_PRODUCTION        = new Production(QNAME_EXPRESSION,          FORWARD_SLASH, TUPLE_INDEX_EXPRESSION);
-  private static final Production QNAME_DIVIDE_QNAME_PRODUCTION  = new Production(QNAME_EXPRESSION,          FORWARD_SLASH, QNAME_EXPRESSION);
-  private static final Production MODULUS_PRODUCTION             = new Production(MULTIPLICATIVE_EXPRESSION, PERCENT,       TUPLE_INDEX_EXPRESSION);
-  private static final Production MODULUS_QNAME_PRODUCTION       = new Production(MULTIPLICATIVE_EXPRESSION, PERCENT,       QNAME_EXPRESSION);
-  private static final Production QNAME_MODULUS_PRODUCTION       = new Production(QNAME_EXPRESSION,          PERCENT,       TUPLE_INDEX_EXPRESSION);
-  private static final Production QNAME_MODULUS_QNAME_PRODUCTION = new Production(QNAME_EXPRESSION,          PERCENT,       QNAME_EXPRESSION);
+  private static final Production<ParseType> START_PRODUCTION               = new Production<ParseType>(TUPLE_INDEX_EXPRESSION);
+  private static final Production<ParseType> TIMES_PRODUCTION               = new Production<ParseType>(MULTIPLICATIVE_EXPRESSION, STAR,          TUPLE_INDEX_EXPRESSION);
+  private static final Production<ParseType> TIMES_QNAME_PRODUCTION         = new Production<ParseType>(MULTIPLICATIVE_EXPRESSION, STAR,          QNAME_EXPRESSION);
+  private static final Production<ParseType> QNAME_TIMES_PRODUCTION         = new Production<ParseType>(QNAME_EXPRESSION,          STAR,          TUPLE_INDEX_EXPRESSION);
+  private static final Production<ParseType> QNAME_TIMES_QNAME_PRODUCTION   = new Production<ParseType>(QNAME_EXPRESSION,          STAR,          QNAME_EXPRESSION);
+  private static final Production<ParseType> DIVIDE_PRODUCTION              = new Production<ParseType>(MULTIPLICATIVE_EXPRESSION, FORWARD_SLASH, TUPLE_INDEX_EXPRESSION);
+  private static final Production<ParseType> DIVIDE_QNAME_PRODUCTION        = new Production<ParseType>(MULTIPLICATIVE_EXPRESSION, FORWARD_SLASH, QNAME_EXPRESSION);
+  private static final Production<ParseType> QNAME_DIVIDE_PRODUCTION        = new Production<ParseType>(QNAME_EXPRESSION,          FORWARD_SLASH, TUPLE_INDEX_EXPRESSION);
+  private static final Production<ParseType> QNAME_DIVIDE_QNAME_PRODUCTION  = new Production<ParseType>(QNAME_EXPRESSION,          FORWARD_SLASH, QNAME_EXPRESSION);
+  private static final Production<ParseType> MODULUS_PRODUCTION             = new Production<ParseType>(MULTIPLICATIVE_EXPRESSION, PERCENT,       TUPLE_INDEX_EXPRESSION);
+  private static final Production<ParseType> MODULUS_QNAME_PRODUCTION       = new Production<ParseType>(MULTIPLICATIVE_EXPRESSION, PERCENT,       QNAME_EXPRESSION);
+  private static final Production<ParseType> QNAME_MODULUS_PRODUCTION       = new Production<ParseType>(QNAME_EXPRESSION,          PERCENT,       TUPLE_INDEX_EXPRESSION);
+  private static final Production<ParseType> QNAME_MODULUS_QNAME_PRODUCTION = new Production<ParseType>(QNAME_EXPRESSION,          PERCENT,       QNAME_EXPRESSION);
 
+  @SuppressWarnings("unchecked")
   public MultiplicativeExpressionRule()
   {
     super(MULTIPLICATIVE_EXPRESSION, START_PRODUCTION,
@@ -53,7 +55,7 @@ public class MultiplicativeExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

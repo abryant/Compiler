@@ -10,6 +10,7 @@ import static compiler.language.parser.ParseType.TUPLE_EXPRESSION;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.ParenthesisedExpression;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -21,14 +22,15 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class PrimaryRule extends Rule
+public final class PrimaryRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(BASIC_PRIMARY);
-  private static final Production PARENTHESISED_PRODUCTION = new Production(LPAREN, TUPLE_EXPRESSION, RPAREN);
-  private static final Production ARRAY_INSTANCIATION_PRODUCTION = new Production(ARRAY_INSTANCIATION_EXPRESSION_NO_INITIALIZER);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(BASIC_PRIMARY);
+  private static final Production<ParseType> PARENTHESISED_PRODUCTION = new Production<ParseType>(LPAREN, TUPLE_EXPRESSION, RPAREN);
+  private static final Production<ParseType> ARRAY_INSTANCIATION_PRODUCTION = new Production<ParseType>(ARRAY_INSTANCIATION_EXPRESSION_NO_INITIALIZER);
 
+  @SuppressWarnings("unchecked")
   public PrimaryRule()
   {
     super(PRIMARY, PRODUCTION, PARENTHESISED_PRODUCTION, ARRAY_INSTANCIATION_PRODUCTION);
@@ -39,7 +41,7 @@ public class PrimaryRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production) || ARRAY_INSTANCIATION_PRODUCTION.equals(production))
     {

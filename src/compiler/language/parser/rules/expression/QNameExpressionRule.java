@@ -15,13 +15,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class QNameExpressionRule extends Rule
+public final class QNameExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production QNAME_PRODUCTION = new Production(ParseType.QNAME);
-  private static final Production NESTED_QNAME_PRODUCTION = new Production(ParseType.NESTED_QNAME_LIST);
+  private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(ParseType.QNAME);
+  private static final Production<ParseType> NESTED_QNAME_PRODUCTION = new Production<ParseType>(ParseType.NESTED_QNAME_LIST);
 
+  @SuppressWarnings("unchecked")
   public QNameExpressionRule()
   {
     super(ParseType.QNAME_EXPRESSION, QNAME_PRODUCTION, NESTED_QNAME_PRODUCTION);
@@ -32,7 +33,7 @@ public class QNameExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (QNAME_PRODUCTION.equals(production))
     {

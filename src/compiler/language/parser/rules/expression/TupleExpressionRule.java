@@ -18,6 +18,7 @@ import compiler.language.ast.expression.RelationalExpressionType;
 import compiler.language.ast.expression.TupleExpression;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -29,21 +30,22 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TupleExpressionRule extends Rule
+public final class TupleExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production QNAME_PRODUCTION                               = new Production(QNAME,                                        COMMA, TUPLE_EXPRESSION);
-  private static final Production NESTED_QNAME_LIST_PRODUCTION                   = new Production(NESTED_QNAME_LIST,                            COMMA, TUPLE_EXPRESSION);
-  private static final Production QNAME_LESS_THAN_QNAME_PRODUCTION               = new Production(QNAME,             LANGLE, QNAME,             COMMA, TUPLE_EXPRESSION);
-  private static final Production QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION        = new Production(QNAME,             LANGLE, NESTED_QNAME_LIST, COMMA, TUPLE_EXPRESSION);
-  private static final Production NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION        = new Production(NESTED_QNAME_LIST, LANGLE, QNAME,             COMMA, TUPLE_EXPRESSION);
-  private static final Production NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION = new Production(NESTED_QNAME_LIST, LANGLE, NESTED_QNAME_LIST, COMMA, TUPLE_EXPRESSION);
-  private static final Production INLINE_IF_TUPLE_PRODUCTION                     = new Production(INLINE_IF_EXPRESSION,                         COMMA, TUPLE_EXPRESSION);
-  private static final Production INLINE_IF_QNAME_LIST_PRODUCTION                = new Production(INLINE_IF_EXPRESSION,                         COMMA, QNAME_LIST);
-  private static final Production INLINE_IF_PRODUCTION                           = new Production(INLINE_IF_EXPRESSION);
-  private static final Production LESS_THAN_PRODUCTION                           = new Production(RELATIONAL_EXPRESSION_LESS_THAN_QNAME);
+  private static final Production<ParseType> QNAME_PRODUCTION                               = new Production<ParseType>(QNAME,                                        COMMA, TUPLE_EXPRESSION);
+  private static final Production<ParseType> NESTED_QNAME_LIST_PRODUCTION                   = new Production<ParseType>(NESTED_QNAME_LIST,                            COMMA, TUPLE_EXPRESSION);
+  private static final Production<ParseType> QNAME_LESS_THAN_QNAME_PRODUCTION               = new Production<ParseType>(QNAME,             LANGLE, QNAME,             COMMA, TUPLE_EXPRESSION);
+  private static final Production<ParseType> QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION        = new Production<ParseType>(QNAME,             LANGLE, NESTED_QNAME_LIST, COMMA, TUPLE_EXPRESSION);
+  private static final Production<ParseType> NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION        = new Production<ParseType>(NESTED_QNAME_LIST, LANGLE, QNAME,             COMMA, TUPLE_EXPRESSION);
+  private static final Production<ParseType> NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION = new Production<ParseType>(NESTED_QNAME_LIST, LANGLE, NESTED_QNAME_LIST, COMMA, TUPLE_EXPRESSION);
+  private static final Production<ParseType> INLINE_IF_TUPLE_PRODUCTION                     = new Production<ParseType>(INLINE_IF_EXPRESSION,                         COMMA, TUPLE_EXPRESSION);
+  private static final Production<ParseType> INLINE_IF_QNAME_LIST_PRODUCTION                = new Production<ParseType>(INLINE_IF_EXPRESSION,                         COMMA, QNAME_LIST);
+  private static final Production<ParseType> INLINE_IF_PRODUCTION                           = new Production<ParseType>(INLINE_IF_EXPRESSION);
+  private static final Production<ParseType> LESS_THAN_PRODUCTION                           = new Production<ParseType>(RELATIONAL_EXPRESSION_LESS_THAN_QNAME);
 
+  @SuppressWarnings("unchecked")
   public TupleExpressionRule()
   {
     super(TUPLE_EXPRESSION, QNAME_PRODUCTION,
@@ -63,7 +65,7 @@ public class TupleExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (INLINE_IF_PRODUCTION.equals(production) || LESS_THAN_PRODUCTION.equals(production))
     {

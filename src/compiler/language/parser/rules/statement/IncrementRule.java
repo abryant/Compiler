@@ -11,6 +11,7 @@ import compiler.language.ast.misc.Assignee;
 import compiler.language.ast.misc.FieldAssignee;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.statement.IncrementStatement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -22,15 +23,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class IncrementRule extends Rule
+public final class IncrementRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRE_PRODUCTION        = new Production(DOUBLE_PLUS, ASSIGNEE);
-  private static final Production PRE_QNAME_PRODUCTION  = new Production(DOUBLE_PLUS, QNAME);
-  private static final Production POST_PRODUCTION       = new Production(ASSIGNEE, DOUBLE_PLUS);
-  private static final Production POST_QNAME_PRODUCTION = new Production(QNAME,    DOUBLE_PLUS);
+  private static final Production<ParseType> PRE_PRODUCTION        = new Production<ParseType>(DOUBLE_PLUS, ASSIGNEE);
+  private static final Production<ParseType> PRE_QNAME_PRODUCTION  = new Production<ParseType>(DOUBLE_PLUS, QNAME);
+  private static final Production<ParseType> POST_PRODUCTION       = new Production<ParseType>(ASSIGNEE, DOUBLE_PLUS);
+  private static final Production<ParseType> POST_QNAME_PRODUCTION = new Production<ParseType>(QNAME,    DOUBLE_PLUS);
 
+  @SuppressWarnings("unchecked")
   public IncrementRule()
   {
     super(INCREMENT, PRE_PRODUCTION, PRE_QNAME_PRODUCTION, POST_PRODUCTION, POST_QNAME_PRODUCTION);
@@ -41,7 +43,7 @@ public class IncrementRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRE_PRODUCTION.equals(production))
     {

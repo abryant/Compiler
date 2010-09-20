@@ -12,13 +12,14 @@ import compiler.parser.Rule;
  * @author Anthony Bryant
  *
  */
-public class ValueRule extends Rule
+public class ValueRule extends Rule<ExpressionType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production NUMBER_PRODUCTION = new Production(ExpressionType.NUMBER);
-  private static final Production EXPRESSION_PRODUCTION = new Production(ExpressionType.LPAREN, ExpressionType.EXPRESSION, ExpressionType.RPAREN);
+  private static final Production<ExpressionType> NUMBER_PRODUCTION = new Production<ExpressionType>(ExpressionType.NUMBER);
+  private static final Production<ExpressionType> EXPRESSION_PRODUCTION = new Production<ExpressionType>(ExpressionType.LPAREN, ExpressionType.EXPRESSION, ExpressionType.RPAREN);
 
+  @SuppressWarnings("unchecked")
   public ValueRule()
   {
     super(ExpressionType.VALUE, NUMBER_PRODUCTION, EXPRESSION_PRODUCTION);
@@ -28,7 +29,7 @@ public class ValueRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ExpressionType> production, Object[] args) throws ParseException
   {
     if (NUMBER_PRODUCTION.equals(production))
     {

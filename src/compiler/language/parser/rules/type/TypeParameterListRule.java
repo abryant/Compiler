@@ -14,6 +14,7 @@ import compiler.language.ast.type.NormalTypeParameter;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeParameter;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -25,17 +26,18 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeParameterListRule extends Rule
+public final class TypeParameterListRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production TYPE_PARAMETER_PRODUCTION                 = new Production(TYPE_PARAMETER_NOT_QNAME_LIST);
-  private static final Production QNAME_PRODUCTION                          = new Production(QNAME);
-  private static final Production NESTED_QNAME_LIST_PRODUCTION              = new Production(NESTED_QNAME_LIST);
-  private static final Production CONTINUATION_TYPE_PARAMETER_PRODUCTION    = new Production(TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST);
-  private static final Production CONTINUATION_QNAME_PRODUCTION             = new Production(QNAME,                         COMMA, TYPE_PARAMETER_LIST);
-  private static final Production CONTINUATION_NESTED_QNAME_LIST_PRODUCTION = new Production(NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST);
+  private static final Production<ParseType> TYPE_PARAMETER_PRODUCTION                 = new Production<ParseType>(TYPE_PARAMETER_NOT_QNAME_LIST);
+  private static final Production<ParseType> QNAME_PRODUCTION                          = new Production<ParseType>(QNAME);
+  private static final Production<ParseType> NESTED_QNAME_LIST_PRODUCTION              = new Production<ParseType>(NESTED_QNAME_LIST);
+  private static final Production<ParseType> CONTINUATION_TYPE_PARAMETER_PRODUCTION    = new Production<ParseType>(TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST);
+  private static final Production<ParseType> CONTINUATION_QNAME_PRODUCTION             = new Production<ParseType>(QNAME,                         COMMA, TYPE_PARAMETER_LIST);
+  private static final Production<ParseType> CONTINUATION_NESTED_QNAME_LIST_PRODUCTION = new Production<ParseType>(NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST);
 
+  @SuppressWarnings("unchecked")
   public TypeParameterListRule()
   {
     super(TYPE_PARAMETER_LIST, TYPE_PARAMETER_PRODUCTION,              QNAME_PRODUCTION,              NESTED_QNAME_LIST_PRODUCTION,
@@ -46,7 +48,7 @@ public class TypeParameterListRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (TYPE_PARAMETER_PRODUCTION.equals(production))
     {

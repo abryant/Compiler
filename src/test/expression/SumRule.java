@@ -12,14 +12,15 @@ import compiler.parser.Rule;
  * @author Anthony Bryant
  *
  */
-public class SumRule extends Rule
+public class SumRule extends Rule<ExpressionType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCT_PRODUCTION = new Production(ExpressionType.PRODUCT);
-  private static final Production PLUS_PRODUCTION = new Production(ExpressionType.SUM, ExpressionType.PLUS, ExpressionType.PRODUCT);
-  private static final Production MINUS_PRODUCTION = new Production(ExpressionType.SUM, ExpressionType.MINUS, ExpressionType.PRODUCT);
+  private static final Production<ExpressionType> PRODUCT_PRODUCTION = new Production<ExpressionType>(ExpressionType.PRODUCT);
+  private static final Production<ExpressionType> PLUS_PRODUCTION = new Production<ExpressionType>(ExpressionType.SUM, ExpressionType.PLUS, ExpressionType.PRODUCT);
+  private static final Production<ExpressionType> MINUS_PRODUCTION = new Production<ExpressionType>(ExpressionType.SUM, ExpressionType.MINUS, ExpressionType.PRODUCT);
 
+  @SuppressWarnings("unchecked")
   public SumRule()
   {
     super(ExpressionType.SUM, PRODUCT_PRODUCTION, PLUS_PRODUCTION, MINUS_PRODUCTION);
@@ -29,7 +30,7 @@ public class SumRule extends Rule
    * @see compiler.parser.Rule#match(java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ExpressionType> production, Object[] args) throws ParseException
   {
     if (PRODUCT_PRODUCTION.equals(production))
     {

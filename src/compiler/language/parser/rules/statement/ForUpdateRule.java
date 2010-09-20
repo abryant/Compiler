@@ -8,6 +8,7 @@ import static compiler.language.parser.ParseType.STATEMENT_EXPRESSION;
 
 import compiler.language.ast.expression.StatementExpression;
 import compiler.language.ast.statement.ExpressionStatement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -19,16 +20,17 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ForUpdateRule extends Rule
+public final class ForUpdateRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production EMPTY_PRODUCTION      = new Production();
-  private static final Production EXPRESSION_PRODUCTION = new Production(STATEMENT_EXPRESSION);
-  private static final Production ASSIGNMENT_PRODUCTION = new Production(ASSIGNMENT);
-  private static final Production INCREMENT_PRODUCTION  = new Production(INCREMENT);
-  private static final Production DECREMENT_PRODUCTION  = new Production(DECREMENT);
+  private static final Production<ParseType> EMPTY_PRODUCTION      = new Production<ParseType>();
+  private static final Production<ParseType> EXPRESSION_PRODUCTION = new Production<ParseType>(STATEMENT_EXPRESSION);
+  private static final Production<ParseType> ASSIGNMENT_PRODUCTION = new Production<ParseType>(ASSIGNMENT);
+  private static final Production<ParseType> INCREMENT_PRODUCTION  = new Production<ParseType>(INCREMENT);
+  private static final Production<ParseType> DECREMENT_PRODUCTION  = new Production<ParseType>(DECREMENT);
 
+  @SuppressWarnings("unchecked")
   public ForUpdateRule()
   {
     super(FOR_UPDATE, EMPTY_PRODUCTION, EXPRESSION_PRODUCTION, ASSIGNMENT_PRODUCTION, INCREMENT_PRODUCTION, DECREMENT_PRODUCTION);
@@ -39,7 +41,7 @@ public class ForUpdateRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (EMPTY_PRODUCTION.equals(production))
     {

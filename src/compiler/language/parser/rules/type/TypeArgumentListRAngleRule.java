@@ -9,6 +9,7 @@ import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.TypeArgument;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -20,13 +21,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeArgumentListRAngleRule extends Rule
+public final class TypeArgumentListRAngleRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production TYPE_ARGUMENT_PRODUCTION = new Production(TYPE_ARGUMENT_RANGLE);
-  private static final Production LIST_END_PRODUCTION = new Production(TYPE_ARGUMENT_LIST, COMMA, TYPE_ARGUMENT_RANGLE);
+  private static final Production<ParseType> TYPE_ARGUMENT_PRODUCTION = new Production<ParseType>(TYPE_ARGUMENT_RANGLE);
+  private static final Production<ParseType> LIST_END_PRODUCTION = new Production<ParseType>(TYPE_ARGUMENT_LIST, COMMA, TYPE_ARGUMENT_RANGLE);
 
+  @SuppressWarnings("unchecked")
   public TypeArgumentListRAngleRule()
   {
     super(TYPE_ARGUMENT_LIST_RANGLE, TYPE_ARGUMENT_PRODUCTION, LIST_END_PRODUCTION);
@@ -37,7 +39,7 @@ public class TypeArgumentListRAngleRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (TYPE_ARGUMENT_PRODUCTION.equals(production))
     {

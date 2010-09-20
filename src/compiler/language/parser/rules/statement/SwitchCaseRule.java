@@ -12,6 +12,7 @@ import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.statement.Statement;
 import compiler.language.ast.statement.SwitchCase;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -23,15 +24,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class SwitchCaseRule extends Rule
+public final class SwitchCaseRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION                    = new Production(CASE_KEYWORD,    EXPRESSION, COLON);
-  private static final Production STATEMENTS_PRODUCTION         = new Production(CASE_KEYWORD,    EXPRESSION, COLON, STATEMENTS);
-  private static final Production DEFAULT_PRODUCTION            = new Production(DEFAULT_KEYWORD,             COLON);
-  private static final Production DEFAULT_STATEMENTS_PRODUCTION = new Production(DEFAULT_KEYWORD,             COLON, STATEMENTS);
+  private static final Production<ParseType> PRODUCTION                    = new Production<ParseType>(CASE_KEYWORD,    EXPRESSION, COLON);
+  private static final Production<ParseType> STATEMENTS_PRODUCTION         = new Production<ParseType>(CASE_KEYWORD,    EXPRESSION, COLON, STATEMENTS);
+  private static final Production<ParseType> DEFAULT_PRODUCTION            = new Production<ParseType>(DEFAULT_KEYWORD,             COLON);
+  private static final Production<ParseType> DEFAULT_STATEMENTS_PRODUCTION = new Production<ParseType>(DEFAULT_KEYWORD,             COLON, STATEMENTS);
 
+  @SuppressWarnings("unchecked")
   public SwitchCaseRule()
   {
     super(SWITCH_CASE, PRODUCTION, STATEMENTS_PRODUCTION, DEFAULT_PRODUCTION, DEFAULT_STATEMENTS_PRODUCTION);
@@ -42,7 +44,7 @@ public class SwitchCaseRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

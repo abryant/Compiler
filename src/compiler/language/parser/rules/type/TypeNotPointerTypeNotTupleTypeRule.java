@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.PRIMITIVE_TYPE;
 import static compiler.language.parser.ParseType.TYPE_NOT_POINTER_TYPE_NOT_TUPLE_TYPE;
 import static compiler.language.parser.ParseType.VOID_TYPE;
 
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -17,15 +18,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeNotPointerTypeNotTupleTypeRule extends Rule
+public final class TypeNotPointerTypeNotTupleTypeRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production ARRAY_TYPE_PRODUCTION = new Production(ARRAY_TYPE);
-  private static final Production CLOSURE_TYPE_PRODUCTION = new Production(CLOSURE_TYPE);
-  private static final Production PRIMITIVE_TYPE_PRODUCTION = new Production(PRIMITIVE_TYPE);
-  private static final Production VOID_TYPE_PRODUCTION = new Production(VOID_TYPE);
+  private static final Production<ParseType> ARRAY_TYPE_PRODUCTION = new Production<ParseType>(ARRAY_TYPE);
+  private static final Production<ParseType> CLOSURE_TYPE_PRODUCTION = new Production<ParseType>(CLOSURE_TYPE);
+  private static final Production<ParseType> PRIMITIVE_TYPE_PRODUCTION = new Production<ParseType>(PRIMITIVE_TYPE);
+  private static final Production<ParseType> VOID_TYPE_PRODUCTION = new Production<ParseType>(VOID_TYPE);
 
+  @SuppressWarnings("unchecked")
   public TypeNotPointerTypeNotTupleTypeRule()
   {
     super(TYPE_NOT_POINTER_TYPE_NOT_TUPLE_TYPE, ARRAY_TYPE_PRODUCTION, CLOSURE_TYPE_PRODUCTION, PRIMITIVE_TYPE_PRODUCTION, VOID_TYPE_PRODUCTION);
@@ -36,7 +38,7 @@ public class TypeNotPointerTypeNotTupleTypeRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (ARRAY_TYPE_PRODUCTION.equals(production) || CLOSURE_TYPE_PRODUCTION.equals(production) ||
         PRIMITIVE_TYPE_PRODUCTION.equals(production) || VOID_TYPE_PRODUCTION.equals(production))

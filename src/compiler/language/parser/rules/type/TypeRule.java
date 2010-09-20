@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.TYPE_NOT_QNAME;
 
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.type.PointerType;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -17,13 +18,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeRule extends Rule
+public final class TypeRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(TYPE_NOT_QNAME);
-  private static final Production QNAME_PRODUCTION = new Production(QNAME);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(TYPE_NOT_QNAME);
+  private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(QNAME);
 
+  @SuppressWarnings("unchecked")
   public TypeRule()
   {
     super(TYPE, PRODUCTION, QNAME_PRODUCTION);
@@ -33,7 +35,7 @@ public class TypeRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

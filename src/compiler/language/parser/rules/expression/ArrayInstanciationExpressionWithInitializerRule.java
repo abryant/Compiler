@@ -12,6 +12,7 @@ import compiler.language.ast.expression.ArrayInstanciationExpression;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.misc.Dimensions;
 import compiler.language.ast.type.Type;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -23,12 +24,13 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ArrayInstanciationExpressionWithInitializerRule extends Rule
+public final class ArrayInstanciationExpressionWithInitializerRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSIONS, ARRAY_INITIALIZER);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(NEW_KEYWORD, TYPE_NOT_ARRAY_TYPE, DIMENSIONS, ARRAY_INITIALIZER);
 
+  @SuppressWarnings("unchecked")
   public ArrayInstanciationExpressionWithInitializerRule()
   {
     super(ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER, PRODUCTION);
@@ -39,7 +41,7 @@ public class ArrayInstanciationExpressionWithInitializerRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

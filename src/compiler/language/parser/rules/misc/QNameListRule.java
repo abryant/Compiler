@@ -9,6 +9,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -20,15 +21,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class QNameListRule extends Rule
+public final class QNameListRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production END_QNAME_PRODUCTION = new Production(QNAME);
-  private static final Production END_NESTED_QNAME_LIST_PRODUCTION = new Production(NESTED_QNAME_LIST);
-  private static final Production CONTINUATION_QNAME_PRODUCTION = new Production(QNAME, COMMA, QNAME_LIST);
-  private static final Production CONTINUATION_NESTED_QNAME_LIST_PRODUCTION = new Production(NESTED_QNAME_LIST, COMMA, QNAME_LIST);
+  private static final Production<ParseType> END_QNAME_PRODUCTION = new Production<ParseType>(QNAME);
+  private static final Production<ParseType> END_NESTED_QNAME_LIST_PRODUCTION = new Production<ParseType>(NESTED_QNAME_LIST);
+  private static final Production<ParseType> CONTINUATION_QNAME_PRODUCTION = new Production<ParseType>(QNAME, COMMA, QNAME_LIST);
+  private static final Production<ParseType> CONTINUATION_NESTED_QNAME_LIST_PRODUCTION = new Production<ParseType>(NESTED_QNAME_LIST, COMMA, QNAME_LIST);
 
+  @SuppressWarnings("unchecked")
   public QNameListRule()
   {
     super(QNAME_LIST, END_QNAME_PRODUCTION, END_NESTED_QNAME_LIST_PRODUCTION,
@@ -40,7 +42,7 @@ public class QNameListRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (END_QNAME_PRODUCTION.equals(production))
     {

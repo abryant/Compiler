@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.DECLARATION_ASSIGNEE_LIST;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.DeclarationAssignee;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -18,13 +19,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class DeclarationAssigneeListRule extends Rule
+public final class DeclarationAssigneeListRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION = new Production(DECLARATION_ASSIGNEE);
-  private static final Production CONTINUATION_PRODUCTION = new Production(DECLARATION_ASSIGNEE_LIST, COMMA, DECLARATION_ASSIGNEE);
+  private static final Production<ParseType> START_PRODUCTION = new Production<ParseType>(DECLARATION_ASSIGNEE);
+  private static final Production<ParseType> CONTINUATION_PRODUCTION = new Production<ParseType>(DECLARATION_ASSIGNEE_LIST, COMMA, DECLARATION_ASSIGNEE);
 
+  @SuppressWarnings("unchecked")
   public DeclarationAssigneeListRule()
   {
     super(DECLARATION_ASSIGNEE_LIST, START_PRODUCTION, CONTINUATION_PRODUCTION);
@@ -35,7 +37,7 @@ public class DeclarationAssigneeListRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

@@ -26,7 +26,7 @@ import compiler.parser.Tokenizer;
 /**
  * @author Anthony Bryant
  */
-public class LanguageTokenizer extends Tokenizer
+public class LanguageTokenizer extends Tokenizer<ParseType>
 {
 
   private static final Map<String, ParseType> KEYWORDS = new HashMap<String, ParseType>();
@@ -275,7 +275,7 @@ public class LanguageTokenizer extends Tokenizer
    * @throws IOException - if an error occurs while reading from the stream
    * @throws LanguageParseException - if an invalid character sequence is detected
    */
-  private Token readNameOrKeyword() throws IOException, LanguageParseException
+  private Token<ParseType> readNameOrKeyword() throws IOException, LanguageParseException
   {
     int nextChar = reader.read(0);
     if (nextChar < 0 || (!Character.isLetter(nextChar) && nextChar != '_'))
@@ -307,7 +307,7 @@ public class LanguageTokenizer extends Tokenizer
     ParseType keyword = KEYWORDS.get(name);
     if (keyword != null)
     {
-      return new Token(keyword, new ParseInfo(currentLine, currentColumn - index, currentColumn));
+      return new Token<ParseType>(keyword, new ParseInfo(currentLine, currentColumn - index, currentColumn));
     }
 
     // check if the name is the start of a since specifier, and if it is then read the rest of it
@@ -319,11 +319,11 @@ public class LanguageTokenizer extends Tokenizer
     // check if the name is an underscore, and if it is then return it
     if (name.equals("_"))
     {
-      return new Token(ParseType.UNDERSCORE, new ParseInfo(currentLine, currentColumn - index, currentColumn));
+      return new Token<ParseType>(ParseType.UNDERSCORE, new ParseInfo(currentLine, currentColumn - index, currentColumn));
     }
 
     // we have a name, so return it
-    return new Token(ParseType.NAME, new Name(name, new ParseInfo(currentLine, currentColumn - index, currentColumn)));
+    return new Token<ParseType>(ParseType.NAME, new Name(name, new ParseInfo(currentLine, currentColumn - index, currentColumn)));
   }
 
   /**
@@ -334,7 +334,7 @@ public class LanguageTokenizer extends Tokenizer
    * @throws IOException - if an error occurs while reading from the stream
    * @throws LanguageParseException - if an invalid token is detected in the since specifier
    */
-  private Token readSinceSpecifier(ParseInfo sinceKeywordInfo) throws IOException, LanguageParseException
+  private Token<ParseType> readSinceSpecifier(ParseInfo sinceKeywordInfo) throws IOException, LanguageParseException
   {
     // skip whitespace between "since" and "("
     skipWhitespaceAndComments();
@@ -352,7 +352,7 @@ public class LanguageTokenizer extends Tokenizer
     skipWhitespaceAndComments();
 
     // read the first number
-    Token firstLiteralToken = readIntegerLiteral();
+    Token<ParseType> firstLiteralToken = readIntegerLiteral();
     if (firstLiteralToken == null)
     {
       throw new LanguageParseException("Expected integer literal in since specifier.", new ParseInfo(currentLine, currentColumn));
@@ -376,7 +376,7 @@ public class LanguageTokenizer extends Tokenizer
         skipWhitespaceAndComments();
 
         // read the next version number part
-        Token literalToken = readIntegerLiteral();
+        Token<ParseType> literalToken = readIntegerLiteral();
         if (literalToken == null)
         {
           throw new LanguageParseException("Expected integer literal in since specifier.", new ParseInfo(currentLine, currentColumn));
@@ -405,7 +405,7 @@ public class LanguageTokenizer extends Tokenizer
     }
 
     SinceSpecifier sinceSpecifier = new SinceSpecifier(version, ParseInfo.combine(sinceKeywordInfo, lparenInfo, version.getParseInfo(), rparenInfo));
-    return new Token(ParseType.SINCE_SPECIFIER, sinceSpecifier);
+    return new Token<ParseType>(ParseType.SINCE_SPECIFIER, sinceSpecifier);
   }
 
   /**
@@ -415,7 +415,7 @@ public class LanguageTokenizer extends Tokenizer
    * @return a Token read from the input stream, or null if no Token could be read
    * @throws IOException - if an error occurs while reading from the stream
    */
-  private Token readFloatingLiteral() throws IOException
+  private Token<ParseType> readFloatingLiteral() throws IOException
   {
     int nextChar;
     int index = 0;
@@ -506,7 +506,7 @@ public class LanguageTokenizer extends Tokenizer
       FloatingLiteral literal = new FloatingLiteral(floatingPointText, new ParseInfo(currentLine, currentColumn, currentColumn + index));
       reader.discard(index);
       currentColumn += index;
-      return new Token(ParseType.FLOATING_LITERAL, literal);
+      return new Token<ParseType>(ParseType.FLOATING_LITERAL, literal);
     }
 
     // there was no valid floating literal, so do not return a Token
@@ -521,7 +521,7 @@ public class LanguageTokenizer extends Tokenizer
    * @throws IOException - if an error occurs while reading from the stream
    * @throws LanguageParseException - if an unexpected character sequence is detected inside the integer literal
    */
-  private Token readIntegerLiteral() throws IOException, LanguageParseException
+  private Token<ParseType> readIntegerLiteral() throws IOException, LanguageParseException
   {
     int nextChar = reader.read(0);
     int index = 1;
@@ -562,7 +562,7 @@ public class LanguageTokenizer extends Tokenizer
         IntegerLiteral literal = new IntegerLiteral(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
         reader.discard(buffer.length());
         currentColumn += buffer.length();
-        return new Token(ParseType.INTEGER_LITERAL, literal);
+        return new Token<ParseType>(ParseType.INTEGER_LITERAL, literal);
       }
       // backtrack an index, as we do not have b, o, or x as the second character in the literal
       // this makes it easier to parse the decimal literal without ignoring the character after the 0
@@ -576,7 +576,7 @@ public class LanguageTokenizer extends Tokenizer
       IntegerLiteral literal = new IntegerLiteral(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
       reader.discard(buffer.length());
       currentColumn += buffer.length();
-      return new Token(ParseType.INTEGER_LITERAL, literal);
+      return new Token<ParseType>(ParseType.INTEGER_LITERAL, literal);
     }
 
     // backtrack an index, as we do not have 0 as the first character in the literal
@@ -592,7 +592,7 @@ public class LanguageTokenizer extends Tokenizer
     IntegerLiteral literal = new IntegerLiteral(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
     reader.discard(buffer.length());
     currentColumn += buffer.length();
-    return new Token(ParseType.INTEGER_LITERAL, literal);
+    return new Token<ParseType>(ParseType.INTEGER_LITERAL, literal);
   }
 
   /**
@@ -637,7 +637,7 @@ public class LanguageTokenizer extends Tokenizer
    * @throws IOException - if an error occurs while reading from the stream
    * @throws LanguageParseException - if an unexpected character is detected inside the character literal
    */
-  private Token readCharacterLiteral() throws IOException, LanguageParseException
+  private Token<ParseType> readCharacterLiteral() throws IOException, LanguageParseException
   {
     int nextChar = reader.read(0);
     if (nextChar != '\'')
@@ -688,7 +688,7 @@ public class LanguageTokenizer extends Tokenizer
     CharacterLiteral literal = new CharacterLiteral(character, stringRepresentation.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + index));
     reader.discard(index);
     currentColumn += index;
-    return new Token(ParseType.CHARACTER_LITERAL, literal);
+    return new Token<ParseType>(ParseType.CHARACTER_LITERAL, literal);
   }
 
   /**
@@ -699,7 +699,7 @@ public class LanguageTokenizer extends Tokenizer
    * @throws IOException - if an error occurs while reading from the stream
    * @throws LanguageParseException - if an unexpected character is detected inside the string literal
    */
-  private Token readStringLiteral() throws IOException, LanguageParseException
+  private Token<ParseType> readStringLiteral() throws IOException, LanguageParseException
   {
     int nextChar = reader.read(0);
     if (nextChar != '"')
@@ -752,7 +752,7 @@ public class LanguageTokenizer extends Tokenizer
     StringLiteral literal = new StringLiteral(buffer.toString(), stringRepresentation.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + index));
     reader.discard(index);
     currentColumn += index;
-    return new Token(ParseType.STRING_LITERAL, literal);
+    return new Token<ParseType>(ParseType.STRING_LITERAL, literal);
   }
 
   /**
@@ -849,7 +849,7 @@ public class LanguageTokenizer extends Tokenizer
    * @return a Token read from the input stream, or null if no Token could be read
    * @throws IOException - if an error occurs while reading from the stream
    */
-  private Token readSymbol() throws IOException
+  private Token<ParseType> readSymbol() throws IOException
   {
     int nextChar = reader.read(0);
     if (nextChar < 0)
@@ -1111,24 +1111,24 @@ public class LanguageTokenizer extends Tokenizer
    * @return the Token created
    * @throws IOException - if there is an error discarding the characters that were read in
    */
-  private Token makeSymbolToken(ParseType parseType, int length) throws IOException
+  private Token<ParseType> makeSymbolToken(ParseType parseType, int length) throws IOException
   {
     reader.discard(length);
     currentColumn += length;
-    return new Token(parseType, new ParseInfo(currentLine, currentColumn - length, currentColumn));
+    return new Token<ParseType>(parseType, new ParseInfo(currentLine, currentColumn - length, currentColumn));
   }
 
   /**
    * @see compiler.parser.Tokenizer#generateToken()
    */
   @Override
-  protected Token generateToken() throws ParseException
+  protected Token<ParseType> generateToken() throws ParseException
   {
     try
     {
       skipWhitespaceAndComments();
 
-      Token token = readNameOrKeyword();
+      Token<ParseType> token = readNameOrKeyword();
       if (token != null)
       {
         return token;

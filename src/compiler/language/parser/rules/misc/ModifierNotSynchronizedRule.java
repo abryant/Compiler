@@ -14,6 +14,7 @@ import static compiler.language.parser.ParseType.VOLATILE_KEYWORD;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.misc.ModifierType;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -25,20 +26,21 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ModifierNotSynchronizedRule extends Rule
+public final class ModifierNotSynchronizedRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production STATIC_PRODUCTION = new Production(STATIC_KEYWORD);
-  private static final Production ABSTRACT_PRODUCTION = new Production(ABSTRACT_KEYWORD);
-  private static final Production FINAL_PRODUCTION = new Production(FINAL_KEYWORD);
-  private static final Production MUTABLE_PRODUCTION = new Production(MUTABLE_KEYWORD);
-  private static final Production IMMUTABLE_PRODUCTION = new Production(IMMUTABLE_KEYWORD);
-  private static final Production TRANSIENT_PRODUCTION = new Production(TRANSIENT_KEYWORD);
-  private static final Production VOLATILE_PRODUCTION = new Production(VOLATILE_KEYWORD);
-  private static final Production NATIVE_SPECIFIER_PRODUCTION = new Production(NATIVE_SPECIFIER);
-  private static final Production SINCE_SPECIFIER_PRODUCTION = new Production(SINCE_SPECIFIER);
+  private static final Production<ParseType> STATIC_PRODUCTION = new Production<ParseType>(STATIC_KEYWORD);
+  private static final Production<ParseType> ABSTRACT_PRODUCTION = new Production<ParseType>(ABSTRACT_KEYWORD);
+  private static final Production<ParseType> FINAL_PRODUCTION = new Production<ParseType>(FINAL_KEYWORD);
+  private static final Production<ParseType> MUTABLE_PRODUCTION = new Production<ParseType>(MUTABLE_KEYWORD);
+  private static final Production<ParseType> IMMUTABLE_PRODUCTION = new Production<ParseType>(IMMUTABLE_KEYWORD);
+  private static final Production<ParseType> TRANSIENT_PRODUCTION = new Production<ParseType>(TRANSIENT_KEYWORD);
+  private static final Production<ParseType> VOLATILE_PRODUCTION = new Production<ParseType>(VOLATILE_KEYWORD);
+  private static final Production<ParseType> NATIVE_SPECIFIER_PRODUCTION = new Production<ParseType>(NATIVE_SPECIFIER);
+  private static final Production<ParseType> SINCE_SPECIFIER_PRODUCTION = new Production<ParseType>(SINCE_SPECIFIER);
 
+  @SuppressWarnings("unchecked")
   public ModifierNotSynchronizedRule()
   {
     super(MODIFIER_NOT_SYNCHRONIZED, STATIC_PRODUCTION, ABSTRACT_PRODUCTION, FINAL_PRODUCTION, MUTABLE_PRODUCTION, IMMUTABLE_PRODUCTION,
@@ -50,7 +52,7 @@ public class ModifierNotSynchronizedRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (STATIC_PRODUCTION.equals(production))
     {

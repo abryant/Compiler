@@ -9,6 +9,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.type.TupleType;
 import compiler.language.ast.type.Type;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -20,12 +21,13 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TupleTypeNotQNameListRule extends Rule
+public final class TupleTypeNotQNameListRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(LPAREN, TYPE_LIST_NOT_QNAME_LIST, RPAREN);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(LPAREN, TYPE_LIST_NOT_QNAME_LIST, RPAREN);
 
+  @SuppressWarnings("unchecked")
   public TupleTypeNotQNameListRule()
   {
     super(TUPLE_TYPE_NOT_QNAME_LIST, PRODUCTION);
@@ -36,7 +38,7 @@ public class TupleTypeNotQNameListRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

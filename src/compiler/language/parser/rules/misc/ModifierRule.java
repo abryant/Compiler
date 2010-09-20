@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.SYNCHRONIZED_KEYWORD;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.Modifier;
 import compiler.language.ast.misc.ModifierType;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -18,13 +19,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ModifierRule extends Rule
+public final class ModifierRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(MODIFIER_NOT_SYNCHRONIZED);
-  private static final Production SYNCHRONIZED_PRODUCTION = new Production(SYNCHRONIZED_KEYWORD);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(MODIFIER_NOT_SYNCHRONIZED);
+  private static final Production<ParseType> SYNCHRONIZED_PRODUCTION = new Production<ParseType>(SYNCHRONIZED_KEYWORD);
 
+  @SuppressWarnings("unchecked")
   public ModifierRule()
   {
     super(MODIFIER, PRODUCTION, SYNCHRONIZED_PRODUCTION);
@@ -34,7 +36,7 @@ public class ModifierRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

@@ -19,6 +19,7 @@ import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeArgument;
 import compiler.language.ast.typeDefinition.ClassDefinition;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -30,13 +31,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ClassDefinitionRule extends Rule
+public final class ClassDefinitionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(MEMBER_HEADER, CLASS_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE);
-  private static final Production TYPE_ARGUMENTS_PRODUCTION = new Production(MEMBER_HEADER, CLASS_KEYWORD, NAME, TYPE_ARGUMENTS, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(MEMBER_HEADER, CLASS_KEYWORD, NAME, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE);
+  private static final Production<ParseType> TYPE_ARGUMENTS_PRODUCTION = new Production<ParseType>(MEMBER_HEADER, CLASS_KEYWORD, NAME, TYPE_ARGUMENTS, CLASS_EXTENDS_CLAUSE, IMPLEMENTS_CLAUSE, LBRACE, MEMBER_LIST, RBRACE);
 
+  @SuppressWarnings("unchecked")
   public ClassDefinitionRule()
   {
     super(CLASS_DEFINITION, PRODUCTION, TYPE_ARGUMENTS_PRODUCTION);
@@ -46,7 +48,7 @@ public class ClassDefinitionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

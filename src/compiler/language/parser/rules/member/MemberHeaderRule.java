@@ -9,6 +9,7 @@ import compiler.language.ast.ParseList;
 import compiler.language.ast.member.AccessSpecifier;
 import compiler.language.ast.member.MemberHeader;
 import compiler.language.ast.misc.Modifier;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -20,13 +21,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class MemberHeaderRule extends Rule
+public final class MemberHeaderRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(ACCESS_SPECIFIER, MODIFIERS);
-  private static final Production NO_MODIFIERS_PRODUCTION = new Production(ACCESS_SPECIFIER);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(ACCESS_SPECIFIER, MODIFIERS);
+  private static final Production<ParseType> NO_MODIFIERS_PRODUCTION = new Production<ParseType>(ACCESS_SPECIFIER);
 
+  @SuppressWarnings("unchecked")
   public MemberHeaderRule()
   {
     super(MEMBER_HEADER, PRODUCTION, NO_MODIFIERS_PRODUCTION);
@@ -36,7 +38,7 @@ public class MemberHeaderRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

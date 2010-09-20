@@ -8,6 +8,7 @@ import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BitwiseOrExpression;
 import compiler.language.ast.expression.Expression;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -19,16 +20,17 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class BitwiseOrExpressionRule extends Rule
+public final class BitwiseOrExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION          = new Production(BITWISE_XOR_EXPRESSION);
-  private static final Production OR_PRODUCTION             = new Production(BITWISE_OR_EXPRESSION, PIPE, BITWISE_XOR_EXPRESSION);
-  private static final Production OR_QNAME_PRODUCTION       = new Production(BITWISE_OR_EXPRESSION, PIPE, QNAME_EXPRESSION);
-  private static final Production QNAME_OR_PRODUCTION       = new Production(QNAME_EXPRESSION,      PIPE, BITWISE_XOR_EXPRESSION);
-  private static final Production QNAME_OR_QNAME_PRODUCTION = new Production(QNAME_EXPRESSION,      PIPE, QNAME_EXPRESSION);
+  private static final Production<ParseType> START_PRODUCTION          = new Production<ParseType>(BITWISE_XOR_EXPRESSION);
+  private static final Production<ParseType> OR_PRODUCTION             = new Production<ParseType>(BITWISE_OR_EXPRESSION, PIPE, BITWISE_XOR_EXPRESSION);
+  private static final Production<ParseType> OR_QNAME_PRODUCTION       = new Production<ParseType>(BITWISE_OR_EXPRESSION, PIPE, QNAME_EXPRESSION);
+  private static final Production<ParseType> QNAME_OR_PRODUCTION       = new Production<ParseType>(QNAME_EXPRESSION,      PIPE, BITWISE_XOR_EXPRESSION);
+  private static final Production<ParseType> QNAME_OR_QNAME_PRODUCTION = new Production<ParseType>(QNAME_EXPRESSION,      PIPE, QNAME_EXPRESSION);
 
+  @SuppressWarnings("unchecked")
   public BitwiseOrExpressionRule()
   {
     super(BITWISE_OR_EXPRESSION, START_PRODUCTION, OR_PRODUCTION, OR_QNAME_PRODUCTION, QNAME_OR_PRODUCTION, QNAME_OR_QNAME_PRODUCTION);
@@ -39,7 +41,7 @@ public class BitwiseOrExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

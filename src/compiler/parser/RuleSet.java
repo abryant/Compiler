@@ -15,30 +15,31 @@ import java.util.Set;
 /**
  * Stores a set of rules, and provides methods for finding information about them.
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  */
-public class RuleSet
+public class RuleSet<T extends Enum<T>>
 {
 
-  protected Map<Object, Rule> rules;
-  protected Rule startRule = null;
+  protected Map<T, Rule<T>> rules;
+  protected Rule<T> startRule = null;
 
-  private Map<Object, Set<TypeUseEntry>> typeUses = new HashMap<Object, Set<TypeUseEntry>>();
+  private Map<T, Set<TypeUseEntry<T>>> typeUses = new HashMap<T, Set<TypeUseEntry<T>>>();
 
   // a lazily evaluated set containing the types that are nullable (i.e. can be epsilon)
   // populated in findNullableSet()
-  private Set<Object> nullableTypes = null;
+  private Set<T> nullableTypes = null;
 
-  private Map<Object, Set<Object>> firstSets = new HashMap<Object, Set<Object>>();
-  private Map<Object, Set<Object>> followSets = new HashMap<Object, Set<Object>>();
+  private Map<T, Set<T>> firstSets = new HashMap<T, Set<T>>();
+  private Map<T, Set<T>> followSets = new HashMap<T, Set<T>>();
 
   /**
    * Creates a new RuleSet with the specified rules
    * @param rules - the rules to contain in this RuleSet
    */
-  public RuleSet(Set<Rule> rules)
+  public RuleSet(Set<Rule<T>> rules)
   {
-    this.rules = new HashMap<Object, Rule>();
-    for (Rule rule : rules)
+    this.rules = new HashMap<T, Rule<T>>();
+    for (Rule<T> rule : rules)
     {
       addRule(rule);
     }
@@ -49,7 +50,7 @@ public class RuleSet
    */
   public RuleSet()
   {
-    rules = new HashMap<Object, Rule>();
+    rules = new HashMap<T, Rule<T>>();
   }
 
   /**
@@ -59,7 +60,7 @@ public class RuleSet
    * This means that neither the existing rule nor the new rule will be contained directly in the RuleSet, instead they will be added via a MetaRule
    * @param rule - the rule to add
    */
-  public void addRule(Rule rule)
+  public void addRule(Rule<T> rule)
   {
     // clear the caches
     nullableTypes = null;
@@ -67,14 +68,14 @@ public class RuleSet
     firstSets.clear();
     followSets.clear();
 
-    Rule existing = rules.get(rule.getType());
+    Rule<T> existing = rules.get(rule.getType());
     if (existing == null)
     {
       rules.put(rule.getType(), rule);
     }
     else
     {
-      rules.put(rule.getType(), new MetaRule(existing, rule));
+      rules.put(rule.getType(), new MetaRule<T>(existing, rule));
     }
   }
 
@@ -82,7 +83,7 @@ public class RuleSet
    * Adds the specified rule as the starting rule for the grammar.
    * @param rule - the new starting rule for this grammar.
    */
-  public void addStartRule(Rule rule)
+  public void addStartRule(Rule<T> rule)
   {
     addRule(rule);
     startRule = rule;
@@ -91,7 +92,7 @@ public class RuleSet
   /**
    * @return the start rule for this grammar
    */
-  public Rule getStartRule()
+  public Rule<T> getStartRule()
   {
     return startRule;
   }
@@ -101,7 +102,7 @@ public class RuleSet
    * @param tokenType - the type to check
    * @return true if the specified type is a terminal, false otherwise
    */
-  public boolean isTerminal(Object tokenType)
+  public boolean isTerminal(T tokenType)
   {
     return rules.get(tokenType) == null;
   }
@@ -112,21 +113,21 @@ public class RuleSet
    */
   private void findNullableSet()
   {
-    nullableTypes = new HashSet<Object>();
+    nullableTypes = new HashSet<T>();
 
     // keep looping until no elements are added to the nullable set in an iteration
     boolean changed = true;
     while (changed)
     {
       changed = false;
-      for (Entry<Object, Rule> entry : rules.entrySet())
+      for (Entry<T, Rule<T>> entry : rules.entrySet())
       {
-        Object type = entry.getKey();
-        Production[] productions = entry.getValue().getProductions();
-        for (Production production : productions)
+        T type = entry.getKey();
+        Production<T>[] productions = entry.getValue().getProductions();
+        for (Production<T> production : productions)
         {
           boolean nullable = true;
-          for (Object subType : production.getTypes())
+          for (T subType : production.getTypes())
           {
             if (!nullableTypes.contains(subType))
             {
@@ -151,7 +152,7 @@ public class RuleSet
    * @param type - the type to check
    * @return true if the specified type is nullable, false otherwise
    */
-  protected boolean isNullable(Object type)
+  protected boolean isNullable(T type)
   {
     if (nullableTypes == null)
     {
@@ -165,25 +166,25 @@ public class RuleSet
    */
   private void findTypeUses()
   {
-    typeUses = new HashMap<Object, Set<TypeUseEntry>>();
+    typeUses = new HashMap<T, Set<TypeUseEntry<T>>>();
 
-    for (Rule rule : rules.values())
+    for (Rule<T> rule : rules.values())
     {
       // add type uses for all of the right hand sides of the Rule
-      Production[] productions = rule.getProductions();
+      Production<T>[] productions = rule.getProductions();
       for (int i = 0; i < productions.length; i++)
       {
-        Object[] productionTypes = productions[i].getTypes();
+        T[] productionTypes = productions[i].getTypes();
         for (int j = 0; j < productionTypes.length; j++)
         {
-          Object type = productionTypes[j];
-          Set<TypeUseEntry> uses = typeUses.get(type);
+          T type = productionTypes[j];
+          Set<TypeUseEntry<T>> uses = typeUses.get(type);
           if (uses == null)
           {
-            uses = new HashSet<TypeUseEntry>();
+            uses = new HashSet<TypeUseEntry<T>>();
             typeUses.put(type, uses);
           }
-          uses.add(new TypeUseEntry(rule, i, j));
+          uses.add(new TypeUseEntry<T>(rule, i, j));
         }
       }
     }
@@ -194,7 +195,7 @@ public class RuleSet
    * @param type - the type to find the uses of
    * @return the set of uses of the specified type
    */
-  protected Set<TypeUseEntry> getTypeUses(Object type)
+  protected Set<TypeUseEntry<T>> getTypeUses(T type)
   {
     if (typeUses == null)
     {
@@ -211,25 +212,25 @@ public class RuleSet
    * @param tokenType - the type of the token to find the first set of
    * @return a set of token types that could start a derivation of the specified token type
    */
-  public Set<Object> getFirstSet(Object tokenType)
+  public Set<T> getFirstSet(T tokenType)
   {
     // check whether the result has already been cached
-    Set<Object> cachedResult = firstSets.get(tokenType);
+    Set<T> cachedResult = firstSets.get(tokenType);
     if (cachedResult != null)
     {
       return cachedResult;
     }
 
-    Deque<Object> stack = new LinkedList<Object>();
+    Deque<T> stack = new LinkedList<T>();
     stack.add(tokenType);
 
-    Set<Object> visited = new HashSet<Object>();
+    Set<T> visited = new HashSet<T>();
 
-    Set<Object> result = new HashSet<Object>();
+    Set<T> result = new HashSet<T>();
 
     while (!stack.isEmpty())
     {
-      Object currentType = stack.pop();
+      T currentType = stack.pop();
       // only visit each type once
       if (visited.contains(currentType))
       {
@@ -238,7 +239,7 @@ public class RuleSet
       visited.add(currentType);
 
       // find the productions for this type
-      Rule rule = rules.get(currentType);
+      Rule<T> rule = rules.get(currentType);
       if (rule == null)
       {
         // this is a terminal, so just add the terminal itself to the result
@@ -246,14 +247,14 @@ public class RuleSet
         continue;
       }
 
-      Production[] productions = rule.getProductions();
+      Production<T>[] productions = rule.getProductions();
 
       // for each production, add the applicable subtypes (from the RHS of the rule) to the stack
-      for (Production production : productions)
+      for (Production<T> production : productions)
       {
         // iterate through the production in order, and break when a non-nullable type is reached
         // this adds all reachable types to the stack, to be computed later on
-        for (Object type : production.getTypes())
+        for (T type : production.getTypes())
         {
           stack.push(type);
           if (!isNullable(type))

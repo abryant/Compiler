@@ -8,6 +8,7 @@ import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.BooleanOrExpression;
 import compiler.language.ast.expression.Expression;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -19,16 +20,17 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class BooleanOrExpressionRule extends Rule
+public final class BooleanOrExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION          = new Production(BOOLEAN_XOR_EXPRESSION);
-  private static final Production OR_PRODUCTION             = new Production(BOOLEAN_OR_EXPRESSION,         DOUBLE_PIPE, BOOLEAN_XOR_EXPRESSION);
-  private static final Production OR_QNAME_PRODUCTION       = new Production(BOOLEAN_OR_EXPRESSION,         DOUBLE_PIPE, QNAME_OR_LESS_THAN_EXPRESSION);
-  private static final Production QNAME_OR_PRODUCTION       = new Production(QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_PIPE, BOOLEAN_XOR_EXPRESSION);
-  private static final Production QNAME_OR_QNAME_PRODUCTION = new Production(QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_PIPE, QNAME_OR_LESS_THAN_EXPRESSION);
+  private static final Production<ParseType> START_PRODUCTION          = new Production<ParseType>(BOOLEAN_XOR_EXPRESSION);
+  private static final Production<ParseType> OR_PRODUCTION             = new Production<ParseType>(BOOLEAN_OR_EXPRESSION,         DOUBLE_PIPE, BOOLEAN_XOR_EXPRESSION);
+  private static final Production<ParseType> OR_QNAME_PRODUCTION       = new Production<ParseType>(BOOLEAN_OR_EXPRESSION,         DOUBLE_PIPE, QNAME_OR_LESS_THAN_EXPRESSION);
+  private static final Production<ParseType> QNAME_OR_PRODUCTION       = new Production<ParseType>(QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_PIPE, BOOLEAN_XOR_EXPRESSION);
+  private static final Production<ParseType> QNAME_OR_QNAME_PRODUCTION = new Production<ParseType>(QNAME_OR_LESS_THAN_EXPRESSION, DOUBLE_PIPE, QNAME_OR_LESS_THAN_EXPRESSION);
 
+  @SuppressWarnings("unchecked")
   public BooleanOrExpressionRule()
   {
     super(BOOLEAN_OR_EXPRESSION, START_PRODUCTION, OR_PRODUCTION, OR_QNAME_PRODUCTION, QNAME_OR_PRODUCTION, QNAME_OR_QNAME_PRODUCTION);
@@ -39,7 +41,7 @@ public class BooleanOrExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

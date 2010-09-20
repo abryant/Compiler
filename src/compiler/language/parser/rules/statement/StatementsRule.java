@@ -6,6 +6,7 @@ import static compiler.language.parser.ParseType.STATEMENTS;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.statement.Statement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -17,13 +18,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class StatementsRule extends Rule
+public final class StatementsRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION = new Production(STATEMENT);
-  private static final Production CONTINUATION_PRODUCTION = new Production(STATEMENTS, STATEMENT);
+  private static final Production<ParseType> START_PRODUCTION = new Production<ParseType>(STATEMENT);
+  private static final Production<ParseType> CONTINUATION_PRODUCTION = new Production<ParseType>(STATEMENTS, STATEMENT);
 
+  @SuppressWarnings("unchecked")
   public StatementsRule()
   {
     super(STATEMENTS, START_PRODUCTION, CONTINUATION_PRODUCTION);
@@ -33,7 +35,7 @@ public class StatementsRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

@@ -15,6 +15,7 @@ import compiler.language.ast.expression.BooleanNotExpression;
 import compiler.language.ast.expression.Expression;
 import compiler.language.ast.expression.UnaryMinusExpression;
 import compiler.language.ast.expression.UnaryPlusExpression;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -26,23 +27,24 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class UnaryExpressionRule extends Rule
+public final class UnaryExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRIMARY_PRODUCTION = new Production(PRIMARY);
-  private static final Production CAST_PRODUCTION = new Production(CAST_EXPRESSION);
+  private static final Production<ParseType> PRIMARY_PRODUCTION = new Production<ParseType>(PRIMARY);
+  private static final Production<ParseType> CAST_PRODUCTION = new Production<ParseType>(CAST_EXPRESSION);
 
-  private static final Production UNARY_PLUS_PRODUCTION = new Production(PLUS, UNARY_EXPRESSION);
-  private static final Production UNARY_PLUS_QNAME_PRODUCTION = new Production(PLUS, QNAME_EXPRESSION);
-  private static final Production UNARY_MINUS_PRODUCTION = new Production(MINUS, UNARY_EXPRESSION);
-  private static final Production UNARY_MINUS_QNAME_PRODUCTION = new Production(MINUS, QNAME_EXPRESSION);
-  private static final Production BOOLEAN_NOT_PRODUCTION = new Production(EXCLAIMATION_MARK, UNARY_EXPRESSION);
-  private static final Production BOOLEAN_NOT_QNAME_PRODUCTION = new Production(EXCLAIMATION_MARK, QNAME_EXPRESSION);
-  private static final Production BITWISE_NOT_PRODUCTION = new Production(TILDE, UNARY_EXPRESSION);
-  private static final Production BITWISE_NOT_QNAME_PRODUCTION = new Production(TILDE, QNAME_EXPRESSION);
+  private static final Production<ParseType> UNARY_PLUS_PRODUCTION = new Production<ParseType>(PLUS, UNARY_EXPRESSION);
+  private static final Production<ParseType> UNARY_PLUS_QNAME_PRODUCTION = new Production<ParseType>(PLUS, QNAME_EXPRESSION);
+  private static final Production<ParseType> UNARY_MINUS_PRODUCTION = new Production<ParseType>(MINUS, UNARY_EXPRESSION);
+  private static final Production<ParseType> UNARY_MINUS_QNAME_PRODUCTION = new Production<ParseType>(MINUS, QNAME_EXPRESSION);
+  private static final Production<ParseType> BOOLEAN_NOT_PRODUCTION = new Production<ParseType>(EXCLAIMATION_MARK, UNARY_EXPRESSION);
+  private static final Production<ParseType> BOOLEAN_NOT_QNAME_PRODUCTION = new Production<ParseType>(EXCLAIMATION_MARK, QNAME_EXPRESSION);
+  private static final Production<ParseType> BITWISE_NOT_PRODUCTION = new Production<ParseType>(TILDE, UNARY_EXPRESSION);
+  private static final Production<ParseType> BITWISE_NOT_QNAME_PRODUCTION = new Production<ParseType>(TILDE, QNAME_EXPRESSION);
 
 
+  @SuppressWarnings("unchecked")
   public UnaryExpressionRule()
   {
     super(UNARY_EXPRESSION, PRIMARY_PRODUCTION,     CAST_PRODUCTION,
@@ -57,7 +59,7 @@ public class UnaryExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRIMARY_PRODUCTION.equals(production) || CAST_PRODUCTION.equals(production))
     {

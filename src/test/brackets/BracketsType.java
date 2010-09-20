@@ -9,6 +9,8 @@ package test.brackets;
  */
 public enum BracketsType
 {
+  GENERATED_START_RULE,
+
   TOP_LEVEL, // Bracket[]
   BRACKET,  // Bracket
   BRACKETS, // Bracket[]

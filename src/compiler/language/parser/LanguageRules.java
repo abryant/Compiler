@@ -184,7 +184,11 @@ import compiler.parser.lalr.LALRRuleSet;
 public class LanguageRules
 {
 
-  private static final Rule startRule = new CompilationUnitRule();
+  private static final Rule<ParseType> startRule = new CompilationUnitRule();
+
+  // these are all of type Rule<ParseType>, but an array of Rule<ParseType>
+  // cannot be created, so we use the raw type here
+  @SuppressWarnings("rawtypes")
   private static final Rule[] rules = new Rule[]
   {
     // top level
@@ -374,11 +378,11 @@ public class LanguageRules
   /**
    * @return an LALRRuleSet containing all of the rules needed to parse this language
    */
-  public static LALRRuleSet getRuleSet()
+  public static LALRRuleSet<ParseType> getRuleSet()
   {
-    LALRRuleSet ruleSet = new LALRRuleSet();
+    LALRRuleSet<ParseType> ruleSet = new LALRRuleSet<ParseType>();
     ruleSet.addStartRule(startRule);
-    for (Rule rule : rules)
+    for (Rule<ParseType> rule : rules)
     {
       ruleSet.addRule(rule);
     }

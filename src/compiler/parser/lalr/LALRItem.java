@@ -16,8 +16,9 @@ import compiler.parser.TypeUseEntry;
  * Represents an LALR item, used during generation of an LALR parse table.
  *
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  */
-public final class LALRItem
+public final class LALRItem<T extends Enum<T>>
 {
 
   // a TypeUseEntry representing the next token to be used
@@ -32,9 +33,9 @@ public final class LALRItem
    * For items of the form <code>A -> bCd.</code>
    * the offset of the type use entry is equal to the length of the production.
    */
-  private TypeUseEntry nextTypeUse;
+  private TypeUseEntry<T> nextTypeUse;
 
-  private Set<Object> lookaheadTokens;
+  private Set<T> lookaheadTokens;
 
   /**
    * Creates a new LALRItem with the specified rule, production index and offset
@@ -42,29 +43,29 @@ public final class LALRItem
    * @param productionIndex - the index of the production in this rule
    * @param offset - the current position in the rule
    */
-  public LALRItem(Rule rule, int productionIndex, int offset)
+  public LALRItem(Rule<T> rule, int productionIndex, int offset)
   {
-    nextTypeUse = new TypeUseEntry(rule, productionIndex, offset);
-    lookaheadTokens = new HashSet<Object>();
+    nextTypeUse = new TypeUseEntry<T>(rule, productionIndex, offset);
+    lookaheadTokens = new HashSet<T>();
   }
 
   /**
    * Copy constructor. Copies all of the specified item's state into this new LALR item
    * @param item - the item to copy the state from
    */
-  public LALRItem(LALRItem item)
+  public LALRItem(LALRItem<T> item)
   {
     // TypeUseEntry is immutable, so we do not have to copy it's values out
     nextTypeUse = item.nextTypeUse;
     // copy all of the lookahead tokens from the original item
-    lookaheadTokens = new HashSet<Object>(item.lookaheadTokens);
+    lookaheadTokens = new HashSet<T>(item.lookaheadTokens);
   }
 
   /**
    * Adds the specified lookahead token type to this LALR item
    * @param lookahead - the lookahead token type to add
    */
-  public void addLookahead(Object lookahead)
+  public void addLookahead(T lookahead)
   {
     lookaheadTokens.add(lookahead);
   }
@@ -73,7 +74,7 @@ public final class LALRItem
    * Adds all of the specified lookahead token types to this LALR item
    * @param lookaheads - the lookahead token types to add
    */
-  public void addLookaheads(Set<Object> lookaheads)
+  public void addLookaheads(Set<T> lookaheads)
   {
     lookaheadTokens.addAll(lookaheads);
   }
@@ -81,7 +82,7 @@ public final class LALRItem
   /**
    * @return the rule
    */
-  public Rule getRule()
+  public Rule<T> getRule()
   {
     return nextTypeUse.getRule();
   }
@@ -98,7 +99,7 @@ public final class LALRItem
    * A convenience method for <code>item.getRule().getProductions()[item.getProductionIndex()]</code>
    * @return the production that this LALR item represents.
    */
-  public Production getProduction()
+  public Production<T> getProduction()
   {
     return getRule().getProductions()[getProductionIndex()];
   }
@@ -115,7 +116,7 @@ public final class LALRItem
    * @return the next type use to be specified by the production associated with this item.
    *         This should be used to index maps to LALRItems.
    */
-  public TypeUseEntry getNextTypeUse()
+  public TypeUseEntry<T> getNextTypeUse()
   {
     return nextTypeUse;
   }
@@ -125,7 +126,7 @@ public final class LALRItem
    * @param tokenType - the token type to check for
    * @return true if the specified token type is in the lookahead set, false otherwise
    */
-  public boolean hasLookahead(Object tokenType)
+  public boolean hasLookahead(T tokenType)
   {
     return lookaheadTokens.contains(tokenType);
   }
@@ -133,7 +134,7 @@ public final class LALRItem
   /**
    * @return the set of lookahead tokens for this LALR item
    */
-  public Set<Object> getLookaheads()
+  public Set<T> getLookaheads()
   {
     return lookaheadTokens;
   }
@@ -143,7 +144,7 @@ public final class LALRItem
    * @param item - the item to compare the lookahead token types of
    * @return true if this item has all of the lookahead token types that the other item has, false otherwise
    */
-  public boolean containsLookaheads(LALRItem item)
+  public boolean containsLookaheads(LALRItem<T> item)
   {
     if (item == this)
     {
@@ -176,7 +177,10 @@ public final class LALRItem
     {
       return false;
     }
-    LALRItem item = (LALRItem) o;
+    // this is not nice, but is necessary to check whether the items
+    // are equal without knowing their generic type parameters
+    @SuppressWarnings("unchecked")
+    LALRItem<T> item = (LALRItem<T>) o;
     return nextTypeUse.equals(item.nextTypeUse);
   }
 
@@ -199,7 +203,7 @@ public final class LALRItem
     buffer.append("[");
     buffer.append(nextTypeUse.getRule().getType());
     buffer.append(" <- ");
-    Production production = nextTypeUse.getRule().getProductions()[nextTypeUse.getProductionIndex()];
+    Production<T> production = nextTypeUse.getRule().getProductions()[nextTypeUse.getProductionIndex()];
     Object[] productionTypes = production.getTypes();
     int offset = nextTypeUse.getOffset();
     for (int i = 0; i < productionTypes.length; i++)
@@ -219,7 +223,7 @@ public final class LALRItem
       buffer.append(" .");
     }
     buffer.append(" | ");
-    Iterator<Object> it = lookaheadTokens.iterator();
+    Iterator<T> it = lookaheadTokens.iterator();
     while (it.hasNext())
     {
       buffer.append(it.next());

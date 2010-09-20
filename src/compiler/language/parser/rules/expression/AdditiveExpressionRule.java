@@ -10,6 +10,7 @@ import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.AdditiveExpression;
 import compiler.language.ast.expression.AdditiveExpressionType;
 import compiler.language.ast.expression.Expression;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -21,20 +22,21 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class AdditiveExpressionRule extends Rule
+public final class AdditiveExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION             = new Production(MULTIPLICATIVE_EXPRESSION);
-  private static final Production PLUS_PRODUCTION              = new Production(ADDITIVE_EXPRESSION, PLUS,  MULTIPLICATIVE_EXPRESSION);
-  private static final Production PLUS_QNAME_PRODUCTION        = new Production(ADDITIVE_EXPRESSION, PLUS,  QNAME_EXPRESSION);
-  private static final Production QNAME_PLUS_PRODUCTION        = new Production(QNAME_EXPRESSION,    PLUS,  MULTIPLICATIVE_EXPRESSION);
-  private static final Production QNAME_PLUS_QNAME_PRODUCTION  = new Production(QNAME_EXPRESSION,    PLUS,  QNAME_EXPRESSION);
-  private static final Production MINUS_PRODUCTION             = new Production(ADDITIVE_EXPRESSION, MINUS, MULTIPLICATIVE_EXPRESSION);
-  private static final Production MINUS_QNAME_PRODUCTION       = new Production(ADDITIVE_EXPRESSION, MINUS, QNAME_EXPRESSION);
-  private static final Production QNAME_MINUS_PRODUCTION       = new Production(QNAME_EXPRESSION,    MINUS, MULTIPLICATIVE_EXPRESSION);
-  private static final Production QNAME_MINUS_QNAME_PRODUCTION = new Production(QNAME_EXPRESSION,    MINUS, QNAME_EXPRESSION);
+  private static final Production<ParseType> START_PRODUCTION             = new Production<ParseType>(MULTIPLICATIVE_EXPRESSION);
+  private static final Production<ParseType> PLUS_PRODUCTION              = new Production<ParseType>(ADDITIVE_EXPRESSION, PLUS,  MULTIPLICATIVE_EXPRESSION);
+  private static final Production<ParseType> PLUS_QNAME_PRODUCTION        = new Production<ParseType>(ADDITIVE_EXPRESSION, PLUS,  QNAME_EXPRESSION);
+  private static final Production<ParseType> QNAME_PLUS_PRODUCTION        = new Production<ParseType>(QNAME_EXPRESSION,    PLUS,  MULTIPLICATIVE_EXPRESSION);
+  private static final Production<ParseType> QNAME_PLUS_QNAME_PRODUCTION  = new Production<ParseType>(QNAME_EXPRESSION,    PLUS,  QNAME_EXPRESSION);
+  private static final Production<ParseType> MINUS_PRODUCTION             = new Production<ParseType>(ADDITIVE_EXPRESSION, MINUS, MULTIPLICATIVE_EXPRESSION);
+  private static final Production<ParseType> MINUS_QNAME_PRODUCTION       = new Production<ParseType>(ADDITIVE_EXPRESSION, MINUS, QNAME_EXPRESSION);
+  private static final Production<ParseType> QNAME_MINUS_PRODUCTION       = new Production<ParseType>(QNAME_EXPRESSION,    MINUS, MULTIPLICATIVE_EXPRESSION);
+  private static final Production<ParseType> QNAME_MINUS_QNAME_PRODUCTION = new Production<ParseType>(QNAME_EXPRESSION,    MINUS, QNAME_EXPRESSION);
 
+  @SuppressWarnings("unchecked")
   public AdditiveExpressionRule()
   {
     super(ADDITIVE_EXPRESSION, START_PRODUCTION,
@@ -47,7 +49,7 @@ public class AdditiveExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

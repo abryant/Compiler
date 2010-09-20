@@ -7,6 +7,7 @@ import static compiler.language.parser.ParseType.STATEMENT_EXPRESSION;
 
 import compiler.language.ast.expression.StatementExpression;
 import compiler.language.ast.statement.ExpressionStatement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -18,15 +19,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ForInitRule extends Rule
+public final class ForInitRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production EMPTY_PRODUCTION       = new Production();
-  private static final Production DECLARATION_PRODUCTION = new Production(LOCAL_DECLARATION);
-  private static final Production EXPRESSION_PRODUCTION  = new Production(STATEMENT_EXPRESSION);
-  private static final Production ASSIGNMENT_PRODUCTION  = new Production(ASSIGNMENT);
+  private static final Production<ParseType> EMPTY_PRODUCTION       = new Production<ParseType>();
+  private static final Production<ParseType> DECLARATION_PRODUCTION = new Production<ParseType>(LOCAL_DECLARATION);
+  private static final Production<ParseType> EXPRESSION_PRODUCTION  = new Production<ParseType>(STATEMENT_EXPRESSION);
+  private static final Production<ParseType> ASSIGNMENT_PRODUCTION  = new Production<ParseType>(ASSIGNMENT);
 
+  @SuppressWarnings("unchecked")
   public ForInitRule()
   {
     super(FOR_INIT, EMPTY_PRODUCTION, DECLARATION_PRODUCTION, EXPRESSION_PRODUCTION, ASSIGNMENT_PRODUCTION);
@@ -37,7 +39,7 @@ public class ForInitRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (EMPTY_PRODUCTION.equals(production))
     {

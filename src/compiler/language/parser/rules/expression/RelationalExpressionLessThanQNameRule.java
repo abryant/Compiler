@@ -12,6 +12,7 @@ import compiler.language.ast.expression.RelationalExpression;
 import compiler.language.ast.expression.RelationalExpressionType;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -23,15 +24,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class RelationalExpressionLessThanQNameRule extends Rule
+public final class RelationalExpressionLessThanQNameRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production QNAME_LESS_THAN_QNAME_PRODUCTION               = new Production(QNAME,             LANGLE, QNAME);
-  private static final Production QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION        = new Production(QNAME,             LANGLE, NESTED_QNAME_LIST);
-  private static final Production NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION        = new Production(NESTED_QNAME_LIST, LANGLE, QNAME);
-  private static final Production NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION = new Production(NESTED_QNAME_LIST, LANGLE, NESTED_QNAME_LIST);
+  private static final Production<ParseType> QNAME_LESS_THAN_QNAME_PRODUCTION               = new Production<ParseType>(QNAME,             LANGLE, QNAME);
+  private static final Production<ParseType> QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION        = new Production<ParseType>(QNAME,             LANGLE, NESTED_QNAME_LIST);
+  private static final Production<ParseType> NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION        = new Production<ParseType>(NESTED_QNAME_LIST, LANGLE, QNAME);
+  private static final Production<ParseType> NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION = new Production<ParseType>(NESTED_QNAME_LIST, LANGLE, NESTED_QNAME_LIST);
 
+  @SuppressWarnings("unchecked")
   public RelationalExpressionLessThanQNameRule()
   {
     super(RELATIONAL_EXPRESSION_LESS_THAN_QNAME, QNAME_LESS_THAN_QNAME_PRODUCTION,
@@ -45,7 +47,7 @@ public class RelationalExpressionLessThanQNameRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {

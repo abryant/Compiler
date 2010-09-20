@@ -9,6 +9,7 @@ import static compiler.language.parser.ParseType.STRING_LITERAL;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.NativeSpecifier;
 import compiler.language.ast.terminal.StringLiteral;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -20,12 +21,13 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class NativeSpecifierRule extends Rule
+public final class NativeSpecifierRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(NATIVE_KEYWORD, LPAREN, STRING_LITERAL, RPAREN);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(NATIVE_KEYWORD, LPAREN, STRING_LITERAL, RPAREN);
 
+  @SuppressWarnings("unchecked")
   public NativeSpecifierRule()
   {
     super(NATIVE_SPECIFIER, PRODUCTION);
@@ -35,7 +37,7 @@ public class NativeSpecifierRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

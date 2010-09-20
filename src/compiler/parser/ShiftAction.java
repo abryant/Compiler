@@ -10,19 +10,20 @@ import java.util.Deque;
  * Represents a shift action in the parser.
  *
  * @author Anthony Bryant
+ * @param <T> - the enum type that holds all possible values for the token type
  */
-public class ShiftAction extends Action
+public class ShiftAction<T extends Enum<T>> extends Action<T>
 {
 
   private static final long serialVersionUID = 1L;
 
-  private State state;
+  private State<T> state;
 
   /**
    * Creates a new Shift action to shift to the specified state
    * @param state - the state to shift to
    */
-  public ShiftAction(State state)
+  public ShiftAction(State<T> state)
   {
     this.state = state;
   }
@@ -31,9 +32,8 @@ public class ShiftAction extends Action
    * @see compiler.parser.Action#perform(compiler.parser.Token, java.util.Deque, java.util.Deque)
    */
   @Override
-  public boolean perform(Token token, Deque<State> stateStack, Deque<Token> tokenStack) throws ParseException
+  public boolean perform(Token<T> token, Deque<State<T>> stateStack, Deque<Token<T>> tokenStack) throws ParseException
   {
-    System.out.println("Shifting on " + (token == null ? null : token.getType())); // TODO: remove debug output
     // add the next state and the next token to their stacks
     stateStack.addFirst(state);
     tokenStack.addFirst(token);

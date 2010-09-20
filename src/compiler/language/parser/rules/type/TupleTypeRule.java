@@ -5,6 +5,7 @@ import static compiler.language.parser.ParseType.TUPLE_TYPE;
 import static compiler.language.parser.ParseType.TUPLE_TYPE_NOT_QNAME_LIST;
 
 import compiler.language.ast.misc.QNameElement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -16,13 +17,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TupleTypeRule extends Rule
+public final class TupleTypeRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION = new Production(TUPLE_TYPE_NOT_QNAME_LIST);
-  private static final Production QNAME_LIST_PRODUCTION = new Production(NESTED_QNAME_LIST);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(TUPLE_TYPE_NOT_QNAME_LIST);
+  private static final Production<ParseType> QNAME_LIST_PRODUCTION = new Production<ParseType>(NESTED_QNAME_LIST);
 
+  @SuppressWarnings("unchecked")
   public TupleTypeRule()
   {
     super(TUPLE_TYPE, PRODUCTION, QNAME_LIST_PRODUCTION);
@@ -32,7 +34,7 @@ public class TupleTypeRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

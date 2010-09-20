@@ -8,6 +8,7 @@ import static compiler.language.parser.ParseType.SEMICOLON;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.statement.FallthroughStatement;
 import compiler.language.ast.terminal.IntegerLiteral;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -19,13 +20,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class FallthroughStatementRule extends Rule
+public final class FallthroughStatementRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION        = new Production(FALLTHROUGH_KEYWORD,                  SEMICOLON);
-  private static final Production NUMBER_PRODUCTION = new Production(FALLTHROUGH_KEYWORD, INTEGER_LITERAL, SEMICOLON);
+  private static final Production<ParseType> PRODUCTION        = new Production<ParseType>(FALLTHROUGH_KEYWORD,                  SEMICOLON);
+  private static final Production<ParseType> NUMBER_PRODUCTION = new Production<ParseType>(FALLTHROUGH_KEYWORD, INTEGER_LITERAL, SEMICOLON);
 
+  @SuppressWarnings("unchecked")
   public FallthroughStatementRule()
   {
     super(FALLTHROUGH_STATEMENT, PRODUCTION, NUMBER_PRODUCTION);
@@ -36,7 +38,7 @@ public class FallthroughStatementRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

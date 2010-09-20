@@ -16,6 +16,7 @@ import compiler.language.ast.expression.ShiftExpression;
 import compiler.language.ast.expression.ShiftExpressionType;
 import compiler.language.ast.misc.QName;
 import compiler.language.ast.misc.QNameElement;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -27,28 +28,29 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ShiftExpressionRule extends Rule
+public final class ShiftExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production START_PRODUCTION                                     = new Production(ADDITIVE_EXPRESSION);
-  private static final Production LEFT_SHIFT_PRODUCTION                                = new Production(SHIFT_EXPRESSION,  DOUBLE_LANGLE, ADDITIVE_EXPRESSION);
-  private static final Production LEFT_SHIFT_QNAME_PRODUCTION                          = new Production(SHIFT_EXPRESSION,  DOUBLE_LANGLE, QNAME_EXPRESSION);
-  private static final Production QNAME_LEFT_SHIFT_PRODUCTION                          = new Production(QNAME_EXPRESSION,  DOUBLE_LANGLE, ADDITIVE_EXPRESSION);
-  private static final Production QNAME_LEFT_SHIFT_QNAME_PRODUCTION                    = new Production(QNAME_EXPRESSION,  DOUBLE_LANGLE, QNAME_EXPRESSION);
-  private static final Production ARITHMETIC_RIGHT_SHIFT_PRODUCTION                    = new Production(SHIFT_EXPRESSION,  DOUBLE_RANGLE, ADDITIVE_EXPRESSION);
-  private static final Production ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION              = new Production(SHIFT_EXPRESSION,  DOUBLE_RANGLE, QNAME_EXPRESSION);
-  private static final Production QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION              = new Production(QNAME,             DOUBLE_RANGLE, ADDITIVE_EXPRESSION);
-  private static final Production QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION        = new Production(QNAME,             DOUBLE_RANGLE, QNAME_EXPRESSION);
-  private static final Production NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION       = new Production(NESTED_QNAME_LIST, DOUBLE_RANGLE, ADDITIVE_EXPRESSION);
-  private static final Production NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION = new Production(NESTED_QNAME_LIST, DOUBLE_RANGLE, QNAME_EXPRESSION);
-  private static final Production LOGICAL_RIGHT_SHIFT_PRODUCTION                       = new Production(SHIFT_EXPRESSION,  TRIPLE_RANGLE, ADDITIVE_EXPRESSION);
-  private static final Production LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION                 = new Production(SHIFT_EXPRESSION,  TRIPLE_RANGLE, QNAME_EXPRESSION);
-  private static final Production QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION                 = new Production(QNAME,             TRIPLE_RANGLE, ADDITIVE_EXPRESSION);
-  private static final Production QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION           = new Production(QNAME,             TRIPLE_RANGLE, QNAME_EXPRESSION);
-  private static final Production NESTED_QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION          = new Production(NESTED_QNAME_LIST, TRIPLE_RANGLE, ADDITIVE_EXPRESSION);
-  private static final Production NESTED_QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION    = new Production(NESTED_QNAME_LIST, TRIPLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production<ParseType> START_PRODUCTION                                     = new Production<ParseType>(ADDITIVE_EXPRESSION);
+  private static final Production<ParseType> LEFT_SHIFT_PRODUCTION                                = new Production<ParseType>(SHIFT_EXPRESSION,  DOUBLE_LANGLE, ADDITIVE_EXPRESSION);
+  private static final Production<ParseType> LEFT_SHIFT_QNAME_PRODUCTION                          = new Production<ParseType>(SHIFT_EXPRESSION,  DOUBLE_LANGLE, QNAME_EXPRESSION);
+  private static final Production<ParseType> QNAME_LEFT_SHIFT_PRODUCTION                          = new Production<ParseType>(QNAME_EXPRESSION,  DOUBLE_LANGLE, ADDITIVE_EXPRESSION);
+  private static final Production<ParseType> QNAME_LEFT_SHIFT_QNAME_PRODUCTION                    = new Production<ParseType>(QNAME_EXPRESSION,  DOUBLE_LANGLE, QNAME_EXPRESSION);
+  private static final Production<ParseType> ARITHMETIC_RIGHT_SHIFT_PRODUCTION                    = new Production<ParseType>(SHIFT_EXPRESSION,  DOUBLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production<ParseType> ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION              = new Production<ParseType>(SHIFT_EXPRESSION,  DOUBLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production<ParseType> QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION              = new Production<ParseType>(QNAME,             DOUBLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production<ParseType> QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION        = new Production<ParseType>(QNAME,             DOUBLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production<ParseType> NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION       = new Production<ParseType>(NESTED_QNAME_LIST, DOUBLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production<ParseType> NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION = new Production<ParseType>(NESTED_QNAME_LIST, DOUBLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production<ParseType> LOGICAL_RIGHT_SHIFT_PRODUCTION                       = new Production<ParseType>(SHIFT_EXPRESSION,  TRIPLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production<ParseType> LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION                 = new Production<ParseType>(SHIFT_EXPRESSION,  TRIPLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production<ParseType> QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION                 = new Production<ParseType>(QNAME,             TRIPLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production<ParseType> QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION           = new Production<ParseType>(QNAME,             TRIPLE_RANGLE, QNAME_EXPRESSION);
+  private static final Production<ParseType> NESTED_QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION          = new Production<ParseType>(NESTED_QNAME_LIST, TRIPLE_RANGLE, ADDITIVE_EXPRESSION);
+  private static final Production<ParseType> NESTED_QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION    = new Production<ParseType>(NESTED_QNAME_LIST, TRIPLE_RANGLE, QNAME_EXPRESSION);
 
+  @SuppressWarnings("unchecked")
   public ShiftExpressionRule()
   {
     super(SHIFT_EXPRESSION, START_PRODUCTION,
@@ -67,7 +69,7 @@ public class ShiftExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (START_PRODUCTION.equals(production))
     {

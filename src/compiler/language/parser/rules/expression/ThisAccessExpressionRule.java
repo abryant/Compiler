@@ -8,6 +8,7 @@ import static compiler.language.parser.ParseType.THIS_KEYWORD;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.ThisAccessExpression;
 import compiler.language.ast.misc.QName;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -19,13 +20,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ThisAccessExpressionRule extends Rule
+public final class ThisAccessExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production THIS_PRODUCTION = new Production(THIS_KEYWORD);
-  private static final Production QNAME_THIS_PRODUCTION = new Production(QNAME, DOT, THIS_KEYWORD);
+  private static final Production<ParseType> THIS_PRODUCTION = new Production<ParseType>(THIS_KEYWORD);
+  private static final Production<ParseType> QNAME_THIS_PRODUCTION = new Production<ParseType>(QNAME, DOT, THIS_KEYWORD);
 
+  @SuppressWarnings("unchecked")
   public ThisAccessExpressionRule()
   {
     super(THIS_ACCESS_EXPRESSION, THIS_PRODUCTION, QNAME_THIS_PRODUCTION);
@@ -36,7 +38,7 @@ public class ThisAccessExpressionRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (THIS_PRODUCTION.equals(production))
     {

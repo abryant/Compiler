@@ -11,6 +11,7 @@ import compiler.language.ast.ParseList;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeArgument;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -22,16 +23,17 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class TypeArgumentRule extends Rule
+public final class TypeArgumentRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production NAME_PRODUCTION          = new Production(NAME);
-  private static final Production EXTENDS_PRODUCTION       = new Production(NAME, EXTENDS_KEYWORD, TYPE_BOUND_LIST);
-  private static final Production SUPER_PRODUCTION         = new Production(NAME, SUPER_KEYWORD,   TYPE_BOUND_LIST);
-  private static final Production EXTENDS_SUPER_PRODUCTION = new Production(NAME, EXTENDS_KEYWORD, TYPE_BOUND_LIST, SUPER_KEYWORD,   TYPE_BOUND_LIST);
-  private static final Production SUPER_EXTENDS_PRODUCTION = new Production(NAME, SUPER_KEYWORD,   TYPE_BOUND_LIST, EXTENDS_KEYWORD, TYPE_BOUND_LIST);
+  private static final Production<ParseType> NAME_PRODUCTION          = new Production<ParseType>(NAME);
+  private static final Production<ParseType> EXTENDS_PRODUCTION       = new Production<ParseType>(NAME, EXTENDS_KEYWORD, TYPE_BOUND_LIST);
+  private static final Production<ParseType> SUPER_PRODUCTION         = new Production<ParseType>(NAME, SUPER_KEYWORD,   TYPE_BOUND_LIST);
+  private static final Production<ParseType> EXTENDS_SUPER_PRODUCTION = new Production<ParseType>(NAME, EXTENDS_KEYWORD, TYPE_BOUND_LIST, SUPER_KEYWORD,   TYPE_BOUND_LIST);
+  private static final Production<ParseType> SUPER_EXTENDS_PRODUCTION = new Production<ParseType>(NAME, SUPER_KEYWORD,   TYPE_BOUND_LIST, EXTENDS_KEYWORD, TYPE_BOUND_LIST);
 
+  @SuppressWarnings("unchecked")
   public TypeArgumentRule()
   {
     super(TYPE_ARGUMENT, NAME_PRODUCTION, EXTENDS_PRODUCTION, SUPER_PRODUCTION, EXTENDS_SUPER_PRODUCTION, SUPER_EXTENDS_PRODUCTION);
@@ -41,7 +43,7 @@ public class TypeArgumentRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     // all productions have the first argument as a Name, so we can cast it early
     // (this assumes that we have the correct type list, and that the NAME type is only ever associated with a Name object)

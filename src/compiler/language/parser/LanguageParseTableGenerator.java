@@ -37,10 +37,10 @@ public class LanguageParseTableGenerator
       }
     }
 
-    LALRRuleSet rules = LanguageRules.getRuleSet();
-    LALRParserGenerator generator = new LALRParserGenerator(rules);
-    generator.generate();
-    LALRState startState = generator.getStartState();
+    LALRRuleSet<ParseType> rules = LanguageRules.getRuleSet();
+    LALRParserGenerator<ParseType> generator = new LALRParserGenerator<ParseType>(rules);
+    generator.generate(ParseType.GENERATED_START_RULE);
+    LALRState<ParseType> startState = generator.getStartState();
 
     try
     {

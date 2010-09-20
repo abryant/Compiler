@@ -17,13 +17,10 @@ import static compiler.language.parser.ParseType.PLUS_EQUALS;
 import static compiler.language.parser.ParseType.STAR_EQUALS;
 import static compiler.language.parser.ParseType.TRIPLE_RANGLE_EQUALS;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.AssignmentOperator;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -35,34 +32,44 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class AssignmentOperatorRule extends Rule
+public final class AssignmentOperatorRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Map<Production, AssignmentOperator> PRODUCTIONS = new HashMap<Production, AssignmentOperator>();
+  private static final Production<ParseType> EQUALS_PRODUCTION                  = new Production<ParseType>(EQUALS);
+  private static final Production<ParseType> PLUS_EQUALS_PRODUCTION             = new Production<ParseType>(PLUS_EQUALS);
+  private static final Production<ParseType> MINUS_EQUALS_PRODUCTION            = new Production<ParseType>(MINUS_EQUALS);
+  private static final Production<ParseType> STAR_EQUALS_PRODUCTION             = new Production<ParseType>(STAR_EQUALS);
+  private static final Production<ParseType> FORWARD_SLASH_EQUALS_PRODUCTION    = new Production<ParseType>(FORWARD_SLASH_EQUALS);
+  private static final Production<ParseType> PERCENT_EQUALS_PRODUCTION          = new Production<ParseType>(PERCENT_EQUALS);
+  private static final Production<ParseType> DOUBLE_AMPERSAND_EQUALS_PRODUCTION = new Production<ParseType>(DOUBLE_AMPERSAND_EQUALS);
+  private static final Production<ParseType> DOUBLE_PIPE_EQUALS_PRODUCTION      = new Production<ParseType>(DOUBLE_PIPE_EQUALS);
+  private static final Production<ParseType> DOUBLE_CARET_EQUALS_PRODUCTION     = new Production<ParseType>(DOUBLE_CARET_EQUALS);
+  private static final Production<ParseType> AMPERSAND_EQUALS_PRODUCTION        = new Production<ParseType>(AMPERSAND_EQUALS);
+  private static final Production<ParseType> PIPE_EQUALS_PRODUCTION             = new Production<ParseType>(PIPE_EQUALS);
+  private static final Production<ParseType> CARET_EQUALS_PRODUCTION            = new Production<ParseType>(CARET_EQUALS);
+  private static final Production<ParseType> DOUBLE_LANGLE_EQUALS_PRODUCTION    = new Production<ParseType>(DOUBLE_LANGLE_EQUALS);
+  private static final Production<ParseType> DOUBLE_RANGLE_EQUALS_PRODUCTION    = new Production<ParseType>(DOUBLE_RANGLE_EQUALS);
+  private static final Production<ParseType> TRIPLE_RANGLE_EQUALS_PRODUCTION    = new Production<ParseType>(TRIPLE_RANGLE_EQUALS);
 
-  static
-  {
-    PRODUCTIONS.put(new Production(EQUALS),                  AssignmentOperator.EQUALS);
-    PRODUCTIONS.put(new Production(PLUS_EQUALS),             AssignmentOperator.PLUS_EQUALS);
-    PRODUCTIONS.put(new Production(MINUS_EQUALS),            AssignmentOperator.MINUS_EQUALS);
-    PRODUCTIONS.put(new Production(STAR_EQUALS),             AssignmentOperator.TIMES_EQUALS);
-    PRODUCTIONS.put(new Production(FORWARD_SLASH_EQUALS),    AssignmentOperator.DIVIDE_EQUALS);
-    PRODUCTIONS.put(new Production(PERCENT_EQUALS),          AssignmentOperator.MODULUS_EQUALS);
-    PRODUCTIONS.put(new Production(DOUBLE_AMPERSAND_EQUALS), AssignmentOperator.BOOLEAN_AND_EQUALS);
-    PRODUCTIONS.put(new Production(DOUBLE_PIPE_EQUALS),      AssignmentOperator.BOOLEAN_OR_EQUALS);
-    PRODUCTIONS.put(new Production(DOUBLE_CARET_EQUALS),     AssignmentOperator.BOOLEAN_XOR_EQUALS);
-    PRODUCTIONS.put(new Production(AMPERSAND_EQUALS),        AssignmentOperator.BITWISE_AND_EQUALS);
-    PRODUCTIONS.put(new Production(PIPE_EQUALS),             AssignmentOperator.BITWISE_OR_EQUALS);
-    PRODUCTIONS.put(new Production(CARET_EQUALS),            AssignmentOperator.BITWISE_XOR_EQUALS);
-    PRODUCTIONS.put(new Production(DOUBLE_LANGLE_EQUALS),    AssignmentOperator.LEFT_SHIFT_EQUALS);
-    PRODUCTIONS.put(new Production(DOUBLE_RANGLE_EQUALS),    AssignmentOperator.ARITHMETIC_RIGHT_SHIFT_EQUALS);
-    PRODUCTIONS.put(new Production(TRIPLE_RANGLE_EQUALS),    AssignmentOperator.LOGICAL_RIGHT_SHIFT_EQUALS);
-  }
-
+  @SuppressWarnings("unchecked")
   public AssignmentOperatorRule()
   {
-    super(ASSIGNMENT_OPERATOR, PRODUCTIONS.keySet().toArray(new Production[0]));
+    super(ASSIGNMENT_OPERATOR, EQUALS_PRODUCTION,
+                               PLUS_EQUALS_PRODUCTION,
+                               MINUS_EQUALS_PRODUCTION,
+                               STAR_EQUALS_PRODUCTION,
+                               FORWARD_SLASH_EQUALS_PRODUCTION,
+                               PERCENT_EQUALS_PRODUCTION,
+                               DOUBLE_AMPERSAND_EQUALS_PRODUCTION,
+                               DOUBLE_PIPE_EQUALS_PRODUCTION,
+                               DOUBLE_CARET_EQUALS_PRODUCTION,
+                               AMPERSAND_EQUALS_PRODUCTION,
+                               PIPE_EQUALS_PRODUCTION,
+                               CARET_EQUALS_PRODUCTION,
+                               DOUBLE_LANGLE_EQUALS_PRODUCTION,
+                               DOUBLE_RANGLE_EQUALS_PRODUCTION,
+                               TRIPLE_RANGLE_EQUALS_PRODUCTION);
   }
 
   /**
@@ -70,14 +77,67 @@ public class AssignmentOperatorRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
-    for (Entry<Production, AssignmentOperator> entry : PRODUCTIONS.entrySet())
+    if (EQUALS_PRODUCTION.equals(production))
     {
-      if (entry.getKey().equals(production))
-      {
-        return new ParseContainer<AssignmentOperator>(entry.getValue(), (ParseInfo) args[0]);
-      }
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.EQUALS, (ParseInfo) args[0]);
+    }
+    if (PLUS_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.PLUS_EQUALS, (ParseInfo) args[0]);
+    }
+    if (MINUS_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.MINUS_EQUALS, (ParseInfo) args[0]);
+    }
+    if (STAR_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.TIMES_EQUALS, (ParseInfo) args[0]);
+    }
+    if (FORWARD_SLASH_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.DIVIDE_EQUALS, (ParseInfo) args[0]);
+    }
+    if (PERCENT_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.MODULUS_EQUALS, (ParseInfo) args[0]);
+    }
+    if (DOUBLE_AMPERSAND_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.BOOLEAN_AND_EQUALS, (ParseInfo) args[0]);
+    }
+    if (DOUBLE_PIPE_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.BOOLEAN_OR_EQUALS, (ParseInfo) args[0]);
+    }
+    if (DOUBLE_CARET_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.BOOLEAN_XOR_EQUALS, (ParseInfo) args[0]);
+    }
+    if (AMPERSAND_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.BITWISE_AND_EQUALS, (ParseInfo) args[0]);
+    }
+    if (PIPE_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.BITWISE_OR_EQUALS, (ParseInfo) args[0]);
+    }
+    if (CARET_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.BITWISE_XOR_EQUALS, (ParseInfo) args[0]);
+    }
+    if (DOUBLE_LANGLE_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.LEFT_SHIFT_EQUALS, (ParseInfo) args[0]);
+    }
+    if (DOUBLE_RANGLE_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.ARITHMETIC_RIGHT_SHIFT_EQUALS, (ParseInfo) args[0]);
+    }
+    if (TRIPLE_RANGLE_EQUALS_PRODUCTION.equals(production))
+    {
+      return new ParseContainer<AssignmentOperator>(AssignmentOperator.LOGICAL_RIGHT_SHIFT_EQUALS, (ParseInfo) args[0]);
     }
     throw badTypeList();
   }

@@ -19,13 +19,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class ContinueStatementRule extends Rule
+public final class ContinueStatementRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION        = new Production(CONTINUE_KEYWORD,                  SEMICOLON);
-  private static final Production NUMBER_PRODUCTION = new Production(CONTINUE_KEYWORD, INTEGER_LITERAL, SEMICOLON);
+  private static final Production<ParseType> PRODUCTION        = new Production<ParseType>(CONTINUE_KEYWORD,                  SEMICOLON);
+  private static final Production<ParseType> NUMBER_PRODUCTION = new Production<ParseType>(CONTINUE_KEYWORD, INTEGER_LITERAL, SEMICOLON);
 
+  @SuppressWarnings("unchecked")
   public ContinueStatementRule()
   {
     super(ParseType.CONTINUE_STATEMENT, PRODUCTION, NUMBER_PRODUCTION);
@@ -36,7 +37,7 @@ public class ContinueStatementRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

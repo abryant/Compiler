@@ -20,6 +20,7 @@ import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.Type;
 import compiler.language.ast.type.TypeArgument;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -31,7 +32,7 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class MethodRule extends Rule
+public final class MethodRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
@@ -39,13 +40,14 @@ public class MethodRule extends Rule
   // declarations end in a semicolon, definitions end in a block
 
   // without type arguments
-  private static final Production DECLARATION_PRODUCTION = new Production(MEMBER_HEADER, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, SEMICOLON);
-  private static final Production DEFINITION_PRODUCTION  = new Production(MEMBER_HEADER, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, BLOCK);
+  private static final Production<ParseType> DECLARATION_PRODUCTION = new Production<ParseType>(MEMBER_HEADER, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, SEMICOLON);
+  private static final Production<ParseType> DEFINITION_PRODUCTION  = new Production<ParseType>(MEMBER_HEADER, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, BLOCK);
 
   // with type arguments
-  private static final Production TYPE_ARGUMENTS_DECLARATION_PRODUCTION = new Production(MEMBER_HEADER, TYPE_ARGUMENTS, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, SEMICOLON);
-  private static final Production TYPE_ARGUMENTS_DEFINITION_PRODUCTION  = new Production(MEMBER_HEADER, TYPE_ARGUMENTS, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, BLOCK);
+  private static final Production<ParseType> TYPE_ARGUMENTS_DECLARATION_PRODUCTION = new Production<ParseType>(MEMBER_HEADER, TYPE_ARGUMENTS, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, SEMICOLON);
+  private static final Production<ParseType> TYPE_ARGUMENTS_DEFINITION_PRODUCTION  = new Production<ParseType>(MEMBER_HEADER, TYPE_ARGUMENTS, TYPE, NAME, ARGUMENTS, THROWS_CLAUSE, BLOCK);
 
+  @SuppressWarnings("unchecked")
   public MethodRule()
   {
     super(METHOD, DECLARATION_PRODUCTION,                DEFINITION_PRODUCTION,
@@ -56,7 +58,7 @@ public class MethodRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (DECLARATION_PRODUCTION.equals(production))
     {

@@ -14,6 +14,7 @@ import compiler.language.ast.statement.Block;
 import compiler.language.ast.statement.CatchClause;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
+import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
 import compiler.parser.Rule;
@@ -25,13 +26,14 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class CatchClauseRule extends Rule
+public final class CatchClauseRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production PRODUCTION           = new Production(CATCH_KEYWORD,            POINTER_TYPE, NAME, BLOCK);
-  private static final Production MODIFIERS_PRODUCTION = new Production(CATCH_KEYWORD, MODIFIERS, POINTER_TYPE, NAME, BLOCK);
+  private static final Production<ParseType> PRODUCTION           = new Production<ParseType>(CATCH_KEYWORD,            POINTER_TYPE, NAME, BLOCK);
+  private static final Production<ParseType> MODIFIERS_PRODUCTION = new Production<ParseType>(CATCH_KEYWORD, MODIFIERS, POINTER_TYPE, NAME, BLOCK);
 
+  @SuppressWarnings("unchecked")
   public CatchClauseRule()
   {
     super(CATCH_CLAUSE, PRODUCTION, MODIFIERS_PRODUCTION);
@@ -42,7 +44,7 @@ public class CatchClauseRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (PRODUCTION.equals(production))
     {

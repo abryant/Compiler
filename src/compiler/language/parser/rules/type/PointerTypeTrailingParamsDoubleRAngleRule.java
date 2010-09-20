@@ -16,6 +16,7 @@ import compiler.language.ast.misc.QName;
 import compiler.language.ast.terminal.Name;
 import compiler.language.ast.type.PointerType;
 import compiler.language.ast.type.TypeParameter;
+import compiler.language.parser.ParseType;
 import compiler.language.parser.ParseUtil;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -28,15 +29,16 @@ import compiler.parser.Rule;
 /**
  * @author Anthony Bryant
  */
-public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
+public final class PointerTypeTrailingParamsDoubleRAngleRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production MUTABLE_PRODUCTION = new Production(QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE);
-  private static final Production IMMUTABLE_PRODUCTION = new Production(HASH, QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE);
-  private static final Production TRAILING_PARAMS_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE);
-  private static final Production DOUBLE_RANGLE_PRODUCTION = new Production(POINTER_TYPE_TRAILING_PARAMS, DOUBLE_RANGLE);
+  private static final Production<ParseType> MUTABLE_PRODUCTION = new Production<ParseType>(QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE);
+  private static final Production<ParseType> IMMUTABLE_PRODUCTION = new Production<ParseType>(HASH, QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE);
+  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_PARAMS, DOT, QNAME, LANGLE, TYPE_PARAMETER_LIST_TRIPLE_RANGLE);
+  private static final Production<ParseType> DOUBLE_RANGLE_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_PARAMS, DOUBLE_RANGLE);
 
+  @SuppressWarnings("unchecked")
   public PointerTypeTrailingParamsDoubleRAngleRule()
   {
     super(POINTER_TYPE_TRAILING_PARAMS_DOUBLE_RANGLE, MUTABLE_PRODUCTION, IMMUTABLE_PRODUCTION, TRAILING_PARAMS_PRODUCTION, DOUBLE_RANGLE_PRODUCTION);
@@ -47,7 +49,7 @@ public class PointerTypeTrailingParamsDoubleRAngleRule extends Rule
    * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
    */
   @Override
-  public Object match(Production production, Object[] args) throws ParseException
+  public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
     if (DOUBLE_RANGLE_PRODUCTION.equals(production))
     {
