@@ -27,23 +27,20 @@ public class LALRState implements State
 
   private static final long serialVersionUID = 1L;
 
-  private Map<Object, LALRState> shiftRules;
-  private Map<Object, ReduceAction> reduceActions;
+  private Map<Object, LALRState> shiftRules = null;
+  private Map<Object, ReduceAction> reduceActions = null;
   // this should only ever contain null -> new AcceptAction(), (null means there are no more tokens)
   // but other conditions for accept are allowed by the parser, so this is more general
-  private Map<Object, AcceptAction> acceptActions;
+  private Map<Object, AcceptAction> acceptActions = null;
 
-  private Map<Object, LALRState> gotoRules;
+  private Map<Object, LALRState> gotoRules = null;
 
   /**
    * Creates a new LALRState with no shift or reduce actions or goto rules.
    */
   public LALRState()
   {
-    shiftRules = new HashMap<Object, LALRState>();
-    reduceActions = new HashMap<Object, ReduceAction>();
-    acceptActions = new HashMap<Object, AcceptAction>();
-    gotoRules = new HashMap<Object, LALRState>();
+    // do nothing, as the maps are created lazily
   }
 
   /**
@@ -53,22 +50,26 @@ public class LALRState implements State
    */
   public void addShift(Object tokenType, LALRState shiftTo)
   {
-    if (shiftRules.containsKey(tokenType))
+    if (shiftRules != null && shiftRules.containsKey(tokenType))
     {
       throw new IllegalStateException("Shift-shift conflict! Via terminal: " + tokenType);
     }
-    ReduceAction reduceAction = reduceActions.get(tokenType);
+    ReduceAction reduceAction = reduceActions != null ? reduceActions.get(tokenType) : null;
     if (reduceAction != null)
     {
       Rule rule = reduceAction.getRule();
       Production production = rule.getProductions()[reduceAction.getProductionIndex()];
       throw shiftReduceConflict(tokenType, rule.getType(), production);
     }
-    AcceptAction acceptAction = acceptActions.get(tokenType);
+    AcceptAction acceptAction = acceptActions != null ? acceptActions.get(tokenType) : null;
     if (acceptAction != null)
     {
       Rule rule = acceptAction.getRule();
       throw shiftAcceptConflict(tokenType, rule.getType(), rule.getProductions()[acceptAction.getProductionIndex()]);
+    }
+    if (shiftRules == null)
+    {
+      shiftRules = new HashMap<Object, LALRState>();
     }
     shiftRules.put(tokenType, shiftTo);
   }
@@ -81,23 +82,27 @@ public class LALRState implements State
    */
   public void addReduce(Object tokenType, Rule reduceRule, int productionIndex)
   {
-    if (shiftRules.containsKey(tokenType))
+    if (shiftRules != null && shiftRules.containsKey(tokenType))
     {
       Production production = reduceRule.getProductions()[productionIndex];
       throw shiftReduceConflict(tokenType, reduceRule.getType(), production);
     }
-    ReduceAction existingReduce = reduceActions.get(tokenType);
+    ReduceAction existingReduce = reduceActions != null ? reduceActions.get(tokenType) : null;
     if (existingReduce != null)
     {
       Production newProduction = reduceRule.getProductions()[productionIndex];
       throw reduceReduceConflict(tokenType, existingReduce, reduceRule.getType(), newProduction);
     }
-    AcceptAction existingAccept = acceptActions.get(tokenType);
+    AcceptAction existingAccept = acceptActions != null ? acceptActions.get(tokenType) : null;
     if (existingAccept != null)
     {
       Production newProduction = reduceRule.getProductions()[productionIndex];
       Rule acceptRule = existingAccept.getRule();
       throw acceptReduceConflict(tokenType, acceptRule.getType(), acceptRule.getProductions()[existingAccept.getProductionIndex()], reduceRule.getType(), newProduction);
+    }
+    if (reduceActions == null)
+    {
+      reduceActions = new HashMap<Object, ReduceAction>();
     }
     reduceActions.put(tokenType, new ReduceAction(reduceRule, productionIndex));
   }
@@ -110,21 +115,25 @@ public class LALRState implements State
    */
   public void addAccept(Object tokenType, Rule rule, int productionIndex)
   {
-    if (shiftRules.containsKey(tokenType))
+    if (shiftRules != null && shiftRules.containsKey(tokenType))
     {
       throw shiftAcceptConflict(tokenType, rule.getType(), rule.getProductions()[productionIndex]);
     }
-    ReduceAction existingReduce = reduceActions.get(tokenType);
+    ReduceAction existingReduce = reduceActions != null ? reduceActions.get(tokenType) : null;
     if (existingReduce != null)
     {
       Rule existingRule = existingReduce.getRule();
       throw acceptReduceConflict(tokenType, rule.getType(), rule.getProductions()[productionIndex], existingRule.getType(), existingRule.getProductions()[existingReduce.getProductionIndex()]);
     }
-    AcceptAction existingAccept = acceptActions.get(tokenType);
+    AcceptAction existingAccept = acceptActions != null ? acceptActions.get(tokenType) : null;
     if (existingAccept != null)
     {
       Rule existingRule = existingAccept.getRule();
       throw acceptAcceptConflict(tokenType, existingAccept, existingRule.getType(), existingRule.getProductions()[existingAccept.getProductionIndex()]);
+    }
+    if (acceptActions == null)
+    {
+      acceptActions = new HashMap<Object, AcceptAction>();
     }
     acceptActions.put(tokenType, new AcceptAction(rule, productionIndex));
   }
@@ -136,9 +145,13 @@ public class LALRState implements State
    */
   public void addGoto(Object tokenType, LALRState state)
   {
-    if (gotoRules.containsKey(tokenType))
+    if (gotoRules != null && gotoRules.containsKey(tokenType))
     {
       throw new IllegalStateException("Goto-goto conflict! Type:" + tokenType);
+    }
+    if (gotoRules == null)
+    {
+      gotoRules = new HashMap<Object, LALRState>();
     }
     gotoRules.put(tokenType, state);
   }
@@ -151,19 +164,19 @@ public class LALRState implements State
   {
     Object type = terminal == null ? null : terminal.getType();
     // try to return a shift rule first
-    LALRState state = shiftRules.get(type);
+    LALRState state = shiftRules != null ? shiftRules.get(type) : null;
     if (state != null)
     {
       return new ShiftAction(state);
     }
     // there was no shift rule, so try a reduce rule
-    ReduceAction reduceAction = reduceActions.get(type);
+    ReduceAction reduceAction = reduceActions != null ? reduceActions.get(type) : null;
     if (reduceAction != null)
     {
       return reduceAction;
     }
     // there were no shift or reduce rules, so try an accept rule
-    AcceptAction acceptAction = acceptActions.get(type);
+    AcceptAction acceptAction = acceptActions != null ? acceptActions.get(type) : null;
     if (acceptAction != null)
     {
       return acceptAction;
@@ -179,9 +192,18 @@ public class LALRState implements State
   public Object[] getExpectedTerminalTypes()
   {
     Set<Object> types = new HashSet<Object>();
-    types.addAll(shiftRules.keySet());
-    types.addAll(reduceActions.keySet());
-    types.addAll(acceptActions.keySet());
+    if (shiftRules != null)
+    {
+      types.addAll(shiftRules.keySet());
+    }
+    if (reduceActions != null)
+    {
+      types.addAll(reduceActions.keySet());
+    }
+    if (acceptActions != null)
+    {
+      types.addAll(acceptActions.keySet());
+    }
     return types.toArray(new Object[types.size()]);
   }
 
@@ -191,39 +213,7 @@ public class LALRState implements State
   @Override
   public State getGoto(Token nonTerminal)
   {
-    return gotoRules.get(nonTerminal.getType());
-  }
-
-  /**
-   * @return the shiftRules
-   */
-  public Map<Object, LALRState> getShiftRules()
-  {
-    return shiftRules;
-  }
-
-  /**
-   * @return the reduceActions
-   */
-  public Map<Object, ReduceAction> getReduceActions()
-  {
-    return reduceActions;
-  }
-
-  /**
-   * @return the acceptActions
-   */
-  public Map<Object, AcceptAction> getAcceptActions()
-  {
-    return acceptActions;
-  }
-
-  /**
-   * @return the gotoRules
-   */
-  public Map<Object, LALRState> getGotoRules()
-  {
-    return gotoRules;
+    return gotoRules != null ? gotoRules.get(nonTerminal.getType()) : null;
   }
 
   /**
