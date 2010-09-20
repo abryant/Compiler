@@ -7,9 +7,7 @@ import compiler.language.ast.terminal.StringLiteral;
 import compiler.language.ast.topLevel.CompilationUnit;
 import compiler.parser.BadTokenException;
 import compiler.parser.ParseException;
-import compiler.parser.Parser;
 import compiler.parser.Token;
-import compiler.parser.lalr.LALRState;
 
 /*
  * Created on 30 Jun 2010
@@ -21,11 +19,9 @@ import compiler.parser.lalr.LALRState;
 public class LanguageParser
 {
 
-  private LALRState startState;
-
   public LanguageParser()
   {
-    startState = LanguageParseTableLoader.loadParseTable();
+    // do nothing
   }
 
   /**
@@ -35,10 +31,10 @@ public class LanguageParser
    */
   public CompilationUnit parse(LanguageTokenizer tokenizer)
   {
-    Parser parser = new Parser(startState, tokenizer);
+    GeneratedLanguageParser parser = new GeneratedLanguageParser(tokenizer);
     try
     {
-      Token result = parser.parse();
+      Token<ParseType> result = parser.parse();
 
       return (CompilationUnit) result.getValue();
     }
@@ -53,7 +49,7 @@ public class LanguageParser
     catch (BadTokenException e)
     {
       // TODO: should the error message show a list of expected token types here? they seem to not correspond to what should actually be expected
-      Token token = e.getBadToken();
+      Token<ParseType> token = e.getBadToken();
       String message;
       ParseInfo parseInfo;
       if (token == null)
