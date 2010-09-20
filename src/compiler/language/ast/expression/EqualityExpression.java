@@ -24,7 +24,7 @@ public class EqualityExpression extends LeftRecursiveExpression
   {
     super(startExpression, subExpression, parseInfo);
     EqualityExpressionType[] oldList = startExpression.getSeparatorTypes();
-    separatorTypes = new EqualityExpressionType[oldList.length];
+    separatorTypes = new EqualityExpressionType[oldList.length + 1];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);
     separatorTypes[oldList.length] = separator;
   }

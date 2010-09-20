@@ -24,7 +24,7 @@ public class MultiplicativeExpression extends LeftRecursiveExpression
   {
     super(startExpression, subExpression, parseInfo);
     MultiplicativeExpressionType[] oldList = startExpression.getSeparatorTypes();
-    separatorTypes = new MultiplicativeExpressionType[oldList.length];
+    separatorTypes = new MultiplicativeExpressionType[oldList.length + 1];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);
     separatorTypes[oldList.length] = separator;
   }

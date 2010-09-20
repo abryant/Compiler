@@ -24,7 +24,7 @@ public class ShiftExpression extends LeftRecursiveExpression
   {
     super(startExpression, subExpression, parseInfo);
     ShiftExpressionType[] oldList = startExpression.getSeparatorTypes();
-    separatorTypes = new ShiftExpressionType[oldList.length];
+    separatorTypes = new ShiftExpressionType[oldList.length + 1];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);
     separatorTypes[oldList.length] = separator;
   }

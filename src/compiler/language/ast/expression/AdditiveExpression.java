@@ -24,7 +24,7 @@ public class AdditiveExpression extends LeftRecursiveExpression
   {
     super(startExpression, subExpression, parseInfo);
     AdditiveExpressionType[] oldList = startExpression.getSeparatorTypes();
-    separatorTypes = new AdditiveExpressionType[oldList.length];
+    separatorTypes = new AdditiveExpressionType[oldList.length + 1];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);
     separatorTypes[oldList.length] = separator;
   }
