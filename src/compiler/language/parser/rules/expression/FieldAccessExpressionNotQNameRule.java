@@ -6,9 +6,9 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PRIMARY;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.expression.FieldAccessExpression;
-import compiler.language.ast.terminal.Name;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.FieldAccessExpressionAST;
+import compiler.language.ast.terminal.NameAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,9 +42,9 @@ public final class FieldAccessExpressionNotQNameRule extends Rule<ParseType>
   {
     if (PRIMARY_PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[0];
-      Name name = (Name) args[2];
-      return new FieldAccessExpression(expression, name, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1], name.getParseInfo()));
+      ExpressionAST expression = (ExpressionAST) args[0];
+      NameAST name = (NameAST) args[2];
+      return new FieldAccessExpressionAST(expression, name, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1], name.getParseInfo()));
     }
     throw badTypeList();
   }

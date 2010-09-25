@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.THIS_ACCESS_EXPRESSION;
 import static compiler.language.parser.ParseType.THIS_KEYWORD;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.ThisAccessExpression;
-import compiler.language.ast.misc.QName;
+import compiler.language.ast.expression.ThisAccessExpressionAST;
+import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,12 +42,12 @@ public final class ThisAccessExpressionRule extends Rule<ParseType>
   {
     if (THIS_PRODUCTION.equals(production))
     {
-      return new ThisAccessExpression(null, (ParseInfo) args[0]);
+      return new ThisAccessExpressionAST(null, (ParseInfo) args[0]);
     }
     if (QNAME_THIS_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      return new ThisAccessExpression(qname, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      QNameAST qname = (QNameAST) args[0];
+      return new ThisAccessExpressionAST(qname, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

@@ -14,13 +14,13 @@ import static compiler.language.parser.ParseType.VOID_TYPE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.ClosureCreationExpression;
-import compiler.language.ast.misc.Argument;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.Type;
-import compiler.language.ast.type.TypeArgument;
-import compiler.language.ast.type.VoidType;
+import compiler.language.ast.expression.ClosureCreationExpressionAST;
+import compiler.language.ast.misc.ArgumentAST;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeAST;
+import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.ast.type.VoidTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -59,14 +59,14 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Argument> arguments = (ParseList<Argument>) args[2];
+      ParseList<ArgumentAST> arguments = (ParseList<ArgumentAST>) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<Type> returnTypes = (ParseList<Type>) args[4];
+      ParseList<TypeAST> returnTypes = (ParseList<TypeAST>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> thrownTypes = (ParseList<PointerType>) args[6];
-      Block block = (Block) args[7];
-      return new ClosureCreationExpression(new TypeArgument[0], arguments.toArray(new Argument[0]), returnTypes.toArray(new Type[0]),
-                                           thrownTypes.toArray(new PointerType[0]), block,
+      ParseList<PointerTypeAST> thrownTypes = (ParseList<PointerTypeAST>) args[6];
+      BlockAST block = (BlockAST) args[7];
+      return new ClosureCreationExpressionAST(new TypeArgumentAST[0], arguments.toArray(new ArgumentAST[0]), returnTypes.toArray(new TypeAST[0]),
+                                           thrownTypes.toArray(new PointerTypeAST[0]), block,
                                            ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], arguments.getParseInfo(),
                                                              (ParseInfo) args[3], returnTypes.getParseInfo(), (ParseInfo) args[5],
                                                              thrownTypes.getParseInfo(), block.getParseInfo()));
@@ -74,30 +74,30 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
     if (TYPE_ARGUMENTS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<TypeArgument> typeArguments = (ParseList<TypeArgument>) args[1];
+      ParseList<TypeArgumentAST> typeArguments = (ParseList<TypeArgumentAST>) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<Argument> arguments = (ParseList<Argument>) args[3];
+      ParseList<ArgumentAST> arguments = (ParseList<ArgumentAST>) args[3];
       @SuppressWarnings("unchecked")
-      ParseList<Type> returnTypes = (ParseList<Type>) args[5];
+      ParseList<TypeAST> returnTypes = (ParseList<TypeAST>) args[5];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> thrownTypes = (ParseList<PointerType>) args[7];
-      Block block = (Block) args[8];
-      return new ClosureCreationExpression(typeArguments.toArray(new TypeArgument[0]), arguments.toArray(new Argument[0]), returnTypes.toArray(new Type[0]),
-                                           thrownTypes.toArray(new PointerType[0]), block,
+      ParseList<PointerTypeAST> thrownTypes = (ParseList<PointerTypeAST>) args[7];
+      BlockAST block = (BlockAST) args[8];
+      return new ClosureCreationExpressionAST(typeArguments.toArray(new TypeArgumentAST[0]), arguments.toArray(new ArgumentAST[0]), returnTypes.toArray(new TypeAST[0]),
+                                           thrownTypes.toArray(new PointerTypeAST[0]), block,
                                            ParseInfo.combine((ParseInfo) args[0], typeArguments.getParseInfo(), (ParseInfo) args[2], arguments.getParseInfo(),
                                                              (ParseInfo) args[4], returnTypes.getParseInfo(), (ParseInfo) args[6],
                                                              thrownTypes.getParseInfo(), block.getParseInfo()));
     }
     if (VOID_PRODUCTION.equals(production))
     {
-      VoidType voidType = (VoidType) args[2];
+      VoidTypeAST voidType = (VoidTypeAST) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<Type> returnTypes = (ParseList<Type>) args[4];
+      ParseList<TypeAST> returnTypes = (ParseList<TypeAST>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> thrownTypes = (ParseList<PointerType>) args[6];
-      Block block = (Block) args[7];
-      return new ClosureCreationExpression(new TypeArgument[0], new Argument[0], returnTypes.toArray(new Type[0]),
-                                           thrownTypes.toArray(new PointerType[0]), block,
+      ParseList<PointerTypeAST> thrownTypes = (ParseList<PointerTypeAST>) args[6];
+      BlockAST block = (BlockAST) args[7];
+      return new ClosureCreationExpressionAST(new TypeArgumentAST[0], new ArgumentAST[0], returnTypes.toArray(new TypeAST[0]),
+                                           thrownTypes.toArray(new PointerTypeAST[0]), block,
                                            ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], voidType.getParseInfo(),
                                                              (ParseInfo) args[3], returnTypes.getParseInfo(), (ParseInfo) args[5],
                                                              thrownTypes.getParseInfo(), block.getParseInfo()));
@@ -105,15 +105,15 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
     if (TYPE_ARGUMENTS_VOID_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<TypeArgument> typeArguments = (ParseList<TypeArgument>) args[1];
-      VoidType voidType = (VoidType) args[3];
+      ParseList<TypeArgumentAST> typeArguments = (ParseList<TypeArgumentAST>) args[1];
+      VoidTypeAST voidType = (VoidTypeAST) args[3];
       @SuppressWarnings("unchecked")
-      ParseList<Type> returnTypes = (ParseList<Type>) args[5];
+      ParseList<TypeAST> returnTypes = (ParseList<TypeAST>) args[5];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> thrownTypes = (ParseList<PointerType>) args[7];
-      Block block = (Block) args[8];
-      return new ClosureCreationExpression(typeArguments.toArray(new TypeArgument[0]), new Argument[0], returnTypes.toArray(new Type[0]),
-                                           thrownTypes.toArray(new PointerType[0]), block,
+      ParseList<PointerTypeAST> thrownTypes = (ParseList<PointerTypeAST>) args[7];
+      BlockAST block = (BlockAST) args[8];
+      return new ClosureCreationExpressionAST(typeArguments.toArray(new TypeArgumentAST[0]), new ArgumentAST[0], returnTypes.toArray(new TypeAST[0]),
+                                           thrownTypes.toArray(new PointerTypeAST[0]), block,
                                            ParseInfo.combine((ParseInfo) args[0], typeArguments.getParseInfo(), (ParseInfo) args[2], voidType.getParseInfo(),
                                                              (ParseInfo) args[4], returnTypes.getParseInfo(), (ParseInfo) args[6],
                                                              thrownTypes.getParseInfo(), block.getParseInfo()));

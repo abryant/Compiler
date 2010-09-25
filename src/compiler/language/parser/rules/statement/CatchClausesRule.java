@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.CATCH_CLAUSES;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.statement.CatchClause;
+import compiler.language.ast.statement.CatchClauseAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,13 +40,13 @@ public final class CatchClausesRule extends Rule<ParseType>
   {
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseList<CatchClause>(null);
+      return new ParseList<CatchClauseAST>(null);
     }
     if (LIST_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<CatchClause> list = (ParseList<CatchClause>) args[0];
-      CatchClause clause = (CatchClause) args[1];
+      ParseList<CatchClauseAST> list = (ParseList<CatchClauseAST>) args[0];
+      CatchClauseAST clause = (CatchClauseAST) args[1];
       list.addLast(clause, ParseInfo.combine(list.getParseInfo(), clause.getParseInfo()));
       return list;
     }

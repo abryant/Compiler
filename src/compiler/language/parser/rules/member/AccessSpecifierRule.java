@@ -7,8 +7,8 @@ import static compiler.language.parser.ParseType.PROTECTED_KEYWORD;
 import static compiler.language.parser.ParseType.PUBLIC_KEYWORD;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.member.AccessSpecifier;
-import compiler.language.ast.member.AccessSpecifierType;
+import compiler.language.ast.member.AccessSpecifierAST;
+import compiler.language.ast.member.AccessSpecifierTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -58,23 +58,23 @@ public final class AccessSpecifierRule extends Rule<ParseType>
     }
     if (PUBLIC_PRODUCTION.equals(production))
     {
-      return new AccessSpecifier(AccessSpecifierType.PUBLIC, (ParseInfo) args[0]);
+      return new AccessSpecifierAST(AccessSpecifierTypeAST.PUBLIC, (ParseInfo) args[0]);
     }
     if (PACKAGE_PRODUCTION.equals(production))
     {
-      return new AccessSpecifier(AccessSpecifierType.PACKAGE, (ParseInfo) args[0]);
+      return new AccessSpecifierAST(AccessSpecifierTypeAST.PACKAGE, (ParseInfo) args[0]);
     }
     if (PACKAGE_PROTECTED_PRODUCTION.equals(production) || PROTECTED_PACKAGE_PRODUCTION.equals(production))
     {
-      return new AccessSpecifier(AccessSpecifierType.PACKAGE_PROTECTED, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new AccessSpecifierAST(AccessSpecifierTypeAST.PACKAGE_PROTECTED, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (PROTECTED_PRODUCTION.equals(production))
     {
-      return new AccessSpecifier(AccessSpecifierType.PROTECTED, (ParseInfo) args[0]);
+      return new AccessSpecifierAST(AccessSpecifierTypeAST.PROTECTED, (ParseInfo) args[0]);
     }
     if (PRIVATE_PRODUCTION.equals(production))
     {
-      return new AccessSpecifier(AccessSpecifierType.PRIVATE, (ParseInfo) args[0]);
+      return new AccessSpecifierAST(AccessSpecifierTypeAST.PRIVATE, (ParseInfo) args[0]);
     }
     throw badTypeList();
   }

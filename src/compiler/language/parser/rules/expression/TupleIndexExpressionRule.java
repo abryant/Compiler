@@ -7,9 +7,9 @@ import static compiler.language.parser.ParseType.TUPLE_INDEX_EXPRESSION;
 import static compiler.language.parser.ParseType.UNARY_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.expression.TupleIndexExpression;
-import compiler.language.ast.terminal.IntegerLiteral;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.TupleIndexExpressionAST;
+import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -50,9 +50,9 @@ public final class TupleIndexExpressionRule extends Rule<ParseType>
     }
     if (PRODUCTION.equals(production) || QNAME_PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[0];
-      IntegerLiteral index = (IntegerLiteral) args[2];
-      return new TupleIndexExpression(expression, index, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1], index.getParseInfo()));
+      ExpressionAST expression = (ExpressionAST) args[0];
+      IntegerLiteralAST index = (IntegerLiteralAST) args[2];
+      return new TupleIndexExpressionAST(expression, index, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1], index.getParseInfo()));
     }
     throw badTypeList();
   }

@@ -7,10 +7,10 @@ import static compiler.language.parser.ParseType.QNAME;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.FieldAccessExpression;
-import compiler.language.ast.misc.Assignee;
-import compiler.language.ast.misc.FieldAssignee;
-import compiler.language.ast.misc.QName;
+import compiler.language.ast.expression.FieldAccessExpressionAST;
+import compiler.language.ast.misc.AssigneeAST;
+import compiler.language.ast.misc.FieldAssigneeAST;
+import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,31 +48,31 @@ public final class AssigneeListRule extends Rule<ParseType>
   {
     if (ASSIGNEE_END_PRODUCTION.equals(production))
     {
-      Assignee assignee = (Assignee) args[0];
-      return new ParseList<Assignee>(assignee, assignee.getParseInfo());
+      AssigneeAST assignee = (AssigneeAST) args[0];
+      return new ParseList<AssigneeAST>(assignee, assignee.getParseInfo());
     }
     if (QNAME_END_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      FieldAccessExpression fieldAccess = new FieldAccessExpression(qname, qname.getParseInfo());
-      Assignee assignee = new FieldAssignee(fieldAccess, fieldAccess.getParseInfo());
-      return new ParseList<Assignee>(assignee, assignee.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getParseInfo());
+      return new ParseList<AssigneeAST>(assignee, assignee.getParseInfo());
     }
     if (ASSIGNEE_LIST_PRODUCTION.equals(production))
     {
-      Assignee assignee = (Assignee) args[0];
+      AssigneeAST assignee = (AssigneeAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<Assignee> list = (ParseList<Assignee>) args[2];
+      ParseList<AssigneeAST> list = (ParseList<AssigneeAST>) args[2];
       list.addFirst(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
     if (QNAME_LIST_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      FieldAccessExpression fieldAccess = new FieldAccessExpression(qname, qname.getParseInfo());
-      Assignee assignee = new FieldAssignee(fieldAccess, fieldAccess.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getParseInfo());
       @SuppressWarnings("unchecked")
-      ParseList<Assignee> list = (ParseList<Assignee>) args[2];
+      ParseList<AssigneeAST> list = (ParseList<AssigneeAST>) args[2];
       list.addFirst(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }

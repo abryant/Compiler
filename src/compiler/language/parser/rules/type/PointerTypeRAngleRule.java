@@ -8,8 +8,8 @@ import static compiler.language.parser.ParseType.RANGLE;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,18 +45,18 @@ public final class PointerTypeRAngleRule extends Rule<ParseType>
   {
     if (QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      PointerType type = new PointerType(qname, qname.getParseInfo());
-      return new ParseContainer<PointerType>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
+      QNameAST qname = (QNameAST) args[0];
+      PointerTypeAST type = new PointerTypeAST(qname, qname.getParseInfo());
+      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
     }
     if (NO_TRAILING_PARAMS_PRODUCTION.equals(production))
     {
-      PointerType type = (PointerType) args[0];
-      return new ParseContainer<PointerType>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
+      PointerTypeAST type = (PointerTypeAST) args[0];
+      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
     }
     if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
-      // POINTER_TYPE_TRAILING_PARAMS_RANGLE has already built the ParseContainer<PointerType>, so return it
+      // POINTER_TYPE_TRAILING_PARAMS_RANGLE has already built the ParseContainer<PointerTypeAST>, so return it
       return args[0];
     }
     throw badTypeList();

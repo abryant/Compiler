@@ -10,12 +10,12 @@ import static compiler.language.parser.ParseType.SHIFT_EXPRESSION;
 import static compiler.language.parser.ParseType.TRIPLE_RANGLE;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.expression.FieldAccessExpression;
-import compiler.language.ast.expression.ShiftExpression;
-import compiler.language.ast.expression.ShiftExpressionType;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.misc.QNameElement;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.FieldAccessExpressionAST;
+import compiler.language.ast.expression.ShiftExpressionAST;
+import compiler.language.ast.expression.ShiftExpressionTypeAST;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -73,51 +73,51 @@ public final class ShiftExpressionRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      // return the existing Expression
+      // return the existing ExpressionAST
       return args[0];
     }
 
-    Expression firstExpression;
-    ShiftExpressionType separator;
+    ExpressionAST firstExpression;
+    ShiftExpressionTypeAST separator;
     if (LEFT_SHIFT_PRODUCTION.equals(production)       || LEFT_SHIFT_QNAME_PRODUCTION.equals(production) ||
         QNAME_LEFT_SHIFT_PRODUCTION.equals(production) || QNAME_LEFT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      firstExpression = (Expression) args[0];
-      separator = ShiftExpressionType.LEFT_SHIFT;
+      firstExpression = (ExpressionAST) args[0];
+      separator = ShiftExpressionTypeAST.LEFT_SHIFT;
     }
     else if (ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production)              || ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      firstExpression = (Expression) args[0];
-      separator = ShiftExpressionType.ARITHMETIC_RIGHT_SHIFT;
+      firstExpression = (ExpressionAST) args[0];
+      separator = ShiftExpressionTypeAST.ARITHMETIC_RIGHT_SHIFT;
     }
     else if (QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production)        || QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      firstExpression = new FieldAccessExpression(qname, qname.getParseInfo());
-      separator = ShiftExpressionType.ARITHMETIC_RIGHT_SHIFT;
+      QNameAST qname = (QNameAST) args[0];
+      firstExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      separator = ShiftExpressionTypeAST.ARITHMETIC_RIGHT_SHIFT;
     }
     else if (NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production) || NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
+      QNameElementAST element = (QNameElementAST) args[0];
       firstExpression = element.toExpression();
-      separator = ShiftExpressionType.ARITHMETIC_RIGHT_SHIFT;
+      separator = ShiftExpressionTypeAST.ARITHMETIC_RIGHT_SHIFT;
     }
     else if (LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)                 || LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      firstExpression = (Expression) args[0];
-      separator = ShiftExpressionType.LOGICAL_RIGHT_SHIFT;
+      firstExpression = (ExpressionAST) args[0];
+      separator = ShiftExpressionTypeAST.LOGICAL_RIGHT_SHIFT;
     }
     else if (QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)           || QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      firstExpression = new FieldAccessExpression(qname, qname.getParseInfo());
-      separator = ShiftExpressionType.LOGICAL_RIGHT_SHIFT;
+      QNameAST qname = (QNameAST) args[0];
+      firstExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      separator = ShiftExpressionTypeAST.LOGICAL_RIGHT_SHIFT;
     }
     else if (NESTED_QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)    || NESTED_QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
+      QNameElementAST element = (QNameElementAST) args[0];
       firstExpression = element.toExpression();
-      separator = ShiftExpressionType.LOGICAL_RIGHT_SHIFT;
+      separator = ShiftExpressionTypeAST.LOGICAL_RIGHT_SHIFT;
     }
     else
     {
@@ -125,15 +125,15 @@ public final class ShiftExpressionRule extends Rule<ParseType>
     }
 
 
-    Expression secondExpression = (Expression) args[2];
-    if (firstExpression instanceof ShiftExpression)
+    ExpressionAST secondExpression = (ExpressionAST) args[2];
+    if (firstExpression instanceof ShiftExpressionAST)
     {
-      // continue the existing ShiftExpression if we've already started one
-      ShiftExpression startExpression = (ShiftExpression) args[0];
-      return new ShiftExpression(startExpression, separator, secondExpression,
+      // continue the existing ShiftExpressionAST if we've already started one
+      ShiftExpressionAST startExpression = (ShiftExpressionAST) args[0];
+      return new ShiftExpressionAST(startExpression, separator, secondExpression,
                                  ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
-    return new ShiftExpression(firstExpression, separator, secondExpression,
+    return new ShiftExpressionAST(firstExpression, separator, secondExpression,
                                ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
   }
 

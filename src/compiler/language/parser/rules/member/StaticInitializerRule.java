@@ -5,11 +5,11 @@ import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.STATIC_INITIALIZER;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.member.MemberHeader;
-import compiler.language.ast.member.StaticInitializer;
-import compiler.language.ast.misc.Modifier;
-import compiler.language.ast.misc.ModifierType;
-import compiler.language.ast.statement.Block;
+import compiler.language.ast.member.MemberHeaderAST;
+import compiler.language.ast.member.StaticInitializerAST;
+import compiler.language.ast.misc.ModifierAST;
+import compiler.language.ast.misc.ModifierTypeAST;
+import compiler.language.ast.statement.BlockAST;
 import compiler.language.parser.LanguageParseException;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
@@ -45,18 +45,18 @@ public final class StaticInitializerRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      MemberHeader header = (MemberHeader) args[0];
+      MemberHeaderAST header = (MemberHeaderAST) args[0];
       if (header.getAccessSpecifier() != null)
       {
         throw new LanguageParseException("A static initializer cannot have an access specifier.", header.getAccessSpecifier().getParseInfo());
       }
-      Modifier[] modifiers = header.getModifiers();
-      Block block = (Block) args[1];
+      ModifierAST[] modifiers = header.getModifiers();
+      BlockAST block = (BlockAST) args[1];
       if (modifiers.length == 0)
       {
         throw new LanguageParseException("A static initializer must have a \"static\" modifier", block.getParseInfo());
       }
-      if (modifiers.length > 1 || modifiers[0].getType() != ModifierType.STATIC)
+      if (modifiers.length > 1 || modifiers[0].getType() != ModifierTypeAST.STATIC)
       {
         ParseInfo[] modifierInfo = new ParseInfo[modifiers.length];
         for (int i = 0; i < modifiers.length; i++)
@@ -65,7 +65,7 @@ public final class StaticInitializerRule extends Rule<ParseType>
         }
         throw new LanguageParseException("A static initializer can only have one modifier, and it must be \"static\"", ParseInfo.combine(modifierInfo));
       }
-      return new StaticInitializer(block, ParseInfo.combine(header.getParseInfo(), block.getParseInfo()));
+      return new StaticInitializerAST(block, ParseInfo.combine(header.getParseInfo(), block.getParseInfo()));
     }
     throw badTypeList();
   }

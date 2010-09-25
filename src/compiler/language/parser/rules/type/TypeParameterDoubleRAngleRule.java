@@ -5,9 +5,9 @@ import static compiler.language.parser.ParseType.TYPE_PARAMETER_DOUBLE_RANGLE;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE;
 
 import compiler.language.ast.ParseContainer;
-import compiler.language.ast.type.NormalTypeParameter;
-import compiler.language.ast.type.Type;
-import compiler.language.ast.type.TypeParameter;
+import compiler.language.ast.type.NormalTypeParameterAST;
+import compiler.language.ast.type.TypeAST;
+import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -43,16 +43,16 @@ public final class TypeParameterDoubleRAngleRule extends Rule<ParseType>
     if (TYPE_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<Type>> oldContainer = (ParseContainer<ParseContainer<Type>>) args[0];
-      Type type = oldContainer.getItem().getItem();
-      TypeParameter parameter = new NormalTypeParameter(type, type.getParseInfo());
-      ParseContainer<TypeParameter> firstContainer = new ParseContainer<TypeParameter>(parameter, oldContainer.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<TypeParameter>>(firstContainer, oldContainer.getParseInfo());
+      ParseContainer<ParseContainer<TypeAST>> oldContainer = (ParseContainer<ParseContainer<TypeAST>>) args[0];
+      TypeAST type = oldContainer.getItem().getItem();
+      TypeParameterAST parameter = new NormalTypeParameterAST(type, type.getParseInfo());
+      ParseContainer<TypeParameterAST> firstContainer = new ParseContainer<TypeParameterAST>(parameter, oldContainer.getItem().getParseInfo());
+      return new ParseContainer<ParseContainer<TypeParameterAST>>(firstContainer, oldContainer.getParseInfo());
     }
     if (WILDCARD_PRODUCTION.equals(production))
     {
       // the rule for WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE has already created
-      // a ParseContainer<ParseContainer<TypeParameter>>, so return it
+      // a ParseContainer<ParseContainer<TypeParameterAST>>, so return it
       return args[0];
     }
     throw badTypeList();

@@ -8,10 +8,10 @@ import static compiler.language.parser.ParseType.TYPE_NOT_ARRAY_TYPE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.ArrayInstanciationExpression;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.misc.Dimensions;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.expression.ArrayInstanciationExpressionAST;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.misc.DimensionsAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,11 +45,11 @@ public final class ArrayInstanciationExpressionWithInitializerRule extends Rule<
   {
     if (PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Dimensions dimensions = (Dimensions) args[2];
+      TypeAST type = (TypeAST) args[1];
+      DimensionsAST dimensions = (DimensionsAST) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<Expression> arrayInitializer = (ParseList<Expression>) args[3];
-      return new ArrayInstanciationExpression(type, new Expression[0], dimensions.getDimensions(), arrayInitializer.toArray(new Expression[0]),
+      ParseList<ExpressionAST> arrayInitializer = (ParseList<ExpressionAST>) args[3];
+      return new ArrayInstanciationExpressionAST(type, new ExpressionAST[0], dimensions.getDimensions(), arrayInitializer.toArray(new ExpressionAST[0]),
                                               ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), dimensions.getParseInfo(),
                                                                 arrayInitializer.getParseInfo()));
     }

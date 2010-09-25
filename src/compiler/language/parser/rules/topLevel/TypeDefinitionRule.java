@@ -39,7 +39,7 @@ public final class TypeDefinitionRule extends Rule<ParseType>
   {
     if (CLASS_PRODUCTION.equals(production) || INTERFACE_PRODUCTION.equals(production) || ENUM_PRODUCTION.equals(production))
     {
-      // ClassDefinition, InterfaceDefinition and EnumDefinition are all subclasses of TypeDefinition, so just return the argument
+      // ClassDefinitionAST, InterfaceDefinitionAST and EnumDefinitionAST are all subclasses of TypeDefinitionAST, so just return the argument
       return args[0];
     }
     throw badTypeList();

@@ -6,11 +6,11 @@ import static compiler.language.parser.ParseType.INCREMENT;
 import static compiler.language.parser.ParseType.QNAME;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.FieldAccessExpression;
-import compiler.language.ast.misc.Assignee;
-import compiler.language.ast.misc.FieldAssignee;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.statement.IncrementStatement;
+import compiler.language.ast.expression.FieldAccessExpressionAST;
+import compiler.language.ast.misc.AssigneeAST;
+import compiler.language.ast.misc.FieldAssigneeAST;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.statement.IncrementStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -47,27 +47,27 @@ public final class IncrementRule extends Rule<ParseType>
   {
     if (PRE_PRODUCTION.equals(production))
     {
-      Assignee assignee = (Assignee) args[1];
-      return new IncrementStatement(assignee, ParseInfo.combine((ParseInfo) args[0], assignee.getParseInfo()));
+      AssigneeAST assignee = (AssigneeAST) args[1];
+      return new IncrementStatementAST(assignee, ParseInfo.combine((ParseInfo) args[0], assignee.getParseInfo()));
     }
     if (PRE_QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[1];
-      FieldAccessExpression fieldAccess = new FieldAccessExpression(qname, qname.getParseInfo());
-      Assignee assignee = new FieldAssignee(fieldAccess, fieldAccess.getParseInfo());
-      return new IncrementStatement(assignee, ParseInfo.combine((ParseInfo) args[0], assignee.getParseInfo()));
+      QNameAST qname = (QNameAST) args[1];
+      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getParseInfo());
+      return new IncrementStatementAST(assignee, ParseInfo.combine((ParseInfo) args[0], assignee.getParseInfo()));
     }
     if (POST_PRODUCTION.equals(production))
     {
-      Assignee assignee = (Assignee) args[0];
-      return new IncrementStatement(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1]));
+      AssigneeAST assignee = (AssigneeAST) args[0];
+      return new IncrementStatementAST(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1]));
     }
     if (POST_QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      FieldAccessExpression fieldAccess = new FieldAccessExpression(qname, qname.getParseInfo());
-      Assignee assignee = new FieldAssignee(fieldAccess, fieldAccess.getParseInfo());
-      return new IncrementStatement(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1]));
+      QNameAST qname = (QNameAST) args[0];
+      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getParseInfo());
+      return new IncrementStatementAST(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1]));
     }
     throw badTypeList();
   }

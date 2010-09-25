@@ -47,7 +47,7 @@ public final class MemberRule extends Rule<ParseType>
     if (FIELD_PRODUCTION.equals(production) || PROPERTY_PRODUCTION.equals(production) || STATIC_INITIALIZER_PRODUCTION.equals(production) ||
         CONSTRUCTOR_PRODUCTION.equals(production) || METHOD_PRODUCTION.equals(production) || TYPE_DEFINITION_PRODUCTION.equals(production))
     {
-      // All members that can be reduced to a Member are actually subclasses of Member, so just return the argument in any case
+      // All members that can be reduced to a MemberAST are actually subclasses of MemberAST, so just return the argument in any case
       return args[0];
     }
     throw badTypeList();

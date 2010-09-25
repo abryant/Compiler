@@ -8,12 +8,12 @@ import static compiler.language.parser.ParseType.TYPE_PARAMETER_NOT_QNAME_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.misc.QNameElement;
-import compiler.language.ast.type.NormalTypeParameter;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.Type;
-import compiler.language.ast.type.TypeParameter;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.misc.QNameElementAST;
+import compiler.language.ast.type.NormalTypeParameterAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeAST;
+import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -52,48 +52,48 @@ public final class TypeParameterListRule extends Rule<ParseType>
   {
     if (TYPE_PARAMETER_PRODUCTION.equals(production))
     {
-      TypeParameter typeParameter = (TypeParameter) args[0];
-      return new ParseList<TypeParameter>(typeParameter, typeParameter.getParseInfo());
+      TypeParameterAST typeParameter = (TypeParameterAST) args[0];
+      return new ParseList<TypeParameterAST>(typeParameter, typeParameter.getParseInfo());
     }
     if (QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      Type type = new PointerType(qname, qname.getParseInfo());
-      TypeParameter parameter = new NormalTypeParameter(type, type.getParseInfo());
-      return new ParseList<TypeParameter>(parameter, parameter.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      TypeAST type = new PointerTypeAST(qname, qname.getParseInfo());
+      TypeParameterAST parameter = new NormalTypeParameterAST(type, type.getParseInfo());
+      return new ParseList<TypeParameterAST>(parameter, parameter.getParseInfo());
     }
     if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
-      Type type = element.toType();
-      TypeParameter parameter = new NormalTypeParameter(type, type.getParseInfo());
-      return new ParseList<TypeParameter>(parameter, parameter.getParseInfo());
+      QNameElementAST element = (QNameElementAST) args[0];
+      TypeAST type = element.toType();
+      TypeParameterAST parameter = new NormalTypeParameterAST(type, type.getParseInfo());
+      return new ParseList<TypeParameterAST>(parameter, parameter.getParseInfo());
     }
     if (CONTINUATION_TYPE_PARAMETER_PRODUCTION.equals(production))
     {
-      TypeParameter newTypeParameter = (TypeParameter) args[0];
+      TypeParameterAST newTypeParameter = (TypeParameterAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<TypeParameter> list = (ParseList<TypeParameter>) args[2];
+      ParseList<TypeParameterAST> list = (ParseList<TypeParameterAST>) args[2];
       list.addFirst(newTypeParameter, ParseInfo.combine(newTypeParameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
     if (CONTINUATION_QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      PointerType type = new PointerType(qname, qname.getParseInfo());
-      TypeParameter newTypeParameter = new NormalTypeParameter(type, type.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      PointerTypeAST type = new PointerTypeAST(qname, qname.getParseInfo());
+      TypeParameterAST newTypeParameter = new NormalTypeParameterAST(type, type.getParseInfo());
       @SuppressWarnings("unchecked")
-      ParseList<TypeParameter> list = (ParseList<TypeParameter>) args[2];
+      ParseList<TypeParameterAST> list = (ParseList<TypeParameterAST>) args[2];
       list.addFirst(newTypeParameter, ParseInfo.combine(newTypeParameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
     if (CONTINUATION_NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
-      Type type = element.toType();
-      TypeParameter newTypeParameter = new NormalTypeParameter(type, type.getParseInfo());
+      QNameElementAST element = (QNameElementAST) args[0];
+      TypeAST type = element.toType();
+      TypeParameterAST newTypeParameter = new NormalTypeParameterAST(type, type.getParseInfo());
       @SuppressWarnings("unchecked")
-      ParseList<TypeParameter> list = (ParseList<TypeParameter>) args[2];
+      ParseList<TypeParameterAST> list = (ParseList<TypeParameterAST>) args[2];
       list.addFirst(newTypeParameter, ParseInfo.combine(newTypeParameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }

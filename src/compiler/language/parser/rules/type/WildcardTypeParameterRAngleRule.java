@@ -11,9 +11,9 @@ import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER_RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.TypeParameter;
-import compiler.language.ast.type.WildcardTypeParameter;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeParameterAST;
+import compiler.language.ast.type.WildcardTypeParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -51,51 +51,51 @@ public final class WildcardTypeParameterRAngleRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      WildcardTypeParameter typeParameter = new WildcardTypeParameter(new PointerType[0], new PointerType[0], (ParseInfo) args[0]);
-      return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      WildcardTypeParameterAST typeParameter = new WildcardTypeParameterAST(new PointerTypeAST[0], new PointerTypeAST[0], (ParseInfo) args[0]);
+      return new ParseContainer<TypeParameterAST>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (EXTENDS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[2];
-      ParseList<PointerType> superTypes = container.getItem();
-      WildcardTypeParameter typeParameter = new WildcardTypeParameter(superTypes.toArray(new PointerType[0]), new PointerType[0],
+      ParseContainer<ParseList<PointerTypeAST>> container = (ParseContainer<ParseList<PointerTypeAST>>) args[2];
+      ParseList<PointerTypeAST> superTypes = container.getItem();
+      WildcardTypeParameterAST typeParameter = new WildcardTypeParameterAST(superTypes.toArray(new PointerTypeAST[0]), new PointerTypeAST[0],
                                                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo()));
-      return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], container.getParseInfo()));
+      return new ParseContainer<TypeParameterAST>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], container.getParseInfo()));
     }
     if (SUPER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[2];
-      ParseList<PointerType> subTypes = container.getItem();
-      WildcardTypeParameter typeParameter = new WildcardTypeParameter(new PointerType[0], subTypes.toArray(new PointerType[0]),
+      ParseContainer<ParseList<PointerTypeAST>> container = (ParseContainer<ParseList<PointerTypeAST>>) args[2];
+      ParseList<PointerTypeAST> subTypes = container.getItem();
+      WildcardTypeParameterAST typeParameter = new WildcardTypeParameterAST(new PointerTypeAST[0], subTypes.toArray(new PointerTypeAST[0]),
                                                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo()));
-      return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], container.getParseInfo()));
+      return new ParseContainer<TypeParameterAST>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], container.getParseInfo()));
     }
     if (EXTENDS_SUPER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[4];
+      ParseContainer<ParseList<PointerTypeAST>> container = (ParseContainer<ParseList<PointerTypeAST>>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> superTypes = (ParseList<PointerType>) args[2];
-      ParseList<PointerType> subTypes = container.getItem();
-      WildcardTypeParameter typeParameter = new WildcardTypeParameter(superTypes.toArray(new PointerType[0]), subTypes.toArray(new PointerType[0]),
+      ParseList<PointerTypeAST> superTypes = (ParseList<PointerTypeAST>) args[2];
+      ParseList<PointerTypeAST> subTypes = container.getItem();
+      WildcardTypeParameterAST typeParameter = new WildcardTypeParameterAST(superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
                                                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(),
                                                                     (ParseInfo) args[3], subTypes.getParseInfo()));
-      return new ParseContainer<TypeParameter>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(),
+      return new ParseContainer<TypeParameterAST>(typeParameter, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(),
                                                                                         (ParseInfo) args[3], container.getParseInfo()));
     }
     if (SUPER_EXTENDS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[4];
+      ParseContainer<ParseList<PointerTypeAST>> container = (ParseContainer<ParseList<PointerTypeAST>>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> subTypes = (ParseList<PointerType>) args[2];
-      ParseList<PointerType> superTypes = container.getItem();
-      WildcardTypeParameter typeParameter = new WildcardTypeParameter(superTypes.toArray(new PointerType[0]), subTypes.toArray(new PointerType[0]),
+      ParseList<PointerTypeAST> subTypes = (ParseList<PointerTypeAST>) args[2];
+      ParseList<PointerTypeAST> superTypes = container.getItem();
+      WildcardTypeParameterAST typeParameter = new WildcardTypeParameterAST(superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
                                                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(),
                                                                     (ParseInfo) args[3], superTypes.getParseInfo()));
-      return new ParseContainer<TypeParameter>(typeParameter,
+      return new ParseContainer<TypeParameterAST>(typeParameter,
                    ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], container.getParseInfo()));
     }
     throw badTypeList();

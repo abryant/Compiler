@@ -8,7 +8,7 @@ import static compiler.language.parser.ParseType.TYPE_BOUND_LIST_RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -44,18 +44,18 @@ public final class TypeBoundListRAngleRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<PointerType> type = (ParseContainer<PointerType>) args[0];
-      ParseList<PointerType> list = new ParseList<PointerType>(type.getItem(), type.getItem().getParseInfo());
-      return new ParseContainer<ParseList<PointerType>>(list, type.getParseInfo());
+      ParseContainer<PointerTypeAST> type = (ParseContainer<PointerTypeAST>) args[0];
+      ParseList<PointerTypeAST> list = new ParseList<PointerTypeAST>(type.getItem(), type.getItem().getParseInfo());
+      return new ParseContainer<ParseList<PointerTypeAST>>(list, type.getParseInfo());
     }
     if (LIST_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> list = (ParseList<PointerType>) args[0];
+      ParseList<PointerTypeAST> list = (ParseList<PointerTypeAST>) args[0];
       @SuppressWarnings("unchecked")
-      ParseContainer<PointerType> type = (ParseContainer<PointerType>) args[2];
+      ParseContainer<PointerTypeAST> type = (ParseContainer<PointerTypeAST>) args[2];
       list.addLast(type.getItem(), ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], type.getItem().getParseInfo()));
-      return new ParseContainer<ParseList<PointerType>>(list, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], type.getParseInfo()));
+      return new ParseContainer<ParseList<PointerTypeAST>>(list, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], type.getParseInfo()));
     }
     throw badTypeList();
   }

@@ -11,9 +11,9 @@ import static compiler.language.parser.ParseType.TYPE_BOUND_LIST_RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.TypeArgument;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -49,57 +49,57 @@ public final class TypeArgumentRAngleRule extends Rule<ParseType>
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
-    // all productions have the first argument as a Name, so we can cast it early
-    // (this assumes that we have the correct type list, and that the NAME type is only ever associated with a Name object)
-    Name name = (Name) args[0];
+    // all productions have the first argument as a NameAST, so we can cast it early
+    // (this assumes that we have the correct type list, and that the NAME type is only ever associated with a NameAST object)
+    NameAST name = (NameAST) args[0];
     if (NAME_PRODUCTION.equals(production))
     {
-      TypeArgument typeArgument = new TypeArgument(name, new PointerType[0], new PointerType[0], name.getParseInfo());
-      return new ParseContainer<TypeArgument>(typeArgument, ParseInfo.combine(typeArgument.getParseInfo(), (ParseInfo) args[1]));
+      TypeArgumentAST typeArgument = new TypeArgumentAST(name, new PointerTypeAST[0], new PointerTypeAST[0], name.getParseInfo());
+      return new ParseContainer<TypeArgumentAST>(typeArgument, ParseInfo.combine(typeArgument.getParseInfo(), (ParseInfo) args[1]));
     }
     if (EXTENDS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[2];
-      ParseList<PointerType> superTypes = container.getItem();
-      TypeArgument typeArgument = new TypeArgument(name, superTypes.toArray(new PointerType[0]), new PointerType[0],
+      ParseContainer<ParseList<PointerTypeAST>> container = (ParseContainer<ParseList<PointerTypeAST>>) args[2];
+      ParseList<PointerTypeAST> superTypes = container.getItem();
+      TypeArgumentAST typeArgument = new TypeArgumentAST(name, superTypes.toArray(new PointerTypeAST[0]), new PointerTypeAST[0],
                                                    ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo()));
-      return new ParseContainer<TypeArgument>(typeArgument, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
+      return new ParseContainer<TypeArgumentAST>(typeArgument, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
     }
     if (SUPER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[2];
-      ParseList<PointerType> subTypes = container.getItem();
-      TypeArgument typeArgument = new TypeArgument(name, new PointerType[0], subTypes.toArray(new PointerType[0]),
+      ParseContainer<ParseList<PointerTypeAST>> container = (ParseContainer<ParseList<PointerTypeAST>>) args[2];
+      ParseList<PointerTypeAST> subTypes = container.getItem();
+      TypeArgumentAST typeArgument = new TypeArgumentAST(name, new PointerTypeAST[0], subTypes.toArray(new PointerTypeAST[0]),
                                                    ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo()));
-      return new ParseContainer<TypeArgument>(typeArgument, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
+      return new ParseContainer<TypeArgumentAST>(typeArgument, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
     }
     if (EXTENDS_SUPER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[4];
+      ParseContainer<ParseList<PointerTypeAST>> container = (ParseContainer<ParseList<PointerTypeAST>>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> superTypes = (ParseList<PointerType>) args[2];
-      ParseList<PointerType> subTypes = container.getItem();
-      TypeArgument typeArgument = new TypeArgument(name, superTypes.toArray(new PointerType[0]), subTypes.toArray(new PointerType[0]),
+      ParseList<PointerTypeAST> superTypes = (ParseList<PointerTypeAST>) args[2];
+      ParseList<PointerTypeAST> subTypes = container.getItem();
+      TypeArgumentAST typeArgument = new TypeArgumentAST(name, superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
                                                    ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo(),
                                                                                           (ParseInfo) args[3], subTypes.getParseInfo()));
-      return new ParseContainer<TypeArgument>(typeArgument,
+      return new ParseContainer<TypeArgumentAST>(typeArgument,
                                               ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo(),
                                                                                      (ParseInfo) args[3], container.getParseInfo()));
     }
     if (SUPER_EXTENDS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<PointerType>> container = (ParseContainer<ParseList<PointerType>>) args[4];
+      ParseContainer<ParseList<PointerTypeAST>> container = (ParseContainer<ParseList<PointerTypeAST>>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> subTypes = (ParseList<PointerType>) args[2];
-      ParseList<PointerType> superTypes = container.getItem();
-      TypeArgument typeArgument = new TypeArgument(name, superTypes.toArray(new PointerType[0]), subTypes.toArray(new PointerType[0]),
+      ParseList<PointerTypeAST> subTypes = (ParseList<PointerTypeAST>) args[2];
+      ParseList<PointerTypeAST> superTypes = container.getItem();
+      TypeArgumentAST typeArgument = new TypeArgumentAST(name, superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
                                                    ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo(),
                                                                                           (ParseInfo) args[3], superTypes.getParseInfo()));
-      return new ParseContainer<TypeArgument>(typeArgument,
+      return new ParseContainer<TypeArgumentAST>(typeArgument,
                                               ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo(),
                                                                                      (ParseInfo) args[3], container.getParseInfo()));
     }

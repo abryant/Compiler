@@ -7,8 +7,8 @@ import static compiler.language.parser.ParseType.QNAME_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.misc.QNameElement;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -46,27 +46,27 @@ public final class QNameListRule extends Rule<ParseType>
   {
     if (END_QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      return new ParseList<QNameElement>(new QNameElement(qname), qname.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      return new ParseList<QNameElementAST>(new QNameElementAST(qname), qname.getParseInfo());
     }
     if (END_NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
-      return new ParseList<QNameElement>(element, element.getParseInfo());
+      QNameElementAST element = (QNameElementAST) args[0];
+      return new ParseList<QNameElementAST>(element, element.getParseInfo());
     }
     if (CONTINUATION_QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
+      QNameAST qname = (QNameAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<QNameElement> list = (ParseList<QNameElement>) args[2];
-      list.addFirst(new QNameElement(qname), ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      ParseList<QNameElementAST> list = (ParseList<QNameElementAST>) args[2];
+      list.addFirst(new QNameElementAST(qname), ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
     if (CONTINUATION_NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
-      QNameElement nestedList = (QNameElement) args[0];
+      QNameElementAST nestedList = (QNameElementAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<QNameElement> list = (ParseList<QNameElement>) args[2];
+      ParseList<QNameElementAST> list = (ParseList<QNameElementAST>) args[2];
       list.addFirst(nestedList, ParseInfo.combine(nestedList.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }

@@ -9,9 +9,9 @@ import static compiler.language.parser.ParseType.TRY_STATEMENT;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.statement.CatchClause;
-import compiler.language.ast.statement.TryStatement;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.statement.CatchClauseAST;
+import compiler.language.ast.statement.TryStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,12 +45,12 @@ public final class TryStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Block block = (Block) args[1];
+      BlockAST block = (BlockAST) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<CatchClause> catchClauses = (ParseList<CatchClause>) args[2];
+      ParseList<CatchClauseAST> catchClauses = (ParseList<CatchClauseAST>) args[2];
       @SuppressWarnings("unchecked")
-      ParseContainer<Block> finallyClause = (ParseContainer<Block>) args[3];
-      return new TryStatement(block, catchClauses.toArray(new CatchClause[0]), finallyClause.getItem(),
+      ParseContainer<BlockAST> finallyClause = (ParseContainer<BlockAST>) args[3];
+      return new TryStatementAST(block, catchClauses.toArray(new CatchClauseAST[0]), finallyClause.getItem(),
                               ParseInfo.combine((ParseInfo) args[0], block.getParseInfo(), catchClauses.getParseInfo(), finallyClause.getParseInfo()));
     }
     throw badTypeList();

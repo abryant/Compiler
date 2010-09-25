@@ -4,8 +4,8 @@ import static compiler.language.parser.ParseType.POINTER_TYPE;
 import static compiler.language.parser.ParseType.POINTER_TYPE_NOT_QNAME;
 import static compiler.language.parser.ParseType.QNAME;
 
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -39,12 +39,12 @@ public final class PointerTypeRule extends Rule<ParseType>
   {
     if (QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      return new PointerType(qname, qname.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      return new PointerTypeAST(qname, qname.getParseInfo());
     }
     if (PRODUCTION.equals(production))
     {
-      // POINTER_TYPE_NOT_QNAME has already built a PointerType, so return it
+      // POINTER_TYPE_NOT_QNAME has already built a PointerTypeAST, so return it
       return args[0];
     }
     throw badTypeList();

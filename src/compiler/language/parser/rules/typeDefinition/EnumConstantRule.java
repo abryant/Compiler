@@ -9,10 +9,10 @@ import static compiler.language.parser.ParseType.RBRACE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.member.Member;
-import compiler.language.ast.misc.Parameter;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.typeDefinition.EnumConstant;
+import compiler.language.ast.member.MemberAST;
+import compiler.language.ast.misc.ParameterAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.typeDefinition.EnumConstantAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,32 +48,32 @@ public final class EnumConstantRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Name name = (Name) args[0];
-      return new EnumConstant(name, new Parameter[0], null, name.getParseInfo());
+      NameAST name = (NameAST) args[0];
+      return new EnumConstantAST(name, new ParameterAST[0], null, name.getParseInfo());
     }
     if (PARAMETERS_PRODUCTION.equals(production))
     {
-      Name name = (Name) args[0];
+      NameAST name = (NameAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<Parameter> parameters = (ParseList<Parameter>) args[1];
-      return new EnumConstant(name, parameters.toArray(new Parameter[0]), null, ParseInfo.combine(name.getParseInfo(), parameters.getParseInfo()));
+      ParseList<ParameterAST> parameters = (ParseList<ParameterAST>) args[1];
+      return new EnumConstantAST(name, parameters.toArray(new ParameterAST[0]), null, ParseInfo.combine(name.getParseInfo(), parameters.getParseInfo()));
     }
     if (MEMBERS_PRODUCTION.equals(production))
     {
-      Name name = (Name) args[0];
+      NameAST name = (NameAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<Member> members = (ParseList<Member>) args[2];
-      return new EnumConstant(name, new Parameter[0], members.toArray(new Member[0]),
+      ParseList<MemberAST> members = (ParseList<MemberAST>) args[2];
+      return new EnumConstantAST(name, new ParameterAST[0], members.toArray(new MemberAST[0]),
                               ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], members.getParseInfo(), (ParseInfo) args[3]));
     }
     if (PARAMETERS_MEMBERS_PRODUCTION.equals(production))
     {
-      Name name = (Name) args[0];
+      NameAST name = (NameAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<Parameter> parameters = (ParseList<Parameter>) args[1];
+      ParseList<ParameterAST> parameters = (ParseList<ParameterAST>) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<Member> members = (ParseList<Member>) args[3];
-      return new EnumConstant(name, parameters.toArray(new Parameter[0]), members.toArray(new Member[0]),
+      ParseList<MemberAST> members = (ParseList<MemberAST>) args[3];
+      return new EnumConstantAST(name, parameters.toArray(new ParameterAST[0]), members.toArray(new MemberAST[0]),
                               ParseInfo.combine(name.getParseInfo(), parameters.getParseInfo(), (ParseInfo) args[2], members.getParseInfo(), (ParseInfo) args[4]));
     }
     throw badTypeList();

@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.SUPER_ACCESS_EXPRESSION;
 import static compiler.language.parser.ParseType.SUPER_KEYWORD;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.SuperAccessExpression;
-import compiler.language.ast.misc.QName;
+import compiler.language.ast.expression.SuperAccessExpressionAST;
+import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,12 +42,12 @@ public final class SuperAccessExpressionRule extends Rule<ParseType>
   {
     if (SUPER_PRODUCTION.equals(production))
     {
-      return new SuperAccessExpression(null, (ParseInfo) args[0]);
+      return new SuperAccessExpressionAST(null, (ParseInfo) args[0]);
     }
     if (QNAME_SUPER_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      return new SuperAccessExpression(qname, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      QNameAST qname = (QNameAST) args[0];
+      return new SuperAccessExpressionAST(qname, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

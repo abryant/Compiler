@@ -9,11 +9,11 @@ import static compiler.language.parser.ParseType.POINTER_TYPE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.Modifier;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.statement.CatchClause;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.misc.ModifierAST;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.statement.CatchClauseAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,20 +48,20 @@ public final class CatchClauseRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      PointerType type = (PointerType) args[1];
-      Name name = (Name) args[2];
-      Block block = (Block) args[3];
-      return new CatchClause(new Modifier[0], type, name, block,
+      PointerTypeAST type = (PointerTypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      BlockAST block = (BlockAST) args[3];
+      return new CatchClauseAST(new ModifierAST[0], type, name, block,
                              ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(), block.getParseInfo()));
     }
     if (MODIFIERS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Modifier> modifiers = (ParseList<Modifier>) args[1];
-      PointerType type = (PointerType) args[2];
-      Name name = (Name) args[3];
-      Block block = (Block) args[4];
-      return new CatchClause(modifiers.toArray(new Modifier[0]), type, name, block,
+      ParseList<ModifierAST> modifiers = (ParseList<ModifierAST>) args[1];
+      PointerTypeAST type = (PointerTypeAST) args[2];
+      NameAST name = (NameAST) args[3];
+      BlockAST block = (BlockAST) args[4];
+      return new CatchClauseAST(modifiers.toArray(new ModifierAST[0]), type, name, block,
                              ParseInfo.combine((ParseInfo) args[0], modifiers.getParseInfo(), type.getParseInfo(), name.getParseInfo(), block.getParseInfo()));
     }
     throw badTypeList();

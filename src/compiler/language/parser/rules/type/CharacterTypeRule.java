@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.CHARACTER_KEYWORD;
 import static compiler.language.parser.ParseType.CHARACTER_TYPE;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.type.CharacterType;
+import compiler.language.ast.type.CharacterTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -37,7 +37,7 @@ public final class CharacterTypeRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new CharacterType((ParseInfo) args[0]);
+      return new CharacterTypeAST((ParseInfo) args[0]);
     }
     throw badTypeList();
   }

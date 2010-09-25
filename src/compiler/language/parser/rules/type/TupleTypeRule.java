@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.NESTED_QNAME_LIST;
 import static compiler.language.parser.ParseType.TUPLE_TYPE;
 import static compiler.language.parser.ParseType.TUPLE_TYPE_NOT_QNAME_LIST;
 
-import compiler.language.ast.misc.QNameElement;
+import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -38,14 +38,14 @@ public final class TupleTypeRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      // return the existing TupleType
+      // return the existing TupleTypeAST
       return args[0];
     }
     if (QNAME_LIST_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
-      // since this QNameElement is from the NESTED_QNAME_LIST rule, it must be
-      // a compound element which will return a TupleType
+      QNameElementAST element = (QNameElementAST) args[0];
+      // since this QNameElementAST is from the NESTED_QNAME_LIST rule, it must be
+      // a compound element which will return a TupleTypeAST
       return element.toType();
     }
     throw badTypeList();

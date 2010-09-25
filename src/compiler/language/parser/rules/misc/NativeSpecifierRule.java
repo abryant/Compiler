@@ -7,8 +7,8 @@ import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.STRING_LITERAL;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.NativeSpecifier;
-import compiler.language.ast.terminal.StringLiteral;
+import compiler.language.ast.misc.NativeSpecifierAST;
+import compiler.language.ast.terminal.StringLiteralAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,8 +41,8 @@ public final class NativeSpecifierRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      StringLiteral literal = (StringLiteral) args[2];
-      return new NativeSpecifier(literal, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], literal.getParseInfo(), (ParseInfo) args[3]));
+      StringLiteralAST literal = (StringLiteralAST) args[2];
+      return new NativeSpecifierAST(literal, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], literal.getParseInfo(), (ParseInfo) args[3]));
     }
     throw badTypeList();
   }

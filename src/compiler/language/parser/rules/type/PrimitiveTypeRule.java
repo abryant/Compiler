@@ -41,7 +41,7 @@ public final class PrimitiveTypeRule extends Rule<ParseType>
   {
     if (BOOLEAN_PRODUCTION.equals(production) || INTEGER_PRODUCTION.equals(production) || CHARACTER_PRODUCTION.equals(production) || FLOATING_PRODUCTION.equals(production))
     {
-      // All primitive types that can be reduced to a PrimitiveType are actually subclasses of PrimitiveType, so just return the argument in any case
+      // All primitive types that can be reduced to a PrimitiveTypeAST are actually subclasses of PrimitiveTypeAST, so just return the argument in any case
       return args[0];
     }
     throw badTypeList();

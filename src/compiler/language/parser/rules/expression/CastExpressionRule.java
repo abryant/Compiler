@@ -9,9 +9,9 @@ import static compiler.language.parser.ParseType.UNARY_EXPRESSION;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.CastExpression;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.expression.CastExpressionAST;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -47,9 +47,9 @@ public final class CastExpressionRule extends Rule<ParseType>
     if (PRODUCTION.equals(production) || QNAME_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<Type> type = (ParseContainer<Type>) args[2];
-      Expression expression = (Expression) args[3];
-      return new CastExpression(type.getItem(), expression,
+      ParseContainer<TypeAST> type = (ParseContainer<TypeAST>) args[2];
+      ExpressionAST expression = (ExpressionAST) args[3];
+      return new CastExpressionAST(type.getItem(), expression,
                                 ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], type.getParseInfo(), expression.getParseInfo()));
     }
     throw badTypeList();

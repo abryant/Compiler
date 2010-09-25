@@ -8,8 +8,8 @@ import static compiler.language.parser.ParseType.QNAME;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.LanguageParseException;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
@@ -46,19 +46,19 @@ public final class PointerTypeDoubleRAngleRule extends Rule<ParseType>
   {
     if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
-      // a ParseContainer<ParseContainer<PointerType>> has already been created, so return it
+      // a ParseContainer<ParseContainer<PointerTypeAST>> has already been created, so return it
       return args[0];
     }
 
-    PointerType type;
+    PointerTypeAST type;
     if (QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      type = new PointerType(qname, qname.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      type = new PointerTypeAST(qname, qname.getParseInfo());
     }
     else if (NO_TRAILING_PARAMS_PRODUCTION.equals(production))
     {
-      type = (PointerType) args[0];
+      type = (PointerTypeAST) args[0];
     }
     else
     {
@@ -77,8 +77,8 @@ public final class PointerTypeDoubleRAngleRule extends Rule<ParseType>
       throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which is not 2 characters long", doubleRAngleInfo);
     }
     ParseInfo firstAngleInfo = new ParseInfo(line, startPos, line, startPos + 1);
-    ParseContainer<PointerType> firstContainer = new ParseContainer<PointerType>(type, ParseInfo.combine(type.getParseInfo(), firstAngleInfo));
-    return new ParseContainer<ParseContainer<PointerType>>(firstContainer, ParseInfo.combine(type.getParseInfo(), doubleRAngleInfo));
+    ParseContainer<PointerTypeAST> firstContainer = new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), firstAngleInfo));
+    return new ParseContainer<ParseContainer<PointerTypeAST>>(firstContainer, ParseInfo.combine(type.getParseInfo(), doubleRAngleInfo));
   }
 
 }

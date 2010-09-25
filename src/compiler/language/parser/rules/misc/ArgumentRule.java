@@ -12,13 +12,13 @@ import static compiler.language.parser.ParseType.TYPE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.misc.DefaultArgument;
-import compiler.language.ast.misc.Modifier;
-import compiler.language.ast.misc.SingleArgument;
-import compiler.language.ast.misc.VariadicArgument;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.misc.DefaultArgumentAST;
+import compiler.language.ast.misc.ModifierAST;
+import compiler.language.ast.misc.SingleArgumentAST;
+import compiler.language.ast.misc.VariadicArgumentAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -62,55 +62,55 @@ public final class ArgumentRule extends Rule<ParseType>
     if (SINGLE_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Modifier> modifiers = (ParseList<Modifier>) args[0];
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      return new SingleArgument(modifiers.toArray(new Modifier[0]), type, name, ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), name.getParseInfo()));
+      ParseList<ModifierAST> modifiers = (ParseList<ModifierAST>) args[0];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      return new SingleArgumentAST(modifiers.toArray(new ModifierAST[0]), type, name, ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), name.getParseInfo()));
     }
     if (DEFAULT_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Modifier> modifiers = (ParseList<Modifier>) args[0];
-      Type type = (Type) args[1];
-      Name name = (Name) args[3];
-      Expression expression = (Expression) args[5];
-      return new DefaultArgument(modifiers.toArray(new Modifier[0]), type, name, expression,
+      ParseList<ModifierAST> modifiers = (ParseList<ModifierAST>) args[0];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[3];
+      ExpressionAST expression = (ExpressionAST) args[5];
+      return new DefaultArgumentAST(modifiers.toArray(new ModifierAST[0]), type, name, expression,
                                  ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), (ParseInfo) args[2], name.getParseInfo(), (ParseInfo) args[4], expression.getParseInfo()));
     }
     if (VARIADIC_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Modifier> modifiers = (ParseList<Modifier>) args[0];
-      Type type = (Type) args[1];
-      Name name = (Name) args[3];
-      return new VariadicArgument(modifiers.toArray(new Modifier[0]), type, name,
+      ParseList<ModifierAST> modifiers = (ParseList<ModifierAST>) args[0];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[3];
+      return new VariadicArgumentAST(modifiers.toArray(new ModifierAST[0]), type, name,
                                   ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), (ParseInfo) args[2], name.getParseInfo()));
     }
     if (SINGLE_NO_MODIFIERS_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[0];
-      Name name = (Name) args[1];
-      return new SingleArgument(new Modifier[0], type, name,
+      TypeAST type = (TypeAST) args[0];
+      NameAST name = (NameAST) args[1];
+      return new SingleArgumentAST(new ModifierAST[0], type, name,
                                 ParseInfo.combine(type.getParseInfo(), name.getParseInfo()));
     }
     if (DEFAULT_NO_MODIFIERS_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[0];
-      Name name = (Name) args[2];
-      Expression expression = (Expression) args[4];
-      return new DefaultArgument(new Modifier[0], type, name, expression,
+      TypeAST type = (TypeAST) args[0];
+      NameAST name = (NameAST) args[2];
+      ExpressionAST expression = (ExpressionAST) args[4];
+      return new DefaultArgumentAST(new ModifierAST[0], type, name, expression,
                                  ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(), (ParseInfo) args[3], expression.getParseInfo()));
     }
     if (VARIADIC_NO_MODIFIERS_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[0];
-      Name name = (Name) args[2];
-      return new VariadicArgument(new Modifier[0], type, name,
+      TypeAST type = (TypeAST) args[0];
+      NameAST name = (NameAST) args[2];
+      return new VariadicArgumentAST(new ModifierAST[0], type, name,
                                   ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], name.getParseInfo()));
     }
     if (MULTIPLE_PRODUCTION.equals(production))
     {
-      // ArgumentList is a subclass of Argument, so just return what has been passed in
+      // ArgumentListAST is a subclass of ArgumentAST, so just return what has been passed in
       return args[0];
     }
     throw badTypeList();

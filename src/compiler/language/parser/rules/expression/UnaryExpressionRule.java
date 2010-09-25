@@ -10,11 +10,11 @@ import static compiler.language.parser.ParseType.TILDE;
 import static compiler.language.parser.ParseType.UNARY_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.BitwiseNotExpression;
-import compiler.language.ast.expression.BooleanNotExpression;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.expression.UnaryMinusExpression;
-import compiler.language.ast.expression.UnaryPlusExpression;
+import compiler.language.ast.expression.BitwiseNotExpressionAST;
+import compiler.language.ast.expression.BooleanNotExpressionAST;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.UnaryMinusExpressionAST;
+import compiler.language.ast.expression.UnaryPlusExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -68,23 +68,23 @@ public final class UnaryExpressionRule extends Rule<ParseType>
     }
     if (UNARY_PLUS_PRODUCTION.equals(production) || UNARY_PLUS_QNAME_PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[1];
-      return new UnaryPlusExpression(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
+      ExpressionAST expression = (ExpressionAST) args[1];
+      return new UnaryPlusExpressionAST(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
     }
     if (UNARY_MINUS_PRODUCTION.equals(production) || UNARY_MINUS_QNAME_PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[1];
-      return new UnaryMinusExpression(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
+      ExpressionAST expression = (ExpressionAST) args[1];
+      return new UnaryMinusExpressionAST(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
     }
     if (BOOLEAN_NOT_PRODUCTION.equals(production) || BOOLEAN_NOT_QNAME_PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[1];
-      return new BooleanNotExpression(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
+      ExpressionAST expression = (ExpressionAST) args[1];
+      return new BooleanNotExpressionAST(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
     }
     if (BITWISE_NOT_PRODUCTION.equals(production) || BITWISE_NOT_QNAME_PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[1];
-      return new BitwiseNotExpression(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
+      ExpressionAST expression = (ExpressionAST) args[1];
+      return new BitwiseNotExpressionAST(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
     }
     throw badTypeList();
   }

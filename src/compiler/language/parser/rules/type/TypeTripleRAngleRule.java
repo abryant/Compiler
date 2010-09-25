@@ -9,9 +9,9 @@ import static compiler.language.parser.ParseType.TYPE_TRIPLE_RANGLE;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QNameElement;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.misc.QNameElementAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.language.parser.ParseUtil;
 import compiler.parser.ParseException;
@@ -49,22 +49,22 @@ public final class TypeTripleRAngleRule extends Rule<ParseType>
   {
     if (POINTER_TYPE_PRODUCTION.equals(production))
     {
-      // repackage the ParseContainers here to contain a Type and not a PointerType
+      // repackage the ParseContainers here to contain a TypeAST and not a PointerTypeAST
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<PointerType>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<PointerType>>>) args[0];
-      ParseContainer<Type> firstContainer = new ParseContainer<Type>(oldContainer.getItem().getItem().getItem(), oldContainer.getItem().getItem().getParseInfo());
-      ParseContainer<ParseContainer<Type>> secondContainer = new ParseContainer<ParseContainer<Type>>(firstContainer, oldContainer.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<ParseContainer<Type>>>(secondContainer, oldContainer.getParseInfo());
+      ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>) args[0];
+      ParseContainer<TypeAST> firstContainer = new ParseContainer<TypeAST>(oldContainer.getItem().getItem().getItem(), oldContainer.getItem().getItem().getParseInfo());
+      ParseContainer<ParseContainer<TypeAST>> secondContainer = new ParseContainer<ParseContainer<TypeAST>>(firstContainer, oldContainer.getItem().getParseInfo());
+      return new ParseContainer<ParseContainer<ParseContainer<TypeAST>>>(secondContainer, oldContainer.getParseInfo());
     }
 
-    Type type;
+    TypeAST type;
     if (PRODUCTION.equals(production) || TUPLE_TYPE_PRODUCTION.equals(production))
     {
-      type = (Type) args[0];
+      type = (TypeAST) args[0];
     }
     else if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
+      QNameElementAST element = (QNameElementAST) args[0];
       type = element.toType();
     }
     else
@@ -75,9 +75,9 @@ public final class TypeTripleRAngleRule extends Rule<ParseType>
     ParseInfo tripleRAngleInfo = (ParseInfo) args[1];
     ParseInfo firstRAngleInfo = ParseUtil.splitTripleRAngleFirst(tripleRAngleInfo);
     ParseInfo firstTwoRAnglesInfo = ParseUtil.splitTripleRAngleFirstTwo(tripleRAngleInfo);
-    ParseContainer<Type> firstContainer = new ParseContainer<Type>(type, ParseInfo.combine(type.getParseInfo(), firstRAngleInfo));
-    ParseContainer<ParseContainer<Type>> secondContainer = new ParseContainer<ParseContainer<Type>>(firstContainer, ParseInfo.combine(type.getParseInfo(), firstTwoRAnglesInfo));
-    return new ParseContainer<ParseContainer<ParseContainer<Type>>>(secondContainer, ParseInfo.combine(type.getParseInfo(), tripleRAngleInfo));
+    ParseContainer<TypeAST> firstContainer = new ParseContainer<TypeAST>(type, ParseInfo.combine(type.getParseInfo(), firstRAngleInfo));
+    ParseContainer<ParseContainer<TypeAST>> secondContainer = new ParseContainer<ParseContainer<TypeAST>>(firstContainer, ParseInfo.combine(type.getParseInfo(), firstTwoRAnglesInfo));
+    return new ParseContainer<ParseContainer<ParseContainer<TypeAST>>>(secondContainer, ParseInfo.combine(type.getParseInfo(), tripleRAngleInfo));
   }
 
 }

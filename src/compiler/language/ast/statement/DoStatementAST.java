@@ -1,0 +1,56 @@
+package compiler.language.ast.statement;
+
+import compiler.language.ast.ParseInfo;
+import compiler.language.ast.expression.ExpressionAST;
+
+/*
+ * Created on 13 Aug 2010
+ */
+
+/**
+ * @author Anthony Bryant
+ */
+public class DoStatementAST extends StatementAST
+{
+
+  private BlockAST block;
+  private ExpressionAST condition;
+
+  /**
+   * @param block - the block to execute in this do loop
+   * @param condition - the condition of this do loop
+   * @param parseInfo - the parsing information
+   */
+  public DoStatementAST(BlockAST block, ExpressionAST condition, ParseInfo parseInfo)
+  {
+    super(parseInfo);
+    this.block = block;
+    this.condition = condition;
+  }
+
+  /**
+   * @return the block
+   */
+  public BlockAST getBlock()
+  {
+    return block;
+  }
+
+  /**
+   * @return the condition
+   */
+  public ExpressionAST getCondition()
+  {
+    return condition;
+  }
+
+  /**
+   * {@inheritDoc}
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString()
+  {
+    return "do\n" + block + "\nwhile " + condition + ";";
+  }
+}

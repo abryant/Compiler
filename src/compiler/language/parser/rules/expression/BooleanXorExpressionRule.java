@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.DOUBLE_CARET;
 import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.BooleanXorExpression;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.BooleanXorExpressionAST;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,20 +45,20 @@ public final class BooleanXorExpressionRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      // return the existing Expression
+      // return the existing ExpressionAST
       return args[0];
     }
     if (XOR_PRODUCTION.equals(production) || XOR_QNAME_PRODUCTION.equals(production) || QNAME_XOR_PRODUCTION.equals(production) || QNAME_XOR_QNAME_PRODUCTION.equals(production))
     {
-      Expression secondExpression = (Expression) args[2];
-      if (args[0] instanceof BooleanXorExpression)
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
+      if (args[0] instanceof BooleanXorExpressionAST)
       {
-        // continue the existing BooleanXorExpression if we've already started one
-        BooleanXorExpression startExpression = (BooleanXorExpression) args[0];
-        return new BooleanXorExpression(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+        // continue the existing BooleanXorExpressionAST if we've already started one
+        BooleanXorExpressionAST startExpression = (BooleanXorExpressionAST) args[0];
+        return new BooleanXorExpressionAST(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
       }
-      Expression firstExpression = (Expression) args[0];
-      return new BooleanXorExpression(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      ExpressionAST firstExpression = (ExpressionAST) args[0];
+      return new BooleanXorExpressionAST(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     throw badTypeList();
   }

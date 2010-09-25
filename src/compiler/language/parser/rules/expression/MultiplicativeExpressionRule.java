@@ -8,9 +8,9 @@ import static compiler.language.parser.ParseType.STAR;
 import static compiler.language.parser.ParseType.TUPLE_INDEX_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.expression.MultiplicativeExpression;
-import compiler.language.ast.expression.MultiplicativeExpressionType;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.MultiplicativeExpressionAST;
+import compiler.language.ast.expression.MultiplicativeExpressionTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -59,38 +59,38 @@ public final class MultiplicativeExpressionRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      // return the existing Expression
+      // return the existing ExpressionAST
       return args[0];
     }
 
-    MultiplicativeExpressionType type = null;
+    MultiplicativeExpressionTypeAST type = null;
     if (TIMES_PRODUCTION.equals(production) || TIMES_QNAME_PRODUCTION.equals(production) || QNAME_TIMES_PRODUCTION.equals(production) || QNAME_TIMES_QNAME_PRODUCTION.equals(production))
     {
-      type = MultiplicativeExpressionType.TIMES;
+      type = MultiplicativeExpressionTypeAST.TIMES;
     }
     else if (DIVIDE_PRODUCTION.equals(production) || DIVIDE_QNAME_PRODUCTION.equals(production) || QNAME_DIVIDE_PRODUCTION.equals(production) || QNAME_DIVIDE_QNAME_PRODUCTION.equals(production))
     {
-      type = MultiplicativeExpressionType.DIVIDE;
+      type = MultiplicativeExpressionTypeAST.DIVIDE;
     }
     else if (MODULUS_PRODUCTION.equals(production) || MODULUS_QNAME_PRODUCTION.equals(production) || QNAME_MODULUS_PRODUCTION.equals(production) || QNAME_MODULUS_QNAME_PRODUCTION.equals(production))
     {
-      type = MultiplicativeExpressionType.MODULUS;
+      type = MultiplicativeExpressionTypeAST.MODULUS;
     }
     else
     {
       throw badTypeList();
     }
-    Expression secondExpression = (Expression) args[2];
+    ExpressionAST secondExpression = (ExpressionAST) args[2];
 
-    if (args[0] instanceof MultiplicativeExpression)
+    if (args[0] instanceof MultiplicativeExpressionAST)
     {
-      // continue the existing MultiplicativeExpression if we've already started one
-      MultiplicativeExpression startExpression = (MultiplicativeExpression) args[0];
-      return new MultiplicativeExpression(startExpression, type, secondExpression,
+      // continue the existing MultiplicativeExpressionAST if we've already started one
+      MultiplicativeExpressionAST startExpression = (MultiplicativeExpressionAST) args[0];
+      return new MultiplicativeExpressionAST(startExpression, type, secondExpression,
                                           ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
-    Expression firstExpression = (Expression) args[0];
-    return new MultiplicativeExpression(firstExpression, type, secondExpression,
+    ExpressionAST firstExpression = (ExpressionAST) args[0];
+    return new MultiplicativeExpressionAST(firstExpression, type, secondExpression,
                                         ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
   }
 

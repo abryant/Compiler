@@ -8,8 +8,8 @@ import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
 import static compiler.language.parser.ParseType.QUESTION_MARK;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.expression.InlineIfExpression;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.InlineIfExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,15 +48,15 @@ public final class InlineIfExpressionRule extends Rule<ParseType>
   {
     if (NO_CHANGE_PRODUCTION.equals(production))
     {
-      // return the existing Expression
+      // return the existing ExpressionAST
       return args[0];
     }
     if (IF_PRODUCTION.equals(production) || IF_QNAME_PRODUCTION.equals(production) || QNAME_IF_PRODUCTION.equals(production) || QNAME_IF_QNAME_PRODUCTION.equals(production))
     {
-      Expression firstExpression = (Expression) args[0];
-      Expression secondExpression = (Expression) args[2];
-      Expression lastExpression = (Expression) args[4];
-      return new InlineIfExpression(firstExpression, secondExpression, lastExpression,
+      ExpressionAST firstExpression = (ExpressionAST) args[0];
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
+      ExpressionAST lastExpression = (ExpressionAST) args[4];
+      return new InlineIfExpressionAST(firstExpression, secondExpression, lastExpression,
                                     ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo(), (ParseInfo) args[3], lastExpression.getParseInfo()));
     }
     throw badTypeList();

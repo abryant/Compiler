@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.MODIFIERS;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.Modifier;
+import compiler.language.ast.misc.ModifierAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -39,14 +39,14 @@ public final class ModifiersRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      Modifier modifier = (Modifier) args[0];
-      return new ParseList<Modifier>(modifier, modifier.getParseInfo());
+      ModifierAST modifier = (ModifierAST) args[0];
+      return new ParseList<ModifierAST>(modifier, modifier.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Modifier> list = (ParseList<Modifier>) args[0];
-      Modifier modifier = (Modifier) args[1];
+      ParseList<ModifierAST> list = (ParseList<ModifierAST>) args[0];
+      ModifierAST modifier = (ModifierAST) args[1];
       list.addLast(modifier, ParseInfo.combine(list.getParseInfo(), modifier.getParseInfo()));
       return list;
     }

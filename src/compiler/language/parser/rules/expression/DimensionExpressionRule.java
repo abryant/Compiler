@@ -7,7 +7,7 @@ import static compiler.language.parser.ParseType.RSQUARE;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,8 +41,8 @@ public final class DimensionExpressionRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[1];
-      return new ParseContainer<Expression>(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), (ParseInfo) args[2]));
+      ExpressionAST expression = (ExpressionAST) args[1];
+      return new ParseContainer<ExpressionAST>(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

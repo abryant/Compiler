@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.CARET;
 import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.BitwiseXorExpression;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.BitwiseXorExpressionAST;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,20 +45,20 @@ public final class BitwiseXorExpressionRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      // return the existing Expression
+      // return the existing ExpressionAST
       return args[0];
     }
     if (XOR_PRODUCTION.equals(production) || XOR_QNAME_PRODUCTION.equals(production) || QNAME_XOR_PRODUCTION.equals(production) || QNAME_XOR_QNAME_PRODUCTION.equals(production))
     {
-      Expression secondExpression = (Expression) args[2];
-      if (args[0] instanceof BitwiseXorExpression)
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
+      if (args[0] instanceof BitwiseXorExpressionAST)
       {
-        // continue the current BitwiseXorExpression if we've already started one
-        BitwiseXorExpression startExpression = (BitwiseXorExpression) args[0];
-        return new BitwiseXorExpression(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+        // continue the current BitwiseXorExpressionAST if we've already started one
+        BitwiseXorExpressionAST startExpression = (BitwiseXorExpressionAST) args[0];
+        return new BitwiseXorExpressionAST(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
       }
-      Expression firstExpression = (Expression) args[0];
-      return new BitwiseXorExpression(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      ExpressionAST firstExpression = (ExpressionAST) args[0];
+      return new BitwiseXorExpressionAST(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     throw badTypeList();
   }

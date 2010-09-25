@@ -7,8 +7,8 @@ import static compiler.language.parser.ParseType.TYPE_LIST_NOT_QNAME_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.TupleType;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.type.TupleTypeAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -43,8 +43,8 @@ public final class TupleTypeNotQNameListRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Type> list = (ParseList<Type>) args[1];
-      return new TupleType(list.toArray(new Type[0]),
+      ParseList<TypeAST> list = (ParseList<TypeAST>) args[1];
+      return new TupleTypeAST(list.toArray(new TypeAST[0]),
                            ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();

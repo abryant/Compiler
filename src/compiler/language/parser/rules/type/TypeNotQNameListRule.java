@@ -48,7 +48,7 @@ public final class TypeNotQNameListRule extends Rule<ParseType>
     if (ARRAY_TYPE_PRODUCTION.equals(production)     || CLOSURE_TYPE_PRODUCTION.equals(production) || POINTER_TYPE_PRODUCTION.equals(production) ||
         PRIMITIVE_TYPE_PRODUCTION.equals(production) || TUPLE_TYPE_PRODUCTION.equals(production)   || VOID_TYPE_PRODUCTION.equals(production))
     {
-      // return the existing Type
+      // return the existing TypeAST
       return args[0];
     }
     throw badTypeList();

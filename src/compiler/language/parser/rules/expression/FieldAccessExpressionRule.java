@@ -4,8 +4,8 @@ import static compiler.language.parser.ParseType.FIELD_ACCESS_EXPRESSION;
 import static compiler.language.parser.ParseType.FIELD_ACCESS_EXPRESSION_NOT_QNAME;
 import static compiler.language.parser.ParseType.QNAME;
 
-import compiler.language.ast.expression.FieldAccessExpression;
-import compiler.language.ast.misc.QName;
+import compiler.language.ast.expression.FieldAccessExpressionAST;
+import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,12 +40,12 @@ public final class FieldAccessExpressionRule extends Rule<ParseType>
   {
     if (QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      return new FieldAccessExpression(qname, qname.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      return new FieldAccessExpressionAST(qname, qname.getParseInfo());
     }
     if (PRODUCTION.equals(production))
     {
-      // return the existing FieldAccessExpression
+      // return the existing FieldAccessExpressionAST
       return args[0];
     }
     throw badTypeList();

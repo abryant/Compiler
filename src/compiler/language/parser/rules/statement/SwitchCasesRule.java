@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.SWITCH_CASES;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.statement.SwitchCase;
+import compiler.language.ast.statement.SwitchCaseAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,13 +40,13 @@ public final class SwitchCasesRule extends Rule<ParseType>
   {
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseList<SwitchCase>(null);
+      return new ParseList<SwitchCaseAST>(null);
     }
     if (LIST_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<SwitchCase> list = (ParseList<SwitchCase>) args[0];
-      SwitchCase switchCase = (SwitchCase) args[1];
+      ParseList<SwitchCaseAST> list = (ParseList<SwitchCaseAST>) args[0];
+      SwitchCaseAST switchCase = (SwitchCaseAST) args[1];
       list.addLast(switchCase, ParseInfo.combine(list.getParseInfo(), switchCase.getParseInfo()));
       return list;
     }

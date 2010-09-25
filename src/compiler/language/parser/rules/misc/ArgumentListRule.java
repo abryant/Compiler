@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.COMMA;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.Argument;
+import compiler.language.ast.misc.ArgumentAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,14 +40,14 @@ public final class ArgumentListRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      Argument argument = (Argument) args[0];
-      return new ParseList<Argument>(argument, argument.getParseInfo());
+      ArgumentAST argument = (ArgumentAST) args[0];
+      return new ParseList<ArgumentAST>(argument, argument.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Argument> list = (ParseList<Argument>) args[0];
-      Argument argument = (Argument) args[2];
+      ParseList<ArgumentAST> list = (ParseList<ArgumentAST>) args[0];
+      ArgumentAST argument = (ArgumentAST) args[2];
       list.addLast(argument, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], argument.getParseInfo()));
       return list;
     }

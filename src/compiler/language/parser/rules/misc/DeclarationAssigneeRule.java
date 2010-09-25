@@ -5,8 +5,8 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.UNDERSCORE;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.DeclarationAssignee;
-import compiler.language.ast.terminal.Name;
+import compiler.language.ast.misc.DeclarationAssigneeAST;
+import compiler.language.ast.terminal.NameAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,12 +41,12 @@ public final class DeclarationAssigneeRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Name name = (Name) args[0];
-      return new DeclarationAssignee(name, name.getParseInfo());
+      NameAST name = (NameAST) args[0];
+      return new DeclarationAssigneeAST(name, name.getParseInfo());
     }
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new DeclarationAssignee(null, (ParseInfo) args[0]);
+      return new DeclarationAssigneeAST(null, (ParseInfo) args[0]);
     }
     throw badTypeList();
   }

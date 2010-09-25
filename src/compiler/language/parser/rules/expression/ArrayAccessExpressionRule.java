@@ -8,11 +8,11 @@ import static compiler.language.parser.ParseType.QNAME;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.ArrayAccessExpression;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.expression.FieldAccessExpression;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.misc.QNameElement;
+import compiler.language.ast.expression.ArrayAccessExpressionAST;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.FieldAccessExpressionAST;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,28 +48,28 @@ public final class ArrayAccessExpressionRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[0];
+      ExpressionAST expression = (ExpressionAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseContainer<Expression> dimensionExpression = (ParseContainer<Expression>) args[1];
-      return new ArrayAccessExpression(expression, dimensionExpression.getItem(),
+      ParseContainer<ExpressionAST> dimensionExpression = (ParseContainer<ExpressionAST>) args[1];
+      return new ArrayAccessExpressionAST(expression, dimensionExpression.getItem(),
                                        ParseInfo.combine(expression.getParseInfo(), dimensionExpression.getParseInfo()));
     }
     if (QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      FieldAccessExpression fieldAccessExpression = new FieldAccessExpression(qname, qname.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      FieldAccessExpressionAST fieldAccessExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
       @SuppressWarnings("unchecked")
-      ParseContainer<Expression> dimensionExpression = (ParseContainer<Expression>) args[1];
-      return new ArrayAccessExpression(fieldAccessExpression, dimensionExpression.getItem(),
+      ParseContainer<ExpressionAST> dimensionExpression = (ParseContainer<ExpressionAST>) args[1];
+      return new ArrayAccessExpressionAST(fieldAccessExpression, dimensionExpression.getItem(),
                                        ParseInfo.combine(qname.getParseInfo(), dimensionExpression.getParseInfo()));
     }
     if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
-      Expression expression = element.toExpression();
+      QNameElementAST element = (QNameElementAST) args[0];
+      ExpressionAST expression = element.toExpression();
       @SuppressWarnings("unchecked")
-      ParseContainer<Expression> dimensionExpression = (ParseContainer<Expression>) args[1];
-      return new ArrayAccessExpression(expression, dimensionExpression.getItem(),
+      ParseContainer<ExpressionAST> dimensionExpression = (ParseContainer<ExpressionAST>) args[1];
+      return new ArrayAccessExpressionAST(expression, dimensionExpression.getItem(),
                                        ParseInfo.combine(expression.getParseInfo(), dimensionExpression.getParseInfo()));
     }
     throw badTypeList();

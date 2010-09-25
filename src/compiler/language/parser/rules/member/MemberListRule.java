@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.MEMBER_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.member.Member;
+import compiler.language.ast.member.MemberAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -39,13 +39,13 @@ public final class MemberListRule extends Rule<ParseType>
   {
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseList<Member>(null);
+      return new ParseList<MemberAST>(null);
     }
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Member> list = (ParseList<Member>) args[0];
-      Member member = (Member) args[1];
+      ParseList<MemberAST> list = (ParseList<MemberAST>) args[0];
+      MemberAST member = (MemberAST) args[1];
       list.addLast(member, ParseInfo.combine(list.getParseInfo(), member.getParseInfo()));
       return list;
     }

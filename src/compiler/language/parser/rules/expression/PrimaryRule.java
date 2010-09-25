@@ -8,8 +8,8 @@ import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.TUPLE_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.expression.ParenthesisedExpression;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.ParenthesisedExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,13 +45,13 @@ public final class PrimaryRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production) || ARRAY_INSTANCIATION_PRODUCTION.equals(production))
     {
-      // return the existing Expression
+      // return the existing ExpressionAST
       return args[0];
     }
     if (PARENTHESISED_PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[1];
-      return new ParenthesisedExpression(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), (ParseInfo) args[2]));
+      ExpressionAST expression = (ExpressionAST) args[1];
+      return new ParenthesisedExpressionAST(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

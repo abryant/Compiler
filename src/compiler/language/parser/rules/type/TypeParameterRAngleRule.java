@@ -5,9 +5,9 @@ import static compiler.language.parser.ParseType.TYPE_RANGLE;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER_RANGLE;
 
 import compiler.language.ast.ParseContainer;
-import compiler.language.ast.type.NormalTypeParameter;
-import compiler.language.ast.type.Type;
-import compiler.language.ast.type.TypeParameter;
+import compiler.language.ast.type.NormalTypeParameterAST;
+import compiler.language.ast.type.TypeAST;
+import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -43,14 +43,14 @@ public final class TypeParameterRAngleRule extends Rule<ParseType>
     if (NORMAL_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<Type> container = (ParseContainer<Type>) args[0];
-      TypeParameter typeParameter = new NormalTypeParameter(container.getItem(), container.getItem().getParseInfo());
-      return new ParseContainer<TypeParameter>(typeParameter, container.getParseInfo());
+      ParseContainer<TypeAST> container = (ParseContainer<TypeAST>) args[0];
+      TypeParameterAST typeParameter = new NormalTypeParameterAST(container.getItem(), container.getItem().getParseInfo());
+      return new ParseContainer<TypeParameterAST>(typeParameter, container.getParseInfo());
     }
     if (WILDCARD_PRODUCTION.equals(production))
     {
       // the rule for WILDCARD_TYPE_PARAMETER_RANGLE has already created
-      // a ParseContainer<TypeParameter>, so return it
+      // a ParseContainer<TypeParameterAST>, so return it
       return args[0];
     }
     throw badTypeList();

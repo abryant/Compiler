@@ -7,7 +7,7 @@ import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST_RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.TypeParameter;
+import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,8 +41,8 @@ public final class TypeParametersRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<TypeParameter>> container = (ParseContainer<ParseList<TypeParameter>>) args[1];
-      ParseList<TypeParameter> list = container.getItem();
+      ParseContainer<ParseList<TypeParameterAST>> container = (ParseContainer<ParseList<TypeParameterAST>>) args[1];
+      ParseList<TypeParameterAST> list = container.getItem();
       list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], container.getParseInfo()));
       return list;
     }

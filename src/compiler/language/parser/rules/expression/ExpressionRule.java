@@ -5,9 +5,9 @@ import static compiler.language.parser.ParseType.QNAME_LIST;
 import static compiler.language.parser.ParseType.TUPLE_EXPRESSION;
 
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.expression.TupleExpression;
-import compiler.language.ast.misc.QNameElement;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.TupleExpressionAST;
+import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,14 +48,14 @@ public final class ExpressionRule extends Rule<ParseType>
     if (QNAME_LIST_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<QNameElement> qnameElements = (ParseList<QNameElement>) args[0];
-      QNameElement[] elements = qnameElements.toArray(new QNameElement[0]);
-      Expression[] expressions = new Expression[elements.length];
+      ParseList<QNameElementAST> qnameElements = (ParseList<QNameElementAST>) args[0];
+      QNameElementAST[] elements = qnameElements.toArray(new QNameElementAST[0]);
+      ExpressionAST[] expressions = new ExpressionAST[elements.length];
       for (int i = 0; i < elements.length; i++)
       {
         expressions[i] = elements[i].toExpression();
       }
-      return new TupleExpression(expressions, qnameElements.getParseInfo());
+      return new TupleExpressionAST(expressions, qnameElements.getParseInfo());
     }
     throw badTypeList();
   }

@@ -7,7 +7,7 @@ import static compiler.language.parser.ParseType.RPAREN;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.Parameter;
+import compiler.language.ast.misc.ParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,12 +41,12 @@ public final class ParametersRule extends Rule<ParseType>
   {
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseList<Parameter>(ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new ParseList<ParameterAST>(ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Parameter> list = (ParseList<Parameter>) args[1];
+      ParseList<ParameterAST> list = (ParseList<ParameterAST>) args[1];
       list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
       return list;
     }

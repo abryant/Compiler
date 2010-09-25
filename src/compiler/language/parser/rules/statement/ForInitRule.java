@@ -5,8 +5,8 @@ import static compiler.language.parser.ParseType.FOR_INIT;
 import static compiler.language.parser.ParseType.LOCAL_DECLARATION;
 import static compiler.language.parser.ParseType.STATEMENT_EXPRESSION;
 
-import compiler.language.ast.expression.StatementExpression;
-import compiler.language.ast.statement.ExpressionStatement;
+import compiler.language.ast.expression.StatementExpressionAST;
+import compiler.language.ast.statement.ExpressionStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -47,13 +47,13 @@ public final class ForInitRule extends Rule<ParseType>
     }
     if (DECLARATION_PRODUCTION.equals(production) || ASSIGNMENT_PRODUCTION.equals(production))
     {
-      // a Statement has already been generated, so return it
+      // a StatementAST has already been generated, so return it
       return args[0];
     }
     if (EXPRESSION_PRODUCTION.equals(production))
     {
-      StatementExpression expression = (StatementExpression) args[0];
-      return new ExpressionStatement(expression, expression.getParseInfo());
+      StatementExpressionAST expression = (StatementExpressionAST) args[0];
+      return new ExpressionStatementAST(expression, expression.getParseInfo());
     }
     throw badTypeList();
   }

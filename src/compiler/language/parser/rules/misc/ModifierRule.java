@@ -5,8 +5,8 @@ import static compiler.language.parser.ParseType.MODIFIER_NOT_SYNCHRONIZED;
 import static compiler.language.parser.ParseType.SYNCHRONIZED_KEYWORD;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.Modifier;
-import compiler.language.ast.misc.ModifierType;
+import compiler.language.ast.misc.ModifierAST;
+import compiler.language.ast.misc.ModifierTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -44,7 +44,7 @@ public final class ModifierRule extends Rule<ParseType>
     }
     if (SYNCHRONIZED_PRODUCTION.equals(production))
     {
-      return new Modifier(ModifierType.SYNCHRONIZED, (ParseInfo) args[0]);
+      return new ModifierAST(ModifierTypeAST.SYNCHRONIZED, (ParseInfo) args[0]);
     }
     throw badTypeList();
   }

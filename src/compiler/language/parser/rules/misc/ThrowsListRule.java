@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.THROWS_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,14 +40,14 @@ public final class ThrowsListRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      PointerType type = (PointerType) args[0];
-      return new ParseList<PointerType>(type, type.getParseInfo());
+      PointerTypeAST type = (PointerTypeAST) args[0];
+      return new ParseList<PointerTypeAST>(type, type.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> list = (ParseList<PointerType>) args[0];
-      PointerType type = (PointerType) args[2];
+      ParseList<PointerTypeAST> list = (ParseList<PointerTypeAST>) args[0];
+      PointerTypeAST type = (PointerTypeAST) args[2];
       list.addLast(type, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], type.getParseInfo()));
       return list;
     }

@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 import static compiler.language.parser.ParseType.SHIFT_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.BitwiseAndExpression;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.BitwiseAndExpressionAST;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -46,20 +46,20 @@ public final class BitwiseAndExpressionRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      // return the existing Expression
+      // return the existing ExpressionAST
       return args[0];
     }
     if (AND_PRODUCTION.equals(production) || AND_QNAME_PRODUCTION.equals(production) || QNAME_AND_PRODUCTION.equals(production) || QNAME_AND_QNAME_PRODUCTION.equals(production))
     {
-      Expression secondExpression = (Expression) args[2];
-      if (args[0] instanceof BitwiseAndExpression)
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
+      if (args[0] instanceof BitwiseAndExpressionAST)
       {
-        // continue the current BitwiseAndExpression if we've already started one
-        BitwiseAndExpression startExpression = (BitwiseAndExpression) args[0];
-        return new BitwiseAndExpression(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+        // continue the current BitwiseAndExpressionAST if we've already started one
+        BitwiseAndExpressionAST startExpression = (BitwiseAndExpressionAST) args[0];
+        return new BitwiseAndExpressionAST(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
       }
-      Expression firstExpression = (Expression) args[0];
-      return new BitwiseAndExpression(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      ExpressionAST firstExpression = (ExpressionAST) args[0];
+      return new BitwiseAndExpressionAST(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     throw badTypeList();
   }

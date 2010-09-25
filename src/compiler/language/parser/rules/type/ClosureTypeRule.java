@@ -10,10 +10,10 @@ import static compiler.language.parser.ParseType.TYPE_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.ClosureType;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.Type;
-import compiler.language.ast.type.TypeArgument;
+import compiler.language.ast.type.ClosureTypeAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeAST;
+import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,27 +48,27 @@ public final class ClosureTypeRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Type> parameterTypes = (ParseList<Type>) args[1];
+      ParseList<TypeAST> parameterTypes = (ParseList<TypeAST>) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<Type> returnTypes = (ParseList<Type>) args[3];
+      ParseList<TypeAST> returnTypes = (ParseList<TypeAST>) args[3];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> thrownTypes = (ParseList<PointerType>) args[4];
-      return new ClosureType(new TypeArgument[0], parameterTypes.toArray(new Type[0]), returnTypes.toArray(new Type[0]), thrownTypes.toArray(new PointerType[0]),
+      ParseList<PointerTypeAST> thrownTypes = (ParseList<PointerTypeAST>) args[4];
+      return new ClosureTypeAST(new TypeArgumentAST[0], parameterTypes.toArray(new TypeAST[0]), returnTypes.toArray(new TypeAST[0]), thrownTypes.toArray(new PointerTypeAST[0]),
                              ParseInfo.combine((ParseInfo) args[0], parameterTypes.getParseInfo(), (ParseInfo) args[2],
                                                returnTypes.getParseInfo(), thrownTypes.getParseInfo(), (ParseInfo) args[5]));
     }
     if (TYPE_ARGUMENTS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<TypeArgument> typeArguments = (ParseList<TypeArgument>) args[1];
+      ParseList<TypeArgumentAST> typeArguments = (ParseList<TypeArgumentAST>) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<Type> parameterTypes = (ParseList<Type>) args[2];
+      ParseList<TypeAST> parameterTypes = (ParseList<TypeAST>) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<Type> returnTypes = (ParseList<Type>) args[4];
+      ParseList<TypeAST> returnTypes = (ParseList<TypeAST>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> thrownTypes = (ParseList<PointerType>) args[5];
-      return new ClosureType(typeArguments.toArray(new TypeArgument[0]), parameterTypes.toArray(new Type[0]),
-                             returnTypes.toArray(new Type[0]), thrownTypes.toArray(new PointerType[0]),
+      ParseList<PointerTypeAST> thrownTypes = (ParseList<PointerTypeAST>) args[5];
+      return new ClosureTypeAST(typeArguments.toArray(new TypeArgumentAST[0]), parameterTypes.toArray(new TypeAST[0]),
+                             returnTypes.toArray(new TypeAST[0]), thrownTypes.toArray(new PointerTypeAST[0]),
                              ParseInfo.combine((ParseInfo) args[0], typeArguments.getParseInfo(), parameterTypes.getParseInfo(), (ParseInfo) args[3],
                                                returnTypes.getParseInfo(), thrownTypes.getParseInfo(), (ParseInfo) args[6]));
     }

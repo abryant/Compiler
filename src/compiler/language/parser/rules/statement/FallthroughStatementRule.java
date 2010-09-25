@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.INTEGER_LITERAL;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.statement.FallthroughStatement;
-import compiler.language.ast.terminal.IntegerLiteral;
+import compiler.language.ast.statement.FallthroughStatementAST;
+import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,12 +42,12 @@ public final class FallthroughStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new FallthroughStatement(null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new FallthroughStatementAST(null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (NUMBER_PRODUCTION.equals(production))
     {
-      IntegerLiteral fallthroughLevels = (IntegerLiteral) args[1];
-      return new FallthroughStatement(fallthroughLevels, ParseInfo.combine((ParseInfo) args[0], fallthroughLevels.getParseInfo(), (ParseInfo) args[2]));
+      IntegerLiteralAST fallthroughLevels = (IntegerLiteralAST) args[1];
+      return new FallthroughStatementAST(fallthroughLevels, ParseInfo.combine((ParseInfo) args[0], fallthroughLevels.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

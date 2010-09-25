@@ -8,10 +8,10 @@ import static compiler.language.parser.ParseType.TYPE_PARAMETERS;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.TypeParameter;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -47,46 +47,46 @@ public final class PointerTypeTrailingParamsRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
+      QNameAST qname = (QNameAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<TypeParameter> typeParameters = (ParseList<TypeParameter>) args[1];
-      Name[] names = qname.getNames();
-      TypeParameter[][] typeParameterLists = new TypeParameter[names.length][];
+      ParseList<TypeParameterAST> typeParameters = (ParseList<TypeParameterAST>) args[1];
+      NameAST[] names = qname.getNames();
+      TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
       for (int i = 0; i < typeParameterLists.length - 1; i++)
       {
-        typeParameterLists[i] = new TypeParameter[0];
+        typeParameterLists[i] = new TypeParameterAST[0];
       }
-      typeParameterLists[typeParameterLists.length - 1] = typeParameters.toArray(new TypeParameter[0]);
-      return new PointerType(false, names, typeParameterLists, ParseInfo.combine(qname.getParseInfo(), typeParameters.getParseInfo()));
+      typeParameterLists[typeParameterLists.length - 1] = typeParameters.toArray(new TypeParameterAST[0]);
+      return new PointerTypeAST(false, names, typeParameterLists, ParseInfo.combine(qname.getParseInfo(), typeParameters.getParseInfo()));
     }
     if (IMMUTABLE_START_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[1];
+      QNameAST qname = (QNameAST) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<TypeParameter> typeParameters = (ParseList<TypeParameter>) args[2];
-      Name[] names = qname.getNames();
-      TypeParameter[][] typeParameterLists = new TypeParameter[names.length][];
+      ParseList<TypeParameterAST> typeParameters = (ParseList<TypeParameterAST>) args[2];
+      NameAST[] names = qname.getNames();
+      TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
       for (int i = 0; i < typeParameterLists.length - 1; i++)
       {
-        typeParameterLists[i] = new TypeParameter[0];
+        typeParameterLists[i] = new TypeParameterAST[0];
       }
-      typeParameterLists[typeParameterLists.length - 1] = typeParameters.toArray(new TypeParameter[0]);
-      return new PointerType(true, names, typeParameterLists, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), typeParameters.getParseInfo()));
+      typeParameterLists[typeParameterLists.length - 1] = typeParameters.toArray(new TypeParameterAST[0]);
+      return new PointerTypeAST(true, names, typeParameterLists, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), typeParameters.getParseInfo()));
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
-      PointerType oldType = (PointerType) args[0];
-      QName qname = (QName) args[2];
+      PointerTypeAST oldType = (PointerTypeAST) args[0];
+      QNameAST qname = (QNameAST) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<TypeParameter> typeParameters = (ParseList<TypeParameter>) args[3];
-      Name[] names = qname.getNames();
-      TypeParameter[][] typeParameterLists = new TypeParameter[names.length][];
+      ParseList<TypeParameterAST> typeParameters = (ParseList<TypeParameterAST>) args[3];
+      NameAST[] names = qname.getNames();
+      TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
       for (int i = 0; i < typeParameterLists.length - 1; i++)
       {
-        typeParameterLists[i] = new TypeParameter[0];
+        typeParameterLists[i] = new TypeParameterAST[0];
       }
-      typeParameterLists[typeParameterLists.length - 1] = typeParameters.toArray(new TypeParameter[0]);
-      return new PointerType(oldType, oldType.isImmutable(), names, typeParameterLists,
+      typeParameterLists[typeParameterLists.length - 1] = typeParameters.toArray(new TypeParameterAST[0]);
+      return new PointerTypeAST(oldType, oldType.isImmutable(), names, typeParameterLists,
                              ParseInfo.combine(oldType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo(), typeParameters.getParseInfo()));
     }
     throw badTypeList();

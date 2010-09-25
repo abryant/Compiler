@@ -7,8 +7,8 @@ import static compiler.language.parser.ParseType.RPAREN;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.Argument;
-import compiler.language.ast.misc.ArgumentList;
+import compiler.language.ast.misc.ArgumentAST;
+import compiler.language.ast.misc.ArgumentListAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,13 +42,13 @@ public final class ArgumentsRule extends Rule<ParseType>
   {
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ArgumentList(new Argument[0], ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new ArgumentListAST(new ArgumentAST[0], ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Argument> arguments = (ParseList<Argument>) args[1];
-      return new ArgumentList(arguments.toArray(new Argument[0]), ParseInfo.combine((ParseInfo) args[0], arguments.getParseInfo(), (ParseInfo) args[2]));
+      ParseList<ArgumentAST> arguments = (ParseList<ArgumentAST>) args[1];
+      return new ArgumentListAST(arguments.toArray(new ArgumentAST[0]), ParseInfo.combine((ParseInfo) args[0], arguments.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

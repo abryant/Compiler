@@ -8,7 +8,7 @@ import static compiler.language.parser.ParseType.RBRACE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,20 +45,20 @@ public final class ArrayInitializerRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Expression> list = (ParseList<Expression>) args[1];
+      ParseList<ExpressionAST> list = (ParseList<ExpressionAST>) args[1];
       list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
       return list;
     }
     if (TRAILING_COMMA_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Expression> list = (ParseList<Expression>) args[1];
+      ParseList<ExpressionAST> list = (ParseList<ExpressionAST>) args[1];
       list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2], (ParseInfo) args[3]));
       return list;
     }
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseList<Expression>(ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new ParseList<ExpressionAST>(ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     throw badTypeList();
   }

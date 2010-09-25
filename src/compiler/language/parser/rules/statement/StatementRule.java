@@ -24,9 +24,9 @@ import static compiler.language.parser.ParseType.TRY_STATEMENT;
 import static compiler.language.parser.ParseType.WHILE_STATEMENT;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.StatementExpression;
-import compiler.language.ast.statement.ExpressionStatement;
-import compiler.language.ast.statement.Statement;
+import compiler.language.ast.expression.StatementExpressionAST;
+import compiler.language.ast.statement.ExpressionStatementAST;
+import compiler.language.ast.statement.StatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -101,7 +101,7 @@ public final class StatementRule extends Rule<ParseType>
         BREAK_PRODUCTION.equals(production)    || CONTINUE_PRODUCTION.equals(production)     || FALLTHROUGH_PRODUCTION.equals(production) ||
         RETURN_PRODUCTION.equals(production)   || SYNCHRONIZED_PRODUCTION.equals(production) || THROW_PRODUCTION.equals(production))
     {
-      // these productions only take one argument and all return a Statement, so return the argument
+      // these productions only take one argument and all return a StatementAST, so return the argument
       return args[0];
     }
 
@@ -109,15 +109,15 @@ public final class StatementRule extends Rule<ParseType>
         INCREMENT_PRODUCTION.equals(production)         || DECREMENT_PRODUCTION.equals(production))
     {
       // add the semicolon's ParseInfo to the statement before returning it
-      Statement statement = (Statement) args[0];
+      StatementAST statement = (StatementAST) args[0];
       statement.setParseInfo(ParseInfo.combine(statement.getParseInfo(), (ParseInfo) args[1]));
       return statement;
     }
 
     if (STATEMENT_EXPRESSION_PRODUCTION.equals(production))
     {
-      StatementExpression expression = (StatementExpression) args[0];
-      return new ExpressionStatement(expression, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1]));
+      StatementExpressionAST expression = (StatementExpressionAST) args[0];
+      return new ExpressionStatementAST(expression, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1]));
     }
 
     throw badTypeList();

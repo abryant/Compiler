@@ -13,12 +13,12 @@ import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.member.Member;
-import compiler.language.ast.member.MemberHeader;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.TypeArgument;
-import compiler.language.ast.typeDefinition.ClassDefinition;
+import compiler.language.ast.member.MemberAST;
+import compiler.language.ast.member.MemberHeaderAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.ast.typeDefinition.ClassDefinitionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -52,14 +52,14 @@ public final class ClassDefinitionRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      MemberHeader header = (MemberHeader) args[0];
-      Name name = (Name) args[2];
-      PointerType superType = (PointerType) args[3];
+      MemberHeaderAST header = (MemberHeaderAST) args[0];
+      NameAST name = (NameAST) args[2];
+      PointerTypeAST superType = (PointerTypeAST) args[3];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> interfaces = (ParseList<PointerType>) args[4];
+      ParseList<PointerTypeAST> interfaces = (ParseList<PointerTypeAST>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<Member> members = (ParseList<Member>) args[6];
-      return new ClassDefinition(header.getAccessSpecifier(), header.getModifiers(), name, new TypeArgument[0], superType, interfaces.toArray(new PointerType[0]), members.toArray(new Member[0]),
+      ParseList<MemberAST> members = (ParseList<MemberAST>) args[6];
+      return new ClassDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, new TypeArgumentAST[0], superType, interfaces.toArray(new PointerTypeAST[0]), members.toArray(new MemberAST[0]),
                                  ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(),
                                                    superType != null ? superType.getParseInfo() : null,
                                                    interfaces.getParseInfo(),
@@ -67,16 +67,16 @@ public final class ClassDefinitionRule extends Rule<ParseType>
     }
     if (TYPE_ARGUMENTS_PRODUCTION.equals(production))
     {
-      MemberHeader header = (MemberHeader) args[0];
-      Name name = (Name) args[2];
+      MemberHeaderAST header = (MemberHeaderAST) args[0];
+      NameAST name = (NameAST) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<TypeArgument> typeArguments = (ParseList<TypeArgument>) args[3];
-      PointerType superType = (PointerType) args[4];
+      ParseList<TypeArgumentAST> typeArguments = (ParseList<TypeArgumentAST>) args[3];
+      PointerTypeAST superType = (PointerTypeAST) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> interfaces = (ParseList<PointerType>) args[5];
+      ParseList<PointerTypeAST> interfaces = (ParseList<PointerTypeAST>) args[5];
       @SuppressWarnings("unchecked")
-      ParseList<Member> members = (ParseList<Member>) args[7];
-      return new ClassDefinition(header.getAccessSpecifier(), header.getModifiers(), name, typeArguments.toArray(new TypeArgument[0]), superType, interfaces.toArray(new PointerType[0]), members.toArray(new Member[0]),
+      ParseList<MemberAST> members = (ParseList<MemberAST>) args[7];
+      return new ClassDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, typeArguments.toArray(new TypeArgumentAST[0]), superType, interfaces.toArray(new PointerTypeAST[0]), members.toArray(new MemberAST[0]),
                                  ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(), typeArguments.getParseInfo(),
                                                    superType != null ? superType.getParseInfo() : null,
                                                    interfaces.getParseInfo(),

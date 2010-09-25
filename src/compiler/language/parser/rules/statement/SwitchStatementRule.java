@@ -9,9 +9,9 @@ import static compiler.language.parser.ParseType.SWITCH_STATEMENT;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.statement.SwitchCase;
-import compiler.language.ast.statement.SwitchStatement;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.statement.SwitchCaseAST;
+import compiler.language.ast.statement.SwitchStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -46,18 +46,18 @@ public final class SwitchStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[1];
+      ExpressionAST expression = (ExpressionAST) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<SwitchCase> cases = (ParseList<SwitchCase>) args[3];
-      return new SwitchStatement(expression, cases.toArray(new SwitchCase[0]),
+      ParseList<SwitchCaseAST> cases = (ParseList<SwitchCaseAST>) args[3];
+      return new SwitchStatementAST(expression, cases.toArray(new SwitchCaseAST[0]),
                                  ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(),
                                                    (ParseInfo) args[2], cases.getParseInfo(), (ParseInfo) args[4]));
     }
     if (NO_EXPRESSION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<SwitchCase> cases = (ParseList<SwitchCase>) args[2];
-      return new SwitchStatement(null, cases.toArray(new SwitchCase[0]),
+      ParseList<SwitchCaseAST> cases = (ParseList<SwitchCaseAST>) args[2];
+      return new SwitchStatementAST(null, cases.toArray(new SwitchCaseAST[0]),
                                  ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], cases.getParseInfo(), (ParseInfo) args[3]));
     }
     throw badTypeList();

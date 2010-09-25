@@ -7,7 +7,7 @@ import static compiler.language.parser.ParseType.TYPE_ARGUMENT_LIST_RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.TypeArgument;
+import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,8 +41,8 @@ public final class TypeArgumentsRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<TypeArgument>> container = (ParseContainer<ParseList<TypeArgument>>) args[1];
-      ParseList<TypeArgument> list = container.getItem();
+      ParseContainer<ParseList<TypeArgumentAST>> container = (ParseContainer<ParseList<TypeArgumentAST>>) args[1];
+      ParseList<TypeArgumentAST> list = container.getItem();
       list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], container.getParseInfo()));
       return list;
     }

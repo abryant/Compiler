@@ -1,8 +1,8 @@
 package compiler.language.parser.rules.expression;
 
-import compiler.language.ast.expression.FieldAccessExpression;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.misc.QNameElement;
+import compiler.language.ast.expression.FieldAccessExpressionAST;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -37,12 +37,12 @@ public final class QNameExpressionRule extends Rule<ParseType>
   {
     if (QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      return new FieldAccessExpression(qname, qname.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      return new FieldAccessExpressionAST(qname, qname.getParseInfo());
     }
     if (NESTED_QNAME_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
+      QNameElementAST element = (QNameElementAST) args[0];
       return element.toExpression();
     }
     throw badTypeList();

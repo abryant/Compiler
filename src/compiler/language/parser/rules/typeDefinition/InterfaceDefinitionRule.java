@@ -12,12 +12,12 @@ import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.member.Member;
-import compiler.language.ast.member.MemberHeader;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.TypeArgument;
-import compiler.language.ast.typeDefinition.InterfaceDefinition;
+import compiler.language.ast.member.MemberAST;
+import compiler.language.ast.member.MemberHeaderAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -51,27 +51,27 @@ public final class InterfaceDefinitionRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      MemberHeader header = (MemberHeader) args[0];
-      Name name = (Name) args[2];
+      MemberHeaderAST header = (MemberHeaderAST) args[0];
+      NameAST name = (NameAST) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> superInterfaces = (ParseList<PointerType>) args[3];
+      ParseList<PointerTypeAST> superInterfaces = (ParseList<PointerTypeAST>) args[3];
       @SuppressWarnings("unchecked")
-      ParseList<Member> members = (ParseList<Member>) args[5];
-      return new InterfaceDefinition(header.getAccessSpecifier(), header.getModifiers(), name, new TypeArgument[0], superInterfaces.toArray(new PointerType[0]), members.toArray(new Member[0]),
+      ParseList<MemberAST> members = (ParseList<MemberAST>) args[5];
+      return new InterfaceDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, new TypeArgumentAST[0], superInterfaces.toArray(new PointerTypeAST[0]), members.toArray(new MemberAST[0]),
                                      ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(), superInterfaces.getParseInfo(),
                                                        (ParseInfo) args[4], members.getParseInfo(), (ParseInfo) args[6]));
     }
     if (TYPE_ARGUMENTS_PRODUCTION.equals(production))
     {
-      MemberHeader header = (MemberHeader) args[0];
-      Name name = (Name) args[2];
+      MemberHeaderAST header = (MemberHeaderAST) args[0];
+      NameAST name = (NameAST) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<TypeArgument> typeArguments = (ParseList<TypeArgument>) args[3];
+      ParseList<TypeArgumentAST> typeArguments = (ParseList<TypeArgumentAST>) args[3];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> superInterfaces = (ParseList<PointerType>) args[4];
+      ParseList<PointerTypeAST> superInterfaces = (ParseList<PointerTypeAST>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<Member> members = (ParseList<Member>) args[6];
-      return new InterfaceDefinition(header.getAccessSpecifier(), header.getModifiers(), name, typeArguments.toArray(new TypeArgument[0]), superInterfaces.toArray(new PointerType[0]), members.toArray(new Member[0]),
+      ParseList<MemberAST> members = (ParseList<MemberAST>) args[6];
+      return new InterfaceDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, typeArguments.toArray(new TypeArgumentAST[0]), superInterfaces.toArray(new PointerTypeAST[0]), members.toArray(new MemberAST[0]),
                                      ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(), typeArguments.getParseInfo(), superInterfaces.getParseInfo(),
                                                        (ParseInfo) args[5], members.getParseInfo(), (ParseInfo) args[7]));
     }

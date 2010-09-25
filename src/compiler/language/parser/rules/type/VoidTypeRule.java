@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.VOID_KEYWORD;
 import static compiler.language.parser.ParseType.VOID_TYPE;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.type.VoidType;
+import compiler.language.ast.type.VoidTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -37,7 +37,7 @@ public final class VoidTypeRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new VoidType((ParseInfo) args[0]);
+      return new VoidTypeAST((ParseInfo) args[0]);
     }
     throw badTypeList();
   }

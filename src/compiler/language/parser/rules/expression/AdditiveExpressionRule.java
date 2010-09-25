@@ -7,9 +7,9 @@ import static compiler.language.parser.ParseType.PLUS;
 import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.AdditiveExpression;
-import compiler.language.ast.expression.AdditiveExpressionType;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.AdditiveExpressionAST;
+import compiler.language.ast.expression.AdditiveExpressionTypeAST;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -53,34 +53,34 @@ public final class AdditiveExpressionRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      // return the existing Expression
+      // return the existing ExpressionAST
       return args[0];
     }
 
-    AdditiveExpressionType type = null;
+    AdditiveExpressionTypeAST type = null;
     if (PLUS_PRODUCTION.equals(production) || PLUS_QNAME_PRODUCTION.equals(production) || QNAME_PLUS_PRODUCTION.equals(production) || QNAME_PLUS_QNAME_PRODUCTION.equals(production))
     {
-      type = AdditiveExpressionType.PLUS;
+      type = AdditiveExpressionTypeAST.PLUS;
     }
     else if (MINUS_PRODUCTION.equals(production) || MINUS_QNAME_PRODUCTION.equals(production) || QNAME_MINUS_PRODUCTION.equals(production) || QNAME_MINUS_QNAME_PRODUCTION.equals(production))
     {
-      type = AdditiveExpressionType.MINUS;
+      type = AdditiveExpressionTypeAST.MINUS;
     }
     else
     {
       throw badTypeList();
     }
-    Expression secondExpression = (Expression) args[2];
+    ExpressionAST secondExpression = (ExpressionAST) args[2];
 
-    if (args[0] instanceof AdditiveExpression)
+    if (args[0] instanceof AdditiveExpressionAST)
     {
-      // continue the existing AdditiveExpression if we've already started one
-      AdditiveExpression startExpression = (AdditiveExpression) args[0];
-      return new AdditiveExpression(startExpression, type, secondExpression,
+      // continue the existing AdditiveExpressionAST if we've already started one
+      AdditiveExpressionAST startExpression = (AdditiveExpressionAST) args[0];
+      return new AdditiveExpressionAST(startExpression, type, secondExpression,
                                     ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
-    Expression firstExpression = (Expression) args[0];
-    return new AdditiveExpression(firstExpression, type, secondExpression,
+    ExpressionAST firstExpression = (ExpressionAST) args[0];
+    return new AdditiveExpressionAST(firstExpression, type, secondExpression,
                                   ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
   }
 

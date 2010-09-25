@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.EQUALITY_EXPRESSION;
 import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.BooleanAndExpression;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.BooleanAndExpressionAST;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,20 +45,20 @@ public final class BooleanAndExpressionRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      // return the existing Expression
+      // return the existing ExpressionAST
       return args[0];
     }
     if (AND_PRODUCTION.equals(production) || AND_QNAME_PRODUCTION.equals(production) || QNAME_AND_PRODUCTION.equals(production) || QNAME_AND_QNAME_PRODUCTION.equals(production))
     {
-      Expression secondExpression = (Expression) args[2];
-      if (args[0] instanceof BooleanAndExpression)
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
+      if (args[0] instanceof BooleanAndExpressionAST)
       {
-        // continue the current BooleanAndExpression if we've already started one
-        BooleanAndExpression startExpression = (BooleanAndExpression) args[0];
-        return new BooleanAndExpression(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+        // continue the current BooleanAndExpressionAST if we've already started one
+        BooleanAndExpressionAST startExpression = (BooleanAndExpressionAST) args[0];
+        return new BooleanAndExpressionAST(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
       }
-      Expression firstExpression = (Expression) args[0];
-      return new BooleanAndExpression(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      ExpressionAST firstExpression = (ExpressionAST) args[0];
+      return new BooleanAndExpressionAST(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     throw badTypeList();
   }

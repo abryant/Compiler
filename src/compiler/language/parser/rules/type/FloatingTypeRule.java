@@ -5,8 +5,8 @@ import static compiler.language.parser.ParseType.FLOATING_TYPE;
 import static compiler.language.parser.ParseType.FLOAT_KEYWORD;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.type.FloatingType;
-import compiler.language.ast.type.FloatingTypeLength;
+import compiler.language.ast.type.FloatingTypeAST;
+import compiler.language.ast.type.FloatingTypeLengthAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,11 +40,11 @@ public final class FloatingTypeRule extends Rule<ParseType>
   {
     if (FLOAT_PRODUCTION.equals(production))
     {
-      return new FloatingType(FloatingTypeLength.FLOAT, (ParseInfo) args[0]);
+      return new FloatingTypeAST(FloatingTypeLengthAST.FLOAT, (ParseInfo) args[0]);
     }
     if (DOUBLE_PRODUCTION.equals(production))
     {
-      return new FloatingType(FloatingTypeLength.DOUBLE, (ParseInfo) args[0]);
+      return new FloatingTypeAST(FloatingTypeLengthAST.DOUBLE, (ParseInfo) args[0]);
     }
     throw badTypeList();
   }

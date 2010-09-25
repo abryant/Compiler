@@ -5,8 +5,8 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.QNAME;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.terminal.Name;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.terminal.NameAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,14 +40,14 @@ public final class QNameRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      Name name = (Name) args[0];
-      return new QName(name, name.getParseInfo());
+      NameAST name = (NameAST) args[0];
+      return new QNameAST(name, name.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      Name name = (Name) args[2];
-      return new QName(qname, name, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], name.getParseInfo()));
+      QNameAST qname = (QNameAST) args[0];
+      NameAST name = (NameAST) args[2];
+      return new QNameAST(qname, name, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], name.getParseInfo()));
     }
     throw badTypeList();
   }

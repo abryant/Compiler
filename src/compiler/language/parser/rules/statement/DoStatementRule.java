@@ -8,9 +8,9 @@ import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.WHILE_KEYWORD;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.statement.DoStatement;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.statement.DoStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,9 +45,9 @@ public final class DoStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Block block = (Block) args[1];
-      Expression condition = (Expression) args[3];
-      return new DoStatement(block, condition,
+      BlockAST block = (BlockAST) args[1];
+      ExpressionAST condition = (ExpressionAST) args[3];
+      return new DoStatementAST(block, condition,
                              ParseInfo.combine((ParseInfo) args[0], block.getParseInfo(), (ParseInfo) args[2], condition.getParseInfo(), (ParseInfo) args[4]));
     }
     throw badTypeList();

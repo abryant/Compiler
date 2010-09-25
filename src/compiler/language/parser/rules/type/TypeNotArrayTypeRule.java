@@ -45,7 +45,7 @@ public final class TypeNotArrayTypeRule extends Rule<ParseType>
     if (CLOSURE_TYPE_PRODUCTION.equals(production) || POINTER_TYPE_PRODUCTION.equals(production) || PRIMITIVE_TYPE_PRODUCTION.equals(production) ||
         TUPLE_TYPE_PRODUCTION.equals(production)   || VOID_TYPE_PRODUCTION.equals(production))
     {
-      // All types are actually subclasses of Type, so just return the argument
+      // All types are actually subclasses of TypeAST, so just return the argument
       return args[0];
     }
     throw badTypeList();

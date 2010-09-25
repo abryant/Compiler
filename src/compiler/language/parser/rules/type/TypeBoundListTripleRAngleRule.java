@@ -8,7 +8,7 @@ import static compiler.language.parser.ParseType.TYPE_BOUND_LIST_TRIPLE_RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -44,30 +44,30 @@ public final class TypeBoundListTripleRAngleRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<PointerType>>> container = (ParseContainer<ParseContainer<ParseContainer<PointerType>>>) args[0];
-      ParseList<PointerType> list = new ParseList<PointerType>(container.getItem().getItem().getItem(), container.getItem().getItem().getItem().getParseInfo());
+      ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>> container = (ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>) args[0];
+      ParseList<PointerTypeAST> list = new ParseList<PointerTypeAST>(container.getItem().getItem().getItem(), container.getItem().getItem().getItem().getParseInfo());
 
-      ParseContainer<ParseList<PointerType>> firstContainer =
-             new ParseContainer<ParseList<PointerType>>(list, container.getItem().getItem().getParseInfo());
-      ParseContainer<ParseContainer<ParseList<PointerType>>> secondContainer =
-             new ParseContainer<ParseContainer<ParseList<PointerType>>>(firstContainer, container.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>>(secondContainer, container.getParseInfo());
+      ParseContainer<ParseList<PointerTypeAST>> firstContainer =
+             new ParseContainer<ParseList<PointerTypeAST>>(list, container.getItem().getItem().getParseInfo());
+      ParseContainer<ParseContainer<ParseList<PointerTypeAST>>> secondContainer =
+             new ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>(firstContainer, container.getItem().getParseInfo());
+      return new ParseContainer<ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>>(secondContainer, container.getParseInfo());
     }
     if (LIST_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> list = (ParseList<PointerType>) args[0];
+      ParseList<PointerTypeAST> list = (ParseList<PointerTypeAST>) args[0];
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<PointerType>>> container = (ParseContainer<ParseContainer<ParseContainer<PointerType>>>) args[2];
+      ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>> container = (ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>) args[2];
       ParseInfo listParseInfo = list.getParseInfo();
 
       list.addLast(container.getItem().getItem().getItem(), ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getItem().getItem().getItem().getParseInfo()));
 
-      ParseContainer<ParseList<PointerType>> firstContainer = new ParseContainer<ParseList<PointerType>>(list,
+      ParseContainer<ParseList<PointerTypeAST>> firstContainer = new ParseContainer<ParseList<PointerTypeAST>>(list,
                    ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getItem().getItem().getParseInfo()));
-      ParseContainer<ParseContainer<ParseList<PointerType>>> secondContainer = new ParseContainer<ParseContainer<ParseList<PointerType>>>(firstContainer,
+      ParseContainer<ParseContainer<ParseList<PointerTypeAST>>> secondContainer = new ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>(firstContainer,
                    ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getItem().getParseInfo()));
-      return new ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>>(secondContainer,
+      return new ParseContainer<ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>>(secondContainer,
                    ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getParseInfo()));
     }
     throw badTypeList();

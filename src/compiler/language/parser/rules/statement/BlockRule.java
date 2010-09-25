@@ -7,8 +7,8 @@ import static compiler.language.parser.ParseType.STATEMENTS;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.statement.Statement;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.statement.StatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,13 +42,13 @@ public final class BlockRule extends Rule<ParseType>
   {
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new Block(new Statement[0], ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new BlockAST(new StatementAST[0], ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Statement> statements = (ParseList<Statement>) args[1];
-      return new Block(statements.toArray(new Statement[0]), ParseInfo.combine((ParseInfo) args[0], statements.getParseInfo(), (ParseInfo) args[2]));
+      ParseList<StatementAST> statements = (ParseList<StatementAST>) args[1];
+      return new BlockAST(statements.toArray(new StatementAST[0]), ParseInfo.combine((ParseInfo) args[0], statements.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

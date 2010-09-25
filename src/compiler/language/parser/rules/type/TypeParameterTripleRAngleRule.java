@@ -5,9 +5,9 @@ import static compiler.language.parser.ParseType.TYPE_TRIPLE_RANGLE;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_PARAMETER_TRIPLE_RANGLE;
 
 import compiler.language.ast.ParseContainer;
-import compiler.language.ast.type.NormalTypeParameter;
-import compiler.language.ast.type.Type;
-import compiler.language.ast.type.TypeParameter;
+import compiler.language.ast.type.NormalTypeParameterAST;
+import compiler.language.ast.type.TypeAST;
+import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,18 +42,18 @@ public final class TypeParameterTripleRAngleRule extends Rule<ParseType>
   {
     if (TYPE_PRODUCTION.equals(production))
     {
-      // repackage the Type into a ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>
+      // repackage the TypeAST into a ParseContainer<ParseContainer<ParseContainer<TypeParameterAST>>>
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseContainer<Type>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<Type>>>) args[0];
-      Type type = oldContainer.getItem().getItem().getItem();
-      TypeParameter parameter = new NormalTypeParameter(type, type.getParseInfo());
-      ParseContainer<TypeParameter> firstContainer = new ParseContainer<TypeParameter>(parameter, oldContainer.getItem().getItem().getParseInfo());
-      ParseContainer<ParseContainer<TypeParameter>> secondContainer = new ParseContainer<ParseContainer<TypeParameter>>(firstContainer, oldContainer.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>(secondContainer, oldContainer.getParseInfo());
+      ParseContainer<ParseContainer<ParseContainer<TypeAST>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<TypeAST>>>) args[0];
+      TypeAST type = oldContainer.getItem().getItem().getItem();
+      TypeParameterAST parameter = new NormalTypeParameterAST(type, type.getParseInfo());
+      ParseContainer<TypeParameterAST> firstContainer = new ParseContainer<TypeParameterAST>(parameter, oldContainer.getItem().getItem().getParseInfo());
+      ParseContainer<ParseContainer<TypeParameterAST>> secondContainer = new ParseContainer<ParseContainer<TypeParameterAST>>(firstContainer, oldContainer.getItem().getParseInfo());
+      return new ParseContainer<ParseContainer<ParseContainer<TypeParameterAST>>>(secondContainer, oldContainer.getParseInfo());
     }
     if (WILDCARD_PRODUCTION.equals(production))
     {
-      // the ParseContainer<ParseContainer<ParseContainer<TypeParameter>>> has already been built be the wildcard rule, so return it
+      // the ParseContainer<ParseContainer<ParseContainer<TypeParameterAST>>> has already been built be the wildcard rule, so return it
       return args[0];
     }
     throw badTypeList();

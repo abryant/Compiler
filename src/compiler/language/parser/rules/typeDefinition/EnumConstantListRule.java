@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.ENUM_CONSTANT_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.typeDefinition.EnumConstant;
+import compiler.language.ast.typeDefinition.EnumConstantAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,14 +40,14 @@ public final class EnumConstantListRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      EnumConstant enumConstant = (EnumConstant) args[0];
-      return new ParseList<EnumConstant>(enumConstant, enumConstant.getParseInfo());
+      EnumConstantAST enumConstant = (EnumConstantAST) args[0];
+      return new ParseList<EnumConstantAST>(enumConstant, enumConstant.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<EnumConstant> list = (ParseList<EnumConstant>) args[0];
-      EnumConstant newEnumConstant = (EnumConstant) args[2];
+      ParseList<EnumConstantAST> list = (ParseList<EnumConstantAST>) args[0];
+      EnumConstantAST newEnumConstant = (EnumConstantAST) args[2];
       list.addLast(newEnumConstant, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], newEnumConstant.getParseInfo()));
       return list;
     }

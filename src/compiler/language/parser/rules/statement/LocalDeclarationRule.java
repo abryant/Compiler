@@ -9,11 +9,11 @@ import static compiler.language.parser.ParseType.TYPE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.misc.DeclarationAssignee;
-import compiler.language.ast.misc.Modifier;
-import compiler.language.ast.statement.LocalDeclarationStatement;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.misc.DeclarationAssigneeAST;
+import compiler.language.ast.misc.ModifierAST;
+import compiler.language.ast.statement.LocalDeclarationStatementAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -50,40 +50,40 @@ public final class LocalDeclarationRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Type type = (Type) args[0];
+      TypeAST type = (TypeAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<DeclarationAssignee> assignees = (ParseList<DeclarationAssignee>) args[1];
-      return new LocalDeclarationStatement(new Modifier[0], type, assignees.toArray(new DeclarationAssignee[0]), null,
+      ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[1];
+      return new LocalDeclarationStatementAST(new ModifierAST[0], type, assignees.toArray(new DeclarationAssigneeAST[0]), null,
                                            ParseInfo.combine(type.getParseInfo(), assignees.getParseInfo()));
     }
     if (ASSIGNMENT_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[0];
+      TypeAST type = (TypeAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<DeclarationAssignee> assignees = (ParseList<DeclarationAssignee>) args[1];
-      Expression expression = (Expression) args[3];
-      return new LocalDeclarationStatement(new Modifier[0], type, assignees.toArray(new DeclarationAssignee[0]), expression,
+      ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[1];
+      ExpressionAST expression = (ExpressionAST) args[3];
+      return new LocalDeclarationStatementAST(new ModifierAST[0], type, assignees.toArray(new DeclarationAssigneeAST[0]), expression,
                                            ParseInfo.combine(type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[2], expression.getParseInfo()));
     }
     if (MODIFIERS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Modifier> modifiers = (ParseList<Modifier>) args[0];
-      Type type = (Type) args[1];
+      ParseList<ModifierAST> modifiers = (ParseList<ModifierAST>) args[0];
+      TypeAST type = (TypeAST) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<DeclarationAssignee> assignees = (ParseList<DeclarationAssignee>) args[2];
-      return new LocalDeclarationStatement(modifiers.toArray(new Modifier[0]), type, assignees.toArray(new DeclarationAssignee[0]), null,
+      ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[2];
+      return new LocalDeclarationStatementAST(modifiers.toArray(new ModifierAST[0]), type, assignees.toArray(new DeclarationAssigneeAST[0]), null,
                                            ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), assignees.getParseInfo()));
     }
     if (MODIFIERS_ASSIGNMENT_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Modifier> modifiers = (ParseList<Modifier>) args[0];
-      Type type = (Type) args[1];
+      ParseList<ModifierAST> modifiers = (ParseList<ModifierAST>) args[0];
+      TypeAST type = (TypeAST) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<DeclarationAssignee> assignees = (ParseList<DeclarationAssignee>) args[2];
-      Expression expression = (Expression) args[4];
-      return new LocalDeclarationStatement(modifiers.toArray(new Modifier[0]), type, assignees.toArray(new DeclarationAssignee[0]), expression,
+      ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[2];
+      ExpressionAST expression = (ExpressionAST) args[4];
+      return new LocalDeclarationStatementAST(modifiers.toArray(new ModifierAST[0]), type, assignees.toArray(new DeclarationAssigneeAST[0]), expression,
                                            ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[3], expression.getParseInfo()));
     }
     throw badTypeList();

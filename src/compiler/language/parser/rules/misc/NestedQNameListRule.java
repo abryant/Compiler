@@ -7,7 +7,7 @@ import static compiler.language.parser.ParseType.RPAREN;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.QNameElement;
+import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,8 +42,8 @@ public final class NestedQNameListRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<QNameElement> list = (ParseList<QNameElement>) args[1];
-      return new QNameElement(list, ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
+      ParseList<QNameElementAST> list = (ParseList<QNameElementAST>) args[1];
+      return new QNameElementAST(list, ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

@@ -9,8 +9,8 @@ import static compiler.language.parser.ParseType.STAR;
 import static compiler.language.parser.ParseType.STATIC_KEYWORD;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.topLevel.ImportDeclaration;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.topLevel.ImportDeclarationAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -46,23 +46,23 @@ public final class ImportDeclarationRule extends Rule<ParseType>
   {
     if (NORMAL_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[1];
-      return new ImportDeclaration(qname, false, false, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2]));
+      QNameAST qname = (QNameAST) args[1];
+      return new ImportDeclarationAST(qname, false, false, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2]));
     }
     if (ALL_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[1];
-      return new ImportDeclaration(qname, true, false, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], (ParseInfo) args[3], (ParseInfo) args[4]));
+      QNameAST qname = (QNameAST) args[1];
+      return new ImportDeclarationAST(qname, true, false, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], (ParseInfo) args[3], (ParseInfo) args[4]));
     }
     if (STATIC_NORMAL_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[2];
-      return new ImportDeclaration(qname, false, true, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3]));
+      QNameAST qname = (QNameAST) args[2];
+      return new ImportDeclarationAST(qname, false, true, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3]));
     }
     if (STATIC_ALL_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[2];
-      return new ImportDeclaration(qname, true, true, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3], (ParseInfo) args[4], (ParseInfo) args[5]));
+      QNameAST qname = (QNameAST) args[2];
+      return new ImportDeclarationAST(qname, true, true, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3], (ParseInfo) args[4], (ParseInfo) args[5]));
     }
     throw badTypeList();
   }

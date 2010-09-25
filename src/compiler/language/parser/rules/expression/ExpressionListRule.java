@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.EXPRESSION_NO_TUPLE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,14 +41,14 @@ public final class ExpressionListRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[0];
-      return new ParseList<Expression>(expression, expression.getParseInfo());
+      ExpressionAST expression = (ExpressionAST) args[0];
+      return new ParseList<ExpressionAST>(expression, expression.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Expression> list = (ParseList<Expression>) args[0];
-      Expression expression = (Expression) args[2];
+      ParseList<ExpressionAST> list = (ParseList<ExpressionAST>) args[0];
+      ExpressionAST expression = (ExpressionAST) args[2];
       list.addLast(expression, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], expression.getParseInfo()));
       return list;
     }

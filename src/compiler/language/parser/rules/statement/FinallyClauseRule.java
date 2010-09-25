@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.FINALLY_KEYWORD;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.statement.Block;
+import compiler.language.ast.statement.BlockAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,12 +41,12 @@ public final class FinallyClauseRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Block block = (Block) args[1];
-      return new ParseContainer<Block>(block, ParseInfo.combine((ParseInfo) args[0], block.getParseInfo()));
+      BlockAST block = (BlockAST) args[1];
+      return new ParseContainer<BlockAST>(block, ParseInfo.combine((ParseInfo) args[0], block.getParseInfo()));
     }
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseContainer<Block>(null, null);
+      return new ParseContainer<BlockAST>(null, null);
     }
     throw badTypeList();
   }

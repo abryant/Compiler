@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.terminal.CharacterLiteral;
-import compiler.language.ast.terminal.FloatingLiteral;
-import compiler.language.ast.terminal.IntegerLiteral;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.terminal.SinceSpecifier;
-import compiler.language.ast.terminal.StringLiteral;
-import compiler.language.ast.terminal.VersionNumber;
+import compiler.language.ast.terminal.CharacterLiteralAST;
+import compiler.language.ast.terminal.FloatingLiteralAST;
+import compiler.language.ast.terminal.IntegerLiteralAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.terminal.SinceSpecifierAST;
+import compiler.language.ast.terminal.StringLiteralAST;
+import compiler.language.ast.terminal.VersionNumberAST;
 import compiler.parser.ParseException;
 import compiler.parser.Token;
 import compiler.parser.Tokenizer;
@@ -323,7 +323,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
     }
 
     // we have a name, so return it
-    return new Token<ParseType>(ParseType.NAME, new Name(name, new ParseInfo(currentLine, currentColumn - index, currentColumn)));
+    return new Token<ParseType>(ParseType.NAME, new NameAST(name, new ParseInfo(currentLine, currentColumn - index, currentColumn)));
   }
 
   /**
@@ -357,8 +357,8 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
     {
       throw new LanguageParseException("Expected integer literal in since specifier.", new ParseInfo(currentLine, currentColumn));
     }
-    IntegerLiteral firstLiteral = (IntegerLiteral) firstLiteralToken.getValue();
-    VersionNumber version = new VersionNumber(new IntegerLiteral[] {firstLiteral}, firstLiteral.getParseInfo());
+    IntegerLiteralAST firstLiteral = (IntegerLiteralAST) firstLiteralToken.getValue();
+    VersionNumberAST version = new VersionNumberAST(new IntegerLiteralAST[] {firstLiteral}, firstLiteral.getParseInfo());
 
     skipWhitespaceAndComments();
 
@@ -381,12 +381,12 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
         {
           throw new LanguageParseException("Expected integer literal in since specifier.", new ParseInfo(currentLine, currentColumn));
         }
-        IntegerLiteral literal = (IntegerLiteral) literalToken.getValue();
-        IntegerLiteral[] oldList = version.getVersionParts();
-        IntegerLiteral[] newList = new IntegerLiteral[oldList.length + 1];
+        IntegerLiteralAST literal = (IntegerLiteralAST) literalToken.getValue();
+        IntegerLiteralAST[] oldList = version.getVersionParts();
+        IntegerLiteralAST[] newList = new IntegerLiteralAST[oldList.length + 1];
         System.arraycopy(oldList, 0, newList, 0, oldList.length);
         newList[oldList.length] = literal;
-        version = new VersionNumber(newList, ParseInfo.combine(version.getParseInfo(), dotInfo, literal.getParseInfo()));
+        version = new VersionNumberAST(newList, ParseInfo.combine(version.getParseInfo(), dotInfo, literal.getParseInfo()));
 
         skipWhitespaceAndComments();
       }
@@ -404,7 +404,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
       }
     }
 
-    SinceSpecifier sinceSpecifier = new SinceSpecifier(version, ParseInfo.combine(sinceKeywordInfo, lparenInfo, version.getParseInfo(), rparenInfo));
+    SinceSpecifierAST sinceSpecifier = new SinceSpecifierAST(version, ParseInfo.combine(sinceKeywordInfo, lparenInfo, version.getParseInfo(), rparenInfo));
     return new Token<ParseType>(ParseType.SINCE_SPECIFIER, sinceSpecifier);
   }
 
@@ -503,7 +503,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
     if (hasFractionalPart || (hasInitialNumber && hasExponent))
     {
       String floatingPointText = buffer.toString();
-      FloatingLiteral literal = new FloatingLiteral(floatingPointText, new ParseInfo(currentLine, currentColumn, currentColumn + index));
+      FloatingLiteralAST literal = new FloatingLiteralAST(floatingPointText, new ParseInfo(currentLine, currentColumn, currentColumn + index));
       reader.discard(index);
       currentColumn += index;
       return new Token<ParseType>(ParseType.FLOATING_LITERAL, literal);
@@ -559,7 +559,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
           else if (base == 16) { baseString = "hex"; }
           throw new LanguageParseException("Unexpected end of " + baseString + " literal.", new ParseInfo(currentLine, currentColumn + buffer.length()));
         }
-        IntegerLiteral literal = new IntegerLiteral(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
+        IntegerLiteralAST literal = new IntegerLiteralAST(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
         reader.discard(buffer.length());
         currentColumn += buffer.length();
         return new Token<ParseType>(ParseType.INTEGER_LITERAL, literal);
@@ -573,7 +573,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
         // there was no value after the initial 0, so set the value to 0
         value = BigInteger.valueOf(0);
       }
-      IntegerLiteral literal = new IntegerLiteral(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
+      IntegerLiteralAST literal = new IntegerLiteralAST(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
       reader.discard(buffer.length());
       currentColumn += buffer.length();
       return new Token<ParseType>(ParseType.INTEGER_LITERAL, literal);
@@ -589,7 +589,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
       // this is not an integer literal
       return null;
     }
-    IntegerLiteral literal = new IntegerLiteral(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
+    IntegerLiteralAST literal = new IntegerLiteralAST(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
     reader.discard(buffer.length());
     currentColumn += buffer.length();
     return new Token<ParseType>(ParseType.INTEGER_LITERAL, literal);
@@ -685,7 +685,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
       throw new LanguageParseException("Character literals cannot contain more than one character.", new ParseInfo(currentLine, currentColumn + 1, currentColumn + index));
     }
     stringRepresentation.append((char) finalChar);
-    CharacterLiteral literal = new CharacterLiteral(character, stringRepresentation.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + index));
+    CharacterLiteralAST literal = new CharacterLiteralAST(character, stringRepresentation.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + index));
     reader.discard(index);
     currentColumn += index;
     return new Token<ParseType>(ParseType.CHARACTER_LITERAL, literal);
@@ -749,7 +749,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
 
     // a whole string literal has been read, so create a token from it
     // (index is now the length of the entire literal, including quotes)
-    StringLiteral literal = new StringLiteral(buffer.toString(), stringRepresentation.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + index));
+    StringLiteralAST literal = new StringLiteralAST(buffer.toString(), stringRepresentation.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + index));
     reader.discard(index);
     currentColumn += index;
     return new Token<ParseType>(ParseType.STRING_LITERAL, literal);

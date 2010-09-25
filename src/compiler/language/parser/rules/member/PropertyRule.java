@@ -13,12 +13,12 @@ import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.TYPE;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.member.AccessSpecifier;
-import compiler.language.ast.member.Property;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.member.AccessSpecifierAST;
+import compiler.language.ast.member.PropertyAST;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -62,45 +62,45 @@ public final class PropertyRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      return new Property(type, name, null, null, null, null, null,
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      return new PropertyAST(type, name, null, null, null, null, null,
                           ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(), (ParseInfo) args[3]));
     }
     if (RETRIEVE_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[3];
-      Block retrieveBlock = (Block) args[5];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      AccessSpecifierAST retrieveAccess = (AccessSpecifierAST) args[3];
+      BlockAST retrieveBlock = (BlockAST) args[5];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
                                          (ParseInfo) args[4],
                                          retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
                                          (ParseInfo) args[6]);
-      return new Property(type, name, null, null, null, retrieveAccess, retrieveBlock, info);
+      return new PropertyAST(type, name, null, null, null, retrieveAccess, retrieveBlock, info);
     }
     if (ASSIGN_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[3];
-      Block assignBlock = (Block) args[5];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      AccessSpecifierAST assignAccess = (AccessSpecifierAST) args[3];
+      BlockAST assignBlock = (BlockAST) args[5];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          assignAccess != null ? assignAccess.getParseInfo() : null,
                                          (ParseInfo) args[4],
                                          assignBlock != null ? assignBlock.getParseInfo() : null,
                                          (ParseInfo) args[6]);
-      return new Property(type, name, null, assignAccess, assignBlock, null, null, info);
+      return new PropertyAST(type, name, null, assignAccess, assignBlock, null, null, info);
     }
     if (ASSIGN_RETRIEVE_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[3];
-      Block assignBlock = (Block) args[5];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[6];
-      Block retrieveBlock = (Block) args[8];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      AccessSpecifierAST assignAccess = (AccessSpecifierAST) args[3];
+      BlockAST assignBlock = (BlockAST) args[5];
+      AccessSpecifierAST retrieveAccess = (AccessSpecifierAST) args[6];
+      BlockAST retrieveBlock = (BlockAST) args[8];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          assignAccess != null ? assignAccess.getParseInfo() : null,
                                          (ParseInfo) args[4],
@@ -109,16 +109,16 @@ public final class PropertyRule extends Rule<ParseType>
                                          (ParseInfo) args[7],
                                          retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
                                          (ParseInfo) args[9]);
-      return new Property(type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      return new PropertyAST(type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
     }
     if (RETRIEVE_ASSIGN_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[3];
-      Block retrieveBlock = (Block) args[5];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[6];
-      Block assignBlock = (Block) args[8];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      AccessSpecifierAST retrieveAccess = (AccessSpecifierAST) args[3];
+      BlockAST retrieveBlock = (BlockAST) args[5];
+      AccessSpecifierAST assignAccess = (AccessSpecifierAST) args[6];
+      BlockAST assignBlock = (BlockAST) args[8];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
                                          (ParseInfo) args[4],
@@ -127,26 +127,26 @@ public final class PropertyRule extends Rule<ParseType>
                                          (ParseInfo) args[7],
                                          assignBlock != null ? assignBlock.getParseInfo() : null,
                                          (ParseInfo) args[9]);
-      return new Property(type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      return new PropertyAST(type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
     }
     if (EQUALS_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      Expression expression = (Expression) args[4];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      ExpressionAST expression = (ExpressionAST) args[4];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          (ParseInfo) args[3],
                                          expression.getParseInfo(),
                                          (ParseInfo) args[5]);
-      return new Property(type, name, expression, null, null, null, null, info);
+      return new PropertyAST(type, name, expression, null, null, null, null, info);
     }
     if (EQUALS_RETRIEVE_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      Expression expression = (Expression) args[4];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[5];
-      Block retrieveBlock = (Block) args[7];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      ExpressionAST expression = (ExpressionAST) args[4];
+      AccessSpecifierAST retrieveAccess = (AccessSpecifierAST) args[5];
+      BlockAST retrieveBlock = (BlockAST) args[7];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          (ParseInfo) args[3],
                                          expression.getParseInfo(),
@@ -154,15 +154,15 @@ public final class PropertyRule extends Rule<ParseType>
                                          (ParseInfo) args[6],
                                          retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
                                          (ParseInfo) args[8]);
-      return new Property(type, name, expression, null, null, retrieveAccess, retrieveBlock, info);
+      return new PropertyAST(type, name, expression, null, null, retrieveAccess, retrieveBlock, info);
     }
     if (EQUALS_ASSIGN_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      Expression expression = (Expression) args[4];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[5];
-      Block assignBlock = (Block) args[7];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      ExpressionAST expression = (ExpressionAST) args[4];
+      AccessSpecifierAST assignAccess = (AccessSpecifierAST) args[5];
+      BlockAST assignBlock = (BlockAST) args[7];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          (ParseInfo) args[3],
                                          expression.getParseInfo(),
@@ -170,17 +170,17 @@ public final class PropertyRule extends Rule<ParseType>
                                          (ParseInfo) args[6],
                                          assignBlock != null ? assignBlock.getParseInfo() : null,
                                          (ParseInfo) args[8]);
-      return new Property(type, name, expression, assignAccess, assignBlock, null, null, info);
+      return new PropertyAST(type, name, expression, assignAccess, assignBlock, null, null, info);
     }
     if (EQUALS_ASSIGN_RETRIEVE_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      Expression expression = (Expression) args[4];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[5];
-      Block assignBlock = (Block) args[7];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[8];
-      Block retrieveBlock = (Block) args[10];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      ExpressionAST expression = (ExpressionAST) args[4];
+      AccessSpecifierAST assignAccess = (AccessSpecifierAST) args[5];
+      BlockAST assignBlock = (BlockAST) args[7];
+      AccessSpecifierAST retrieveAccess = (AccessSpecifierAST) args[8];
+      BlockAST retrieveBlock = (BlockAST) args[10];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          (ParseInfo) args[3],
                                          expression.getParseInfo(),
@@ -191,17 +191,17 @@ public final class PropertyRule extends Rule<ParseType>
                                          (ParseInfo) args[9],
                                          retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
                                          (ParseInfo) args[11]);
-      return new Property(type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      return new PropertyAST(type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
     }
     if (EQUALS_RETRIEVE_ASSIGN_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      Expression expression = (Expression) args[4];
-      AccessSpecifier retrieveAccess = (AccessSpecifier) args[5];
-      Block retrieveBlock = (Block) args[7];
-      AccessSpecifier assignAccess = (AccessSpecifier) args[8];
-      Block assignBlock = (Block) args[10];
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      ExpressionAST expression = (ExpressionAST) args[4];
+      AccessSpecifierAST retrieveAccess = (AccessSpecifierAST) args[5];
+      BlockAST retrieveBlock = (BlockAST) args[7];
+      AccessSpecifierAST assignAccess = (AccessSpecifierAST) args[8];
+      BlockAST assignBlock = (BlockAST) args[10];
       ParseInfo info = ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                          (ParseInfo) args[3],
                                          expression.getParseInfo(),
@@ -212,7 +212,7 @@ public final class PropertyRule extends Rule<ParseType>
                                          (ParseInfo) args[9],
                                          assignBlock != null ? assignBlock.getParseInfo() : null,
                                          (ParseInfo) args[11]);
-      return new Property(type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      return new PropertyAST(type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
     }
     throw badTypeList();
   }

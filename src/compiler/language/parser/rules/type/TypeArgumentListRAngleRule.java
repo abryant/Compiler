@@ -8,7 +8,7 @@ import static compiler.language.parser.ParseType.TYPE_ARGUMENT_RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.TypeArgument;
+import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -44,19 +44,19 @@ public final class TypeArgumentListRAngleRule extends Rule<ParseType>
     if (TYPE_ARGUMENT_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<TypeArgument> typeArgument = (ParseContainer<TypeArgument>) args[0];
-      ParseList<TypeArgument> list = new ParseList<TypeArgument>(typeArgument.getItem(), typeArgument.getItem().getParseInfo());
-      return new ParseContainer<ParseList<TypeArgument>>(list, typeArgument.getParseInfo());
+      ParseContainer<TypeArgumentAST> typeArgument = (ParseContainer<TypeArgumentAST>) args[0];
+      ParseList<TypeArgumentAST> list = new ParseList<TypeArgumentAST>(typeArgument.getItem(), typeArgument.getItem().getParseInfo());
+      return new ParseContainer<ParseList<TypeArgumentAST>>(list, typeArgument.getParseInfo());
     }
     if (LIST_END_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<TypeArgument> list = (ParseList<TypeArgument>) args[0];
+      ParseList<TypeArgumentAST> list = (ParseList<TypeArgumentAST>) args[0];
       ParseInfo listParseInfo = list.getParseInfo();
       @SuppressWarnings("unchecked")
-      ParseContainer<TypeArgument> typeArgument = (ParseContainer<TypeArgument>) args[2];
+      ParseContainer<TypeArgumentAST> typeArgument = (ParseContainer<TypeArgumentAST>) args[2];
       list.addLast(typeArgument.getItem(), ParseInfo.combine(listParseInfo, (ParseInfo) args[1], typeArgument.getItem().getParseInfo()));
-      return new ParseContainer<ParseList<TypeArgument>>(list, ParseInfo.combine(listParseInfo, (ParseInfo) args[1], typeArgument.getParseInfo()));
+      return new ParseContainer<ParseList<TypeArgumentAST>>(list, ParseInfo.combine(listParseInfo, (ParseInfo) args[1], typeArgument.getParseInfo()));
     }
     throw badTypeList();
   }

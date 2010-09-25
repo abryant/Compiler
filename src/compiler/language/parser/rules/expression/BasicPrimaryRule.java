@@ -16,15 +16,15 @@ import static compiler.language.parser.ParseType.SUPER_ACCESS_EXPRESSION;
 import static compiler.language.parser.ParseType.THIS_ACCESS_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.CharacterLiteralExpression;
-import compiler.language.ast.expression.FloatingLiteralExpression;
-import compiler.language.ast.expression.IntegerLiteralExpression;
-import compiler.language.ast.expression.NilLiteralExpression;
-import compiler.language.ast.expression.StringLiteralExpression;
-import compiler.language.ast.terminal.CharacterLiteral;
-import compiler.language.ast.terminal.FloatingLiteral;
-import compiler.language.ast.terminal.IntegerLiteral;
-import compiler.language.ast.terminal.StringLiteral;
+import compiler.language.ast.expression.CharacterLiteralExpressionAST;
+import compiler.language.ast.expression.FloatingLiteralExpressionAST;
+import compiler.language.ast.expression.IntegerLiteralExpressionAST;
+import compiler.language.ast.expression.NilLiteralExpressionAST;
+import compiler.language.ast.expression.StringLiteralExpressionAST;
+import compiler.language.ast.terminal.CharacterLiteralAST;
+import compiler.language.ast.terminal.FloatingLiteralAST;
+import compiler.language.ast.terminal.IntegerLiteralAST;
+import compiler.language.ast.terminal.StringLiteralAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -78,34 +78,34 @@ public final class BasicPrimaryRule extends Rule<ParseType>
   {
     if (INTEGER_LITERAL_PRODUCTION.equals(production))
     {
-      IntegerLiteral literal = (IntegerLiteral) args[0];
-      return new IntegerLiteralExpression(literal, literal.getParseInfo());
+      IntegerLiteralAST literal = (IntegerLiteralAST) args[0];
+      return new IntegerLiteralExpressionAST(literal, literal.getParseInfo());
     }
     if (FLOATING_LITERAL_PRODUCTION.equals(production))
     {
-      FloatingLiteral literal = (FloatingLiteral) args[0];
-      return new FloatingLiteralExpression(literal, literal.getParseInfo());
+      FloatingLiteralAST literal = (FloatingLiteralAST) args[0];
+      return new FloatingLiteralExpressionAST(literal, literal.getParseInfo());
     }
     if (CHARACTER_LITERAL_PRODUCTION.equals(production))
     {
-      CharacterLiteral literal = (CharacterLiteral) args[0];
-      return new CharacterLiteralExpression(literal, literal.getParseInfo());
+      CharacterLiteralAST literal = (CharacterLiteralAST) args[0];
+      return new CharacterLiteralExpressionAST(literal, literal.getParseInfo());
     }
     if (STRING_LITERAL_PRODUCTION.equals(production))
     {
-      StringLiteral literal = (StringLiteral) args[0];
-      return new StringLiteralExpression(literal, literal.getParseInfo());
+      StringLiteralAST literal = (StringLiteralAST) args[0];
+      return new StringLiteralExpressionAST(literal, literal.getParseInfo());
     }
     if (NIL_LITERAL_PRODUCTION.equals(production))
     {
-      return new NilLiteralExpression((ParseInfo) args[0]);
+      return new NilLiteralExpressionAST((ParseInfo) args[0]);
     }
     if (FIELD_ACCESS_PRODUCTION.equals(production)        || STATEMENT_EXPRESSION_PRODUCTION.equals(production) ||
         THIS_ACCESS_PRODUCTION.equals(production)         || SUPER_ACCESS_PRODUCTION.equals(production)         ||
         ARRAY_ACCESS_PRODUCTION.equals(production)        || CLOSURE_CREATION_PRODUCTION.equals(production)     ||
         ARRAY_INSTANCIATION_PRODUCTION.equals(production) || BOOLEAN_LITERAL_PRODUCTION.equals(production))
     {
-      // an Expression has already been generated, so return it
+      // an ExpressionAST has already been generated, so return it
       return args[0];
     }
     throw badTypeList();

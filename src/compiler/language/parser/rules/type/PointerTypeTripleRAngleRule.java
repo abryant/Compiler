@@ -8,8 +8,8 @@ import static compiler.language.parser.ParseType.TRIPLE_RANGLE;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.LanguageParseException;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
@@ -46,19 +46,19 @@ public final class PointerTypeTripleRAngleRule extends Rule<ParseType>
   {
     if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
-      // return the existing ParseContainer<ParseContainer<ParseContainer<PointerType>>>
+      // return the existing ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>
       return args[0];
     }
 
-    PointerType type;
+    PointerTypeAST type;
     if (QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      type = new PointerType(qname, qname.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      type = new PointerTypeAST(qname, qname.getParseInfo());
     }
     else if (NO_TRAILING_PARAMS_PRODUCTION.equals(production))
     {
-      type = (PointerType) args[0];
+      type = (PointerTypeAST) args[0];
     }
     else
     {
@@ -78,10 +78,10 @@ public final class PointerTypeTripleRAngleRule extends Rule<ParseType>
     }
     ParseInfo firstAngleInfo = new ParseInfo(line, startPos, line, startPos + 1);
     ParseInfo firstTwoAnglesInfo = new ParseInfo(line, startPos, line, startPos + 2);
-    ParseContainer<PointerType> firstContainer = new ParseContainer<PointerType>(type, ParseInfo.combine(type.getParseInfo(), firstAngleInfo));
-    ParseContainer<ParseContainer<PointerType>> secondContainer =
-      new ParseContainer<ParseContainer<PointerType>>(firstContainer, ParseInfo.combine(type.getParseInfo(), firstTwoAnglesInfo));
-    return new ParseContainer<ParseContainer<ParseContainer<PointerType>>>(secondContainer, ParseInfo.combine(type.getParseInfo(), tripleRAngleInfo));
+    ParseContainer<PointerTypeAST> firstContainer = new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), firstAngleInfo));
+    ParseContainer<ParseContainer<PointerTypeAST>> secondContainer =
+      new ParseContainer<ParseContainer<PointerTypeAST>>(firstContainer, ParseInfo.combine(type.getParseInfo(), firstTwoAnglesInfo));
+    return new ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>(secondContainer, ParseInfo.combine(type.getParseInfo(), tripleRAngleInfo));
   }
 
 }

@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.FALSE_KEYWORD;
 import static compiler.language.parser.ParseType.TRUE_KEYWORD;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.BooleanLiteralExpression;
+import compiler.language.ast.expression.BooleanLiteralExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,11 +40,11 @@ public final class BooleanLiteralExpressionRule extends Rule<ParseType>
   {
     if (TRUE_PRODUCTION.equals(production))
     {
-      return new BooleanLiteralExpression(true, (ParseInfo) args[0]);
+      return new BooleanLiteralExpressionAST(true, (ParseInfo) args[0]);
     }
     if (FALSE_PRODUCTION.equals(production))
     {
-      return new BooleanLiteralExpression(false, (ParseInfo) args[0]);
+      return new BooleanLiteralExpressionAST(false, (ParseInfo) args[0]);
     }
     throw badTypeList();
   }

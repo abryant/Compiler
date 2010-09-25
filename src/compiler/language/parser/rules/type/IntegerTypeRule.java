@@ -1,8 +1,8 @@
 package compiler.language.parser.rules.type;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.type.IntegerType;
-import compiler.language.ast.type.IntegerTypeLength;
+import compiler.language.ast.type.IntegerTypeAST;
+import compiler.language.ast.type.IntegerTypeLengthAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -52,54 +52,54 @@ public final class IntegerTypeRule extends Rule<ParseType>
   {
     if (UNSPECIFIED_BYTE_PRODUCTION.equals(production))
     {
-      return new IntegerType(null, IntegerTypeLength.BYTE, (ParseInfo) args[0]);
+      return new IntegerTypeAST(null, IntegerTypeLengthAST.BYTE, (ParseInfo) args[0]);
     }
     if (SIGNED_BYTE_PRODUCTION.equals(production))
     {
-      return new IntegerType(true, IntegerTypeLength.BYTE, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(true, IntegerTypeLengthAST.BYTE, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (UNSIGNED_BYTE_PRODUCTION.equals(production))
     {
-      return new IntegerType(false, IntegerTypeLength.BYTE, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(false, IntegerTypeLengthAST.BYTE, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
 
     if (UNSPECIFIED_SHORT_PRODUCTION.equals(production))
     {
-      return new IntegerType(null, IntegerTypeLength.SHORT, (ParseInfo) args[0]);
+      return new IntegerTypeAST(null, IntegerTypeLengthAST.SHORT, (ParseInfo) args[0]);
     }
     if (SIGNED_SHORT_PRODUCTION.equals(production))
     {
-      return new IntegerType(true, IntegerTypeLength.SHORT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(true, IntegerTypeLengthAST.SHORT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (UNSIGNED_SHORT_PRODUCTION.equals(production))
     {
-      return new IntegerType(false, IntegerTypeLength.SHORT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(false, IntegerTypeLengthAST.SHORT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
 
     if (UNSPECIFIED_INT_PRODUCTION.equals(production))
     {
-      return new IntegerType(null, IntegerTypeLength.INT, (ParseInfo) args[0]);
+      return new IntegerTypeAST(null, IntegerTypeLengthAST.INT, (ParseInfo) args[0]);
     }
     if (SIGNED_INT_PRODUCTION.equals(production))
     {
-      return new IntegerType(true, IntegerTypeLength.INT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(true, IntegerTypeLengthAST.INT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (UNSIGNED_INT_PRODUCTION.equals(production))
     {
-      return new IntegerType(false, IntegerTypeLength.INT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(false, IntegerTypeLengthAST.INT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
 
     if (UNSPECIFIED_LONG_PRODUCTION.equals(production))
     {
-      return new IntegerType(null, IntegerTypeLength.LONG, (ParseInfo) args[0]);
+      return new IntegerTypeAST(null, IntegerTypeLengthAST.LONG, (ParseInfo) args[0]);
     }
     if (SIGNED_LONG_PRODUCTION.equals(production))
     {
-      return new IntegerType(true, IntegerTypeLength.LONG, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(true, IntegerTypeLengthAST.LONG, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (UNSIGNED_LONG_PRODUCTION.equals(production))
     {
-      return new IntegerType(false, IntegerTypeLength.LONG, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(false, IntegerTypeLengthAST.LONG, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     throw badTypeList();
   }

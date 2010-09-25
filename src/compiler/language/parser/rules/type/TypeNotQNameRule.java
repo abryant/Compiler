@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.NESTED_QNAME_LIST;
 import static compiler.language.parser.ParseType.TYPE_NOT_QNAME;
 import static compiler.language.parser.ParseType.TYPE_NOT_QNAME_LIST;
 
-import compiler.language.ast.misc.QNameElement;
+import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -39,12 +39,12 @@ public final class TypeNotQNameRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      // All types are actually subclasses of Type, so just return the argument
+      // All types are actually subclasses of TypeAST, so just return the argument
       return args[0];
     }
     if (QNAME_LIST_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
+      QNameElementAST element = (QNameElementAST) args[0];
       return element.toType();
     }
     throw badTypeList();

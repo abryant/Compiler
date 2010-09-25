@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.topLevel.PackageDeclaration;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.topLevel.PackageDeclarationAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,8 +40,8 @@ public final class PackageDeclarationRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[1];
-      return new PackageDeclaration(qname, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2]));
+      QNameAST qname = (QNameAST) args[1];
+      return new PackageDeclarationAST(qname, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

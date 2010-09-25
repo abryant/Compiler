@@ -1,10 +1,10 @@
 package compiler.language.parser;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.terminal.IntegerLiteral;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.terminal.StringLiteral;
-import compiler.language.ast.topLevel.CompilationUnit;
+import compiler.language.ast.terminal.IntegerLiteralAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.terminal.StringLiteralAST;
+import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.parser.BadTokenException;
 import compiler.parser.ParseException;
 import compiler.parser.Token;
@@ -27,16 +27,16 @@ public class LanguageParser
   /**
    * Parses the output of the specified tokenizer.
    * @param tokenizer - the tokenizer to parse the output of
-   * @return the CompilationUnit generated, or null if there was an error while parsing (which will have been printed out)
+   * @return the CompilationUnitAST generated, or null if there was an error while parsing (which will have been printed out)
    */
-  public CompilationUnit parse(LanguageTokenizer tokenizer)
+  public CompilationUnitAST parse(LanguageTokenizer tokenizer)
   {
     GeneratedLanguageParser parser = new GeneratedLanguageParser(tokenizer);
     try
     {
       Token<ParseType> result = parser.parse();
 
-      return (CompilationUnit) result.getValue();
+      return (CompilationUnitAST) result.getValue();
     }
     catch (LanguageParseException e)
     {
@@ -64,15 +64,15 @@ public class LanguageParser
         // this is simply a matter of casting in most cases, but for literals it must be extracted differently
         if (token.getType() == ParseType.NAME)
         {
-          parseInfo = ((Name) token.getValue()).getParseInfo();
+          parseInfo = ((NameAST) token.getValue()).getParseInfo();
         }
         else if (token.getType() == ParseType.INTEGER_LITERAL)
         {
-          parseInfo = ((IntegerLiteral) token.getValue()).getParseInfo();
+          parseInfo = ((IntegerLiteralAST) token.getValue()).getParseInfo();
         }
         else if (token.getType() == ParseType.STRING_LITERAL)
         {
-          parseInfo = ((StringLiteral) token.getValue()).getParseInfo();
+          parseInfo = ((StringLiteralAST) token.getValue()).getParseInfo();
         }
         else if (token.getValue() instanceof ParseInfo)
         {

@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.FOR_UPDATE;
 import static compiler.language.parser.ParseType.INCREMENT;
 import static compiler.language.parser.ParseType.STATEMENT_EXPRESSION;
 
-import compiler.language.ast.expression.StatementExpression;
-import compiler.language.ast.statement.ExpressionStatement;
+import compiler.language.ast.expression.StatementExpressionAST;
+import compiler.language.ast.statement.ExpressionStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -49,12 +49,12 @@ public final class ForUpdateRule extends Rule<ParseType>
     }
     if (EXPRESSION_PRODUCTION.equals(production))
     {
-      StatementExpression expression = (StatementExpression) args[0];
-      return new ExpressionStatement(expression, expression.getParseInfo());
+      StatementExpressionAST expression = (StatementExpressionAST) args[0];
+      return new ExpressionStatementAST(expression, expression.getParseInfo());
     }
     if (ASSIGNMENT_PRODUCTION.equals(production) || INCREMENT_PRODUCTION.equals(production) || DECREMENT_PRODUCTION.equals(production))
     {
-      // a Statement has already been created, so return it
+      // a StatementAST has already been created, so return it
       return args[0];
     }
     throw badTypeList();

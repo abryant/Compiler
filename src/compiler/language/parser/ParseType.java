@@ -20,194 +20,194 @@ public enum ParseType
   GENERATED_START_RULE,
 
   // top level
-  COMPILATION_UNIT,         // CompilationUnit
-  PACKAGE_DECLARATION,      // PackageDeclaration
-  IMPORT_DECLARATION,       // ImportDeclaration
-  TYPE_DEFINITION,          // TypeDefinition
+  COMPILATION_UNIT,         // CompilationUnitAST
+  PACKAGE_DECLARATION,      // PackageDeclarationAST
+  IMPORT_DECLARATION,       // ImportDeclarationAST
+  TYPE_DEFINITION,          // TypeDefinitionAST
 
   // type definitions
-  CLASS_DEFINITION,         // ClassDefinition
-  INTERFACE_DEFINITION,     // InterfaceDefinition
-  ENUM_DEFINITION,          // EnumDefinition
-  CLASS_EXTENDS_CLAUSE,     // PointerType or null
-  INTERFACE_LIST,           // ParseList<PointerType> (length > 0)
-  IMPLEMENTS_CLAUSE,        // ParseList<PointerType> (length == 0 if not specified)
-  INTERFACE_EXTENDS_CLAUSE, // ParseList<PointerType> (length == 0 if not specified)
-  ENUM_CONSTANTS,           // ParseList<EnumConstant> (length == 0 if not specified)
-  ENUM_CONSTANT_LIST,       // ParseList<EnumConstant> (length > 0)
-  ENUM_CONSTANT,            // EnumConstant
+  CLASS_DEFINITION,         // ClassDefinitionAST
+  INTERFACE_DEFINITION,     // InterfaceDefinitionAST
+  ENUM_DEFINITION,          // EnumDefinitionAST
+  CLASS_EXTENDS_CLAUSE,     // PointerTypeAST or null
+  INTERFACE_LIST,           // ParseList<PointerTypeAST> (length > 0)
+  IMPLEMENTS_CLAUSE,        // ParseList<PointerTypeAST> (length == 0 if not specified)
+  INTERFACE_EXTENDS_CLAUSE, // ParseList<PointerTypeAST> (length == 0 if not specified)
+  ENUM_CONSTANTS,           // ParseList<EnumConstantAST> (length == 0 if not specified)
+  ENUM_CONSTANT_LIST,       // ParseList<EnumConstantAST> (length > 0)
+  ENUM_CONSTANT,            // EnumConstantAST
 
   // members
-  ACCESS_SPECIFIER,         // AccessSpecifier or null
-  MEMBER_HEADER,            // MemberHeader
-  MEMBER_LIST,              // ParseList<Member>
-  MEMBER,                   // Member
-  FIELD,                    // Field
-  CONSTRUCTOR,              // Constructor
-  METHOD,                   // Method
-  PROPERTY,                 // Property
-  STATIC_INITIALIZER,       // StaticInitializer
+  ACCESS_SPECIFIER,         // AccessSpecifierAST or null
+  MEMBER_HEADER,            // MemberHeaderAST
+  MEMBER_LIST,              // ParseList<MemberAST>
+  MEMBER,                   // MemberAST
+  FIELD,                    // FieldAST
+  CONSTRUCTOR,              // ConstructorAST
+  METHOD,                   // MethodAST
+  PROPERTY,                 // PropertyAST
+  STATIC_INITIALIZER,       // StaticInitializerAST
 
   // statements
-  BLOCK,                  // Block
-  OPTIONAL_BLOCK,         // Block or null
-  STATEMENTS,             // ParseList<Statement>
-  STATEMENT,              // Statement
-  EMPTY_STATEMENT,        // EmptyStatement
-  LOCAL_DECLARATION,      // LocalDeclarationStatement
-  ASSIGNMENT,             // AssignmentStatement
-  IF_STATEMENT,           // IfStatement
-  ELSE_IF_CLAUSES,        // ParseList<ElseIfClause>
-  ELSE_IF_CLAUSE,         // ElseIfClause
-  ELSE_CLAUSE,            // ParseContainer<Block> (containing null if the empty production is used)
-  WHILE_STATEMENT,        // WhileStatement
-  DO_STATEMENT,           // DoStatement
-  FOR_EACH_STATEMENT,     // ForEachStatement
-  FOR_STATEMENT,          // ForStatement
-  FOR_INIT,               // Statement or null
-  FOR_UPDATE,             // Statement or null
-  SWITCH_STATEMENT,       // SwitchStatement
-  SWITCH_CASES,           // ParseList<SwitchCase>
-  SWITCH_CASE,            // SwitchCase
-  BREAK_STATEMENT,        // BreakStatement
-  CONTINUE_STATEMENT,     // ContinueStatement
-  FALLTHROUGH_STATEMENT,  // FallthroughStatement
-  RETURN_STATEMENT,       // ReturnStatement
-  THROW_STATEMENT,        // ThrowStatement
-  SYNCHRONIZED_STATEMENT, // SynchronizedStatement
-  TRY_STATEMENT,          // TryStatement
-  CATCH_CLAUSES,          // ParseList<CatchClause>
-  CATCH_CLAUSE,           // CatchClause
-  FINALLY_CLAUSE,         // ParseContainer<Block> (containing null if the empty production is used)
-  INCREMENT,              // IncrementStatement
-  DECREMENT,              // DecrementStatement
+  BLOCK,                  // BlockAST
+  OPTIONAL_BLOCK,         // BlockAST or null
+  STATEMENTS,             // ParseList<StatementAST>
+  STATEMENT,              // StatementAST
+  EMPTY_STATEMENT,        // EmptyStatementAST
+  LOCAL_DECLARATION,      // LocalDeclarationStatementAST
+  ASSIGNMENT,             // AssignmentStatementAST
+  IF_STATEMENT,           // IfStatementAST
+  ELSE_IF_CLAUSES,        // ParseList<ElseIfClauseAST>
+  ELSE_IF_CLAUSE,         // ElseIfClauseAST
+  ELSE_CLAUSE,            // ParseContainer<BlockAST> (containing null if the empty production is used)
+  WHILE_STATEMENT,        // WhileStatementAST
+  DO_STATEMENT,           // DoStatementAST
+  FOR_EACH_STATEMENT,     // ForEachStatementAST
+  FOR_STATEMENT,          // ForStatementAST
+  FOR_INIT,               // StatementAST or null
+  FOR_UPDATE,             // StatementAST or null
+  SWITCH_STATEMENT,       // SwitchStatementAST
+  SWITCH_CASES,           // ParseList<SwitchCaseAST>
+  SWITCH_CASE,            // SwitchCaseAST
+  BREAK_STATEMENT,        // BreakStatementAST
+  CONTINUE_STATEMENT,     // ContinueStatementAST
+  FALLTHROUGH_STATEMENT,  // FallthroughStatementAST
+  RETURN_STATEMENT,       // ReturnStatementAST
+  THROW_STATEMENT,        // ThrowStatementAST
+  SYNCHRONIZED_STATEMENT, // SynchronizedStatementAST
+  TRY_STATEMENT,          // TryStatementAST
+  CATCH_CLAUSES,          // ParseList<CatchClauseAST>
+  CATCH_CLAUSE,           // CatchClauseAST
+  FINALLY_CLAUSE,         // ParseContainer<BlockAST> (containing null if the empty production is used)
+  INCREMENT,              // IncrementStatementAST
+  DECREMENT,              // DecrementStatementAST
 
 
   // expressions
-  // the return types that are Expression (AnotherExpression) mean that if the
+  // the return types that are ExpressionAST (AnotherExpression) mean that if the
   // rule's main production is used (e.g. for additive: a + b) then the type in
-  // brackets will be returned but otherwise some other subclass of Expression
-  // will be returned (e.g. ParenthesisedExpression)
+  // brackets will be returned but otherwise some other subclass of ExpressionAST
+  // will be returned (e.g. ParenthesisedExpressionAST)
   // This is handled in the rules by checking for their created type via
   // 'instanceof', so Bracketed expressions must not just return their argument
-  EXPRESSION,                     // Expression
-  STATEMENT_EXPRESSION,           // StatementExpression
-  TUPLE_EXPRESSION,               // Expression (TupleExpression)
-  EXPRESSION_NO_TUPLE,            // Expression
-  INLINE_IF_EXPRESSION,           // Expression (InlineIfExpression)
-  BOOLEAN_OR_EXPRESSION,          // Expression (BooleanOrExpression)
-  BOOLEAN_XOR_EXPRESSION,         // Expression (BooleanXorExpression)
-  BOOLEAN_AND_EXPRESSION,         // Expression (BooleanAndExpression)
-  EQUALITY_EXPRESSION,            // Expression (EqualityExpression)
-  QNAME_OR_LESS_THAN_EXPRESSION,  // Expression (RelationalExpression, FieldAccessExpression or ParenthesisedExpression)
-  RELATIONAL_EXPRESSION_LESS_THAN_QNAME,     // Expression (RelationalExpression or InstanceOfExpression)
-  RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME, // Expression (RelationalExpression or InstanceOfExpression)
-  BITWISE_OR_EXPRESSION,          // Expression (BitwiseOrExpression)
-  BITWISE_XOR_EXPRESSION,         // Expression (BitwiseXorExpression)
-  BITWISE_AND_EXPRESSION,         // Expression (BitwiseAndExpression)
-  SHIFT_EXPRESSION,               // Expression (ShiftExpression)
-  ADDITIVE_EXPRESSION,            // Expression (AdditiveExpression)
-  MULTIPLICATIVE_EXPRESSION,      // Expression (MultiplicativeExpression)
-  TUPLE_INDEX_EXPRESSION,         // Expression (TupleIndexExpression)
-  UNARY_EXPRESSION,               // Expression
-  CAST_EXPRESSION,                // CastExpression
-  PRIMARY,                        // Expression
-  PRIMARY_NO_TRAILING_DIMENSIONS_NOT_QNAME, // Expression
-  BASIC_PRIMARY,                  // Expression
-  BOOLEAN_LITERAL_EXPRESSION,     // BooleanLiteralExpression
-  QNAME_EXPRESSION,               // Expression (either FieldAccessExpression or ParenthesisedExpression)
-  METHOD_CALL_EXPRESSION,         // MethodCallExpression
-  FIELD_ACCESS_EXPRESSION,        // FieldAccessExpression
-  FIELD_ACCESS_EXPRESSION_NOT_QNAME, // FieldAccessExpression
-  THIS_ACCESS_EXPRESSION,         // ThisAccessExpression
-  SUPER_ACCESS_EXPRESSION,        // SuperAccessExpression
-  ARRAY_ACCESS_EXPRESSION,        // ArrayAccessExpression
-  INSTANCIATION_EXPRESSION,       // InstanciationExpression
-  CLOSURE_CREATION_EXPRESSION,    // ClosureCreationExpression
-  ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER, // ArrayInstanciationExpression
-  ARRAY_INSTANCIATION_EXPRESSION_NO_INITIALIZER,   // ArrayInstanciationExpression
-  ARRAY_INITIALIZER,              // ParseList<Expression>
-  EXPRESSION_LIST,                // ParseList<Expression>
-  DIMENSION_EXPRESSION,           // ParseContainer<Expression>
-  DIMENSION_EXPRESSIONS,          // ParseList<Expression>
+  EXPRESSION,                     // ExpressionAST
+  STATEMENT_EXPRESSION,           // StatementExpressionAST
+  TUPLE_EXPRESSION,               // ExpressionAST (TupleExpressionAST)
+  EXPRESSION_NO_TUPLE,            // ExpressionAST
+  INLINE_IF_EXPRESSION,           // ExpressionAST (InlineIfExpressionAST)
+  BOOLEAN_OR_EXPRESSION,          // ExpressionAST (BooleanOrExpressionAST)
+  BOOLEAN_XOR_EXPRESSION,         // ExpressionAST (BooleanXorExpressionAST)
+  BOOLEAN_AND_EXPRESSION,         // ExpressionAST (BooleanAndExpressionAST)
+  EQUALITY_EXPRESSION,            // ExpressionAST (EqualityExpressionAST)
+  QNAME_OR_LESS_THAN_EXPRESSION,  // ExpressionAST (RelationalExpressionAST, FieldAccessExpressionAST or ParenthesisedExpressionAST)
+  RELATIONAL_EXPRESSION_LESS_THAN_QNAME,     // ExpressionAST (RelationalExpressionAST or InstanceOfExpressionAST)
+  RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME, // ExpressionAST (RelationalExpressionAST or InstanceOfExpressionAST)
+  BITWISE_OR_EXPRESSION,          // ExpressionAST (BitwiseOrExpressionAST)
+  BITWISE_XOR_EXPRESSION,         // ExpressionAST (BitwiseXorExpressionAST)
+  BITWISE_AND_EXPRESSION,         // ExpressionAST (BitwiseAndExpressionAST)
+  SHIFT_EXPRESSION,               // ExpressionAST (ShiftExpressionAST)
+  ADDITIVE_EXPRESSION,            // ExpressionAST (AdditiveExpressionAST)
+  MULTIPLICATIVE_EXPRESSION,      // ExpressionAST (MultiplicativeExpressionAST)
+  TUPLE_INDEX_EXPRESSION,         // ExpressionAST (TupleIndexExpressionAST)
+  UNARY_EXPRESSION,               // ExpressionAST
+  CAST_EXPRESSION,                // CastExpressionAST
+  PRIMARY,                        // ExpressionAST
+  PRIMARY_NO_TRAILING_DIMENSIONS_NOT_QNAME, // ExpressionAST
+  BASIC_PRIMARY,                  // ExpressionAST
+  BOOLEAN_LITERAL_EXPRESSION,     // BooleanLiteralExpressionAST
+  QNAME_EXPRESSION,               // ExpressionAST (either FieldAccessExpressionAST or ParenthesisedExpressionAST)
+  METHOD_CALL_EXPRESSION,         // MethodCallExpressionAST
+  FIELD_ACCESS_EXPRESSION,        // FieldAccessExpressionAST
+  FIELD_ACCESS_EXPRESSION_NOT_QNAME, // FieldAccessExpressionAST
+  THIS_ACCESS_EXPRESSION,         // ThisAccessExpressionAST
+  SUPER_ACCESS_EXPRESSION,        // SuperAccessExpressionAST
+  ARRAY_ACCESS_EXPRESSION,        // ArrayAccessExpressionAST
+  INSTANCIATION_EXPRESSION,       // InstanciationExpressionAST
+  CLOSURE_CREATION_EXPRESSION,    // ClosureCreationExpressionAST
+  ARRAY_INSTANCIATION_EXPRESSION_WITH_INITIALIZER, // ArrayInstanciationExpressionAST
+  ARRAY_INSTANCIATION_EXPRESSION_NO_INITIALIZER,   // ArrayInstanciationExpressionAST
+  ARRAY_INITIALIZER,              // ParseList<ExpressionAST>
+  EXPRESSION_LIST,                // ParseList<ExpressionAST>
+  DIMENSION_EXPRESSION,           // ParseContainer<ExpressionAST>
+  DIMENSION_EXPRESSIONS,          // ParseList<ExpressionAST>
 
   // types
-  TYPE,                              // Type
-  TYPE_RANGLE,                       // ParseContainer<Type>
-  TYPE_DOUBLE_RANGLE,                // ParseContainer<ParseContainer<Type>>
-  TYPE_TRIPLE_RANGLE,                // ParseContainer<ParseContainer<ParseContainer<Type>>>
-  TYPE_NOT_QNAME,                    // Type
-  TYPE_NOT_POINTER_TYPE_NOT_TUPLE_TYPE, // Type
-  TYPE_NOT_ARRAY_TYPE,               // Type
-  TYPE_NOT_QNAME_LIST,               // Type
-  TYPE_LIST,                         // ParseList<Type> (length > 0)
-  TYPE_LIST_NOT_QNAME_LIST,          // ParseList<Type> (length > 0)
-  ARRAY_TYPE,                        // ArrayType
-  TUPLE_TYPE,                        // TupleType
-  TUPLE_TYPE_NOT_QNAME_LIST,         // TupleType
-  CLOSURE_TYPE,                      // ClosureType
-  VOID_TYPE,                         // VoidType
-  PRIMITIVE_TYPE,                    // PrimitiveType
-  BOOLEAN_TYPE,                      // BooleanType
-  INTEGER_TYPE,                      // IntegerType
-  CHARACTER_TYPE,                    // CharacterType
-  FLOATING_TYPE,                     // FloatingType
-  POINTER_TYPE,                      // PointerType
-  POINTER_TYPE_RANGLE,               // ParseContainer<PointerType>
-  POINTER_TYPE_DOUBLE_RANGLE,        // ParseContainer<ParseContainer<PointerType>>
-  POINTER_TYPE_TRIPLE_RANGLE,        // ParseContainer<ParseContainer<ParseContainer<PointerType>>>
-  POINTER_TYPE_NOT_QNAME,            // PointerType
-  POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME,  // PointerType
-  POINTER_TYPE_TRAILING_PARAMS,               // PointerType
-  POINTER_TYPE_TRAILING_PARAMS_RANGLE,        // ParseContainer<PointerType>
-  POINTER_TYPE_TRAILING_PARAMS_DOUBLE_RANGLE, // ParseContainer<ParseContainer<PointerType>>
-  POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<PointerType>>>
-  TYPE_PARAMETERS,                   // ParseList<TypeParameter> (length > 0)
-  TYPE_PARAMETER_LIST,               // ParseList<TypeParameter> (length > 0)
-  TYPE_PARAMETER_LIST_RANGLE,        // ParseContainer<ParseList<TypeParameter>> (length > 0)
-  TYPE_PARAMETER_LIST_DOUBLE_RANGLE, // ParseContainer<ParseContainer<ParseList<TypeParameter>>> (length > 0)
-  TYPE_PARAMETER_LIST_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameter>>>> (length > 0)
-  TYPE_PARAMETER_NOT_QNAME_LIST,     // TypeParameter
-  TYPE_PARAMETER_RANGLE,             // ParseContainer<TypeParameter>
-  TYPE_PARAMETER_DOUBLE_RANGLE,      // ParseContainer<ParseContainer<TypeParameter>>
-  TYPE_PARAMETER_TRIPLE_RANGLE,      // ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>
-  WILDCARD_TYPE_PARAMETER,           // WildcardTypeParameter
-  WILDCARD_TYPE_PARAMETER_RANGLE,    // ParseContainer<TypeParameter>
-  WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE, // ParseContainer<ParseContainer<TypeParameter>>
-  WILDCARD_TYPE_PARAMETER_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<TypeParameter>>>
-  TYPE_BOUND_LIST,                   // ParseList<PointerType> (length > 0)
-  TYPE_BOUND_LIST_RANGLE,            // ParseContainer<ParseList<PointerType>> (length > 0)
-  TYPE_BOUND_LIST_DOUBLE_RANGLE,     // ParseContainer<ParseContainer<ParseList<PointerType>>> (length > 0)
-  TYPE_BOUND_LIST_TRIPLE_RANGLE,     // ParseContainer<ParseContainer<ParseContainer<ParseList<PointerType>>>> (length > 0)
-  TYPE_ARGUMENT,                     // TypeArgument
-  TYPE_ARGUMENT_RANGLE,              // ParseContainer<TypeArgument>
-  TYPE_ARGUMENT_LIST,                // ParseList<TypeArgument> (length > 0)
-  TYPE_ARGUMENT_LIST_RANGLE,         // ParseContainer<ParseList<TypeArgument>> (length > 0)
-  TYPE_ARGUMENTS,                    // ParseList<TypeArgument> (length > 0)
+  TYPE,                              // TypeAST
+  TYPE_RANGLE,                       // ParseContainer<TypeAST>
+  TYPE_DOUBLE_RANGLE,                // ParseContainer<ParseContainer<TypeAST>>
+  TYPE_TRIPLE_RANGLE,                // ParseContainer<ParseContainer<ParseContainer<TypeAST>>>
+  TYPE_NOT_QNAME,                    // TypeAST
+  TYPE_NOT_POINTER_TYPE_NOT_TUPLE_TYPE, // TypeAST
+  TYPE_NOT_ARRAY_TYPE,               // TypeAST
+  TYPE_NOT_QNAME_LIST,               // TypeAST
+  TYPE_LIST,                         // ParseList<TypeAST> (length > 0)
+  TYPE_LIST_NOT_QNAME_LIST,          // ParseList<TypeAST> (length > 0)
+  ARRAY_TYPE,                        // ArrayTypeAST
+  TUPLE_TYPE,                        // TupleTypeAST
+  TUPLE_TYPE_NOT_QNAME_LIST,         // TupleTypeAST
+  CLOSURE_TYPE,                      // ClosureTypeAST
+  VOID_TYPE,                         // VoidTypeAST
+  PRIMITIVE_TYPE,                    // PrimitiveTypeAST
+  BOOLEAN_TYPE,                      // BooleanTypeAST
+  INTEGER_TYPE,                      // IntegerTypeAST
+  CHARACTER_TYPE,                    // CharacterTypeAST
+  FLOATING_TYPE,                     // FloatingTypeAST
+  POINTER_TYPE,                      // PointerTypeAST
+  POINTER_TYPE_RANGLE,               // ParseContainer<PointerTypeAST>
+  POINTER_TYPE_DOUBLE_RANGLE,        // ParseContainer<ParseContainer<PointerTypeAST>>
+  POINTER_TYPE_TRIPLE_RANGLE,        // ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>
+  POINTER_TYPE_NOT_QNAME,            // PointerTypeAST
+  POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME,  // PointerTypeAST
+  POINTER_TYPE_TRAILING_PARAMS,               // PointerTypeAST
+  POINTER_TYPE_TRAILING_PARAMS_RANGLE,        // ParseContainer<PointerTypeAST>
+  POINTER_TYPE_TRAILING_PARAMS_DOUBLE_RANGLE, // ParseContainer<ParseContainer<PointerTypeAST>>
+  POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>
+  TYPE_PARAMETERS,                   // ParseList<TypeParameterAST> (length > 0)
+  TYPE_PARAMETER_LIST,               // ParseList<TypeParameterAST> (length > 0)
+  TYPE_PARAMETER_LIST_RANGLE,        // ParseContainer<ParseList<TypeParameterAST>> (length > 0)
+  TYPE_PARAMETER_LIST_DOUBLE_RANGLE, // ParseContainer<ParseContainer<ParseList<TypeParameterAST>>> (length > 0)
+  TYPE_PARAMETER_LIST_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameterAST>>>> (length > 0)
+  TYPE_PARAMETER_NOT_QNAME_LIST,     // TypeParameterAST
+  TYPE_PARAMETER_RANGLE,             // ParseContainer<TypeParameterAST>
+  TYPE_PARAMETER_DOUBLE_RANGLE,      // ParseContainer<ParseContainer<TypeParameterAST>>
+  TYPE_PARAMETER_TRIPLE_RANGLE,      // ParseContainer<ParseContainer<ParseContainer<TypeParameterAST>>>
+  WILDCARD_TYPE_PARAMETER,           // WildcardTypeParameterAST
+  WILDCARD_TYPE_PARAMETER_RANGLE,    // ParseContainer<TypeParameterAST>
+  WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE, // ParseContainer<ParseContainer<TypeParameterAST>>
+  WILDCARD_TYPE_PARAMETER_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<TypeParameterAST>>>
+  TYPE_BOUND_LIST,                   // ParseList<PointerTypeAST> (length > 0)
+  TYPE_BOUND_LIST_RANGLE,            // ParseContainer<ParseList<PointerTypeAST>> (length > 0)
+  TYPE_BOUND_LIST_DOUBLE_RANGLE,     // ParseContainer<ParseContainer<ParseList<PointerTypeAST>>> (length > 0)
+  TYPE_BOUND_LIST_TRIPLE_RANGLE,     // ParseContainer<ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>> (length > 0)
+  TYPE_ARGUMENT,                     // TypeArgumentAST
+  TYPE_ARGUMENT_RANGLE,              // ParseContainer<TypeArgumentAST>
+  TYPE_ARGUMENT_LIST,                // ParseList<TypeArgumentAST> (length > 0)
+  TYPE_ARGUMENT_LIST_RANGLE,         // ParseContainer<ParseList<TypeArgumentAST>> (length > 0)
+  TYPE_ARGUMENTS,                    // ParseList<TypeArgumentAST> (length > 0)
 
   // miscellaneous non-terminals
-  MODIFIER,                   // Modifier
-  MODIFIER_NOT_SYNCHRONIZED,  // Modifier
-  NATIVE_SPECIFIER,           // NativeSpecifier
-  MODIFIERS,                  // ParseList<Modifier> (length > 0)
-  MODIFIERS_NOT_SYNCHRONIZED, // ParseList<Modifier> (length > 0)
-  ARGUMENT,                   // Argument
-  ARGUMENT_LIST,              // ParseList<Argument>
-  ARGUMENTS,                  // ArgumentList
-  ASSIGNEE,                   // Assignee
-  ASSIGNEE_LIST,              // ParseList<Assignee>
-  ASSIGNMENT_OPERATOR,        // ParseContainer<AssignmentOperator>
-  DECLARATION_ASSIGNEE,       // DeclarationAssignee
-  DECLARATION_ASSIGNEE_LIST,  // ParseList<DeclarationAssignee>
-  DIMENSIONS,                 // Dimensions
-  PARAMETER,                  // Parameter
-  PARAMETER_LIST,             // ParseList<Parameter> (length > 0)
-  PARAMETERS,                 // ParseList<Parameter>
-  QNAME,                      // QName
-  QNAME_LIST,                 // ParseList<QNameElement>
-  NESTED_QNAME_LIST,          // QNameElement
-  THROWS_LIST,                // ParseList<PointerType> (length > 0)
-  THROWS_CLAUSE,              // ParseList<PointerType> (length == 0 if none are specified)
+  MODIFIER,                   // ModifierAST
+  MODIFIER_NOT_SYNCHRONIZED,  // ModifierAST
+  NATIVE_SPECIFIER,           // NativeSpecifierAST
+  MODIFIERS,                  // ParseList<ModifierAST> (length > 0)
+  MODIFIERS_NOT_SYNCHRONIZED, // ParseList<ModifierAST> (length > 0)
+  ARGUMENT,                   // ArgumentAST
+  ARGUMENT_LIST,              // ParseList<ArgumentAST>
+  ARGUMENTS,                  // ArgumentListAST
+  ASSIGNEE,                   // AssigneeAST
+  ASSIGNEE_LIST,              // ParseList<AssigneeAST>
+  ASSIGNMENT_OPERATOR,        // ParseContainer<AssignmentOperatorAST>
+  DECLARATION_ASSIGNEE,       // DeclarationAssigneeAST
+  DECLARATION_ASSIGNEE_LIST,  // ParseList<DeclarationAssigneeAST>
+  DIMENSIONS,                 // DimensionsAST
+  PARAMETER,                  // ParameterAST
+  PARAMETER_LIST,             // ParseList<ParameterAST> (length > 0)
+  PARAMETERS,                 // ParseList<ParameterAST>
+  QNAME,                      // QNameAST
+  QNAME_LIST,                 // ParseList<QNameElementAST>
+  NESTED_QNAME_LIST,          // QNameElementAST
+  THROWS_LIST,                // ParseList<PointerTypeAST> (length > 0)
+  THROWS_CLAUSE,              // ParseList<PointerTypeAST> (length == 0 if none are specified)
 
   // =============
   //   TERMINALS
@@ -215,12 +215,12 @@ public enum ParseType
 
   // literals
   // all literals must have a special case for extracting ParseInfo from them in LanguageParser
-  NAME,              // Name
-  INTEGER_LITERAL,   // IntegerLiteral
-  FLOATING_LITERAL,  // FloatingLiteral
-  CHARACTER_LITERAL, // CharacterLiteral
-  STRING_LITERAL,    // StringLiteral
-  SINCE_SPECIFIER,   // SinceSpecifier
+  NAME,              // NameAST
+  INTEGER_LITERAL,   // IntegerLiteralAST
+  FLOATING_LITERAL,  // FloatingLiteralAST
+  CHARACTER_LITERAL, // CharacterLiteralAST
+  STRING_LITERAL,    // StringLiteralAST
+  SINCE_SPECIFIER,   // SinceSpecifierAST
 
   // keywords (values for these should all be ParseInfo)
   ABSTRACT_KEYWORD,

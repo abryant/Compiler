@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.PIPE;
 import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.BitwiseOrExpression;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.BitwiseOrExpressionAST;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,20 +45,20 @@ public final class BitwiseOrExpressionRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      // return the existing Expression
+      // return the existing ExpressionAST
       return args[0];
     }
     if (OR_PRODUCTION.equals(production) || OR_QNAME_PRODUCTION.equals(production) || QNAME_OR_PRODUCTION.equals(production) || QNAME_OR_QNAME_PRODUCTION.equals(production))
     {
-      Expression secondExpression = (Expression) args[2];
-      if (args[0] instanceof BitwiseOrExpression)
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
+      if (args[0] instanceof BitwiseOrExpressionAST)
       {
-        // continue the current BitwiseOrExpression if we've already started one
-        BitwiseOrExpression startExpression = (BitwiseOrExpression) args[0];
-        return new BitwiseOrExpression(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+        // continue the current BitwiseOrExpressionAST if we've already started one
+        BitwiseOrExpressionAST startExpression = (BitwiseOrExpressionAST) args[0];
+        return new BitwiseOrExpressionAST(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
       }
-      Expression firstExpression = (Expression) args[0];
-      return new BitwiseOrExpression(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      ExpressionAST firstExpression = (ExpressionAST) args[0];
+      return new BitwiseOrExpressionAST(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     throw badTypeList();
   }

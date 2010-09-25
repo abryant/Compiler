@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.TRIPLE_RANGLE;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.language.parser.ParseUtil;
 import compiler.parser.ParseException;
@@ -41,16 +41,16 @@ public final class PointerTypeTrailingParamsTripleRAngleRule extends Rule<ParseT
   {
     if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
-      PointerType type = (PointerType) args[0];
+      PointerTypeAST type = (PointerTypeAST) args[0];
       ParseInfo tripleRAngleInfo = (ParseInfo) args[1];
       ParseInfo firstRAngleInfo = ParseUtil.splitTripleRAngleFirst(tripleRAngleInfo);
       ParseInfo firstTwoRAnglesInfo  = ParseUtil.splitTripleRAngleFirstTwo(tripleRAngleInfo);
 
-      ParseContainer<PointerType> firstContainer = new ParseContainer<PointerType>(type,
+      ParseContainer<PointerTypeAST> firstContainer = new ParseContainer<PointerTypeAST>(type,
           ParseInfo.combine(type.getParseInfo(), firstRAngleInfo));
-      ParseContainer<ParseContainer<PointerType>> secondContainer = new ParseContainer<ParseContainer<PointerType>>(firstContainer,
+      ParseContainer<ParseContainer<PointerTypeAST>> secondContainer = new ParseContainer<ParseContainer<PointerTypeAST>>(firstContainer,
           ParseInfo.combine(type.getParseInfo(), firstTwoRAnglesInfo));
-      return new ParseContainer<ParseContainer<ParseContainer<PointerType>>>(secondContainer,
+      return new ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>(secondContainer,
           ParseInfo.combine(type.getParseInfo(), tripleRAngleInfo));
     }
     throw badTypeList();

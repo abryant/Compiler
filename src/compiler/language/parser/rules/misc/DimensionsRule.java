@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.LSQUARE;
 import static compiler.language.parser.ParseType.RSQUARE;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.Dimensions;
+import compiler.language.ast.misc.DimensionsAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,12 +40,12 @@ public final class DimensionsRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      return new Dimensions(1, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new DimensionsAST(1, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
-      Dimensions oldDimensions = (Dimensions) args[0];
-      return new Dimensions(oldDimensions.getDimensions() + 1, ParseInfo.combine(oldDimensions.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      DimensionsAST oldDimensions = (DimensionsAST) args[0];
+      return new DimensionsAST(oldDimensions.getDimensions() + 1, ParseInfo.combine(oldDimensions.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

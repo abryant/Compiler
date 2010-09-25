@@ -149,7 +149,7 @@ public class LALRState<T extends Enum<T>> implements State<T>
   {
     if (gotoRules != null && gotoRules.containsKey(tokenType))
     {
-      throw new IllegalStateException("Goto-goto conflict! Type:" + tokenType);
+      throw new IllegalStateException("Goto-goto conflict! TypeAST:" + tokenType);
     }
     if (gotoRules == null)
     {

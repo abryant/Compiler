@@ -9,10 +9,10 @@ import static compiler.language.parser.ParseType.FOR_UPDATE;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.statement.ForStatement;
-import compiler.language.ast.statement.Statement;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.statement.ForStatementAST;
+import compiler.language.ast.statement.StatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -47,11 +47,11 @@ public final class ForStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Statement init = (Statement) args[1];
-      Expression condition = (Expression) args[3];
-      Statement update = (Statement) args[5];
-      Block block = (Block) args[6];
-      return new ForStatement(init, condition, update, block,
+      StatementAST init = (StatementAST) args[1];
+      ExpressionAST condition = (ExpressionAST) args[3];
+      StatementAST update = (StatementAST) args[5];
+      BlockAST block = (BlockAST) args[6];
+      return new ForStatementAST(init, condition, update, block,
                               ParseInfo.combine((ParseInfo) args[0],
                                                 init != null ? init.getParseInfo() : null,
                                                 (ParseInfo) args[2],
@@ -62,10 +62,10 @@ public final class ForStatementRule extends Rule<ParseType>
     }
     if (NO_EXPRESSION_PRODUCTION.equals(production))
     {
-      Statement init = (Statement) args[1];
-      Statement update = (Statement) args[4];
-      Block block = (Block) args[5];
-      return new ForStatement(init, null, update, block,
+      StatementAST init = (StatementAST) args[1];
+      StatementAST update = (StatementAST) args[4];
+      BlockAST block = (BlockAST) args[5];
+      return new ForStatementAST(init, null, update, block,
                               ParseInfo.combine((ParseInfo) args[0],
                                                 init != null ? init.getParseInfo() : null,
                                                 (ParseInfo) args[2],

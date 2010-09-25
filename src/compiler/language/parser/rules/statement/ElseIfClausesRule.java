@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.ELSE_IF_CLAUSES;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.statement.ElseIfClause;
+import compiler.language.ast.statement.ElseIfClauseAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,13 +40,13 @@ public final class ElseIfClausesRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      return new ParseList<ElseIfClause>(null);
+      return new ParseList<ElseIfClauseAST>(null);
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<ElseIfClause> list = (ParseList<ElseIfClause>) args[0];
-      ElseIfClause clause = (ElseIfClause) args[1];
+      ParseList<ElseIfClauseAST> list = (ParseList<ElseIfClauseAST>) args[0];
+      ElseIfClauseAST clause = (ElseIfClauseAST) args[1];
       list.addLast(clause, ParseInfo.combine(list.getParseInfo(), clause.getParseInfo()));
       return list;
     }

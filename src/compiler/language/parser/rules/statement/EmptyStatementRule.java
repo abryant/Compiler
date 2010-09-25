@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.EMPTY_STATEMENT;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.statement.EmptyStatement;
+import compiler.language.ast.statement.EmptyStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -38,7 +38,7 @@ public final class EmptyStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new EmptyStatement((ParseInfo) args[0]);
+      return new EmptyStatementAST((ParseInfo) args[0]);
     }
     throw badTypeList();
   }

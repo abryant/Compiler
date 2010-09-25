@@ -6,8 +6,8 @@ import static compiler.language.parser.ParseType.INTEGER_LITERAL;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.statement.BreakStatement;
-import compiler.language.ast.terminal.IntegerLiteral;
+import compiler.language.ast.statement.BreakStatementAST;
+import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,12 +42,12 @@ public final class BreakStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new BreakStatement(null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new BreakStatementAST(null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (NUMBER_PRODUCTION.equals(production))
     {
-      IntegerLiteral breakLevels = (IntegerLiteral) args[1];
-      return new BreakStatement(breakLevels, ParseInfo.combine((ParseInfo) args[0], breakLevels.getParseInfo(), (ParseInfo) args[2]));
+      IntegerLiteralAST breakLevels = (IntegerLiteralAST) args[1];
+      return new BreakStatementAST(breakLevels, ParseInfo.combine((ParseInfo) args[0], breakLevels.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

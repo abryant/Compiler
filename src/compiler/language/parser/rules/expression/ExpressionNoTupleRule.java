@@ -38,7 +38,7 @@ public final class ExpressionNoTupleRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production) || QNAME_PRODUCTION.equals(production))
     {
-      // return the already created Expression
+      // return the already created ExpressionAST
       return args[0];
     }
     throw badTypeList();

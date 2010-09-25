@@ -6,12 +6,12 @@ import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.RELATIONAL_EXPRESSION_LESS_THAN_QNAME;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.expression.FieldAccessExpression;
-import compiler.language.ast.expression.RelationalExpression;
-import compiler.language.ast.expression.RelationalExpressionType;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.misc.QNameElement;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.FieldAccessExpressionAST;
+import compiler.language.ast.expression.RelationalExpressionAST;
+import compiler.language.ast.expression.RelationalExpressionTypeAST;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -51,38 +51,38 @@ public final class RelationalExpressionLessThanQNameRule extends Rule<ParseType>
   {
     if (QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
-      QName firstQName = (QName) args[0];
-      QName secondQName = (QName) args[2];
-      Expression firstExpression = new FieldAccessExpression(firstQName, firstQName.getParseInfo());
-      Expression secondExpression = new FieldAccessExpression(secondQName, secondQName.getParseInfo());
-      return new RelationalExpression(firstExpression, RelationalExpressionType.LESS_THAN, secondExpression,
+      QNameAST firstQName = (QNameAST) args[0];
+      QNameAST secondQName = (QNameAST) args[2];
+      ExpressionAST firstExpression = new FieldAccessExpressionAST(firstQName, firstQName.getParseInfo());
+      ExpressionAST secondExpression = new FieldAccessExpressionAST(secondQName, secondQName.getParseInfo());
+      return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.LESS_THAN, secondExpression,
                                       ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     if (QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      QNameElement element = (QNameElement) args[2];
-      Expression firstExpression = new FieldAccessExpression(qname, qname.getParseInfo());
-      Expression secondExpression = element.toExpression();
-      return new RelationalExpression(firstExpression, RelationalExpressionType.LESS_THAN, secondExpression,
+      QNameAST qname = (QNameAST) args[0];
+      QNameElementAST element = (QNameElementAST) args[2];
+      ExpressionAST firstExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      ExpressionAST secondExpression = element.toExpression();
+      return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.LESS_THAN, secondExpression,
                                       ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     if (NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
-      QName qname = (QName) args[2];
-      Expression firstExpression = element.toExpression();
-      Expression secondExpression = new FieldAccessExpression(qname, qname.getParseInfo());
-      return new RelationalExpression(firstExpression, RelationalExpressionType.LESS_THAN, secondExpression,
+      QNameElementAST element = (QNameElementAST) args[0];
+      QNameAST qname = (QNameAST) args[2];
+      ExpressionAST firstExpression = element.toExpression();
+      ExpressionAST secondExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.LESS_THAN, secondExpression,
                                       ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     if (NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
-      QNameElement firstElement = (QNameElement) args[0];
-      QNameElement secondElement = (QNameElement) args[2];
-      Expression firstExpression = firstElement.toExpression();
-      Expression secondExpression = secondElement.toExpression();
-      return new RelationalExpression(firstExpression, RelationalExpressionType.LESS_THAN, secondExpression,
+      QNameElementAST firstElement = (QNameElementAST) args[0];
+      QNameElementAST secondElement = (QNameElementAST) args[2];
+      ExpressionAST firstExpression = firstElement.toExpression();
+      ExpressionAST secondExpression = secondElement.toExpression();
+      return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.LESS_THAN, secondExpression,
                                       ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
     }
     throw badTypeList();

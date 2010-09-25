@@ -7,10 +7,10 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.PARAMETER;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.misc.DefaultParameter;
-import compiler.language.ast.misc.NormalParameter;
-import compiler.language.ast.terminal.Name;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.misc.DefaultParameterAST;
+import compiler.language.ast.misc.NormalParameterAST;
+import compiler.language.ast.terminal.NameAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -44,14 +44,14 @@ public final class ParameterRule extends Rule<ParseType>
   {
     if (NORMAL_PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[0];
-      return new NormalParameter(expression, expression.getParseInfo());
+      ExpressionAST expression = (ExpressionAST) args[0];
+      return new NormalParameterAST(expression, expression.getParseInfo());
     }
     if (DEFAULT_PRODUCTION.equals(production))
     {
-      Name name = (Name) args[1];
-      Expression expression = (Expression) args[3];
-      return new DefaultParameter(name, expression, ParseInfo.combine((ParseInfo) args[0], name.getParseInfo(), (ParseInfo) args[2], expression.getParseInfo()));
+      NameAST name = (NameAST) args[1];
+      ExpressionAST expression = (ExpressionAST) args[3];
+      return new DefaultParameterAST(name, expression, ParseInfo.combine((ParseInfo) args[0], name.getParseInfo(), (ParseInfo) args[2], expression.getParseInfo()));
     }
     throw badTypeList();
   }

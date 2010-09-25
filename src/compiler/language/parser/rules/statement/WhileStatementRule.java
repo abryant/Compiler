@@ -6,9 +6,9 @@ import static compiler.language.parser.ParseType.WHILE_KEYWORD;
 import static compiler.language.parser.ParseType.WHILE_STATEMENT;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.statement.WhileStatement;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.statement.WhileStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,9 +42,9 @@ public final class WhileStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Expression condition = (Expression) args[1];
-      Block block = (Block) args[2];
-      return new WhileStatement(condition, block,
+      ExpressionAST condition = (ExpressionAST) args[1];
+      BlockAST block = (BlockAST) args[2];
+      return new WhileStatementAST(condition, block,
                                 ParseInfo.combine((ParseInfo) args[0], condition.getParseInfo(), block.getParseInfo()));
     }
     throw badTypeList();

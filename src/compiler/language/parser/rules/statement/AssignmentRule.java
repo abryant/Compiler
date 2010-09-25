@@ -8,10 +8,10 @@ import static compiler.language.parser.ParseType.EXPRESSION;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.misc.Assignee;
-import compiler.language.ast.misc.AssignmentOperator;
-import compiler.language.ast.statement.AssignmentStatement;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.misc.AssigneeAST;
+import compiler.language.ast.misc.AssignmentOperatorAST;
+import compiler.language.ast.statement.AssignmentStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -46,11 +46,11 @@ public final class AssignmentRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Assignee> assignees = (ParseList<Assignee>) args[0];
+      ParseList<AssigneeAST> assignees = (ParseList<AssigneeAST>) args[0];
       @SuppressWarnings("unchecked")
-      ParseContainer<AssignmentOperator> operator = (ParseContainer<AssignmentOperator>) args[1];
-      Expression expression = (Expression) args[2];
-      return new AssignmentStatement(assignees.toArray(new Assignee[0]), operator.getItem(), expression,
+      ParseContainer<AssignmentOperatorAST> operator = (ParseContainer<AssignmentOperatorAST>) args[1];
+      ExpressionAST expression = (ExpressionAST) args[2];
+      return new AssignmentStatementAST(assignees.toArray(new AssigneeAST[0]), operator.getItem(), expression,
                                      ParseInfo.combine(assignees.getParseInfo(), operator.getParseInfo(), expression.getParseInfo()));
     }
     throw badTypeList();

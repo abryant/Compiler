@@ -14,12 +14,12 @@ import static compiler.language.parser.ParseType.SEMICOLON;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.member.Member;
-import compiler.language.ast.member.MemberHeader;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.typeDefinition.EnumConstant;
-import compiler.language.ast.typeDefinition.EnumDefinition;
+import compiler.language.ast.member.MemberAST;
+import compiler.language.ast.member.MemberHeaderAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.typeDefinition.EnumConstantAST;
+import compiler.language.ast.typeDefinition.EnumDefinitionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -53,14 +53,14 @@ public final class EnumDefinitionRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      MemberHeader header = (MemberHeader) args[0];
-      Name name = (Name) args[2];
-      PointerType superType = (PointerType) args[3];
+      MemberHeaderAST header = (MemberHeaderAST) args[0];
+      NameAST name = (NameAST) args[2];
+      PointerTypeAST superType = (PointerTypeAST) args[3];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> interfaces = (ParseList<PointerType>) args[4];
+      ParseList<PointerTypeAST> interfaces = (ParseList<PointerTypeAST>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<EnumConstant> enumConstants = (ParseList<EnumConstant>) args[6];
-      return new EnumDefinition(header.getAccessSpecifier(), header.getModifiers(), name, superType, interfaces.toArray(new PointerType[0]), enumConstants.toArray(new EnumConstant[0]), new Member[0],
+      ParseList<EnumConstantAST> enumConstants = (ParseList<EnumConstantAST>) args[6];
+      return new EnumDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, superType, interfaces.toArray(new PointerTypeAST[0]), enumConstants.toArray(new EnumConstantAST[0]), new MemberAST[0],
                                 ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(),
                                                   superType != null ? superType.getParseInfo() : null,
                                                   interfaces.getParseInfo(),
@@ -68,16 +68,16 @@ public final class EnumDefinitionRule extends Rule<ParseType>
     }
     if (MEMBERS_PRODUCTION.equals(production))
     {
-      MemberHeader header = (MemberHeader) args[0];
-      Name name = (Name) args[2];
-      PointerType superType = (PointerType) args[3];
+      MemberHeaderAST header = (MemberHeaderAST) args[0];
+      NameAST name = (NameAST) args[2];
+      PointerTypeAST superType = (PointerTypeAST) args[3];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> interfaces = (ParseList<PointerType>) args[4];
+      ParseList<PointerTypeAST> interfaces = (ParseList<PointerTypeAST>) args[4];
       @SuppressWarnings("unchecked")
-      ParseList<EnumConstant> enumConstants = (ParseList<EnumConstant>) args[6];
+      ParseList<EnumConstantAST> enumConstants = (ParseList<EnumConstantAST>) args[6];
       @SuppressWarnings("unchecked")
-      ParseList<Member> members = (ParseList<Member>) args[8];
-      return new EnumDefinition(header.getAccessSpecifier(), header.getModifiers(), name, superType, interfaces.toArray(new PointerType[0]), enumConstants.toArray(new EnumConstant[0]), members.toArray(new Member[0]),
+      ParseList<MemberAST> members = (ParseList<MemberAST>) args[8];
+      return new EnumDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, superType, interfaces.toArray(new PointerTypeAST[0]), enumConstants.toArray(new EnumConstantAST[0]), members.toArray(new MemberAST[0]),
                                 ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(),
                                                   superType != null ? superType.getParseInfo() : null,
                                                   interfaces.getParseInfo(),

@@ -4,7 +4,7 @@ import static compiler.language.parser.ParseType.BOOLEAN_KEYWORD;
 import static compiler.language.parser.ParseType.BOOLEAN_TYPE;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.type.BooleanType;
+import compiler.language.ast.type.BooleanTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -37,7 +37,7 @@ public final class BooleanTypeRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new BooleanType((ParseInfo) args[0]);
+      return new BooleanTypeAST((ParseInfo) args[0]);
     }
     throw badTypeList();
   }

@@ -6,9 +6,9 @@ import static compiler.language.parser.ParseType.MODIFIERS;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.member.AccessSpecifier;
-import compiler.language.ast.member.MemberHeader;
-import compiler.language.ast.misc.Modifier;
+import compiler.language.ast.member.AccessSpecifierAST;
+import compiler.language.ast.member.MemberHeaderAST;
+import compiler.language.ast.misc.ModifierAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,9 +42,9 @@ public final class MemberHeaderRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      AccessSpecifier access = (AccessSpecifier) args[0];
+      AccessSpecifierAST access = (AccessSpecifierAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<Modifier> modifiers = (ParseList<Modifier>) args[1];
+      ParseList<ModifierAST> modifiers = (ParseList<ModifierAST>) args[1];
       ParseInfo parseInfo = null;
       if (access == null)
       {
@@ -54,13 +54,13 @@ public final class MemberHeaderRule extends Rule<ParseType>
       {
         parseInfo = ParseInfo.combine(access.getParseInfo(), modifiers.getParseInfo());
       }
-      return new MemberHeader(access, modifiers.toArray(new Modifier[0]), parseInfo);
+      return new MemberHeaderAST(access, modifiers.toArray(new ModifierAST[0]), parseInfo);
     }
     if (NO_MODIFIERS_PRODUCTION.equals(production))
     {
-      AccessSpecifier access = (AccessSpecifier) args[0];
+      AccessSpecifierAST access = (AccessSpecifierAST) args[0];
       ParseInfo parseInfo = access != null ? access.getParseInfo() : null;
-      return new MemberHeader(access, new Modifier[0], parseInfo);
+      return new MemberHeaderAST(access, new ModifierAST[0], parseInfo);
     }
     throw badTypeList();
   }

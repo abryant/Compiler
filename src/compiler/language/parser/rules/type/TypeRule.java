@@ -4,8 +4,8 @@ import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.TYPE;
 import static compiler.language.parser.ParseType.TYPE_NOT_QNAME;
 
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -39,14 +39,14 @@ public final class TypeRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      // All types are actually subclasses of Type, so just return the argument
+      // All types are actually subclasses of TypeAST, so just return the argument
       return args[0];
     }
     if (QNAME_PRODUCTION.equals(production))
     {
-      // create a new PointerType from the QName
-      QName qname = (QName) args[0];
-      return new PointerType(qname, qname.getParseInfo());
+      // create a new PointerTypeAST from the QNameAST
+      QNameAST qname = (QNameAST) args[0];
+      return new PointerTypeAST(qname, qname.getParseInfo());
     }
     throw badTypeList();
   }

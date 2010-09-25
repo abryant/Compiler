@@ -7,9 +7,9 @@ import static compiler.language.parser.ParseType.QNAME_OR_LESS_THAN_EXPRESSION;
 import static compiler.language.parser.ParseType.RELATIONAL_EXPRESSION_NOT_LESS_THAN_QNAME;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.EqualityExpression;
-import compiler.language.ast.expression.EqualityExpressionType;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.EqualityExpressionAST;
+import compiler.language.ast.expression.EqualityExpressionTypeAST;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -57,29 +57,29 @@ public final class EqualityExpressionRule extends Rule<ParseType>
       return args[0];
     }
 
-    EqualityExpressionType separator = null;
+    EqualityExpressionTypeAST separator = null;
     if (EQUALS_PRODUCTION.equals(production) || EQUALS_QNAME_PRODUCTION.equals(production) || QNAME_EQUALS_PRODUCTION.equals(production) || QNAME_EQUALS_QNAME_PRODUCTION.equals(production))
     {
-      separator = EqualityExpressionType.EQUAL;
+      separator = EqualityExpressionTypeAST.EQUAL;
     }
     else if (NOT_EQUALS_PRODUCTION.equals(production) || NOT_EQUALS_QNAME_PRODUCTION.equals(production) || QNAME_NOT_EQUALS_PRODUCTION.equals(production) || QNAME_NOT_EQUALS_QNAME_PRODUCTION.equals(production))
     {
-      separator = EqualityExpressionType.NOT_EQUAL;
+      separator = EqualityExpressionTypeAST.NOT_EQUAL;
     }
     else
     {
       throw badTypeList();
     }
-    Expression newExpression = (Expression) args[2];
+    ExpressionAST newExpression = (ExpressionAST) args[2];
 
-    if (args[0] instanceof EqualityExpression)
+    if (args[0] instanceof EqualityExpressionAST)
     {
-      // continue the current EqualityExpression if we've started one
-      EqualityExpression startExpression = (EqualityExpression) args[0];
-      return new EqualityExpression(startExpression, separator, newExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], newExpression.getParseInfo()));
+      // continue the current EqualityExpressionAST if we've started one
+      EqualityExpressionAST startExpression = (EqualityExpressionAST) args[0];
+      return new EqualityExpressionAST(startExpression, separator, newExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], newExpression.getParseInfo()));
     }
-    Expression firstExpression = (Expression) args[0];
-    return new EqualityExpression(firstExpression, separator, newExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], newExpression.getParseInfo()));
+    ExpressionAST firstExpression = (ExpressionAST) args[0];
+    return new EqualityExpressionAST(firstExpression, separator, newExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], newExpression.getParseInfo()));
   }
 
 }

@@ -9,9 +9,9 @@ import static compiler.language.parser.ParseType.SWITCH_CASE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.statement.Statement;
-import compiler.language.ast.statement.SwitchCase;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.statement.StatementAST;
+import compiler.language.ast.statement.SwitchCaseAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,28 +48,28 @@ public final class SwitchCaseRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[1];
-      return new SwitchCase(expression, new Statement[0],
+      ExpressionAST expression = (ExpressionAST) args[1];
+      return new SwitchCaseAST(expression, new StatementAST[0],
                             ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), (ParseInfo) args[2]));
     }
     if (STATEMENTS_PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[1];
+      ExpressionAST expression = (ExpressionAST) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<Statement> statements = (ParseList<Statement>) args[3];
-      return new SwitchCase(expression, statements.toArray(new Statement[0]),
+      ParseList<StatementAST> statements = (ParseList<StatementAST>) args[3];
+      return new SwitchCaseAST(expression, statements.toArray(new StatementAST[0]),
                             ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), (ParseInfo) args[2], statements.getParseInfo()));
     }
     if (DEFAULT_PRODUCTION.equals(production))
     {
-      return new SwitchCase(null, new Statement[0],
+      return new SwitchCaseAST(null, new StatementAST[0],
                             ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (DEFAULT_STATEMENTS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Statement> statements = (ParseList<Statement>) args[2];
-      return new SwitchCase(null, statements.toArray(new Statement[0]),
+      ParseList<StatementAST> statements = (ParseList<StatementAST>) args[2];
+      return new SwitchCaseAST(null, statements.toArray(new StatementAST[0]),
                             ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], statements.getParseInfo()));
     }
     throw badTypeList();

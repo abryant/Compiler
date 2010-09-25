@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.TYPE_ARGUMENT_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.TypeArgument;
+import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,14 +40,14 @@ public final class TypeArgumentListRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      TypeArgument typeArgument = (TypeArgument) args[0];
-      return new ParseList<TypeArgument>(typeArgument, typeArgument.getParseInfo());
+      TypeArgumentAST typeArgument = (TypeArgumentAST) args[0];
+      return new ParseList<TypeArgumentAST>(typeArgument, typeArgument.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<TypeArgument> list = (ParseList<TypeArgument>) args[0];
-      TypeArgument newTypeArgument = (TypeArgument) args[2];
+      ParseList<TypeArgumentAST> list = (ParseList<TypeArgumentAST>) args[0];
+      TypeArgumentAST newTypeArgument = (TypeArgumentAST) args[2];
       list.addLast(newTypeArgument, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], newTypeArgument.getParseInfo()));
       return list;
     }

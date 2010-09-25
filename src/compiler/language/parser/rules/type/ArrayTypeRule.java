@@ -8,11 +8,11 @@ import static compiler.language.parser.ParseType.RSQUARE;
 import static compiler.language.parser.ParseType.TYPE_NOT_QNAME_LIST;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.misc.QNameElement;
-import compiler.language.ast.type.ArrayType;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.misc.QNameElementAST;
+import compiler.language.ast.type.ArrayTypeAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,19 +48,19 @@ public final class ArrayTypeRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Type type = (Type) args[0];
-      return new ArrayType(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      TypeAST type = (TypeAST) args[0];
+      return new ArrayTypeAST(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
     }
     if (QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      return new ArrayType(new PointerType(qname, qname.getParseInfo()), ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      QNameAST qname = (QNameAST) args[0];
+      return new ArrayTypeAST(new PointerTypeAST(qname, qname.getParseInfo()), ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
     }
     if (NESTED_QNAME_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
-      Type baseType = element.toType();
-      return new ArrayType(baseType, ParseInfo.combine(element.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      QNameElementAST element = (QNameElementAST) args[0];
+      TypeAST baseType = element.toType();
+      return new ArrayTypeAST(baseType, ParseInfo.combine(element.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

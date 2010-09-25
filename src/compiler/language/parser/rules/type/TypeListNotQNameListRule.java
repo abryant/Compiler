@@ -9,10 +9,10 @@ import static compiler.language.parser.ParseType.TYPE_NOT_QNAME_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.misc.QNameElement;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.misc.QNameElementAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -50,33 +50,33 @@ public final class TypeListNotQNameListRule extends Rule<ParseType>
   {
     if (QNAME_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
+      QNameAST qname = (QNameAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<Type> list = (ParseList<Type>) args[2];
-      list.addFirst(new PointerType(qname, qname.getParseInfo()),
+      ParseList<TypeAST> list = (ParseList<TypeAST>) args[2];
+      list.addFirst(new PointerTypeAST(qname, qname.getParseInfo()),
                     ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
     if (NESTED_QNAME_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
+      QNameElementAST element = (QNameElementAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<Type> list = (ParseList<Type>) args[2];
+      ParseList<TypeAST> list = (ParseList<TypeAST>) args[2];
       list.addFirst(element.toType(), ParseInfo.combine(element.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
     if (REAL_TYPE_LIST_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[0];
+      TypeAST type = (TypeAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<Type> list = (ParseList<Type>) args[2];
+      ParseList<TypeAST> list = (ParseList<TypeAST>) args[2];
       list.addFirst(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
       return list;
     }
     if (REAL_TYPE_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[0];
-      return new ParseList<Type>(type, type.getParseInfo());
+      TypeAST type = (TypeAST) args[0];
+      return new ParseList<TypeAST>(type, type.getParseInfo());
     }
     throw badTypeList();
   }

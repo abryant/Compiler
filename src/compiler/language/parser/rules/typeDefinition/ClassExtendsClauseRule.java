@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
 import static compiler.language.parser.ParseType.POINTER_TYPE;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -43,7 +43,7 @@ public final class ClassExtendsClauseRule extends Rule<ParseType>
     }
     if (PRODUCTION.equals(production))
     {
-      PointerType type = (PointerType) args[1];
+      PointerTypeAST type = (PointerTypeAST) args[1];
       type.setParseInfo(ParseInfo.combine((ParseInfo) args[0], type.getParseInfo()));
       return type;
     }

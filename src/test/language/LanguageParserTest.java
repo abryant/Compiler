@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import compiler.language.ast.topLevel.CompilationUnit;
+import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.parser.LanguageParser;
 import compiler.language.parser.LanguageTokenizer;
 
@@ -36,7 +36,7 @@ public class LanguageParserTest
 
     LanguageParser parser = new LanguageParser();
 
-    CompilationUnit compilationUnit = parser.parse(tokenizer);
+    CompilationUnitAST compilationUnit = parser.parse(tokenizer);
     tokenizer.close();
 
     if (compilationUnit != null)

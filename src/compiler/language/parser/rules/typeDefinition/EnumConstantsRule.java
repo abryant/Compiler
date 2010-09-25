@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.ENUM_CONSTANT_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.typeDefinition.EnumConstant;
+import compiler.language.ast.typeDefinition.EnumConstantAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,7 +41,7 @@ public final class EnumConstantsRule extends Rule<ParseType>
   {
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseList<EnumConstant>(null);
+      return new ParseList<EnumConstantAST>(null);
     }
     if (PRODUCTION.equals(production))
     {
@@ -51,7 +51,7 @@ public final class EnumConstantsRule extends Rule<ParseType>
     if (TRAILING_COMMA_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<EnumConstant> list = (ParseList<EnumConstant>) args[0];
+      ParseList<EnumConstantAST> list = (ParseList<EnumConstantAST>) args[0];
       list.setParseInfo(ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[2]));
       return list;
     }

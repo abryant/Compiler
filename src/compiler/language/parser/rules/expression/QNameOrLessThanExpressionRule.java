@@ -38,7 +38,7 @@ public final class QNameOrLessThanExpressionRule extends Rule<ParseType>
   {
     if (QNAME_PRODUCTION.equals(production) || LESS_THAN_PRODUCTION.equals(production))
     {
-      // both of the productions result in an Expression, so just return it
+      // both of the productions result in an ExpressionAST, so just return it
       return args[0];
     }
     throw badTypeList();

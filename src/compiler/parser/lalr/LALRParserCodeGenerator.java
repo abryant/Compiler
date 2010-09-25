@@ -143,7 +143,7 @@ public class LALRParserCodeGenerator<T extends Enum<T>>
     out.println();
     out.println("private boolean accepted = false;");
     out.println();
-    out.println("public Constructor(Tokenizer<" + tokenType + "> tokenizer)");
+    out.println("public ConstructorAST(Tokenizer<" + tokenType + "> tokenizer)");
     out.println("{");
     out.println("  this.tokenizer = tokenizer;");
     out.println("}");

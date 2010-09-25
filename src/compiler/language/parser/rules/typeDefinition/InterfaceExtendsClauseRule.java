@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.INTERFACE_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,12 +40,12 @@ public final class InterfaceExtendsClauseRule extends Rule<ParseType>
   {
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseList<PointerType>(null);
+      return new ParseList<PointerTypeAST>(null);
     }
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> list = (ParseList<PointerType>) args[1];
+      ParseList<PointerTypeAST> list = (ParseList<PointerTypeAST>) args[1];
       list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo()));
       return list;
     }

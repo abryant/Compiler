@@ -10,10 +10,10 @@ import static compiler.language.parser.ParseType.IF_STATEMENT;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.statement.ElseIfClause;
-import compiler.language.ast.statement.IfStatement;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.statement.ElseIfClauseAST;
+import compiler.language.ast.statement.IfStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -47,13 +47,13 @@ public final class IfStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Expression condition = (Expression) args[1];
-      Block block = (Block) args[2];
+      ExpressionAST condition = (ExpressionAST) args[1];
+      BlockAST block = (BlockAST) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<ElseIfClause> elseIfClauses = (ParseList<ElseIfClause>) args[3];
+      ParseList<ElseIfClauseAST> elseIfClauses = (ParseList<ElseIfClauseAST>) args[3];
       @SuppressWarnings("unchecked")
-      ParseContainer<Block> elseClause = (ParseContainer<Block>) args[4];
-      return new IfStatement(condition, block, elseIfClauses.toArray(new ElseIfClause[0]), elseClause.getItem(),
+      ParseContainer<BlockAST> elseClause = (ParseContainer<BlockAST>) args[4];
+      return new IfStatementAST(condition, block, elseIfClauses.toArray(new ElseIfClauseAST[0]), elseClause.getItem(),
                              ParseInfo.combine((ParseInfo) args[0], condition.getParseInfo(), block.getParseInfo(), elseIfClauses.getParseInfo(), elseClause.getParseInfo()));
     }
     throw badTypeList();

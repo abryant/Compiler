@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.PARAMETER_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.Parameter;
+import compiler.language.ast.misc.ParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -40,14 +40,14 @@ public final class ParameterListRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      Parameter parameter = (Parameter) args[0];
-      return new ParseList<Parameter>(parameter, parameter.getParseInfo());
+      ParameterAST parameter = (ParameterAST) args[0];
+      return new ParseList<ParameterAST>(parameter, parameter.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Parameter> list = (ParseList<Parameter>) args[0];
-      Parameter parameter = (Parameter) args[2];
+      ParseList<ParameterAST> list = (ParseList<ParameterAST>) args[0];
+      ParameterAST parameter = (ParameterAST) args[2];
       list.addLast(parameter, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], parameter.getParseInfo()));
       return list;
     }

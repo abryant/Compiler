@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.DECLARATION_ASSIGNEE_LIST;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.DeclarationAssignee;
+import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,14 +41,14 @@ public final class DeclarationAssigneeListRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      DeclarationAssignee assignee = (DeclarationAssignee) args[0];
-      return new ParseList<DeclarationAssignee>(assignee, assignee.getParseInfo());
+      DeclarationAssigneeAST assignee = (DeclarationAssigneeAST) args[0];
+      return new ParseList<DeclarationAssigneeAST>(assignee, assignee.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<DeclarationAssignee> list = (ParseList<DeclarationAssignee>) args[0];
-      DeclarationAssignee assignee = (DeclarationAssignee) args[2];
+      ParseList<DeclarationAssigneeAST> list = (ParseList<DeclarationAssigneeAST>) args[0];
+      DeclarationAssigneeAST assignee = (DeclarationAssigneeAST) args[2];
       list.addLast(assignee, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], assignee.getParseInfo()));
       return list;
     }

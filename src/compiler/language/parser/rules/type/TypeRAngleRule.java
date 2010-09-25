@@ -9,9 +9,9 @@ import static compiler.language.parser.ParseType.TYPE_RANGLE;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QNameElement;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.misc.QNameElementAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,21 +48,21 @@ public final class TypeRAngleRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production) || TUPLE_TYPE_PRODUCTION.equals(production))
     {
-      Type type = (Type) args[0];
-      return new ParseContainer<Type>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
+      TypeAST type = (TypeAST) args[0];
+      return new ParseContainer<TypeAST>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
     }
     if (POINTER_TYPE_PRODUCTION.equals(production))
     {
-      // change the ParseContainer<PointerType> for a ParseContainer<Type>
+      // change the ParseContainer<PointerTypeAST> for a ParseContainer<TypeAST>
       @SuppressWarnings("unchecked")
-      ParseContainer<PointerType> oldContainer = (ParseContainer<PointerType>) args[0];
-      return new ParseContainer<Type>(oldContainer.getItem(), oldContainer.getParseInfo());
+      ParseContainer<PointerTypeAST> oldContainer = (ParseContainer<PointerTypeAST>) args[0];
+      return new ParseContainer<TypeAST>(oldContainer.getItem(), oldContainer.getParseInfo());
     }
     if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
-      Type type = element.toType();
-      return new ParseContainer<Type>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
+      QNameElementAST element = (QNameElementAST) args[0];
+      TypeAST type = element.toType();
+      return new ParseContainer<TypeAST>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
     }
     throw badTypeList();
   }

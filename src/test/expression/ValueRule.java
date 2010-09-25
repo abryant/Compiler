@@ -38,7 +38,7 @@ public class ValueRule extends Rule<ExpressionType>
     }
     if (EXPRESSION_PRODUCTION.equals(production))
     {
-      // ( Expression )
+      // ( ExpressionAST )
       return new Value((Expression) args[1]);
     }
     throw new IllegalArgumentException();

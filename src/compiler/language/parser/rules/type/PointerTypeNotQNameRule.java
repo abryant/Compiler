@@ -38,7 +38,7 @@ public final class PointerTypeNotQNameRule extends Rule<ParseType>
   {
     if (NO_TRAILING_PARAMS_PRODUCTION.equals(production) || TRAILING_PARAMS_PRODUCTION.equals(production))
     {
-      // A PointerType has already been built by one of the rules, so return it
+      // A PointerTypeAST has already been built by one of the rules, so return it
       return args[0];
     }
     throw badTypeList();

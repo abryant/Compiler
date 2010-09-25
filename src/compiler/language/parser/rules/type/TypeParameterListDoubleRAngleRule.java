@@ -10,12 +10,12 @@ import static compiler.language.parser.ParseType.TYPE_PARAMETER_NOT_QNAME_LIST;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.misc.QNameElement;
-import compiler.language.ast.type.NormalTypeParameter;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.Type;
-import compiler.language.ast.type.TypeParameter;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.misc.QNameElementAST;
+import compiler.language.ast.type.NormalTypeParameterAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeAST;
+import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -53,28 +53,28 @@ public final class TypeParameterListDoubleRAngleRule extends Rule<ParseType>
     if (TYPE_PARAMETER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<TypeParameter>> parameter = (ParseContainer<ParseContainer<TypeParameter>>) args[0];
-      ParseList<TypeParameter> list = new ParseList<TypeParameter>(parameter.getItem().getItem(), parameter.getItem().getItem().getParseInfo());
-      ParseContainer<ParseList<TypeParameter>> firstContainer = new ParseContainer<ParseList<TypeParameter>>(list, parameter.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<ParseList<TypeParameter>>>(firstContainer, parameter.getParseInfo());
+      ParseContainer<ParseContainer<TypeParameterAST>> parameter = (ParseContainer<ParseContainer<TypeParameterAST>>) args[0];
+      ParseList<TypeParameterAST> list = new ParseList<TypeParameterAST>(parameter.getItem().getItem(), parameter.getItem().getItem().getParseInfo());
+      ParseContainer<ParseList<TypeParameterAST>> firstContainer = new ParseContainer<ParseList<TypeParameterAST>>(list, parameter.getItem().getParseInfo());
+      return new ParseContainer<ParseContainer<ParseList<TypeParameterAST>>>(firstContainer, parameter.getParseInfo());
     }
 
-    TypeParameter parameter;
+    TypeParameterAST parameter;
     if (TYPE_PARAMETER_LIST_PRODUCTION.equals(production))
     {
-      parameter = (TypeParameter) args[0];
+      parameter = (TypeParameterAST) args[0];
     }
     else if (QNAME_LIST_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
-      Type type = new PointerType(qname, qname.getParseInfo());
-      parameter = new NormalTypeParameter(type, type.getParseInfo());
+      QNameAST qname = (QNameAST) args[0];
+      TypeAST type = new PointerTypeAST(qname, qname.getParseInfo());
+      parameter = new NormalTypeParameterAST(type, type.getParseInfo());
     }
     else if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
-      QNameElement element = (QNameElement) args[0];
-      Type type = element.toType();
-      parameter = new NormalTypeParameter(type, type.getParseInfo());
+      QNameElementAST element = (QNameElementAST) args[0];
+      TypeAST type = element.toType();
+      parameter = new NormalTypeParameterAST(type, type.getParseInfo());
     }
     else
     {
@@ -82,13 +82,13 @@ public final class TypeParameterListDoubleRAngleRule extends Rule<ParseType>
     }
 
     @SuppressWarnings("unchecked")
-    ParseContainer<ParseContainer<ParseList<TypeParameter>>> oldContainer = (ParseContainer<ParseContainer<ParseList<TypeParameter>>>) args[2];
-    ParseList<TypeParameter> list = oldContainer.getItem().getItem();
+    ParseContainer<ParseContainer<ParseList<TypeParameterAST>>> oldContainer = (ParseContainer<ParseContainer<ParseList<TypeParameterAST>>>) args[2];
+    ParseList<TypeParameterAST> list = oldContainer.getItem().getItem();
     list.addFirst(parameter, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
-    ParseContainer<ParseList<TypeParameter>> firstContainer =
-           new ParseContainer<ParseList<TypeParameter>>(list,
+    ParseContainer<ParseList<TypeParameterAST>> firstContainer =
+           new ParseContainer<ParseList<TypeParameterAST>>(list,
                  ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], oldContainer.getItem().getParseInfo()));
-    return new ParseContainer<ParseContainer<ParseList<TypeParameter>>>(firstContainer,
+    return new ParseContainer<ParseContainer<ParseList<TypeParameterAST>>>(firstContainer,
                  ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], oldContainer.getParseInfo()));
   }
 

@@ -6,7 +6,7 @@ import static compiler.language.parser.ParseType.DIMENSION_EXPRESSIONS;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
+import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -42,15 +42,15 @@ public final class DimensionExpressionsRule extends Rule<ParseType>
     if (START_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<Expression> container = (ParseContainer<Expression>) args[0];
-      return new ParseList<Expression>(container.getItem(), container.getParseInfo());
+      ParseContainer<ExpressionAST> container = (ParseContainer<ExpressionAST>) args[0];
+      return new ParseList<ExpressionAST>(container.getItem(), container.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Expression> list = (ParseList<Expression>) args[0];
+      ParseList<ExpressionAST> list = (ParseList<ExpressionAST>) args[0];
       @SuppressWarnings("unchecked")
-      ParseContainer<Expression> container = (ParseContainer<Expression>) args[1];
+      ParseContainer<ExpressionAST> container = (ParseContainer<ExpressionAST>) args[1];
       list.addLast(container.getItem(), ParseInfo.combine(list.getParseInfo(), container.getParseInfo()));
       return list;
     }

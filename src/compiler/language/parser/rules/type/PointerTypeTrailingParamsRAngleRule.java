@@ -12,10 +12,10 @@ import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST_DOUBLE_RANG
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.QName;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.PointerType;
-import compiler.language.ast.type.TypeParameter;
+import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -52,59 +52,59 @@ public final class PointerTypeTrailingParamsRAngleRule extends Rule<ParseType>
   {
     if (MUTABLE_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[0];
+      QNameAST qname = (QNameAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseList<TypeParameter>>> typeParameters = (ParseContainer<ParseContainer<ParseList<TypeParameter>>>) args[2];
-      Name[] names = qname.getNames();
-      TypeParameter[][] typeParameterLists = new TypeParameter[names.length][];
+      ParseContainer<ParseContainer<ParseList<TypeParameterAST>>> typeParameters = (ParseContainer<ParseContainer<ParseList<TypeParameterAST>>>) args[2];
+      NameAST[] names = qname.getNames();
+      TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
       for (int i = 0; i < typeParameterLists.length - 1; i++)
       {
-        typeParameterLists[i] = new TypeParameter[0];
+        typeParameterLists[i] = new TypeParameterAST[0];
       }
-      typeParameterLists[typeParameterLists.length - 1] = typeParameters.getItem().getItem().toArray(new TypeParameter[0]);
-      PointerType type = new PointerType(false, names, typeParameterLists,
+      typeParameterLists[typeParameterLists.length - 1] = typeParameters.getItem().getItem().toArray(new TypeParameterAST[0]);
+      PointerTypeAST type = new PointerTypeAST(false, names, typeParameterLists,
                                          ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], typeParameters.getItem().getParseInfo()));
-      return new ParseContainer<PointerType>(type, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], typeParameters.getParseInfo()));
+      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], typeParameters.getParseInfo()));
     }
     if (IMMUTABLE_PRODUCTION.equals(production))
     {
-      QName qname = (QName) args[1];
+      QNameAST qname = (QNameAST) args[1];
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseList<TypeParameter>>> typeParameters = (ParseContainer<ParseContainer<ParseList<TypeParameter>>>) args[3];
-      Name[] names = qname.getNames();
-      TypeParameter[][] typeParameterLists = new TypeParameter[names.length][];
+      ParseContainer<ParseContainer<ParseList<TypeParameterAST>>> typeParameters = (ParseContainer<ParseContainer<ParseList<TypeParameterAST>>>) args[3];
+      NameAST[] names = qname.getNames();
+      TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
       for (int i = 0; i < typeParameterLists.length - 1; i++)
       {
-        typeParameterLists[i] = new TypeParameter[0];
+        typeParameterLists[i] = new TypeParameterAST[0];
       }
-      typeParameterLists[typeParameterLists.length - 1] = typeParameters.getItem().getItem().toArray(new TypeParameter[0]);
-      PointerType type = new PointerType(true, names, typeParameterLists,
+      typeParameterLists[typeParameterLists.length - 1] = typeParameters.getItem().getItem().toArray(new TypeParameterAST[0]);
+      PointerTypeAST type = new PointerTypeAST(true, names, typeParameterLists,
                                          ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], typeParameters.getItem().getParseInfo()));
-      return new ParseContainer<PointerType>(type, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], typeParameters.getParseInfo()));
+      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], typeParameters.getParseInfo()));
     }
     if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
-      PointerType oldType = (PointerType) args[0];
-      QName qname = (QName) args[2];
+      PointerTypeAST oldType = (PointerTypeAST) args[0];
+      QNameAST qname = (QNameAST) args[2];
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<ParseList<TypeParameter>>> typeParameters = (ParseContainer<ParseContainer<ParseList<TypeParameter>>>) args[4];
-      Name[] names = qname.getNames();
-      TypeParameter[][] typeParameterLists = new TypeParameter[names.length][];
+      ParseContainer<ParseContainer<ParseList<TypeParameterAST>>> typeParameters = (ParseContainer<ParseContainer<ParseList<TypeParameterAST>>>) args[4];
+      NameAST[] names = qname.getNames();
+      TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
       for (int i = 0; i < typeParameterLists.length - 1; i++)
       {
-        typeParameterLists[i] = new TypeParameter[0];
+        typeParameterLists[i] = new TypeParameterAST[0];
       }
-      typeParameterLists[typeParameterLists.length - 1] = typeParameters.getItem().getItem().toArray(new TypeParameter[0]);
-      PointerType type = new PointerType(oldType, oldType.isImmutable(), names, typeParameterLists,
+      typeParameterLists[typeParameterLists.length - 1] = typeParameters.getItem().getItem().toArray(new TypeParameterAST[0]);
+      PointerTypeAST type = new PointerTypeAST(oldType, oldType.isImmutable(), names, typeParameterLists,
                                          ParseInfo.combine(oldType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3],
                                                            typeParameters.getItem().getParseInfo()));
-      return new ParseContainer<PointerType>(type, ParseInfo.combine(oldType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3],
+      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(oldType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3],
                                                                      typeParameters.getItem().getParseInfo()));
     }
     if (RANGLE_PRODUCTION.equals(production))
     {
-      PointerType type = (PointerType) args[0];
-      return new ParseContainer<PointerType>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
+      PointerTypeAST type = (PointerTypeAST) args[0];
+      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
     }
     throw badTypeList();
   }

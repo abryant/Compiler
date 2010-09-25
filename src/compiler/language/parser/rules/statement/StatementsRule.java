@@ -5,7 +5,7 @@ import static compiler.language.parser.ParseType.STATEMENTS;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.statement.Statement;
+import compiler.language.ast.statement.StatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -39,14 +39,14 @@ public final class StatementsRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      Statement statement = (Statement) args[0];
-      return new ParseList<Statement>(statement, statement.getParseInfo());
+      StatementAST statement = (StatementAST) args[0];
+      return new ParseList<StatementAST>(statement, statement.getParseInfo());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<Statement> list = (ParseList<Statement>) args[0];
-      Statement statement = (Statement) args[1];
+      ParseList<StatementAST> list = (ParseList<StatementAST>) args[0];
+      StatementAST statement = (StatementAST) args[1];
       list.addLast(statement, ParseInfo.combine(list.getParseInfo(), statement.getParseInfo()));
       return list;
     }

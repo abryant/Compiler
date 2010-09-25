@@ -8,7 +8,7 @@ import static compiler.language.parser.ParseType.TYPE_BOUND_LIST_DOUBLE_RANGLE;
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -44,24 +44,24 @@ public final class TypeBoundListDoubleRAngleRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<PointerType>> container = (ParseContainer<ParseContainer<PointerType>>) args[0];
-      ParseList<PointerType> list = new ParseList<PointerType>(container.getItem().getItem(), container.getItem().getItem().getParseInfo());
-      ParseContainer<ParseList<PointerType>> firstContainer = new ParseContainer<ParseList<PointerType>>(list, container.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<ParseList<PointerType>>>(firstContainer, container.getParseInfo());
+      ParseContainer<ParseContainer<PointerTypeAST>> container = (ParseContainer<ParseContainer<PointerTypeAST>>) args[0];
+      ParseList<PointerTypeAST> list = new ParseList<PointerTypeAST>(container.getItem().getItem(), container.getItem().getItem().getParseInfo());
+      ParseContainer<ParseList<PointerTypeAST>> firstContainer = new ParseContainer<ParseList<PointerTypeAST>>(list, container.getItem().getParseInfo());
+      return new ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>(firstContainer, container.getParseInfo());
     }
     if (LIST_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> list = (ParseList<PointerType>) args[0];
+      ParseList<PointerTypeAST> list = (ParseList<PointerTypeAST>) args[0];
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseContainer<PointerType>> container = (ParseContainer<ParseContainer<PointerType>>) args[2];
+      ParseContainer<ParseContainer<PointerTypeAST>> container = (ParseContainer<ParseContainer<PointerTypeAST>>) args[2];
       ParseInfo listParseInfo = list.getParseInfo();
 
       list.addLast(container.getItem().getItem(), ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getItem().getItem().getParseInfo()));
 
-      ParseContainer<ParseList<PointerType>> firstContainer = new ParseContainer<ParseList<PointerType>>(list,
+      ParseContainer<ParseList<PointerTypeAST>> firstContainer = new ParseContainer<ParseList<PointerTypeAST>>(list,
                    ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getItem().getParseInfo()));
-      return new ParseContainer<ParseContainer<ParseList<PointerType>>>(firstContainer,
+      return new ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>(firstContainer,
                    ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getParseInfo()));
     }
     throw badTypeList();

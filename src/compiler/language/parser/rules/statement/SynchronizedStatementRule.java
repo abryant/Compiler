@@ -6,9 +6,9 @@ import static compiler.language.parser.ParseType.SYNCHRONIZED_KEYWORD;
 import static compiler.language.parser.ParseType.SYNCHRONIZED_STATEMENT;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.statement.SynchronizedStatement;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.statement.SynchronizedStatementAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -43,15 +43,15 @@ public final class SynchronizedStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Expression expression = (Expression) args[1];
-      Block block = (Block) args[2];
-      return new SynchronizedStatement(expression, block,
+      ExpressionAST expression = (ExpressionAST) args[1];
+      BlockAST block = (BlockAST) args[2];
+      return new SynchronizedStatementAST(expression, block,
                                        ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), block.getParseInfo()));
     }
     if (NO_EXPRESSION_PRODUCTION.equals(production))
     {
-      Block block = (Block) args[1];
-      return new SynchronizedStatement(null, block,
+      BlockAST block = (BlockAST) args[1];
+      return new SynchronizedStatementAST(null, block,
                                        ParseInfo.combine((ParseInfo) args[0], block.getParseInfo()));
     }
     throw badTypeList();

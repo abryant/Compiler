@@ -9,11 +9,11 @@ import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.TYPE;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.statement.ForEachStatement;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.statement.ForEachStatementAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -47,11 +47,11 @@ public final class ForEachStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      Type type = (Type) args[1];
-      Name name = (Name) args[2];
-      Expression expression = (Expression) args[4];
-      Block block = (Block) args[5];
-      return new ForEachStatement(type, name, expression, block,
+      TypeAST type = (TypeAST) args[1];
+      NameAST name = (NameAST) args[2];
+      ExpressionAST expression = (ExpressionAST) args[4];
+      BlockAST block = (BlockAST) args[5];
+      return new ForEachStatementAST(type, name, expression, block,
                                   ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
                                                     (ParseInfo) args[3], expression.getParseInfo(), block.getParseInfo()));
     }

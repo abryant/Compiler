@@ -38,7 +38,7 @@ public final class StatementExpressionRule extends Rule<ParseType>
   {
     if (METHOD_CALL_PRODUCTION.equals(production) || INSTANCIATION_PRODUCTION.equals(production))
     {
-      // return the already created StatementExpression
+      // return the already created StatementExpressionAST
       return args[0];
     }
     throw badTypeList();

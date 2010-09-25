@@ -9,12 +9,12 @@ import static compiler.language.parser.ParseType.THROWS_CLAUSE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.member.Constructor;
-import compiler.language.ast.member.MemberHeader;
-import compiler.language.ast.misc.ArgumentList;
-import compiler.language.ast.statement.Block;
-import compiler.language.ast.terminal.Name;
-import compiler.language.ast.type.PointerType;
+import compiler.language.ast.member.ConstructorAST;
+import compiler.language.ast.member.MemberHeaderAST;
+import compiler.language.ast.misc.ArgumentListAST;
+import compiler.language.ast.statement.BlockAST;
+import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -47,14 +47,14 @@ public final class ConstructorRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      MemberHeader header = (MemberHeader) args[0];
-      Name name = (Name) args[1];
-      ArgumentList arguments = (ArgumentList) args[2];
+      MemberHeaderAST header = (MemberHeaderAST) args[0];
+      NameAST name = (NameAST) args[1];
+      ArgumentListAST arguments = (ArgumentListAST) args[2];
       @SuppressWarnings("unchecked")
-      ParseList<PointerType> throwsClause = (ParseList<PointerType>) args[3];
-      Block block = (Block) args[4];
-      return new Constructor(header.getAccessSpecifier(), header.getModifiers(),
-                             name, arguments, throwsClause.toArray(new PointerType[0]), block,
+      ParseList<PointerTypeAST> throwsClause = (ParseList<PointerTypeAST>) args[3];
+      BlockAST block = (BlockAST) args[4];
+      return new ConstructorAST(header.getAccessSpecifier(), header.getModifiers(),
+                             name, arguments, throwsClause.toArray(new PointerTypeAST[0]), block,
                              ParseInfo.combine(header.getParseInfo(), name.getParseInfo(), arguments.getParseInfo(), throwsClause.getParseInfo(), block.getParseInfo()));
     }
     throw badTypeList();

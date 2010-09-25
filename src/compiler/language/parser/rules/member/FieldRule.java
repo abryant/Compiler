@@ -10,11 +10,11 @@ import static compiler.language.parser.ParseType.TYPE;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
-import compiler.language.ast.expression.Expression;
-import compiler.language.ast.member.Field;
-import compiler.language.ast.member.MemberHeader;
-import compiler.language.ast.misc.DeclarationAssignee;
-import compiler.language.ast.type.Type;
+import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.member.FieldAST;
+import compiler.language.ast.member.MemberHeaderAST;
+import compiler.language.ast.misc.DeclarationAssigneeAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -48,21 +48,21 @@ public final class FieldRule extends Rule<ParseType>
   {
     if (DECLARE_PRODUCTION.equals(production))
     {
-      MemberHeader header = (MemberHeader) args[0];
-      Type type = (Type) args[1];
+      MemberHeaderAST header = (MemberHeaderAST) args[0];
+      TypeAST type = (TypeAST) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<DeclarationAssignee> assignees = (ParseList<DeclarationAssignee>) args[2];
-      return new Field(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new DeclarationAssignee[0]),
+      ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[2];
+      return new FieldAST(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new DeclarationAssigneeAST[0]),
                        ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[3]));
     }
     if (ASSIGN_PRODUCTION.equals(production))
     {
-      MemberHeader header = (MemberHeader) args[0];
-      Type type = (Type) args[1];
+      MemberHeaderAST header = (MemberHeaderAST) args[0];
+      TypeAST type = (TypeAST) args[1];
       @SuppressWarnings("unchecked")
-      ParseList<DeclarationAssignee> assignees = (ParseList<DeclarationAssignee>) args[2];
-      Expression expression = (Expression) args[4];
-      return new Field(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new DeclarationAssignee[0]), expression,
+      ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[2];
+      ExpressionAST expression = (ExpressionAST) args[4];
+      return new FieldAST(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new DeclarationAssigneeAST[0]), expression,
                        ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[3], expression.getParseInfo(), (ParseInfo) args[5]));
     }
     throw badTypeList();

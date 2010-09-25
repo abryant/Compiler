@@ -6,11 +6,11 @@ import static compiler.language.parser.ParseType.FIELD_ACCESS_EXPRESSION_NOT_QNA
 import static compiler.language.parser.ParseType.UNDERSCORE;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.expression.ArrayAccessExpression;
-import compiler.language.ast.expression.FieldAccessExpression;
-import compiler.language.ast.misc.ArrayElementAssignee;
-import compiler.language.ast.misc.Assignee;
-import compiler.language.ast.misc.FieldAssignee;
+import compiler.language.ast.expression.ArrayAccessExpressionAST;
+import compiler.language.ast.expression.FieldAccessExpressionAST;
+import compiler.language.ast.misc.ArrayElementAssigneeAST;
+import compiler.language.ast.misc.AssigneeAST;
+import compiler.language.ast.misc.FieldAssigneeAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -45,17 +45,17 @@ public final class AssigneeRule extends Rule<ParseType>
   {
     if (BLANK_PRODUCTION.equals(production))
     {
-      return new Assignee((ParseInfo) args[0]);
+      return new AssigneeAST((ParseInfo) args[0]);
     }
     if (FIELD_PRODUCTION.equals(production))
     {
-      FieldAccessExpression field = (FieldAccessExpression) args[0];
-      return new FieldAssignee(field, field.getParseInfo());
+      FieldAccessExpressionAST field = (FieldAccessExpressionAST) args[0];
+      return new FieldAssigneeAST(field, field.getParseInfo());
     }
     if (ARRAY_ELEMENT_PRODUCTION.equals(production))
     {
-      ArrayAccessExpression arrayElement = (ArrayAccessExpression) args[0];
-      return new ArrayElementAssignee(arrayElement, arrayElement.getParseInfo());
+      ArrayAccessExpressionAST arrayElement = (ArrayAccessExpressionAST) args[0];
+      return new ArrayElementAssigneeAST(arrayElement, arrayElement.getParseInfo());
     }
     throw badTypeList();
   }

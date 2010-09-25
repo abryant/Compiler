@@ -5,8 +5,8 @@ import static compiler.language.parser.ParseType.INTEGER_LITERAL;
 import static compiler.language.parser.ParseType.SEMICOLON;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.statement.ContinueStatement;
-import compiler.language.ast.terminal.IntegerLiteral;
+import compiler.language.ast.statement.ContinueStatementAST;
+import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.parser.ParseType;
 import compiler.parser.ParseException;
 import compiler.parser.Production;
@@ -41,12 +41,12 @@ public final class ContinueStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new ContinueStatement(null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new ContinueStatementAST(null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (NUMBER_PRODUCTION.equals(production))
     {
-      IntegerLiteral continueLevels = (IntegerLiteral) args[1];
-      return new ContinueStatement(continueLevels, ParseInfo.combine((ParseInfo) args[0], continueLevels.getParseInfo(), (ParseInfo) args[2]));
+      IntegerLiteralAST continueLevels = (IntegerLiteralAST) args[1];
+      return new ContinueStatementAST(continueLevels, ParseInfo.combine((ParseInfo) args[0], continueLevels.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }
