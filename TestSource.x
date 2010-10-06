@@ -1351,5 +1351,27 @@ public class LanguageTokenizer extends Tokenizer
     }
   }
 
+  void test()
+  {
+    {int -> String} foo = closure(int x -> String)
+    {
+      return String.valueOf(x);
+    };
+    {int -> void} bar = closure(int x)
+    {
+      System.out.println(x);
+    };
+    foo(12);
+    bar(12);
+    
+    closure(int x)
+    {
+      System.out.println(x);
+    }(20);
+    
+    (a<b,c<d,e<f,g>>>h).asdf();
+    (a<b,c<d,e<f,g>>>, unsigned int) asdf;
+  }
+
 }
 

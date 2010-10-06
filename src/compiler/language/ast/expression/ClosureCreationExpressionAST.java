@@ -120,13 +120,16 @@ public class ClosureCreationExpressionAST extends ExpressionAST
         }
       }
     }
-    buffer.append(" -> ");
-    for (int i = 0; i < returnTypes.length; i++)
+    if (returnTypes.length > 0)
     {
-      buffer.append(returnTypes[i]);
-      if (i != returnTypes.length - 1)
+      buffer.append(" -> ");
+      for (int i = 0; i < returnTypes.length; i++)
       {
-        buffer.append(", ");
+        buffer.append(returnTypes[i]);
+        if (i != returnTypes.length - 1)
+        {
+          buffer.append(", ");
+        }
       }
     }
     buffer.append(")");

@@ -23,6 +23,7 @@ public class PropertyAST extends MemberAST
   private BlockAST assignBlock;
   private AccessSpecifierAST retrieveAccess;
   private BlockAST retrieveBlock;
+  // TODO: add modifiers, in the Rules and Grammar as well as the AST, then regenerate the parse table
 
   /**
    * Creates a new property with the specified type, name, assigner, retriever and access specifiers
