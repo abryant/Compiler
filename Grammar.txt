@@ -68,16 +68,16 @@ Method = MemberHeader TypeArguments Type Name Arguments ThrowsClause Semicolon
        | MemberHeader               Type Name Arguments ThrowsClause Semicolon
        | MemberHeader               Type Name Arguments ThrowsClause Block
 
-Property = MemberHeader PropertyKeyword Type Name Semicolon
-         | MemberHeader PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock Semicolon
-         | MemberHeader PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
-         | MemberHeader PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
-         | MemberHeader PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
-         | MemberHeader PropertyKeyword Type Name Equals Expression Semicolon
-         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock Semicolon
-         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
-         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
-         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
+Property = PropertyKeyword Type Name Semicolon
+         | PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock Semicolon
+         | PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
+         | PropertyKeyword Type Name Equals Expression Semicolon
+         | PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock Semicolon
+         | PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
 
 
 // MemberHeader is used here instead of StaticKeyword to avoid shift-reduce conflicts
@@ -414,6 +414,10 @@ ClosureCreationExpression = ClosureKeyword               LParen ArgumentList Arr
                           | ClosureKeyword TypeArguments LParen ArgumentList Arrow TypeList RParen ThrowsClause Block
                           | ClosureKeyword               LParen VoidType     Arrow TypeList RParen ThrowsClause Block
                           | ClosureKeyword TypeArguments LParen VoidType     Arrow TypeList RParen ThrowsClause Block
+                          | ClosureKeyword               LParen ArgumentList                RParen ThrowsClause Block
+                          | ClosureKeyword TypeArguments LParen ArgumentList                RParen ThrowsClause Block
+                          | ClosureKeyword               LParen                             RParen ThrowsClause Block
+                          | ClosureKeyword TypeArguments LParen                             RParen ThrowsClause Block
 
 ArrayInstanciationExpressionWithInitializer = NewKeyword TypeNotArrayType Dimensions ArrayInitializer
 
