@@ -1373,5 +1373,9 @@ public class LanguageTokenizer extends Tokenizer
     (a<b,c<d,e<f,g>>>, unsigned int) asdf;
   }
 
+  static property String foo = "hello"
+  package retrieve
+  assign {foo = value + "-test";};
+
 }
 

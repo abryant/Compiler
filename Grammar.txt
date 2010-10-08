@@ -68,16 +68,16 @@ Method = MemberHeader TypeArguments Type Name Arguments ThrowsClause Semicolon
        | MemberHeader               Type Name Arguments ThrowsClause Semicolon
        | MemberHeader               Type Name Arguments ThrowsClause Block
 
-Property = PropertyKeyword Type Name Semicolon
-         | PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock Semicolon
-         | PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
-         | PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
-         | PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
-         | PropertyKeyword Type Name Equals Expression Semicolon
-         | PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock Semicolon
-         | PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
-         | PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
-         | PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
+Property = MemberHeader PropertyKeyword Type Name Semicolon
+         | MemberHeader PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name Equals Expression Semicolon
+         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier AssignKeyword OptionalBlock AccessSpecifier RetrieveKeyword OptionalBlock Semicolon
+         | MemberHeader PropertyKeyword Type Name Equals Expression AccessSpecifier RetrieveKeyword OptionalBlock AccessSpecifier AssignKeyword OptionalBlock Semicolon
 
 
 // MemberHeader is used here instead of StaticKeyword to avoid shift-reduce conflicts

@@ -2,6 +2,7 @@ package compiler.language.ast.member;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.TypeAST;
@@ -16,6 +17,7 @@ import compiler.language.ast.type.TypeAST;
 public class PropertyAST extends MemberAST
 {
 
+  private ModifierAST[] modifiers;
   private TypeAST type;
   private NameAST name;
   private ExpressionAST expression;
@@ -23,10 +25,10 @@ public class PropertyAST extends MemberAST
   private BlockAST assignBlock;
   private AccessSpecifierAST retrieveAccess;
   private BlockAST retrieveBlock;
-  // TODO: add modifiers, in the Rules and Grammar as well as the AST, then regenerate the parse table
 
   /**
    * Creates a new property with the specified type, name, assigner, retriever and access specifiers
+   * @param modifiers - the modifiers for this property
    * @param type - the type of variable to store
    * @param name - the name of the property
    * @param expression - the expression for the initial value of the property
@@ -36,9 +38,10 @@ public class PropertyAST extends MemberAST
    * @param retrieveBlock - the retriever block for the property
    * @param parseInfo - the parsing information
    */
-  public PropertyAST(TypeAST type, NameAST name, ExpressionAST expression, AccessSpecifierAST assignAccess, BlockAST assignBlock, AccessSpecifierAST retrieveAccess, BlockAST retrieveBlock, ParseInfo parseInfo)
+  public PropertyAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ExpressionAST expression, AccessSpecifierAST assignAccess, BlockAST assignBlock, AccessSpecifierAST retrieveAccess, BlockAST retrieveBlock, ParseInfo parseInfo)
   {
     super(parseInfo);
+    this.modifiers = modifiers;
     this.type = type;
     this.name = name;
     this.expression = expression;
@@ -46,6 +49,14 @@ public class PropertyAST extends MemberAST
     this.assignBlock = assignBlock;
     this.retrieveAccess = retrieveAccess;
     this.retrieveBlock = retrieveBlock;
+  }
+
+  /**
+   * @return the modifiers
+   */
+  public ModifierAST[] getModifiers()
+  {
+    return modifiers;
   }
 
   /**
@@ -111,6 +122,11 @@ public class PropertyAST extends MemberAST
   public String toString()
   {
     StringBuffer buffer = new StringBuffer();
+    for (ModifierAST modifier : modifiers)
+    {
+      buffer.append(modifier);
+      buffer.append(" ");
+    }
     buffer.append("property ");
     buffer.append(type);
     buffer.append(" ");
@@ -122,7 +138,7 @@ public class PropertyAST extends MemberAST
     }
     if (assignAccess != null || assignBlock != null)
     {
-      buffer.append(assignBlock == null ? " " : "\n");
+      buffer.append("\n");
       if (assignAccess != null)
       {
         buffer.append(assignAccess);
@@ -137,7 +153,7 @@ public class PropertyAST extends MemberAST
     }
     if (retrieveAccess != null || retrieveBlock != null)
     {
-      buffer.append(retrieveBlock == null ? " " : "\n");
+      buffer.append("\n");
       if (retrieveAccess != null)
       {
         buffer.append(retrieveAccess);
