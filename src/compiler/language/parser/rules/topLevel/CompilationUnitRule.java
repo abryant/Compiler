@@ -4,6 +4,9 @@ import static compiler.language.parser.ParseType.COMPILATION_UNIT;
 import static compiler.language.parser.ParseType.IMPORT_DECLARATION;
 import static compiler.language.parser.ParseType.PACKAGE_DECLARATION;
 import static compiler.language.parser.ParseType.TYPE_DEFINITION;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.topLevel.CompilationUnitAST;
@@ -12,9 +15,6 @@ import compiler.language.ast.topLevel.PackageDeclarationAST;
 import compiler.language.ast.topLevel.TypeDefinitionAST;
 import compiler.language.parser.LanguageParseException;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 30 Jun 2010
@@ -39,7 +39,7 @@ public final class CompilationUnitRule extends Rule<ParseType>
   }
 
   /**
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

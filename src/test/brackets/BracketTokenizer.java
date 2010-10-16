@@ -1,7 +1,7 @@
 package test.brackets;
 
-import compiler.parser.Token;
-import compiler.parser.Tokenizer;
+import parser.Token;
+import parser.Tokenizer;
 
 /*
  * Created on 15 Jul 2010
@@ -46,7 +46,7 @@ public class BracketTokenizer extends Tokenizer<BracketsType>
   private Token<BracketsType>[] tokens = TEST1;
 
   /**
-   * @see compiler.parser.Tokenizer#generateToken()
+   * @see parser.Tokenizer#generateToken()
    */
   @Override
   protected Token<BracketsType> generateToken()

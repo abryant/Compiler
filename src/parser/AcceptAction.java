@@ -1,4 +1,4 @@
-package compiler.parser;
+package parser;
 
 
 /*
@@ -27,7 +27,7 @@ public class AcceptAction<T extends Enum<T>> extends ReduceAction<T>
   }
 
   /**
-   * @see compiler.parser.Action#isAccept()
+   * @see parser.Action#isAccept()
    */
   @Override
   public boolean isAccept()

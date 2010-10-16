@@ -5,9 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import compiler.parser.lalr.LALRParserGenerator;
-import compiler.parser.lalr.LALRRuleSet;
-import compiler.parser.lalr.LALRState;
+import parser.lalr.LALRParserGenerator;
+import parser.lalr.LALRRuleSet;
+import parser.lalr.LALRState;
+
 
 /*
  * Created on 19 Sep 2010

@@ -1,12 +1,12 @@
 package test.expression;
 
-import compiler.parser.BadTokenException;
-import compiler.parser.ParseException;
-import compiler.parser.Parser;
-import compiler.parser.Token;
-import compiler.parser.lalr.LALRParserGenerator;
-import compiler.parser.lalr.LALRRuleSet;
-import compiler.parser.lalr.LALRState;
+import parser.BadTokenException;
+import parser.ParseException;
+import parser.Parser;
+import parser.Token;
+import parser.lalr.LALRParserGenerator;
+import parser.lalr.LALRRuleSet;
+import parser.lalr.LALRState;
 
 /*
  * Created on 7 Apr 2010

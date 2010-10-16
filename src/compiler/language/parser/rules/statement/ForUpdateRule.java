@@ -5,13 +5,13 @@ import static compiler.language.parser.ParseType.DECREMENT;
 import static compiler.language.parser.ParseType.FOR_UPDATE;
 import static compiler.language.parser.ParseType.INCREMENT;
 import static compiler.language.parser.ParseType.STATEMENT_EXPRESSION;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.expression.StatementExpressionAST;
 import compiler.language.ast.statement.ExpressionStatementAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 28 Aug 2010
@@ -38,7 +38,7 @@ public final class ForUpdateRule extends Rule<ParseType>
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

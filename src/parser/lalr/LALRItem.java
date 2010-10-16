@@ -1,12 +1,13 @@
-package compiler.parser.lalr;
+package parser.lalr;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import compiler.parser.Production;
-import compiler.parser.Rule;
-import compiler.parser.TypeUseEntry;
+import parser.Production;
+import parser.Rule;
+import parser.TypeUseEntry;
+
 
 /*
  * Created on 21 Jun 2010

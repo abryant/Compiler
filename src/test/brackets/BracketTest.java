@@ -1,11 +1,11 @@
 package test.brackets;
 
-import compiler.parser.BadTokenException;
-import compiler.parser.ParseException;
-import compiler.parser.Parser;
-import compiler.parser.Token;
-import compiler.parser.lalr.LALRParserGenerator;
-import compiler.parser.lalr.LALRRuleSet;
+import parser.BadTokenException;
+import parser.ParseException;
+import parser.Parser;
+import parser.Token;
+import parser.lalr.LALRParserGenerator;
+import parser.lalr.LALRRuleSet;
 
 /*
  * Created on 15 Jul 2010

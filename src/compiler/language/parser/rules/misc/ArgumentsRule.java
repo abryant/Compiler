@@ -4,15 +4,15 @@ import static compiler.language.parser.ParseType.ARGUMENTS;
 import static compiler.language.parser.ParseType.ARGUMENT_LIST;
 import static compiler.language.parser.ParseType.LPAREN;
 import static compiler.language.parser.ParseType.RPAREN;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.ArgumentAST;
 import compiler.language.ast.misc.ArgumentListAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 10 Jul 2010
@@ -35,7 +35,7 @@ public final class ArgumentsRule extends Rule<ParseType>
   }
 
   /**
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

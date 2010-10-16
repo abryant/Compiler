@@ -7,6 +7,10 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
+import parser.ParseException;
+import parser.Token;
+import parser.Tokenizer;
+
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.CharacterLiteralAST;
 import compiler.language.ast.terminal.FloatingLiteralAST;
@@ -15,9 +19,6 @@ import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
 import compiler.language.ast.terminal.StringLiteralAST;
 import compiler.language.ast.terminal.VersionNumberAST;
-import compiler.parser.ParseException;
-import compiler.parser.Token;
-import compiler.parser.Tokenizer;
 
 /*
  * Created on 30 Jun 2010
@@ -1119,7 +1120,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
   }
 
   /**
-   * @see compiler.parser.Tokenizer#generateToken()
+   * @see parser.Tokenizer#generateToken()
    */
   @Override
   protected Token<ParseType> generateToken() throws ParseException

@@ -22,15 +22,15 @@ import static compiler.language.parser.ParseType.SYNCHRONIZED_STATEMENT;
 import static compiler.language.parser.ParseType.THROW_STATEMENT;
 import static compiler.language.parser.ParseType.TRY_STATEMENT;
 import static compiler.language.parser.ParseType.WHILE_STATEMENT;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.StatementExpressionAST;
 import compiler.language.ast.statement.ExpressionStatementAST;
 import compiler.language.ast.statement.StatementAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 14 Jul 2010
@@ -90,7 +90,7 @@ public final class StatementRule extends Rule<ParseType>
   }
 
   /**
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

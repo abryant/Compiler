@@ -9,6 +9,9 @@ import static compiler.language.parser.ParseType.MEMBER_LIST;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.RBRACE;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
@@ -19,9 +22,6 @@ import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 1 Jul 2010
@@ -44,7 +44,7 @@ public final class InterfaceDefinitionRule extends Rule<ParseType>
   }
 
   /**
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

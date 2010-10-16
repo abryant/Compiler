@@ -5,15 +5,15 @@ import static compiler.language.parser.ParseType.INTEGER_LITERAL;
 import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 import static compiler.language.parser.ParseType.TUPLE_INDEX_EXPRESSION;
 import static compiler.language.parser.ParseType.UNARY_EXPRESSION;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.TupleIndexExpressionAST;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 12 Aug 2010
@@ -38,7 +38,7 @@ public final class TupleIndexExpressionRule extends Rule<ParseType>
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

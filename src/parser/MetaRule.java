@@ -1,4 +1,4 @@
-package compiler.parser;
+package parser;
 
 import java.lang.reflect.Array;
 
@@ -74,7 +74,7 @@ public class MetaRule<T extends Enum<T>> extends Rule<T>
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[], java.lang.Object[])
+   * @see parser.Rule#match(java.lang.Object[], java.lang.Object[])
    */
   @Override
   public Object match(Production<T> production, Object[] args) throws ParseException

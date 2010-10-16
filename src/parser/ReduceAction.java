@@ -1,4 +1,4 @@
-package compiler.parser;
+package parser;
 
 import java.util.Deque;
 
@@ -48,7 +48,7 @@ public class ReduceAction<T extends Enum<T>> extends Action<T>
   }
 
   /**
-   * @see compiler.parser.Action#perform(compiler.parser.Token, java.util.Deque, java.util.Deque)
+   * @see parser.Action#perform(parser.Token, java.util.Deque, java.util.Deque)
    */
   @Override
   public boolean perform(Token<T> token, Deque<State<T>> stateStack, Deque<Token<T>> tokenStack) throws ParseException

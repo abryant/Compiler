@@ -1,8 +1,8 @@
 package test.expression;
 
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 /*
  * Created on 7 Apr 2010
@@ -27,7 +27,7 @@ public class SumRule extends Rule<ExpressionType>
   }
 
   /**
-   * @see compiler.parser.Rule#match(java.lang.Object[])
+   * @see parser.Rule#match(java.lang.Object[])
    */
   @Override
   public Object match(Production<ExpressionType> production, Object[] args) throws ParseException

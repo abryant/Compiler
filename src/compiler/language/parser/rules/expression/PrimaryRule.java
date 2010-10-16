@@ -6,14 +6,14 @@ import static compiler.language.parser.ParseType.LPAREN;
 import static compiler.language.parser.ParseType.PRIMARY;
 import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.TUPLE_EXPRESSION;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.ParenthesisedExpressionAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 11 Aug 2010
@@ -38,7 +38,7 @@ public final class PrimaryRule extends Rule<ParseType>
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

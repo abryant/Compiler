@@ -3,14 +3,14 @@ package compiler.language.parser.rules.misc;
 import static compiler.language.parser.ParseType.DOT;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.QNAME;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 30 Jun 2010
@@ -33,7 +33,7 @@ public final class QNameRule extends Rule<ParseType>
   }
 
   /**
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

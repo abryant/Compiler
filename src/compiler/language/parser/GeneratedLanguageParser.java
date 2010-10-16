@@ -5,6 +5,13 @@ import static compiler.language.parser.ParseType.*;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import parser.BadTokenException;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
+import parser.Token;
+import parser.Tokenizer;
+
 import compiler.language.parser.rules.expression.AdditiveExpressionRule;
 import compiler.language.parser.rules.expression.ArrayAccessExpressionRule;
 import compiler.language.parser.rules.expression.ArrayInitializerRule;
@@ -172,12 +179,6 @@ import compiler.language.parser.rules.typeDefinition.ImplementsClauseRule;
 import compiler.language.parser.rules.typeDefinition.InterfaceDefinitionRule;
 import compiler.language.parser.rules.typeDefinition.InterfaceExtendsClauseRule;
 import compiler.language.parser.rules.typeDefinition.InterfaceListRule;
-import compiler.parser.BadTokenException;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
-import compiler.parser.Token;
-import compiler.parser.Tokenizer;
 
 /*
  * Created on 20 Sep 2010

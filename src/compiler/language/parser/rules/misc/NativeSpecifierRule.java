@@ -5,14 +5,14 @@ import static compiler.language.parser.ParseType.NATIVE_KEYWORD;
 import static compiler.language.parser.ParseType.NATIVE_SPECIFIER;
 import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.STRING_LITERAL;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.NativeSpecifierAST;
 import compiler.language.ast.terminal.StringLiteralAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 30 Jun 2010
@@ -34,7 +34,7 @@ public final class NativeSpecifierRule extends Rule<ParseType>
   }
 
   /**
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

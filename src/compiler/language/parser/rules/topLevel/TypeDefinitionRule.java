@@ -4,11 +4,11 @@ import static compiler.language.parser.ParseType.CLASS_DEFINITION;
 import static compiler.language.parser.ParseType.ENUM_DEFINITION;
 import static compiler.language.parser.ParseType.INTERFACE_DEFINITION;
 import static compiler.language.parser.ParseType.TYPE_DEFINITION;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 1 Jul 2010
@@ -32,7 +32,7 @@ public final class TypeDefinitionRule extends Rule<ParseType>
   }
 
   /**
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

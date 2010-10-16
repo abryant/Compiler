@@ -11,6 +11,9 @@ import static compiler.language.parser.ParseType.THROWS_CLAUSE;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENTS;
 import static compiler.language.parser.ParseType.TYPE_LIST;
 import static compiler.language.parser.ParseType.VOID_TYPE;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
@@ -22,9 +25,6 @@ import compiler.language.ast.type.TypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.ast.type.VoidTypeAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 11 Aug 2010
@@ -66,7 +66,7 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

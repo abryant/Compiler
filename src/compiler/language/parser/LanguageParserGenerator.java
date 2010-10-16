@@ -1,7 +1,7 @@
 package compiler.language.parser;
 
-import compiler.parser.lalr.LALRParserCodeGenerator;
-import compiler.parser.lalr.LALRRuleSet;
+import parser.lalr.LALRParserCodeGenerator;
+import parser.lalr.LALRRuleSet;
 
 /*
  * Created on 20 Sep 2010

@@ -1,8 +1,8 @@
 package test.brackets;
 
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 /*
  * Created on 15 Jul 2010
@@ -24,7 +24,7 @@ public class BracketRule extends Rule<BracketsType>
   }
 
   /**
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<BracketsType> production, Object[] args) throws ParseException

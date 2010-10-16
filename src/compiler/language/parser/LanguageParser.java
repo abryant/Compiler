@@ -1,13 +1,13 @@
 package compiler.language.parser;
 
+import parser.BadTokenException;
+import parser.ParseException;
+import parser.Token;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.terminal.StringLiteralAST;
 import compiler.language.ast.topLevel.CompilationUnitAST;
-import compiler.parser.BadTokenException;
-import compiler.parser.ParseException;
-import compiler.parser.Token;
 
 /*
  * Created on 30 Jun 2010

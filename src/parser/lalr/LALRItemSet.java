@@ -1,4 +1,4 @@
-package compiler.parser.lalr;
+package parser.lalr;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,7 +7,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import compiler.parser.TypeUseEntry;
+import parser.TypeUseEntry;
+
 
 /*
  * Created on 21 Jun 2010

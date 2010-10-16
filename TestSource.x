@@ -15,9 +15,9 @@ import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
 import compiler.language.ast.terminal.StringLiteralAST;
 import compiler.language.ast.terminal.VersionNumberAST;
-import compiler.parser.ParseException;
-import compiler.parser.Token;
-import compiler.parser.Tokenizer;
+import parser.ParseException;
+import parser.Token;
+import parser.Tokenizer;
 
 
 /**
@@ -1202,7 +1202,7 @@ public class LanguageTokenizer extends Tokenizer
   }
 
   /**
-   * @see compiler.parser.Tokenizer#generateToken()
+   * @see parser.Tokenizer#generateToken()
    */
   protected Token generateToken() throws ParseException
   {

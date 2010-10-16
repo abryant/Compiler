@@ -1,4 +1,4 @@
-package compiler.parser.lalr;
+package parser.lalr;
 
 import java.util.Collection;
 import java.util.Deque;
@@ -10,10 +10,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import compiler.parser.Production;
-import compiler.parser.Rule;
-import compiler.parser.RuleSet;
-import compiler.parser.TypeUseEntry;
+import parser.Production;
+import parser.Rule;
+import parser.RuleSet;
+import parser.TypeUseEntry;
+
 
 /*
  * Created on 22 Jun 2010

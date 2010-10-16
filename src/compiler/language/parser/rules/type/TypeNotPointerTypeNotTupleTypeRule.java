@@ -5,11 +5,11 @@ import static compiler.language.parser.ParseType.CLOSURE_TYPE;
 import static compiler.language.parser.ParseType.PRIMITIVE_TYPE;
 import static compiler.language.parser.ParseType.TYPE_NOT_POINTER_TYPE_NOT_TUPLE_TYPE;
 import static compiler.language.parser.ParseType.VOID_TYPE;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 9 Aug 2010
@@ -35,7 +35,7 @@ public final class TypeNotPointerTypeNotTupleTypeRule extends Rule<ParseType>
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

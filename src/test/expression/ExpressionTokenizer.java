@@ -1,7 +1,7 @@
 package test.expression;
 
-import compiler.parser.Token;
-import compiler.parser.Tokenizer;
+import parser.Token;
+import parser.Tokenizer;
 
 /*
  * Created on 7 Apr 2010
@@ -38,7 +38,7 @@ public class ExpressionTokenizer extends Tokenizer<ExpressionType>
 
 
   /**
-   * @see compiler.parser.Tokenizer#generateToken()
+   * @see parser.Tokenizer#generateToken()
    */
   @Override
   protected Token<ExpressionType> generateToken()

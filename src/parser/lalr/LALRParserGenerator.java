@@ -1,4 +1,4 @@
-package compiler.parser.lalr;
+package parser.lalr;
 
 import java.util.Deque;
 import java.util.HashMap;
@@ -7,9 +7,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
+
 
 /*
  * Created on 21 Jun 2010

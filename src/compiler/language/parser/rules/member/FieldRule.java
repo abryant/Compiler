@@ -7,6 +7,9 @@ import static compiler.language.parser.ParseType.FIELD;
 import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.TYPE;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.ParseList;
@@ -16,9 +19,6 @@ import compiler.language.ast.member.MemberHeaderAST;
 import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 5 Jul 2010
@@ -41,7 +41,7 @@ public final class FieldRule extends Rule<ParseType>
   }
 
   /**
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

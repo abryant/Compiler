@@ -1,4 +1,4 @@
-package compiler.parser.lalr;
+package parser.lalr;
 
 import java.lang.reflect.Array;
 import java.util.HashMap;
@@ -6,14 +6,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import compiler.parser.AcceptAction;
-import compiler.parser.Action;
-import compiler.parser.Production;
-import compiler.parser.ReduceAction;
-import compiler.parser.Rule;
-import compiler.parser.ShiftAction;
-import compiler.parser.State;
-import compiler.parser.Token;
+import parser.AcceptAction;
+import parser.Action;
+import parser.Production;
+import parser.ReduceAction;
+import parser.Rule;
+import parser.ShiftAction;
+import parser.State;
+import parser.Token;
+
 
 /*
  * Created on 21 Jun 2010
@@ -159,7 +160,7 @@ public class LALRState<T extends Enum<T>> implements State<T>
   }
 
   /**
-   * @see compiler.parser.State#getAction(compiler.parser.Token)
+   * @see parser.State#getAction(parser.Token)
    */
   @Override
   public Action<T> getAction(Token<T> terminal)
@@ -188,7 +189,7 @@ public class LALRState<T extends Enum<T>> implements State<T>
   }
 
   /**
-   * @see compiler.parser.State#getExpectedTerminalTypes()
+   * @see parser.State#getExpectedTerminalTypes()
    */
   @SuppressWarnings("unchecked")
   @Override
@@ -217,7 +218,7 @@ public class LALRState<T extends Enum<T>> implements State<T>
   }
 
   /**
-   * @see compiler.parser.State#getGoto(compiler.parser.Token)
+   * @see parser.State#getGoto(parser.Token)
    */
   @Override
   public State<T> getGoto(Token<T> nonTerminal)

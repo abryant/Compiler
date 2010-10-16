@@ -1,4 +1,4 @@
-package compiler.parser;
+package parser;
 
 /*
  * Created on 10 Aug 2010

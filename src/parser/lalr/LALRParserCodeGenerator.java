@@ -1,4 +1,4 @@
-package compiler.parser.lalr;
+package parser.lalr;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -11,9 +11,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import compiler.parser.AcceptAction;
-import compiler.parser.ReduceAction;
-import compiler.parser.Rule;
+import parser.AcceptAction;
+import parser.ReduceAction;
+import parser.Rule;
+
 
 /*
  * Created on 20 Sep 2010

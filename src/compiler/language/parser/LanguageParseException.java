@@ -1,7 +1,7 @@
 package compiler.language.parser;
 
+import parser.ParseException;
 import compiler.language.ast.ParseInfo;
-import compiler.parser.ParseException;
 
 /*
  * Created on 10 Aug 2010

@@ -6,6 +6,9 @@ import static compiler.language.parser.ParseType.ELSE_IF_CLAUSES;
 import static compiler.language.parser.ParseType.EXPRESSION;
 import static compiler.language.parser.ParseType.IF_KEYWORD;
 import static compiler.language.parser.ParseType.IF_STATEMENT;
+import parser.ParseException;
+import parser.Production;
+import parser.Rule;
 
 import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
@@ -15,9 +18,6 @@ import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.ElseIfClauseAST;
 import compiler.language.ast.statement.IfStatementAST;
 import compiler.language.parser.ParseType;
-import compiler.parser.ParseException;
-import compiler.parser.Production;
-import compiler.parser.Rule;
 
 /*
  * Created on 27 Aug 2010
@@ -40,7 +40,7 @@ public final class IfStatementRule extends Rule<ParseType>
 
   /**
    * {@inheritDoc}
-   * @see compiler.parser.Rule#match(compiler.parser.Production, java.lang.Object[])
+   * @see parser.Rule#match(parser.Production, java.lang.Object[])
    */
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException

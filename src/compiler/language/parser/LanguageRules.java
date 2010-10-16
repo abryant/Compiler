@@ -1,5 +1,7 @@
 package compiler.language.parser;
 
+import parser.Rule;
+import parser.lalr.LALRRuleSet;
 import compiler.language.parser.rules.expression.AdditiveExpressionRule;
 import compiler.language.parser.rules.expression.ArrayAccessExpressionRule;
 import compiler.language.parser.rules.expression.ArrayInitializerRule;
@@ -169,8 +171,6 @@ import compiler.language.parser.rules.typeDefinition.ImplementsClauseRule;
 import compiler.language.parser.rules.typeDefinition.InterfaceDefinitionRule;
 import compiler.language.parser.rules.typeDefinition.InterfaceExtendsClauseRule;
 import compiler.language.parser.rules.typeDefinition.InterfaceListRule;
-import compiler.parser.Rule;
-import compiler.parser.lalr.LALRRuleSet;
 
 /*
  * Created on 30 Jun 2010
