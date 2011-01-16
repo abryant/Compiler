@@ -2,8 +2,6 @@ package compiler.language.conceptual.typeDefinition;
 
 import compiler.language.conceptual.AccessSpecifier;
 import compiler.language.conceptual.SinceSpecifier;
-import compiler.language.conceptual.type.PointerType;
-import compiler.language.conceptual.type.TypeArgument;
 
 /*
  * Created on 21 Oct 2010
@@ -23,17 +21,13 @@ public class InnerClass extends ConceptualClass
    * @param isImmutable
    * @param sinceSpecifier
    * @param name
-   * @param typeArguments
-   * @param baseClass
-   * @param interfaces
    * @param isStatic
    * @param outerClass
    */
   public InnerClass(AccessSpecifier accessSpecifier, boolean isAbstract, boolean isFinal, boolean isImmutable,
-                    SinceSpecifier sinceSpecifier, String name, TypeArgument[] typeArguments, PointerType baseClass,
-                    PointerType[] interfaces, boolean isStatic, ConceptualClass outerClass)
+                    SinceSpecifier sinceSpecifier, String name, boolean isStatic, ConceptualClass outerClass)
   {
-    super(accessSpecifier, isAbstract, isFinal, isImmutable, sinceSpecifier, name, typeArguments, baseClass, interfaces);
+    super(accessSpecifier, isAbstract, isFinal, isImmutable, sinceSpecifier, name);
     this.isStatic = isStatic;
     this.outerClass = outerClass;
   }
@@ -49,25 +43,11 @@ public class InnerClass extends ConceptualClass
     return isStatic;
   }
   /**
-   * @param isStatic - the isStatic to set
-   */
-  public void setStatic(boolean isStatic)
-  {
-    this.isStatic = isStatic;
-  }
-  /**
    * @return the outerClass
    */
   public ConceptualClass getOuterClass()
   {
     return outerClass;
-  }
-  /**
-   * @param outerClass - the outerClass to set
-   */
-  public void setOuterClass(ConceptualClass outerClass)
-  {
-    this.outerClass = outerClass;
   }
 
 }

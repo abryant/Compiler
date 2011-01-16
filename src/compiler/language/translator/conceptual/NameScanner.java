@@ -37,6 +37,16 @@ public class NameScanner
   }
 
   /**
+   * Finds the mapping from CompilationUnitAST to file Scope.
+   * This method should only be called after scanCompilationUnit() has been called for all desired compilation units.
+   * @return the mapping from CompilationUnitAST to file Scope
+   */
+  public Map<CompilationUnitAST, Scope> getFileScopes()
+  {
+    return fileScopes;
+  }
+
+  /**
    * Scans the specified compilation unit for names.
    * @param compilationUnit - the compilation unit to scan
    * @throws ScopeException - if a scope conflict occurs TODO: take this out when conflict handling is better

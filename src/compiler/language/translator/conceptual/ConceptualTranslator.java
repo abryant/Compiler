@@ -1,5 +1,6 @@
 package compiler.language.translator.conceptual;
 
+import java.util.Map;
 import java.util.Set;
 
 import compiler.language.ast.terminal.NameAST;
@@ -48,11 +49,16 @@ public class ConceptualTranslator
     {
       e.printStackTrace();
     }
+    catch (ConceptualException e)
+    {
+      e.printStackTrace();
+    }
 
   }
 
   private void resolveImports() throws ConceptualException
   {
+    Map<CompilationUnitAST, Scope> fileScopes = nameScanner.getFileScopes();
     for (CompilationUnitAST compilationUnit : compilationUnits)
     {
       Scope fileScope = fileScopes.get(compilationUnit);
