@@ -21,7 +21,6 @@ public class InterfaceDefinitionAST extends TypeDefinitionAST
 {
   private AccessSpecifierAST access;
   private ModifierAST[] modifiers;
-  private NameAST name;
   private TypeArgumentAST[] typeArguments;
   private PointerTypeAST[] parentInterfaces;
   private MemberAST[] members;
@@ -38,10 +37,9 @@ public class InterfaceDefinitionAST extends TypeDefinitionAST
    */
   public InterfaceDefinitionAST(AccessSpecifierAST access, ModifierAST[] modifiers, NameAST name, TypeArgumentAST[] typeArguments, PointerTypeAST[] parentInterfaces, MemberAST[] members, ParseInfo parseInfo)
   {
-    super(parseInfo);
+    super(name, parseInfo);
     this.access = access;
     this.modifiers = modifiers;
-    this.name = name;
     this.typeArguments = typeArguments;
     this.parentInterfaces = parentInterfaces;
     this.members = members;
@@ -61,14 +59,6 @@ public class InterfaceDefinitionAST extends TypeDefinitionAST
   public ModifierAST[] getModifiers()
   {
     return modifiers;
-  }
-
-  /**
-   * @return the name
-   */
-  public NameAST getName()
-  {
-    return name;
   }
 
   /**
@@ -113,7 +103,7 @@ public class InterfaceDefinitionAST extends TypeDefinitionAST
       buffer.append(" ");
     }
     buffer.append("interface ");
-    buffer.append(name);
+    buffer.append(getName());
     if (typeArguments.length > 0)
     {
       buffer.append("<");

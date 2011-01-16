@@ -20,7 +20,6 @@ public class ClassDefinitionAST extends TypeDefinitionAST
 {
   private AccessSpecifierAST access;
   private ModifierAST[] modifiers;
-  private NameAST name;
   private TypeArgumentAST[] typeArguments;
   private PointerTypeAST baseClass;
   private PointerTypeAST[] interfaces;
@@ -39,10 +38,9 @@ public class ClassDefinitionAST extends TypeDefinitionAST
    */
   public ClassDefinitionAST(AccessSpecifierAST access, ModifierAST[] modifiers, NameAST name, TypeArgumentAST[] typeArguments, PointerTypeAST baseClass, PointerTypeAST[] interfaces, MemberAST[] members, ParseInfo parseInfo)
   {
-    super(parseInfo);
+    super(name, parseInfo);
     this.access = access;
     this.modifiers = modifiers;
-    this.name = name;
     this.typeArguments = typeArguments;
     this.baseClass = baseClass;
     this.interfaces = interfaces;
@@ -63,14 +61,6 @@ public class ClassDefinitionAST extends TypeDefinitionAST
   public ModifierAST[] getModifiers()
   {
     return modifiers;
-  }
-
-  /**
-   * @return the name
-   */
-  public NameAST getName()
-  {
-    return name;
   }
 
   /**
@@ -123,7 +113,7 @@ public class ClassDefinitionAST extends TypeDefinitionAST
       buffer.append(" ");
     }
     buffer.append("class ");
-    buffer.append(name);
+    buffer.append(getName());
     if (typeArguments.length > 0)
     {
       buffer.append("<");

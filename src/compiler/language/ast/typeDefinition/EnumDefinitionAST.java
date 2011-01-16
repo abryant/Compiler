@@ -20,7 +20,6 @@ public class EnumDefinitionAST extends TypeDefinitionAST
 
   private AccessSpecifierAST accessSpecifier;
   private ModifierAST[] modifiers;
-  private NameAST name;
   private PointerTypeAST baseClass;
   private PointerTypeAST[] interfaces;
   private EnumConstantAST[] constants;
@@ -39,10 +38,9 @@ public class EnumDefinitionAST extends TypeDefinitionAST
    */
   public EnumDefinitionAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, NameAST name, PointerTypeAST baseClass, PointerTypeAST[] interfaces, EnumConstantAST[] constants, MemberAST[] members, ParseInfo parseInfo)
   {
-    super(parseInfo);
+    super(name, parseInfo);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
-    this.name = name;
     this.baseClass = baseClass;
     this.interfaces = interfaces;
     this.constants = constants;
@@ -63,14 +61,6 @@ public class EnumDefinitionAST extends TypeDefinitionAST
   public ModifierAST[] getModifiers()
   {
     return modifiers;
-  }
-
-  /**
-   * @return the name
-   */
-  public NameAST getName()
-  {
-    return name;
   }
 
   /**
@@ -123,7 +113,7 @@ public class EnumDefinitionAST extends TypeDefinitionAST
       buffer.append(" ");
     }
     buffer.append("enum ");
-    buffer.append(name);
+    buffer.append(getName());
     buffer.append(" ");
     if (baseClass != null)
     {
