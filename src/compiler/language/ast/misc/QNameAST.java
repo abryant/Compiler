@@ -64,6 +64,19 @@ public class QNameAST
   }
 
   /**
+   * @return the names contained in this QNameAST as a String[]
+   */
+  public String[] getNameStrings()
+  {
+    String[] nameStrings = new String[names.length];
+    for (int i = 0; i < names.length; i++)
+    {
+      nameStrings[i] = names[i].getName();
+    }
+    return nameStrings;
+  }
+
+  /**
    * @return the parseInfo
    */
   public ParseInfo getParseInfo()

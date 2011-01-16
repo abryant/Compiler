@@ -1,5 +1,6 @@
 package compiler.language.ast.member;
 
+
 /*
  * Created on 30 Jun 2010
  */
