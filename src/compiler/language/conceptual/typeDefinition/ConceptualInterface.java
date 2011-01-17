@@ -3,13 +3,13 @@ package compiler.language.conceptual.typeDefinition;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
 import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
-import compiler.language.conceptual.AccessSpecifier;
 import compiler.language.conceptual.ConceptualException;
-import compiler.language.conceptual.SinceSpecifier;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
 import compiler.language.conceptual.member.StaticInitializer;
+import compiler.language.conceptual.misc.AccessSpecifier;
+import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.type.PointerType;
 import compiler.language.conceptual.type.TypeArgument;
 

@@ -1,4 +1,4 @@
-package compiler.language.conceptual;
+package compiler.language.conceptual.misc;
 
 import compiler.language.ast.member.AccessSpecifierAST;
 

@@ -1,10 +1,11 @@
-package compiler.language.conceptual;
+package compiler.language.conceptual.misc;
 
 import java.math.BigInteger;
 
 import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
 import compiler.language.ast.terminal.VersionNumberAST;
+import compiler.language.conceptual.ConceptualException;
 
 /*
  * Created on 16 Oct 2010

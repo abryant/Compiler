@@ -1,7 +1,7 @@
 package compiler.language.conceptual.typeDefinition;
 
-import compiler.language.conceptual.AccessSpecifier;
-import compiler.language.conceptual.SinceSpecifier;
+import compiler.language.conceptual.misc.AccessSpecifier;
+import compiler.language.conceptual.misc.SinceSpecifier;
 
 /*
  * Created on 21 Oct 2010

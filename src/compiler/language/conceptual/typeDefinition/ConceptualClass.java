@@ -1,20 +1,28 @@
 package compiler.language.conceptual.typeDefinition;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.sun.org.apache.bcel.internal.classfile.InnerClass;
+import compiler.language.ast.member.FieldAST;
+import compiler.language.ast.member.MemberAST;
+import compiler.language.ast.member.MethodAST;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
 import compiler.language.ast.typeDefinition.ClassDefinitionAST;
-import compiler.language.conceptual.AccessSpecifier;
 import compiler.language.conceptual.ConceptualException;
-import compiler.language.conceptual.SinceSpecifier;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
 import compiler.language.conceptual.member.StaticInitializer;
 import compiler.language.conceptual.member.VariableInitializers;
+import compiler.language.conceptual.misc.AccessSpecifier;
+import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.type.PointerType;
 import compiler.language.conceptual.type.TypeArgument;
+import compiler.language.translator.conceptual.Scope;
+import compiler.language.translator.conceptual.ScopedMemberSet;
 
 /*
  * Created on 16 Oct 2010
@@ -108,6 +116,47 @@ public class ConceptualClass
     }
 
     return new ConceptualClass(access, isAbstract, isFinal, isImmutable, sinceSpecifier, classDefinition.getName().getName());
+  }
+
+  /**
+   *
+   * @param classDefinition
+   * @param classScope
+   * @throws ConceptualException
+   */
+  public void buildScope(ClassDefinitionAST classDefinition, Scope classScope) throws ConceptualException
+  {
+    // TODO: type arguments
+    MemberAST[] members = classDefinition.getMembers();
+    Map<String, ScopedMemberSet> membersByName = new HashMap<String, ScopedMemberSet>();
+    for (MemberAST member : members)
+    {
+      if (member instanceof FieldAST)
+      {
+        MemberVariable[] memberVariables = MemberVariable.fromAST((FieldAST) member);
+        for (MemberVariable variable : memberVariables)
+        {
+          ScopedMemberSet scopedMemberSet = membersByName.get(variable.getName());
+          if (scopedMemberSet == null)
+          {
+            scopedMemberSet = new ScopedMemberSet();
+            membersByName.put(variable.getName(), scopedMemberSet);
+          }
+          if (variable.isStatic())
+          {
+            scopedMemberSet.addStaticVariable(variable);
+          }
+          else
+          {
+            scopedMemberSet.addVariable(variable);
+          }
+        }
+      }
+      else if (member instanceof MethodAST)
+      {
+
+      }
+    }
   }
 
   /**

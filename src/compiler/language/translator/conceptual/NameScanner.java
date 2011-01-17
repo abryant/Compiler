@@ -103,9 +103,9 @@ public class NameScanner
   /**
    * Scans the names from the specified class definition into the specified enclosing scope.
    * @param classDefinition - the class definition to scan
-   * @param enclosingScope - the scope to scan the names into
+   * @param classScope - the scope of the class definition, to scan the names into
    */
-  private void scanClassDefinition(ClassDefinitionAST classDefinition, Scope enclosingScope)
+  private void scanClassDefinition(ClassDefinitionAST classDefinition, Scope classScope)
   {
 
   }
@@ -113,9 +113,9 @@ public class NameScanner
   /**
    * Scans the names from the specified interface definition into the specified enclosing scope.
    * @param interfaceDefinition - the interface definition to scan
-   * @param enclosingScope - the scope to scan the names into
+   * @param interfaceScope - the scope of the interface definition, to scan the names into
    */
-  private void scanInterfaceDefinition(InterfaceDefinitionAST interfaceDefinition, Scope enclosingScope)
+  private void scanInterfaceDefinition(InterfaceDefinitionAST interfaceDefinition, Scope interfaceScope)
   {
 
   }
@@ -123,9 +123,9 @@ public class NameScanner
   /**
    * Scans the names from the specified enum definition into the specified enclosing scope.
    * @param enumDefinition - the enum definition to scan
-   * @param enclosingScope - the scope to scan the names into
+   * @param enumScope - the scope of the enum definition, to scan the names into
    */
-  private void scanEnumDefinition(EnumDefinitionAST enumDefinition, Scope enclosingScope)
+  private void scanEnumDefinition(EnumDefinitionAST enumDefinition, Scope enumScope)
   {
 
   }
