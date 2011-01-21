@@ -1,9 +1,6 @@
 package compiler.language.conceptual.typeDefinition;
 
-import compiler.language.ast.misc.ModifierAST;
-import compiler.language.ast.terminal.SinceSpecifierAST;
-import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
-import compiler.language.conceptual.ConceptualException;
+import compiler.language.conceptual.Scope;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
@@ -42,6 +39,8 @@ public class ConceptualInterface
   private ConceptualInterface[] innerInterfaces;
   private ConceptualEnum[] innerEnums;
 
+  private Scope scope;
+
   /**
    * Creates a new Conceptual interface with the specified properties
    * The members and other data must be set later.
@@ -56,36 +55,6 @@ public class ConceptualInterface
     this.isImmutable = isImmutable;
     this.sinceSpecifier = sinceSpecifier;
     this.name = name;
-  }
-
-  /**
-   * Creates a new ConceptualInterface from the specified InterfaceDefinitionAST.
-   * @param interfaceDefinition - the InterfaceDefinitionAST to base the new ConceptualInterface on
-   * @return the ConceptualInterface created
-   * @throws ConceptualException - if there is a problem converting the AST instance to a Conceptual instance
-   */
-  public static ConceptualInterface fromAST(InterfaceDefinitionAST interfaceDefinition) throws ConceptualException
-  {
-    AccessSpecifier access = AccessSpecifier.fromAST(interfaceDefinition.getAccess());
-    ModifierAST[] modifiers = interfaceDefinition.getModifiers();
-    boolean isImmutable = false;
-    SinceSpecifier sinceSpecifier = null;
-    for (ModifierAST modifier : modifiers)
-    {
-      switch (modifier.getType())
-      {
-      case IMMUTABLE:
-        isImmutable = true;
-        break;
-      case SINCE_SPECIFIER:
-        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier);
-        break;
-      default:
-        throw new ConceptualException("Illegal Modifier for an Interface Definition", modifier.getParseInfo());
-      }
-    }
-
-    return new ConceptualInterface(access, isImmutable, sinceSpecifier, interfaceDefinition.getName().getName());
   }
 
   /**
@@ -125,6 +94,22 @@ public class ConceptualInterface
     this.innerClasses = innerClasses;
     this.innerInterfaces = innerInterfaces;
     this.innerEnums = innerEnums;
+  }
+
+  /**
+   * @return the scope
+   */
+  public Scope getScope()
+  {
+    return scope;
+  }
+
+  /**
+   * @param scope - the scope to set
+   */
+  public void setScope(Scope scope)
+  {
+    this.scope = scope;
   }
 
   /**

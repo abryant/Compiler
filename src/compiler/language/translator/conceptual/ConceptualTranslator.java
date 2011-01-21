@@ -1,12 +1,11 @@
 package compiler.language.translator.conceptual;
 
-import java.util.Map;
 import java.util.Set;
 
-import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.topLevel.CompilationUnitAST;
-import compiler.language.ast.topLevel.ImportDeclarationAST;
 import compiler.language.conceptual.ConceptualException;
+import compiler.language.conceptual.ConceptualProgram;
+import compiler.language.conceptual.Scope;
 
 /*
  * Created on 14 Nov 2010
@@ -19,8 +18,9 @@ public class ConceptualTranslator
 {
 
   private Scope rootScope;
+  private ConceptualProgram program;
   private Set<CompilationUnitAST> compilationUnits;
-  private NameScanner nameScanner;
+  private ASTConverter astConverter;
 
   /**
    * Creates a new ConceptualTranslator for the specified compilation units.
@@ -30,11 +30,12 @@ public class ConceptualTranslator
   {
     this.compilationUnits = compilationUnits;
     rootScope = ScopeFactory.createRootScope();
-    nameScanner = new NameScanner(rootScope);
+    program = new ConceptualProgram(rootScope);
+    astConverter = new ASTConverter(program);
   }
 
   /**
-   * Translates the ASTs provided to this object's constructor into a conceptual object heirarchy.
+   * Translates the ASTs provided to this object's constructor into a conceptual object hierarchy.
    */
   public void translate()
   {
@@ -42,7 +43,7 @@ public class ConceptualTranslator
     {
       for (CompilationUnitAST compilationUnit : compilationUnits)
       {
-        nameScanner.scanCompilationUnit(compilationUnit);
+        astConverter.convert(compilationUnit);
       }
     }
     catch (ScopeException e)
@@ -56,6 +57,7 @@ public class ConceptualTranslator
 
   }
 
+  /* TODO: move this elsewhere
   private void resolveImports() throws ConceptualException
   {
     Map<CompilationUnitAST, Scope> fileScopes = nameScanner.getFileScopes();
@@ -93,5 +95,6 @@ public class ConceptualTranslator
       }
     }
   }
+  */
 
 }

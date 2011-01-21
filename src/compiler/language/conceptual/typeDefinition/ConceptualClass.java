@@ -1,16 +1,6 @@
 package compiler.language.conceptual.typeDefinition;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.sun.org.apache.bcel.internal.classfile.InnerClass;
-import compiler.language.ast.member.FieldAST;
-import compiler.language.ast.member.MemberAST;
-import compiler.language.ast.member.MethodAST;
-import compiler.language.ast.misc.ModifierAST;
-import compiler.language.ast.terminal.SinceSpecifierAST;
-import compiler.language.ast.typeDefinition.ClassDefinitionAST;
-import compiler.language.conceptual.ConceptualException;
+import compiler.language.conceptual.Scope;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
@@ -21,8 +11,6 @@ import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.type.PointerType;
 import compiler.language.conceptual.type.TypeArgument;
-import compiler.language.translator.conceptual.Scope;
-import compiler.language.translator.conceptual.ScopedMemberSet;
 
 /*
  * Created on 16 Oct 2010
@@ -48,16 +36,18 @@ public class ConceptualClass
 
   // members
   private StaticInitializer staticInitializer;
-  private MemberVariable[] staticVariables;
-  private Constructor[] constructors;
-  private Property[] properties;
-  private MemberVariable[] variables;
   private VariableInitializers variableInitializers;
+  private MemberVariable[] staticVariables;
+  private MemberVariable[] variables;
+  private Property[] properties;
+  private Constructor[] constructors;
   private Method[] methods;
 
   private InnerClass[] innerClasses;
   private ConceptualInterface[] innerInterfaces;
   private ConceptualEnum[] innerEnums;
+
+  private Scope scope = null;
 
   /**
    * Creates a new Conceptual class with the specified properties.
@@ -81,130 +71,58 @@ public class ConceptualClass
   }
 
   /**
-   * Creates a new ConceptualClass from the specified ClassDefinitionAST.
-   * @param classDefinition - the ClassDefinitionAST to base the new ConceptualClass on
-   * @return the ConceptualClass created
-   * @throws ConceptualException - if there is a problem converting the AST instance to a Conceptual instance
+   * Sets the type arguments of this conceptual class
+   * @param typeArguments - the new type arguments for this conceptual class
    */
-  public static ConceptualClass fromAST(ClassDefinitionAST classDefinition) throws ConceptualException
-  {
-    AccessSpecifier access = AccessSpecifier.fromAST(classDefinition.getAccess());
-    ModifierAST[] modifiers = classDefinition.getModifiers();
-    boolean isAbstract = false;
-    boolean isFinal = false;
-    boolean isImmutable = false;
-    SinceSpecifier sinceSpecifier = null;
-    for (ModifierAST modifier : modifiers)
-    {
-      switch (modifier.getType())
-      {
-      case ABSTRACT:
-        isAbstract = true;
-        break;
-      case FINAL:
-        isFinal = true;
-        break;
-      case IMMUTABLE:
-        isImmutable = true;
-        break;
-      case SINCE_SPECIFIER:
-        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier);
-        break;
-      default:
-        throw new ConceptualException("Illegal Modifier for a Class Definition", modifier.getParseInfo());
-      }
-    }
-
-    return new ConceptualClass(access, isAbstract, isFinal, isImmutable, sinceSpecifier, classDefinition.getName().getName());
-  }
-
-  /**
-   *
-   * @param classDefinition
-   * @param classScope
-   * @throws ConceptualException
-   */
-  public void buildScope(ClassDefinitionAST classDefinition, Scope classScope) throws ConceptualException
-  {
-    // TODO: type arguments
-    MemberAST[] members = classDefinition.getMembers();
-    Map<String, ScopedMemberSet> membersByName = new HashMap<String, ScopedMemberSet>();
-    for (MemberAST member : members)
-    {
-      if (member instanceof FieldAST)
-      {
-        MemberVariable[] memberVariables = MemberVariable.fromAST((FieldAST) member);
-        for (MemberVariable variable : memberVariables)
-        {
-          ScopedMemberSet scopedMemberSet = membersByName.get(variable.getName());
-          if (scopedMemberSet == null)
-          {
-            scopedMemberSet = new ScopedMemberSet();
-            membersByName.put(variable.getName(), scopedMemberSet);
-          }
-          if (variable.isStatic())
-          {
-            scopedMemberSet.addStaticVariable(variable);
-          }
-          else
-          {
-            scopedMemberSet.addVariable(variable);
-          }
-        }
-      }
-      else if (member instanceof MethodAST)
-      {
-
-      }
-    }
-  }
-
-  /**
-   * Sets the headers of this conceptual class, including type arguments, base class, and implemented interfaces
-   * @param typeArguments
-   * @param baseClass
-   * @param interfaces
-   */
-  public void setHeaders(TypeArgument[] typeArguments, PointerType baseClass, PointerType[] interfaces)
+  public void setTypeArguments(TypeArgument[] typeArguments)
   {
     this.typeArguments = typeArguments;
-    this.baseClass = baseClass;
-    this.interfaces = interfaces;
   }
 
   /**
    * Sets the members of this conceptual class
    * @param staticInitializer
-   * @param staticVariables
-   * @param constructors
-   * @param properties
-   * @param variables
    * @param variableInitializers
+   * @param staticVariables
+   * @param variables
+   * @param properties
+   * @param constructors
    * @param methods
-   */
-  public void setMembers(StaticInitializer staticInitializer, MemberVariable[] staticVariables, Constructor[] constructors,
-                         Property[] properties, MemberVariable[] variables, VariableInitializers variableInitializers, Method[] methods)
-  {
-    this.staticInitializer = staticInitializer;
-    this.staticVariables = staticVariables;
-    this.constructors = constructors;
-    this.properties = properties;
-    this.variables = variables;
-    this.variableInitializers = variableInitializers;
-    this.methods = methods;
-  }
-
-  /**
-   * Sets the inner type definitions for this conceptual class.
    * @param innerClasses
    * @param innerInterfaces
    * @param innerEnums
    */
-  public void setInnerTypeDefinitions(InnerClass[] innerClasses, ConceptualInterface[] innerInterfaces, ConceptualEnum[] innerEnums)
+  public void setMembers(StaticInitializer staticInitializer, VariableInitializers variableInitializers,
+                         MemberVariable[] staticVariables, MemberVariable[] variables,
+                         Property[] properties, Constructor[] constructors, Method[] methods,
+                         InnerClass[] innerClasses, ConceptualInterface[] innerInterfaces, ConceptualEnum[] innerEnums)
   {
+    this.staticInitializer = staticInitializer;
+    this.variableInitializers = variableInitializers;
+    this.staticVariables = staticVariables;
+    this.variables = variables;
+    this.properties = properties;
+    this.constructors = constructors;
+    this.methods = methods;
     this.innerClasses = innerClasses;
     this.innerInterfaces = innerInterfaces;
     this.innerEnums = innerEnums;
+  }
+
+  /**
+   * @return the scope
+   */
+  public Scope getScope()
+  {
+    return scope;
+  }
+
+  /**
+   * @param scope - the scope to set
+   */
+  public void setScope(Scope scope)
+  {
+    this.scope = scope;
   }
 
   /**

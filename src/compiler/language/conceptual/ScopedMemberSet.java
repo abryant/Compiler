@@ -1,9 +1,8 @@
-package compiler.language.translator.conceptual;
+package compiler.language.conceptual;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
@@ -25,12 +24,68 @@ public class ScopedMemberSet
   private Set<MemberVariable> staticVariables;
   private Set<MemberVariable> variables;
   private Set<Property> properties;
-  private Set<Constructor> constructors;
   private Set<Method> methods;
 
   private Set<InnerClass> innerClasses;
   private Set<ConceptualInterface> innerInterfaces;
   private Set<ConceptualEnum> innerEnums;
+
+  /**
+   * Adds all of the members in the specified other set to this set
+   * @param otherSet - the other ScopedMemberSet to get the members from
+   */
+  public void addAll(ScopedMemberSet otherSet)
+  {
+    if (otherSet.staticVariables != null)
+    {
+      for (MemberVariable staticVariable : otherSet.staticVariables)
+      {
+        addStaticVariable(staticVariable);
+      }
+    }
+    if (otherSet.variables != null)
+    {
+      for (MemberVariable variable : otherSet.variables)
+      {
+        addVariable(variable);
+      }
+    }
+    if (otherSet.properties != null)
+    {
+      for (Property property : otherSet.properties)
+      {
+        addProperty(property);
+      }
+    }
+    if (otherSet.methods != null)
+    {
+      for (Method method : otherSet.methods)
+      {
+        addMethod(method);
+      }
+    }
+    if (otherSet.innerClasses != null)
+    {
+      for (InnerClass innerClass : otherSet.innerClasses)
+      {
+        addInnerClass(innerClass);
+      }
+    }
+    if (otherSet.innerInterfaces != null)
+    {
+      for (ConceptualInterface innerInterface : otherSet.innerInterfaces)
+      {
+        addInnerInterface(innerInterface);
+      }
+    }
+    if (otherSet.innerEnums != null)
+    {
+      for (ConceptualEnum innerEnum : otherSet.innerEnums)
+      {
+        addInnerEnum(innerEnum);
+      }
+    }
+  }
 
   /**
    * Adds the specified static variable to this ScopedMemberSet
@@ -69,19 +124,6 @@ public class ScopedMemberSet
       properties = new HashSet<Property>();
     }
     properties.add(property);
-  }
-
-  /**
-   * Adds the specified constructor to this ScopedMemberSet
-   * @param constructor - the constructor to add
-   */
-  public void addConstructor(Constructor constructor)
-  {
-    if (constructors == null)
-    {
-      constructors = new HashSet<Constructor>();
-    }
-    constructors.add(constructor);
   }
 
   /**
@@ -156,13 +198,6 @@ public class ScopedMemberSet
   public Set<Property> getProperties()
   {
     return properties;
-  }
-  /**
-   * @return the constructors, or null if there are none
-   */
-  public Set<Constructor> getConstructors()
-  {
-    return constructors;
   }
   /**
    * @return the methods, or null if there are none

@@ -1,9 +1,6 @@
 package compiler.language.conceptual.typeDefinition;
 
-import compiler.language.ast.misc.ModifierAST;
-import compiler.language.ast.terminal.SinceSpecifierAST;
-import compiler.language.ast.typeDefinition.EnumDefinitionAST;
-import compiler.language.conceptual.ConceptualException;
+import compiler.language.conceptual.Scope;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
@@ -44,6 +41,8 @@ public class ConceptualEnum
   private ConceptualInterface[] innerInterfaces;
   private ConceptualEnum[] innerEnums;
 
+  private Scope scope;
+
   /**
    * Creates a new Conceptual enum with the specified properties.
    * The members of the new enum and other data must be set later on.
@@ -56,32 +55,6 @@ public class ConceptualEnum
     this.accessSpecifier = accessSpecifier;
     this.sinceSpecifier = sinceSpecifier;
     this.name = name;
-  }
-
-  /**
-   * Creates a new ConceptualEnum from the specified EnumDefinitionAST.
-   * @param enumDefinition - the EnumDefinitionAST to base the new ConceptualEnum on
-   * @return the ConceptualEnum created
-   * @throws ConceptualException - if there is a problem converting the AST instance to a Conceptual instance
-   */
-  public static ConceptualEnum fromAST(EnumDefinitionAST enumDefinition) throws ConceptualException
-  {
-    AccessSpecifier accessSpecifier = AccessSpecifier.fromAST(enumDefinition.getAccessSpecifier());
-    ModifierAST[] modifiers = enumDefinition.getModifiers();
-    SinceSpecifier sinceSpecifier = null;
-    for (ModifierAST modifier : modifiers)
-    {
-      switch (modifier.getType())
-      {
-      case SINCE_SPECIFIER:
-        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier);
-        break;
-      default:
-        throw new ConceptualException("Illegal Modifier for an Enum Definition", modifier.getParseInfo());
-      }
-    }
-
-    return new ConceptualEnum(accessSpecifier, sinceSpecifier, enumDefinition.getName().getName());
   }
 
   /**
@@ -138,6 +111,22 @@ public class ConceptualEnum
     this.innerClasses = innerClasses;
     this.innerInterfaces = innerInterfaces;
     this.innerEnums = innerEnums;
+  }
+
+  /**
+   * @return the scope
+   */
+  public Scope getScope()
+  {
+    return scope;
+  }
+
+  /**
+   * @param scope - the scope to set
+   */
+  public void setScope(Scope scope)
+  {
+    this.scope = scope;
   }
 
   /**

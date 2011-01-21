@@ -13,4 +13,6 @@ public class StaticInitializer
   // TODO: this should be a simple list of statements that get executed in order
   // note: multiple static initializers and static variable definitions should be coalesced into a single static initializer
 
+  // this should have a no-argument constructor, and methods for adding statements or other static initializers
+
 }

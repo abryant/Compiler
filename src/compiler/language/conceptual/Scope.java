@@ -1,6 +1,8 @@
-package compiler.language.translator.conceptual;
+package compiler.language.conceptual;
 
 import java.util.Map;
+
+import compiler.language.translator.conceptual.ScopeException;
 
 /*
  * Created on 14 Nov 2010

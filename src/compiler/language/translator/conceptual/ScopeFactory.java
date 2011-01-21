@@ -1,9 +1,8 @@
 package compiler.language.translator.conceptual;
 
-import compiler.language.ast.typeDefinition.ClassDefinitionAST;
-import compiler.language.ast.typeDefinition.EnumDefinitionAST;
-import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
-import compiler.language.conceptual.ConceptualException;
+import compiler.language.conceptual.Scope;
+import compiler.language.conceptual.ScopeType;
+import compiler.language.conceptual.ScopedMemberSet;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
@@ -72,11 +71,10 @@ public class ScopeFactory
    * @param classDefinition - the class definition value to store in the new scope
    * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
    * @return the scope created
-   * @throws ConceptualException - if there is a problem converting the ClassDefinitionAST to a ConceptualClass
    */
-  public static Scope createClassDefinitionScope(ClassDefinitionAST classDefinition, Scope parentScope) throws ConceptualException
+  public static Scope createClassDefinitionScope(ConceptualClass classDefinition, Scope parentScope)
   {
-    return new Scope(parentScope, ScopeType.CLASS, ConceptualClass.fromAST(classDefinition));
+    return new Scope(parentScope, ScopeType.CLASS, classDefinition);
   }
 
   /**
@@ -84,11 +82,10 @@ public class ScopeFactory
    * @param interfaceDefinition - the interface definition value to store in the new scope
    * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
    * @return the scope created
-   * @throws ConceptualException - if there is a problem converting the InterfaceDefinitionAST to a ConceptualInterface
    */
-  public static Scope createInterfaceDefinitionScope(InterfaceDefinitionAST interfaceDefinition, Scope parentScope) throws ConceptualException
+  public static Scope createInterfaceDefinitionScope(ConceptualInterface interfaceDefinition, Scope parentScope)
   {
-    return new Scope(parentScope, ScopeType.INTERFACE, ConceptualInterface.fromAST(interfaceDefinition));
+    return new Scope(parentScope, ScopeType.INTERFACE, interfaceDefinition);
   }
 
   /**
@@ -96,10 +93,20 @@ public class ScopeFactory
    * @param enumDefinition - the enum definition value to store in the new scope
    * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
    * @return the scope created
-   * @throws ConceptualException - if there is a problem converting the EnumDefinitionAST to a ConceptualEnum
    */
-  public static Scope createEnumDefinitionScope(EnumDefinitionAST enumDefinition, Scope parentScope) throws ConceptualException
+  public static Scope createEnumDefinitionScope(ConceptualEnum enumDefinition, Scope parentScope)
   {
-    return new Scope(parentScope, ScopeType.ENUM, ConceptualEnum.fromAST(enumDefinition));
+    return new Scope(parentScope, ScopeType.ENUM, enumDefinition);
+  }
+
+  /**
+   * Creates a new scope for a set of members in a type definition.
+   * @param memberSet - the member set to store in the new scope
+   * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
+   * @return the scope created
+   */
+  public static Scope createMemberSetScope(ScopedMemberSet memberSet, Scope parentScope)
+  {
+    return new Scope(parentScope, ScopeType.MEMBER, memberSet);
   }
 }
