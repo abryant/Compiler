@@ -53,14 +53,20 @@ public class ASTConverter
 {
 
   private ConceptualProgram program;
+  private Scope rootScope;
+
+  private Map<Object, Scope> scopes = new HashMap<Object, Scope>();
 
   /**
    * Creates a new ASTConverter that will add all converted AST nodes to the specified ConceptualProgram
    * @param program - the ConceptualProgram to add all converted AST nodes to
+   * @param rootScope - the root scope of the program
    */
-  public ASTConverter(ConceptualProgram program)
+  public ASTConverter(ConceptualProgram program, Scope rootScope)
   {
     this.program = program;
+    this.rootScope = rootScope;
+    scopes.put(program, rootScope);
   }
 
   /**
@@ -75,12 +81,12 @@ public class ASTConverter
     Scope enclosingScope = null;
     if (packageDeclaration == null)
     {
-      enclosingScope = program.getRootScope();
+      enclosingScope = rootScope;
     }
     else
     {
       QNameAST packageName = packageDeclaration.getPackageName();
-      enclosingScope = ScopeFactory.getPackageScope(program.getRootScope(), packageName.getNameStrings());
+      enclosingScope = ScopeFactory.getPackageScope(rootScope, packageName.getNameStrings());
     }
 
     Scope fileScope = ScopeFactory.createFileScope(enclosingScope);
@@ -90,18 +96,15 @@ public class ASTConverter
       Scope typeScope = null;
       if (typeDefinition instanceof ClassDefinitionAST)
       {
-        ConceptualClass conceptualClass = convert((ClassDefinitionAST) typeDefinition, fileScope);
-        typeScope = conceptualClass.getScope();
+        typeScope = convert((ClassDefinitionAST) typeDefinition, fileScope);
       }
       else if (typeDefinition instanceof InterfaceDefinitionAST)
       {
-        ConceptualInterface conceptualInterface = convert((InterfaceDefinitionAST) typeDefinition, fileScope);
-        typeScope = conceptualInterface.getScope();
+        typeScope = convert((InterfaceDefinitionAST) typeDefinition, fileScope);
       }
       else if (typeDefinition instanceof EnumDefinitionAST)
       {
-        ConceptualEnum conceptualEnum = convert((EnumDefinitionAST) typeDefinition, fileScope);
-        typeScope = conceptualEnum.getScope();
+        typeScope = convert((EnumDefinitionAST) typeDefinition, fileScope);
       }
       else
       {
@@ -117,10 +120,10 @@ public class ASTConverter
    * Converts the specified ClassDefinitionAST into a ConceptualClass.
    * @param classDefinition - the ClassDefinitionAST to convert
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
-   * @return the ConceptualClass created
+   * @return the Scope of the ConceptualClass created, which has the ConceptualClass as its value
    * @throws ConceptualException - if there is a problem with the conversion
    */
-  private ConceptualClass convert(ClassDefinitionAST classDefinition, Scope enclosingScope) throws ConceptualException
+  private Scope convert(ClassDefinitionAST classDefinition, Scope enclosingScope) throws ConceptualException
   {
     // convert AccessSpecifier and Modifiers
     AccessSpecifier access = AccessSpecifier.fromAST(classDefinition.getAccess());
@@ -153,15 +156,16 @@ public class ASTConverter
     // Create the ConceptualClass and the scope for it
     ConceptualClass conceptualClass = new ConceptualClass(access, isAbstract, isFinal, isImmutable, sinceSpecifier, classDefinition.getName().getName());
     Scope scope = ScopeFactory.createClassDefinitionScope(conceptualClass, enclosingScope);
-    conceptualClass.setScope(scope);
+    scopes.put(conceptualClass, scope);
 
     // convert the type arguments
     TypeArgumentAST[] typeArgumentASTs = classDefinition.getTypeArguments();
     TypeArgument[] typeArguments = new TypeArgument[typeArgumentASTs.length];
     for (int i = 0; i < typeArgumentASTs.length; i++)
     {
-      typeArguments[i] = convert(typeArgumentASTs[i], scope);
-      scope.addChild(typeArgumentASTs[i].getName(), typeArguments[i].getScope());
+      Scope typeArgumentScope = convert(typeArgumentASTs[i], scope);
+      typeArguments[i] = (TypeArgument) typeArgumentScope.getValue();
+      scope.addChild(typeArgumentASTs[i].getName().getName(), typeArgumentScope);
     }
 
 
@@ -182,9 +186,10 @@ public class ASTConverter
     {
       if (memberAST instanceof FieldAST)
       {
-        MemberVariable[] memberVariables = convert((FieldAST) memberAST, scope);
-        for (MemberVariable variable : memberVariables)
+        Scope[] variableScopes = convert((FieldAST) memberAST, scope);
+        for (Scope variableScope : variableScopes)
         {
+          MemberVariable variable = (MemberVariable) variableScope.getValue();
           ScopedMemberSet memberSet = new ScopedMemberSet();
           if (variable.isStatic())
           {
@@ -201,7 +206,8 @@ public class ASTConverter
       }
       else if (memberAST instanceof PropertyAST)
       {
-        Property property = convert((PropertyAST) memberAST, scope);
+        Scope propertyScope = convert((PropertyAST) memberAST, scope);
+        Property property = (Property) propertyScope.getValue();
         ScopedMemberSet memberSet = new ScopedMemberSet();
         memberSet.addProperty(property);
         combineMembers(membersByName, property.getName(), memberSet);
@@ -219,7 +225,8 @@ public class ASTConverter
       }
       else if (memberAST instanceof MethodAST)
       {
-        Method method = convert((MethodAST) memberAST, scope);
+        Scope methodScope = convert((MethodAST) memberAST, scope);
+        Method method = (Method) methodScope.getValue();
         ScopedMemberSet memberSet = new ScopedMemberSet();
         memberSet.addMethod(method);
         combineMembers(membersByName, method.getName(), memberSet);
@@ -227,7 +234,8 @@ public class ASTConverter
       }
       else if (memberAST instanceof ClassDefinitionAST)
       {
-        InnerClass innerClass = convertInnerClass((ClassDefinitionAST) memberAST, scope);
+        Scope innerClassScope = convertInnerClass((ClassDefinitionAST) memberAST, scope);
+        InnerClass innerClass = (InnerClass) innerClassScope.getValue();
         ScopedMemberSet memberSet = new ScopedMemberSet();
         memberSet.addInnerClass(innerClass);
         combineMembers(membersByName, innerClass.getName(), memberSet);
@@ -235,14 +243,16 @@ public class ASTConverter
       }
       else if (memberAST instanceof InterfaceDefinitionAST)
       {
-        ConceptualInterface innerInterface = convertInnerInterface((InterfaceDefinitionAST) memberAST, scope);
+        Scope innerInterfaceScope = convertInnerInterface((InterfaceDefinitionAST) memberAST, scope);
+        ConceptualInterface innerInterface = (ConceptualInterface) innerInterfaceScope.getValue();
         ScopedMemberSet memberSet = new ScopedMemberSet();
         memberSet.addInnerInterface(innerInterface);
         innerInterfaces.add(innerInterface);
       }
       else if (memberAST instanceof EnumDefinitionAST)
       {
-        ConceptualEnum innerEnum = convertInnerEnum((EnumDefinitionAST) memberAST, scope);
+        Scope innerEnumScope = convertInnerEnum((EnumDefinitionAST) memberAST, scope);
+        ConceptualEnum innerEnum = (ConceptualEnum) innerEnumScope.getValue();
         ScopedMemberSet memberSet = new ScopedMemberSet();
         memberSet.addInnerEnum(innerEnum);
         innerEnums.add(innerEnum);
@@ -269,17 +279,17 @@ public class ASTConverter
                                innerInterfaces.toArray(new ConceptualInterface[0]),
                                innerEnums.toArray(new ConceptualEnum[0]));
 
-    return conceptualClass;
+    return scope;
   }
 
   /**
    * Converts the specified InterfaceDefinitionAST into a ConceptualInterface.
    * @param interfaceDefinition - the InterfaceDefinitionAST to convert
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
-   * @return the ConceptualInterface created
+   * @return the Scope of the ConceptualInterface created, which has the ConceptualInterface as its value
    * @throws ConceptualException - if there is a problem with the conversion
    */
-  private ConceptualInterface convert(InterfaceDefinitionAST interfaceDefinition, Scope enclosingScope) throws ConceptualException
+  private Scope convert(InterfaceDefinitionAST interfaceDefinition, Scope enclosingScope) throws ConceptualException
   {
     AccessSpecifier access = AccessSpecifier.fromAST(interfaceDefinition.getAccess());
     ModifierAST[] modifiers = interfaceDefinition.getModifiers();
@@ -302,22 +312,22 @@ public class ASTConverter
 
     ConceptualInterface conceptualInterface = new ConceptualInterface(access, isImmutable, sinceSpecifier, interfaceDefinition.getName().getName());
     Scope scope = ScopeFactory.createInterfaceDefinitionScope(conceptualInterface, enclosingScope);
-    conceptualInterface.setScope(scope);
+    scopes.put(conceptualInterface, scope);
 
     // TODO: add all other information that doesn't need looking up in the scope table
     //       also, add the scopes of the new conceptual objects to this object's scope
 
-    return conceptualInterface;
+    return scope;
   }
 
   /**
    * Converts the specified EnumDefinitionAST into a ConceptualEnum.
    * @param enumDefinition - the EnumDefinitionAST to convert
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
-   * @return the ConceptualEnum created
+   * @return the Scope of the ConceptualEnum created, which has the ConceptualEnum as its value
    * @throws ConceptualException - if there is a problem with the conversion
    */
-  private ConceptualEnum convert(EnumDefinitionAST enumDefinition, Scope enclosingScope) throws ConceptualException
+  private Scope convert(EnumDefinitionAST enumDefinition, Scope enclosingScope) throws ConceptualException
   {
     AccessSpecifier accessSpecifier = AccessSpecifier.fromAST(enumDefinition.getAccessSpecifier());
     ModifierAST[] modifiers = enumDefinition.getModifiers();
@@ -336,12 +346,12 @@ public class ASTConverter
 
     ConceptualEnum conceptualEnum = new ConceptualEnum(accessSpecifier, sinceSpecifier, enumDefinition.getName().getName());
     Scope scope = ScopeFactory.createEnumDefinitionScope(conceptualEnum, enclosingScope);
-    conceptualEnum.setScope(scope);
+    scopes.put(conceptualEnum, scope);
 
     // TODO: add all other information that doesn't need looking up in the scope table
     //       also, add the scopes of the new conceptual objects to this object's scope
 
-    return conceptualEnum;
+    return scope;
   }
 
   /**
@@ -362,7 +372,7 @@ public class ASTConverter
     existingSet.addAll(memberSet);
   }
 
-  private Constructor convert(ConstructorAST constructorAST, Scope enclosingScope)
+  private Scope convert(ConstructorAST constructorAST, Scope enclosingScope)
   {
 
   }

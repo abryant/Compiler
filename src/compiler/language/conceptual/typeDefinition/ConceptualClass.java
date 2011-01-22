@@ -1,6 +1,5 @@
 package compiler.language.conceptual.typeDefinition;
 
-import compiler.language.conceptual.Scope;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
@@ -46,8 +45,6 @@ public class ConceptualClass
   private InnerClass[] innerClasses;
   private ConceptualInterface[] innerInterfaces;
   private ConceptualEnum[] innerEnums;
-
-  private Scope scope = null;
 
   /**
    * Creates a new Conceptual class with the specified properties.
@@ -107,22 +104,6 @@ public class ConceptualClass
     this.innerClasses = innerClasses;
     this.innerInterfaces = innerInterfaces;
     this.innerEnums = innerEnums;
-  }
-
-  /**
-   * @return the scope
-   */
-  public Scope getScope()
-  {
-    return scope;
-  }
-
-  /**
-   * @param scope - the scope to set
-   */
-  public void setScope(Scope scope)
-  {
-    this.scope = scope;
   }
 
   /**

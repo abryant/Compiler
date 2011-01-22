@@ -20,17 +20,6 @@ public class ConceptualProgram
   private Set<ConceptualInterface> interfaces = new HashSet<ConceptualInterface>();
   private Set<ConceptualEnum> enums = new HashSet<ConceptualEnum>();
 
-  private Scope scope;
-
-  /**
-   * Creates a new ConceptualProgram.
-   * @param scope - the root scope
-   */
-  public ConceptualProgram(Scope scope)
-  {
-    this.scope = scope;
-  }
-
   /**
    * Adds the specified class to this ConceptualProgram
    * @param newClass - the class to add
@@ -56,14 +45,6 @@ public class ConceptualProgram
   public void addEnum(ConceptualEnum newEnum)
   {
     enums.add(newEnum);
-  }
-
-  /**
-   * @return the root scope for this program
-   */
-  public Scope getRootScope()
-  {
-    return scope;
   }
 
   /**
