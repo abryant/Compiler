@@ -363,6 +363,18 @@ public class ASTConverter
     existingSet.addAll(memberSet);
   }
 
+  /**
+   * Converts the specified TypeArgumentAST into a TypeArgument.
+   * @param typeArgumentAST - the TypeArgumentAST to convert
+   * @param enclosingScope - the scope to make the parentof the new conceptual object's scope
+   * @return the Scope of the TypeArgument created, which has the TypeArgument as its value
+   */
+  private Scope convert(TypeArgumentAST typeArgumentAST, Scope enclosingScope)
+  {
+    TypeArgument typeArgument = new TypeArgument(typeArgumentAST.getName().getName());
+    return ScopeFactory.createTypeArgumentScope(typeArgument, enclosingScope);
+  }
+
   private Scope convert(ConstructorAST constructorAST, Scope enclosingScope)
   {
 

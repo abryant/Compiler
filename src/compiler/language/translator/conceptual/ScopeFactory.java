@@ -3,6 +3,7 @@ package compiler.language.translator.conceptual;
 import compiler.language.conceptual.Scope;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.ScopedMemberSet;
+import compiler.language.conceptual.type.TypeArgument;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
@@ -97,6 +98,17 @@ public class ScopeFactory
   public static Scope createEnumDefinitionScope(ConceptualEnum enumDefinition, Scope parentScope)
   {
     return new Scope(parentScope, ScopeType.ENUM, enumDefinition);
+  }
+
+  /**
+   * Creates a new scope for a type argument definition.
+   * @param typeArgument - the type argument value to store in the new scope
+   * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
+   * @return the scope created
+   */
+  public static Scope createTypeArgumentScope(TypeArgument typeArgument, Scope parentScope)
+  {
+    return new Scope(parentScope, ScopeType.TYPE_ARGUMENT, typeArgument);
   }
 
   /**
