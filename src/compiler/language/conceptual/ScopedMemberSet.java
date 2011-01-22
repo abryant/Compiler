@@ -21,7 +21,6 @@ import compiler.language.conceptual.typeDefinition.InnerClass;
 public class ScopedMemberSet
 {
 
-  private Set<MemberVariable> staticVariables;
   private Set<MemberVariable> variables;
   private Set<Property> properties;
   private Set<Method> methods;
@@ -36,13 +35,6 @@ public class ScopedMemberSet
    */
   public void addAll(ScopedMemberSet otherSet)
   {
-    if (otherSet.staticVariables != null)
-    {
-      for (MemberVariable staticVariable : otherSet.staticVariables)
-      {
-        addStaticVariable(staticVariable);
-      }
-    }
     if (otherSet.variables != null)
     {
       for (MemberVariable variable : otherSet.variables)
@@ -85,19 +77,6 @@ public class ScopedMemberSet
         addInnerEnum(innerEnum);
       }
     }
-  }
-
-  /**
-   * Adds the specified static variable to this ScopedMemberSet
-   * @param staticVariable - the static variable to add
-   */
-  public void addStaticVariable(MemberVariable staticVariable)
-  {
-    if (staticVariables == null)
-    {
-      staticVariables = new HashSet<MemberVariable>();
-    }
-    staticVariables.add(staticVariable);
   }
 
   /**
@@ -178,13 +157,6 @@ public class ScopedMemberSet
     innerEnums.add(innerEnum);
   }
 
-  /**
-   * @return the staticVariables, or null if there are none
-   */
-  public Set<MemberVariable> getStaticVariables()
-  {
-    return staticVariables;
-  }
   /**
    * @return the variables, or null if there are none
    */

@@ -23,10 +23,9 @@ public class EnumConstant
 
   // members
   private StaticInitializer staticInitializer;
-  private MemberVariable[] staticVariables;
   private Constructor[] constructors;
   private Property[] properties;
-  private MemberVariable[] memberVariables;
+  private MemberVariable[] variables;
   private VariableInitializers variableInitializers;
   private Method[] methods;
 
@@ -66,22 +65,20 @@ public class EnumConstant
   /**
    * Sets the members of this enum constant.
    * @param staticInitializer
-   * @param staticVariables
    * @param constructors
    * @param properties
-   * @param memberVariables
+   * @param variables
    * @param variableInitializers
    * @param methods
    */
-  public void setMembers(StaticInitializer staticInitializer, MemberVariable[] staticVariables,
-                         Constructor[] constructors, Property[] properties, MemberVariable[] memberVariables,
+  public void setMembers(StaticInitializer staticInitializer, Constructor[] constructors,
+                         Property[] properties, MemberVariable[] variables,
                          VariableInitializers variableInitializers, Method[] methods)
   {
     this.staticInitializer = staticInitializer;
-    this.staticVariables = staticVariables;
     this.constructors = constructors;
     this.properties = properties;
-    this.memberVariables = memberVariables;
+    this.variables = variables;
     this.variableInitializers = variableInitializers;
     this.methods = methods;
   }
@@ -121,13 +118,6 @@ public class EnumConstant
     return staticInitializer;
   }
   /**
-   * @return the staticVariables
-   */
-  public MemberVariable[] getStaticVariables()
-  {
-    return staticVariables;
-  }
-  /**
    * @return the constructors
    */
   public Constructor[] getConstructors()
@@ -142,11 +132,11 @@ public class EnumConstant
     return properties;
   }
   /**
-   * @return the memberVariables
+   * @return the variables
    */
-  public MemberVariable[] getMemberVariables()
+  public MemberVariable[] getVariables()
   {
-    return memberVariables;
+    return variables;
   }
   /**
    * @return the variableInitializers

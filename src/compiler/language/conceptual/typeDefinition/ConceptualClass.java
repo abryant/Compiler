@@ -36,7 +36,6 @@ public class ConceptualClass
   // members
   private StaticInitializer staticInitializer;
   private VariableInitializers variableInitializers;
-  private MemberVariable[] staticVariables;
   private MemberVariable[] variables;
   private Property[] properties;
   private Constructor[] constructors;
@@ -80,7 +79,6 @@ public class ConceptualClass
    * Sets the members of this conceptual class
    * @param staticInitializer
    * @param variableInitializers
-   * @param staticVariables
    * @param variables
    * @param properties
    * @param constructors
@@ -90,13 +88,11 @@ public class ConceptualClass
    * @param innerEnums
    */
   public void setMembers(StaticInitializer staticInitializer, VariableInitializers variableInitializers,
-                         MemberVariable[] staticVariables, MemberVariable[] variables,
-                         Property[] properties, Constructor[] constructors, Method[] methods,
+                         MemberVariable[] variables, Property[] properties, Constructor[] constructors, Method[] methods,
                          InnerClass[] innerClasses, ConceptualInterface[] innerInterfaces, ConceptualEnum[] innerEnums)
   {
     this.staticInitializer = staticInitializer;
     this.variableInitializers = variableInitializers;
-    this.staticVariables = staticVariables;
     this.variables = variables;
     this.properties = properties;
     this.constructors = constructors;
@@ -175,13 +171,6 @@ public class ConceptualClass
   public StaticInitializer getStaticInitializer()
   {
     return staticInitializer;
-  }
-  /**
-   * @return the staticVariables
-   */
-  public MemberVariable[] getStaticVariables()
-  {
-    return staticVariables;
   }
   /**
    * @return the constructors

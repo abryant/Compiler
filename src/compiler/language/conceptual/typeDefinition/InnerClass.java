@@ -13,6 +13,9 @@ import compiler.language.conceptual.misc.SinceSpecifier;
 public class InnerClass extends ConceptualClass
 {
 
+  private boolean isStatic; // true if objects of this type do not store a reference to the outer class
+  private ConceptualClass outerClass;
+
   /**
    * Creates a new InnerClass with the specified properties.
    * @param accessSpecifier
@@ -31,9 +34,6 @@ public class InnerClass extends ConceptualClass
     this.isStatic = isStatic;
     this.outerClass = outerClass;
   }
-
-  private boolean isStatic; // true if objects of this type do not store a reference to the outer class
-  private ConceptualClass outerClass;
 
   /**
    * @return the isStatic

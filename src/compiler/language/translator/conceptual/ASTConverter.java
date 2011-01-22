@@ -172,7 +172,6 @@ public class ASTConverter
     // convert each of the members in turn, switching on the member type
     // each member is added to a list of the members of its type, and also to membersByName, which stores a ScopedMemberSet for each different name
     Map<String, ScopedMemberSet> membersByName = new HashMap<String, ScopedMemberSet>();
-    List<MemberVariable>      staticVariables = new LinkedList<MemberVariable>();
     List<MemberVariable>      variables       = new LinkedList<MemberVariable>();
     List<Property>            properties      = new LinkedList<Property>();
     List<Constructor>         constructors    = new LinkedList<Constructor>();
@@ -190,17 +189,9 @@ public class ASTConverter
         for (Scope variableScope : variableScopes)
         {
           MemberVariable variable = (MemberVariable) variableScope.getValue();
+          variables.add(variable);
           ScopedMemberSet memberSet = new ScopedMemberSet();
-          if (variable.isStatic())
-          {
-            memberSet.addStaticVariable(variable);
-            staticVariables.add(variable);
-          }
-          else
-          {
-            memberSet.addVariable(variable);
-            variables.add(variable);
-          }
+          memberSet.addVariable(variable);
           combineMembers(membersByName, variable.getName(), memberSet);
         }
       }
