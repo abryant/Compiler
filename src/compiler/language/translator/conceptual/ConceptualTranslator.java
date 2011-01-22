@@ -30,8 +30,8 @@ public class ConceptualTranslator
   {
     this.compilationUnits = compilationUnits;
     rootScope = ScopeFactory.createRootScope();
-    program = new ConceptualProgram(rootScope);
-    astConverter = new ASTConverter(program);
+    program = new ConceptualProgram();
+    astConverter = new ASTConverter(program, rootScope);
   }
 
   /**
