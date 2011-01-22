@@ -12,6 +12,7 @@ import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.member.MethodAST;
 import compiler.language.ast.member.PropertyAST;
 import compiler.language.ast.member.StaticInitializerAST;
+import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
@@ -261,7 +262,6 @@ public class ASTConverter
     }
 
     conceptualClass.setMembers(new StaticInitializer(), new VariableInitializers(),
-                               staticVariables.toArray(new MemberVariable[0]),
                                variables.toArray(new MemberVariable[0]),
                                properties.toArray(new Property[0]),
                                constructors.toArray(new Constructor[0]),
@@ -372,7 +372,65 @@ public class ASTConverter
   private Scope convert(TypeArgumentAST typeArgumentAST, Scope enclosingScope)
   {
     TypeArgument typeArgument = new TypeArgument(typeArgumentAST.getName().getName());
-    return ScopeFactory.createTypeArgumentScope(typeArgument, enclosingScope);
+    Scope scope = ScopeFactory.createTypeArgumentScope(typeArgument, enclosingScope);
+    scopes.put(typeArgument, scope);
+    return scope;
+  }
+
+  /**
+   * Converts the specified FieldAST into an array of MemberVariables.
+   * @param fieldAST - the FieldAST to convert
+   * @param enclosingScope - the scope to make the parent of the new conceptual objects' scopes
+   * @return the Scopes of the MemberVariables created, which have the MemberVariables as their values
+   * @throws ConceptualException - if there is a problem with the conversion
+   */
+  private Scope[] convert(FieldAST fieldAST, Scope enclosingScope) throws ConceptualException
+  {
+    AccessSpecifier accessSpecifier = AccessSpecifier.fromAST(fieldAST.getAccessSpecifier());
+
+    boolean isFinal = false;
+    boolean isMutable = false;
+    boolean isStatic = false;
+    boolean isVolatile = false;
+    boolean isTransient = false;
+    SinceSpecifier sinceSpecifier = null;
+    for (ModifierAST modifier : fieldAST.getModifiers())
+    {
+      switch (modifier.getType())
+      {
+      case FINAL:
+        isFinal = true;
+        break;
+      case MUTABLE:
+        isMutable = true;
+        break;
+      case SINCE_SPECIFIER:
+        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier);
+        break;
+      case STATIC:
+        isStatic = true;
+        break;
+      case TRANSIENT:
+        isTransient = true;
+        break;
+      case VOLATILE:
+        isVolatile = true;
+        break;
+      default:
+        throw new ConceptualException("Illegal Modifier for a Field", modifier.getParseInfo());
+      }
+    }
+
+    DeclarationAssigneeAST[] assignees = fieldAST.getAssignees();
+    MemberVariable[] memberVariables = new MemberVariable[assignees.length];
+    Scope[] memberScopes = new Scope[assignees.length];
+    for (int i = 0; i < assignees.length; i++)
+    {
+      memberVariables[i] = new MemberVariable(accessSpecifier, isFinal, isMutable, isStatic, isVolatile, isTransient, sinceSpecifier, assignees[i].getName().getName());
+      memberScopes[i] = ScopeFactory.createMemberVariableScope(memberVariables[i], enclosingScope);
+      scopes.put(memberVariables[i], memberScopes[i]);
+    }
+    return memberScopes;
   }
 
   private Scope convert(ConstructorAST constructorAST, Scope enclosingScope)
