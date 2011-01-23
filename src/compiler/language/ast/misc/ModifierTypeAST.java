@@ -15,6 +15,7 @@ public enum ModifierTypeAST
   FINAL("final"),
   MUTABLE("mutable"),
   IMMUTABLE("immutable"),
+  SEALED("sealed"),
   SYNCHRONIZED("synchronized"),
   TRANSIENT("transient"),
   VOLATILE("volatile"),

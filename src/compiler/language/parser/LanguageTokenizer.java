@@ -76,6 +76,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
     KEYWORDS.put("public",       ParseType.PUBLIC_KEYWORD);
     KEYWORDS.put("retrieve",     ParseType.RETRIEVE_KEYWORD);
     KEYWORDS.put("return",       ParseType.RETURN_KEYWORD);
+    KEYWORDS.put("sealed",       ParseType.SEALED_KEYWORD);
     KEYWORDS.put("short",        ParseType.SHORT_KEYWORD);
     KEYWORDS.put("signed",       ParseType.SIGNED_KEYWORD);
     // "since" is handled differently (the whole "since(1.2.3)" is parsed by the tokenizer)

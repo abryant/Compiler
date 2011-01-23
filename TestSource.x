@@ -52,7 +52,7 @@ immutable class String
     }
   }
   
-  String substring(int @begin = 0, int @end = chars.length)
+  sealed String substring(int @begin = 0, int @end = chars.length)
   {
     if begin < 0 || begin > end || end > chars.length
     {

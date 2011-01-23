@@ -599,7 +599,7 @@ TypeArguments = LAngle TypeArgumentListRAngle
 
 Modifier = ModifierNotSynchronized | SynchronizedKeyword
 ModifierNotSynchronized = StaticKeyword   | AbstractKeyword | FinalKeyword     | ImmutableKeyword | MutableKeyword
-                        | NativeSpecifier | SinceSpecifier  | TransientKeyword | VolatileKeyword
+                        | NativeSpecifier | SinceSpecifier  | TransientKeyword | VolatileKeyword  | SealedKeyword
 NativeSpecifier = NativeKeyword LParen StringLiteral RParen
 Modifiers = Modifier | Modifiers Modifier
 ModifiersNotSynchronized = ModifierNotSynchronized | ModifiersNotSynchronized ModifierNotSynchronized
