@@ -122,8 +122,8 @@ EmptyStatement = Semicolon
 
 LocalDeclaration = Type DeclarationAssigneeList // check that underscore is not declared after parsing
                  | Type DeclarationAssigneeList Equals Expression
-                 | Modifiers Type DeclarationAssigneeList
-                 | Modifiers Type DeclarationAssigneeList Equals Expression
+                 | ModifiersNotSynchronized Type DeclarationAssigneeList
+                 | ModifiersNotSynchronized Type DeclarationAssigneeList Equals Expression
 
 Assignment = AssigneeList AssignmentOperator Expression
 
