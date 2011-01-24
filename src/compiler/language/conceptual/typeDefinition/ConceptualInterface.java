@@ -55,39 +55,23 @@ public class ConceptualInterface
   }
 
   /**
-   * Sets the headers of this conceptual interface, including type arguments and super-interfaces
-   * @param typeArguments
-   * @param superInterfaces
-   */
-  public void setHeaders(TypeArgument[] typeArguments, PointerType[] superInterfaces)
-  {
-    this.typeArguments = typeArguments;
-    this.superInterfaces = superInterfaces;
-  }
-
-  /**
-   * Sets the members of this conceptual interface.
+   * Sets the members of this conceptual interface
    * @param staticInitializer
    * @param staticVariables
    * @param properties
    * @param methods
+   * @param innerClasses
+   * @param innerInterfaces
+   * @param innerEnums
    */
-  public void setMembers(StaticInitializer staticInitializer, MemberVariable[] staticVariables, Property[] properties, Method[] methods)
+  public void setMembers(StaticInitializer staticInitializer, MemberVariable[] staticVariables,
+                         Property[] properties, Method[] methods,
+                         InnerClass[] innerClasses, ConceptualInterface[] innerInterfaces, ConceptualEnum[] innerEnums)
   {
     this.staticInitializer = staticInitializer;
     this.staticVariables = staticVariables;
     this.properties = properties;
     this.methods = methods;
-  }
-
-  /**
-   * Sets the inner type definitions of this conceptual interface.
-   * @param innerClasses
-   * @param innerInterfaces
-   * @param innerEnums
-   */
-  public void setInnerTypeDefinitions(InnerClass[] innerClasses, ConceptualInterface[] innerInterfaces, ConceptualEnum[] innerEnums)
-  {
     this.innerClasses = innerClasses;
     this.innerInterfaces = innerInterfaces;
     this.innerEnums = innerEnums;
