@@ -98,14 +98,20 @@ public class ASTConverter
       if (typeDefinition instanceof ClassDefinitionAST)
       {
         typeScope = convert((ClassDefinitionAST) typeDefinition, fileScope);
+        ConceptualClass conceptualClass = (ConceptualClass) typeScope.getValue();
+        program.addClass(conceptualClass);
       }
       else if (typeDefinition instanceof InterfaceDefinitionAST)
       {
         typeScope = convert((InterfaceDefinitionAST) typeDefinition, fileScope);
+        ConceptualInterface conceptualInterface = (ConceptualInterface) typeScope.getValue();
+        program.addInterface(conceptualInterface);
       }
       else if (typeDefinition instanceof EnumDefinitionAST)
       {
         typeScope = convert((EnumDefinitionAST) typeDefinition, fileScope);
+        ConceptualEnum conceptualEnum = (ConceptualEnum) typeScope.getValue();
+        program.addEnum(conceptualEnum);
       }
       else
       {
