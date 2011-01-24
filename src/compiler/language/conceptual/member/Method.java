@@ -26,7 +26,7 @@ public class Method
 
   private AccessSpecifier accessSpecifier;
   private boolean isAbstract;
-  private boolean isFinal;
+  private boolean isSealed;
   private boolean isStatic;
   private boolean isSynchronized;
   private boolean isImmutable;
@@ -43,7 +43,7 @@ public class Method
    * Creates a new Method with the specified parameters
    * @param accessSpecifier
    * @param isAbstract
-   * @param isFinal
+   * @param isSealed
    * @param isStatic
    * @param isSynchronized
    * @param isImmutable
@@ -51,12 +51,12 @@ public class Method
    * @param nativeSpecifier
    * @param name
    */
-  public Method(AccessSpecifier accessSpecifier, boolean isAbstract, boolean isFinal, boolean isStatic, boolean isSynchronized,
+  public Method(AccessSpecifier accessSpecifier, boolean isAbstract, boolean isSealed, boolean isStatic, boolean isSynchronized,
                 boolean isImmutable, SinceSpecifier sinceSpecifier, NativeSpecifier nativeSpecifier, String name)
   {
     this.accessSpecifier = accessSpecifier;
     this.isAbstract = isAbstract;
-    this.isFinal = isFinal;
+    this.isSealed = isSealed;
     this.isStatic = isStatic;
     this.isSynchronized = isSynchronized;
     this.isImmutable = isImmutable;
@@ -75,7 +75,7 @@ public class Method
   {
     AccessSpecifier accessSpecifier = AccessSpecifier.fromAST(methodAST.getAccessSpecifier());
     boolean isAbstract = false;
-    boolean isFinal = false;
+    boolean isSealed = false;
     boolean isStatic = false;
     boolean isSynchronized = false;
     boolean isImmutable = false;
@@ -89,8 +89,8 @@ public class Method
       case ABSTRACT:
         isAbstract = true;
         break;
-      case FINAL:
-        isFinal = true;
+      case SEALED:
+        isSealed = true;
         break;
       case IMMUTABLE:
         isImmutable = true;
@@ -111,7 +111,7 @@ public class Method
         throw new ConceptualException("Illegal Modifier for a Method", modifier.getParseInfo());
       }
     }
-    return new Method(accessSpecifier, isAbstract, isFinal, isStatic, isSynchronized, isImmutable, sinceSpecifier, nativeSpecifier, methodAST.getName().getName());
+    return new Method(accessSpecifier, isAbstract, isSealed, isStatic, isSynchronized, isImmutable, sinceSpecifier, nativeSpecifier, methodAST.getName().getName());
   }
 
   /**
@@ -131,11 +131,11 @@ public class Method
   }
 
   /**
-   * @return the isFinal
+   * @return the isSealed
    */
-  public boolean isFinal()
+  public boolean isSealed()
   {
-    return isFinal;
+    return isSealed;
   }
 
   /**

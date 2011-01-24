@@ -14,12 +14,13 @@ import compiler.language.conceptual.type.Type;
 public class Property
 {
 
-  private boolean isSealed; // this means that the assign and retrieve methods cannot be overridden
+  private boolean isSealed;
   private boolean isMutable;
-  private boolean isFinal; // this means that the value cannot be changed (i.e. the same as the final modifier for a variable), or that the property has no setter
+  private boolean isFinal;
   private boolean isStatic;
   private boolean isSynchronized;
   private boolean isTransient;
+  // TODO: volatile?
   private SinceSpecifier sinceSpecifier;
   private Type type;
   private String name;

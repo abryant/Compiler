@@ -130,7 +130,7 @@ public class ASTConverter
     AccessSpecifier access = AccessSpecifier.fromAST(classDefinition.getAccess());
     ModifierAST[] modifiers = classDefinition.getModifiers();
     boolean isAbstract = false;
-    boolean isFinal = false;
+    boolean isSealed = false;
     boolean isImmutable = false;
     SinceSpecifier sinceSpecifier = null;
     for (ModifierAST modifier : modifiers)
@@ -140,8 +140,8 @@ public class ASTConverter
       case ABSTRACT:
         isAbstract = true;
         break;
-      case FINAL:
-        isFinal = true;
+      case SEALED:
+        isSealed = true;
         break;
       case IMMUTABLE:
         isImmutable = true;
@@ -155,7 +155,7 @@ public class ASTConverter
     }
 
     // Create the ConceptualClass and the scope for it
-    ConceptualClass conceptualClass = new ConceptualClass(access, isAbstract, isFinal, isImmutable, sinceSpecifier, classDefinition.getName().getName());
+    ConceptualClass conceptualClass = new ConceptualClass(access, isAbstract, isSealed, isImmutable, sinceSpecifier, classDefinition.getName().getName());
     Scope scope = ScopeFactory.createClassDefinitionScope(conceptualClass, enclosingScope);
     scopes.put(conceptualClass, scope);
 

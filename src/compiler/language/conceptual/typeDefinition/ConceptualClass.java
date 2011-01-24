@@ -23,7 +23,7 @@ public class ConceptualClass
 
   private AccessSpecifier accessSpecifier;
   private boolean isAbstract;
-  private boolean isFinal;
+  private boolean isSealed;
   private boolean isImmutable;
   private SinceSpecifier sinceSpecifier;
   private String name;
@@ -50,17 +50,17 @@ public class ConceptualClass
    * The members of the new class and other data must be set later on.
    * @param accessSpecifier
    * @param isAbstract
-   * @param isFinal
+   * @param isSealed
    * @param isImmutable
    * @param sinceSpecifier
    * @param name
    */
-  public ConceptualClass(AccessSpecifier accessSpecifier, boolean isAbstract, boolean isFinal, boolean isImmutable,
+  public ConceptualClass(AccessSpecifier accessSpecifier, boolean isAbstract, boolean isSealed, boolean isImmutable,
                          SinceSpecifier sinceSpecifier, String name)
   {
     this.accessSpecifier = accessSpecifier;
     this.isAbstract = isAbstract;
-    this.isFinal = isFinal;
+    this.isSealed = isSealed;
     this.isImmutable = isImmutable;
     this.sinceSpecifier = sinceSpecifier;
     this.name = name;
@@ -117,11 +117,11 @@ public class ConceptualClass
     return isAbstract;
   }
   /**
-   * @return the isFinal
+   * @return the isSealed
    */
-  public boolean isFinal()
+  public boolean isSealed()
   {
-    return isFinal;
+    return isSealed;
   }
   /**
    * @return the isImmutable
