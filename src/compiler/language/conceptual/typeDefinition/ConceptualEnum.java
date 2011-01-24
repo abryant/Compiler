@@ -29,10 +29,10 @@ public class ConceptualEnum
 
   // members
   private StaticInitializer staticInitializer;
-  private Constructor[] constructors;
-  private Property[] properties;
-  private MemberVariable[] variables;
   private VariableInitializers variableInitializers;
+  private MemberVariable[] variables;
+  private Property[] properties;
+  private Constructor[] constructors;
   private Method[] methods;
 
   private InnerClass[] innerClasses;
@@ -54,17 +54,6 @@ public class ConceptualEnum
   }
 
   /**
-   * Sets the headers for this conceptual enum
-   * @param baseClass
-   * @param interfaces
-   */
-  public void setHeaders(PointerType baseClass, PointerType[] interfaces)
-  {
-    this.baseClass = baseClass;
-    this.interfaces = interfaces;
-  }
-
-  /**
    * Sets the enum constants for this conceptual enum
    * @param constants
    */
@@ -76,32 +65,25 @@ public class ConceptualEnum
   /**
    * Sets the members of this conceptual enum.
    * @param staticInitializer
-   * @param constructors
-   * @param properties
-   * @param variables
    * @param variableInitializers
+   * @param variables
+   * @param properties
+   * @param constructors
    * @param methods
-   */
-  public void setMembers(StaticInitializer staticInitializer, Constructor[] constructors,
-                         Property[] properties, MemberVariable[] variables,
-                         VariableInitializers variableInitializers, Method[] methods)
-  {
-    this.staticInitializer = staticInitializer;
-    this.constructors = constructors;
-    this.properties = properties;
-    this.variables = variables;
-    this.variableInitializers = variableInitializers;
-    this.methods = methods;
-  }
-
-  /**
-   * Sets the inner type definitions of this conceptual enum.
    * @param innerClasses
    * @param innerInterfaces
    * @param innerEnums
    */
-  public void setInnerTypeDefinitions(InnerClass[] innerClasses, ConceptualInterface[] innerInterfaces, ConceptualEnum[] innerEnums)
+  public void setMembers(StaticInitializer staticInitializer, VariableInitializers variableInitializers,
+                         MemberVariable[] variables, Property[] properties, Constructor[] constructors, Method[] methods,
+                         InnerClass[] innerClasses, ConceptualInterface[] innerInterfaces, ConceptualEnum[] innerEnums)
   {
+    this.staticInitializer = staticInitializer;
+    this.variableInitializers = variableInitializers;
+    this.variables = variables;
+    this.properties = properties;
+    this.constructors = constructors;
+    this.methods = methods;
     this.innerClasses = innerClasses;
     this.innerInterfaces = innerInterfaces;
     this.innerEnums = innerEnums;

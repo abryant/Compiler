@@ -21,6 +21,7 @@ import compiler.language.ast.topLevel.PackageDeclarationAST;
 import compiler.language.ast.topLevel.TypeDefinitionAST;
 import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.ast.typeDefinition.ClassDefinitionAST;
+import compiler.language.ast.typeDefinition.EnumConstantAST;
 import compiler.language.ast.typeDefinition.EnumDefinitionAST;
 import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
 import compiler.language.conceptual.ConceptualException;
@@ -39,6 +40,7 @@ import compiler.language.conceptual.type.TypeArgument;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
+import compiler.language.conceptual.typeDefinition.EnumConstant;
 import compiler.language.conceptual.typeDefinition.InnerClass;
 
 /*
@@ -218,7 +220,8 @@ public class ASTConverter
       }
       else if (memberAST instanceof ConstructorAST)
       {
-        Constructor constructor = convert((ConstructorAST) memberAST, scope);
+        Scope constructorScope = convert((ConstructorAST) memberAST, scope);
+        Constructor constructor = (Constructor) constructorScope.getValue();
         constructors.add(constructor);
       }
       else if (memberAST instanceof MethodAST)
@@ -450,8 +453,121 @@ public class ASTConverter
     Scope scope = ScopeFactory.createEnumDefinitionScope(conceptualEnum, enclosingScope);
     scopes.put(conceptualEnum, scope);
 
-    // TODO: add all other information that doesn't need looking up in the scope table
-    //       also, add the scopes of the new conceptual objects to this object's scope
+    // convert each of the members in turn, switching on the member type
+    // each member is added to a list of the members of its type, and also to membersByName, which stores a ScopedMemberSet for each different name
+    Map<String, ScopedMemberSet> membersByName = new HashMap<String, ScopedMemberSet>();
+
+    // convert the enum constants
+    EnumConstantAST[] constantASTs = enumDefinition.getConstants();
+    EnumConstant[] constants = new EnumConstant[constantASTs.length];
+    for (int i = 0; i < constantASTs.length; i++)
+    {
+      Scope constantScope = convert(constantASTs[i], scope);
+      constants[i] = (EnumConstant) constantScope.getValue();
+      ScopedMemberSet memberSet = new ScopedMemberSet();
+      memberSet.addEnumConstant(constants[i]);
+      combineMembers(membersByName, constants[i].getName(), memberSet);
+    }
+    conceptualEnum.setConstants(constants);
+
+    // convert the other members
+    List<MemberVariable>      variables       = new LinkedList<MemberVariable>();
+    List<Property>            properties      = new LinkedList<Property>();
+    List<Constructor>         constructors    = new LinkedList<Constructor>();
+    List<Method>              methods         = new LinkedList<Method>();
+    List<InnerClass>          innerClasses    = new LinkedList<InnerClass>();
+    List<ConceptualInterface> innerInterfaces = new LinkedList<ConceptualInterface>();
+    List<ConceptualEnum>      innerEnums      = new LinkedList<ConceptualEnum>();
+
+    MemberAST[] memberASTs = enumDefinition.getMembers();
+    for (MemberAST memberAST : memberASTs)
+    {
+      if (memberAST instanceof FieldAST)
+      {
+        Scope[] variableScopes = convert((FieldAST) memberAST, scope);
+        for (Scope variableScope : variableScopes)
+        {
+          MemberVariable variable = (MemberVariable) variableScope.getValue();
+          variables.add(variable);
+          ScopedMemberSet memberSet = new ScopedMemberSet();
+          memberSet.addVariable(variable);
+          combineMembers(membersByName, variable.getName(), memberSet);
+        }
+      }
+      else if (memberAST instanceof PropertyAST)
+      {
+        Scope propertyScope = convert((PropertyAST) memberAST, scope);
+        Property property = (Property) propertyScope.getValue();
+        ScopedMemberSet memberSet = new ScopedMemberSet();
+        memberSet.addProperty(property);
+        combineMembers(membersByName, property.getName(), memberSet);
+        properties.add(property);
+      }
+      else if (memberAST instanceof StaticInitializerAST)
+      {
+        // do nothing, as the static initializer contains no information that we need to convert right now
+        // the contained statements will be converted when the scope hierarchy has been built
+      }
+      else if (memberAST instanceof ConstructorAST)
+      {
+        Scope constructorScope = convert((ConstructorAST) memberAST, scope);
+        Constructor constructor = (Constructor) constructorScope.getValue();
+        constructors.add(constructor);
+      }
+      else if (memberAST instanceof MethodAST)
+      {
+        Scope methodScope = convert((MethodAST) memberAST, scope);
+        Method method = (Method) methodScope.getValue();
+        ScopedMemberSet memberSet = new ScopedMemberSet();
+        memberSet.addMethod(method);
+        combineMembers(membersByName, method.getName(), memberSet);
+        methods.add(method);
+      }
+      else if (memberAST instanceof ClassDefinitionAST)
+      {
+        Scope innerClassScope = convertInnerClass((ClassDefinitionAST) memberAST, scope);
+        InnerClass innerClass = (InnerClass) innerClassScope.getValue();
+        ScopedMemberSet memberSet = new ScopedMemberSet();
+        memberSet.addInnerClass(innerClass);
+        combineMembers(membersByName, innerClass.getName(), memberSet);
+        innerClasses.add(innerClass);
+      }
+      else if (memberAST instanceof InterfaceDefinitionAST)
+      {
+        Scope innerInterfaceScope = convertInnerInterface((InterfaceDefinitionAST) memberAST, scope);
+        ConceptualInterface innerInterface = (ConceptualInterface) innerInterfaceScope.getValue();
+        ScopedMemberSet memberSet = new ScopedMemberSet();
+        memberSet.addInnerInterface(innerInterface);
+        innerInterfaces.add(innerInterface);
+      }
+      else if (memberAST instanceof EnumDefinitionAST)
+      {
+        Scope innerEnumScope = convertInnerEnum((EnumDefinitionAST) memberAST, scope);
+        ConceptualEnum innerEnum = (ConceptualEnum) innerEnumScope.getValue();
+        ScopedMemberSet memberSet = new ScopedMemberSet();
+        memberSet.addInnerEnum(innerEnum);
+        innerEnums.add(innerEnum);
+      }
+      else
+      {
+        throw new UnsupportedOperationException("Cannot translate a class member that is not a field, property, static initializer, constructor, method, or type definition.");
+      }
+    }
+
+    for (Entry<String, ScopedMemberSet> entry : membersByName.entrySet())
+    {
+      Scope memberSetScope = ScopeFactory.createMemberSetScope(entry.getValue(), scope);
+      scope.addChild(entry.getKey(), memberSetScope);
+    }
+
+    conceptualEnum.setMembers(new StaticInitializer(), new VariableInitializers(),
+                               variables.toArray(new MemberVariable[0]),
+                               properties.toArray(new Property[0]),
+                               constructors.toArray(new Constructor[0]),
+                               methods.toArray(new Method[0]),
+                               innerClasses.toArray(new InnerClass[0]),
+                               innerInterfaces.toArray(new ConceptualInterface[0]),
+                               innerEnums.toArray(new ConceptualEnum[0]));
 
     return scope;
   }

@@ -8,6 +8,7 @@ import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
+import compiler.language.conceptual.typeDefinition.EnumConstant;
 import compiler.language.conceptual.typeDefinition.InnerClass;
 
 /*
@@ -20,6 +21,8 @@ import compiler.language.conceptual.typeDefinition.InnerClass;
  */
 public class ScopedMemberSet
 {
+
+  private Set<EnumConstant> enumConstants;
 
   private Set<MemberVariable> variables;
   private Set<Property> properties;
@@ -35,6 +38,13 @@ public class ScopedMemberSet
    */
   public void addAll(ScopedMemberSet otherSet)
   {
+    if (otherSet.enumConstants != null)
+    {
+      for (EnumConstant enumConstant : otherSet.enumConstants)
+      {
+        addEnumConstant(enumConstant);
+      }
+    }
     if (otherSet.variables != null)
     {
       for (MemberVariable variable : otherSet.variables)
@@ -80,8 +90,21 @@ public class ScopedMemberSet
   }
 
   /**
-   * Adds the specified non-static variable to this ScopedMemberSet
-   * @param variable - the non-static variable to add
+   * Adds the specified enum constant to this ScopedMemberSet
+   * @param enumConstant - the enum constant to add
+   */
+  public void addEnumConstant(EnumConstant enumConstant)
+  {
+    if (enumConstants == null)
+    {
+      enumConstants = new HashSet<EnumConstant>();
+    }
+    enumConstants.add(enumConstant);
+  }
+
+  /**
+   * Adds the specified variable to this ScopedMemberSet
+   * @param variable - the variable to add
    */
   public void addVariable(MemberVariable variable)
   {
@@ -155,6 +178,14 @@ public class ScopedMemberSet
       innerEnums = new HashSet<ConceptualEnum>();
     }
     innerEnums.add(innerEnum);
+  }
+
+  /**
+   * @return the enum constants, or null if there are none
+   */
+  public Set<EnumConstant> getEnumConstants()
+  {
+    return enumConstants;
   }
 
   /**
