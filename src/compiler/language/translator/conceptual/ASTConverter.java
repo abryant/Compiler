@@ -341,6 +341,10 @@ public class ASTConverter
         for (Scope variableScope : variableScopes)
         {
           MemberVariable variable = (MemberVariable) variableScope.getValue();
+          if (!variable.isStatic())
+          {
+            throw new ConceptualException("An interface cannot contain non-static member variables.", memberAST.getParseInfo());
+          }
           variables.add(variable);
           ScopedMemberSet memberSet = new ScopedMemberSet();
           memberSet.addVariable(variable);
