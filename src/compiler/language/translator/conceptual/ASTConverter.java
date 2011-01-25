@@ -60,6 +60,8 @@ public class ASTConverter
 
   private Map<Object, Scope> scopes = new HashMap<Object, Scope>();
 
+  // TODO: handle duplicate modifiers properly (instead of just disregarding them)
+
   /**
    * Creates a new ASTConverter that will add all converted AST nodes to the specified ConceptualProgram
    * @param program - the ConceptualProgram to add all converted AST nodes to
@@ -658,6 +660,67 @@ public class ASTConverter
       scopes.put(memberVariables[i], memberScopes[i]);
     }
     return memberScopes;
+  }
+
+  /**
+   * Converts the specified PropertyAST into a Property
+   * @param propertyAST - the PropertyAST to convert
+   * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
+   * @return the Scope of the Property created, which has the Property as its value
+   * @throws ConceptualException
+   */
+  private Scope convert(PropertyAST propertyAST, Scope enclosingScope) throws ConceptualException
+  {
+    boolean isFinal = false;
+    boolean isMutable = false;
+    boolean isSealed = false;
+    boolean isStatic = false;
+    boolean isSynchronized = false;
+    boolean isTransient = false;
+    boolean isVolatile = false;
+    SinceSpecifier sinceSpecifier = null;
+    for (ModifierAST modifier : propertyAST.getModifiers())
+    {
+      switch (modifier.getType())
+      {
+      case FINAL:
+        isFinal = true;
+        break;
+      case MUTABLE:
+        isMutable = true;
+        break;
+      case SEALED:
+        isSealed = true;
+        break;
+      case SINCE_SPECIFIER:
+        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier); // TODO: change this to a convert() method
+        break;
+      case STATIC:
+        isStatic = true;
+        break;
+      case SYNCHRONIZED:
+        isSynchronized = true;
+        break;
+      case TRANSIENT:
+        isTransient = true;
+        break;
+      case VOLATILE:
+        isVolatile = true;
+        break;
+      default:
+        throw new ConceptualException("Illegal Modifier for a Property", modifier.getParseInfo());
+      }
+    }
+
+    AccessSpecifier retrieveAccessSpecifier = AccessSpecifier.fromAST(propertyAST.getRetrieveAccess()); // TODO: change these to use a convert() method
+    AccessSpecifier assignAccessSpecifier = AccessSpecifier.fromAST(propertyAST.getAssignAccess());
+
+    Property property = new Property(isSealed, isMutable, isFinal, isStatic, isSynchronized, isTransient, isVolatile, sinceSpecifier,
+                                     propertyAST.getName().getName(), retrieveAccessSpecifier, assignAccessSpecifier);
+    Scope scope = ScopeFactory.createPropertyScope(property, enclosingScope);
+    scopes.put(property, scope);
+
+    return scope;
   }
 
   private Scope convert(ConstructorAST constructorAST, Scope enclosingScope)

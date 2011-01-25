@@ -4,6 +4,7 @@ import compiler.language.conceptual.Scope;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.ScopedMemberSet;
 import compiler.language.conceptual.member.MemberVariable;
+import compiler.language.conceptual.member.Property;
 import compiler.language.conceptual.type.TypeArgument;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
@@ -132,5 +133,16 @@ public class ScopeFactory
   public static Scope createMemberVariableScope(MemberVariable variable, Scope parentScope)
   {
     return new Scope(parentScope, ScopeType.MEMBER_VARIABLE, variable);
+  }
+
+  /**
+   * Creates a new scope for a property.
+   * @param property - the property to store in the new scope
+   * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
+   * @return the scope created
+   */
+  public static Scope createPropertyScope(Property property, Scope parentScope)
+  {
+    return new Scope(parentScope, ScopeType.PROPERTY, property);
   }
 }

@@ -18,5 +18,6 @@ public enum ScopeType
   TYPE_ARGUMENT,   // TypeArgument
   MEMBER,          // ScopedMemberSet
   MEMBER_VARIABLE, // MemberVariable
+  PROPERTY,        // Property
   // TODO: add others
 }
