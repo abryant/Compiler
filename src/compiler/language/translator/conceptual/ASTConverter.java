@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Set;
 
 import compiler.language.ast.member.ConstructorAST;
 import compiler.language.ast.member.FieldAST;
@@ -27,7 +27,7 @@ import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.ConceptualProgram;
 import compiler.language.conceptual.Scope;
-import compiler.language.conceptual.ScopedMemberSet;
+import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
@@ -180,9 +180,7 @@ public class ASTConverter
     }
 
 
-    // convert each of the members in turn, switching on the member type
-    // each member is added to a list of the members of its type, and also to membersByName, which stores a ScopedMemberSet for each different name
-    Map<String, ScopedMemberSet> membersByName = new HashMap<String, ScopedMemberSet>();
+    // convert each of the members in turn, switching on the member type. each member is added to a list of the members of its type
     List<MemberVariable>      variables       = new LinkedList<MemberVariable>();
     List<Property>            properties      = new LinkedList<Property>();
     List<Constructor>         constructors    = new LinkedList<Constructor>();
@@ -201,19 +199,15 @@ public class ASTConverter
         {
           MemberVariable variable = (MemberVariable) variableScope.getValue();
           variables.add(variable);
-          ScopedMemberSet memberSet = new ScopedMemberSet();
-          memberSet.addVariable(variable);
-          combineMembers(membersByName, variable.getName(), memberSet);
+          scope.addChild(variable.getName(), variableScope);
         }
       }
       else if (memberAST instanceof PropertyAST)
       {
         Scope propertyScope = convert((PropertyAST) memberAST, scope);
         Property property = (Property) propertyScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addProperty(property);
-        combineMembers(membersByName, property.getName(), memberSet);
         properties.add(property);
+        scope.addChild(property.getName(), propertyScope);
       }
       else if (memberAST instanceof StaticInitializerAST)
       {
@@ -225,51 +219,52 @@ public class ASTConverter
         Scope constructorScope = convert((ConstructorAST) memberAST, scope);
         Constructor constructor = (Constructor) constructorScope.getValue();
         constructors.add(constructor);
+        // no need to add to the scope here, you cannot reference a constructor directly, just via the class name
       }
       else if (memberAST instanceof MethodAST)
       {
         Scope methodScope = convert((MethodAST) memberAST, scope);
         Method method = (Method) methodScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addMethod(method);
-        combineMembers(membersByName, method.getName(), memberSet);
         methods.add(method);
+        // combine the scopes for existing methods
+        Scope existingScope = scope.getChild(method.getName());
+        if (existingScope != null && existingScope.getType() == ScopeType.METHOD)
+        {
+          @SuppressWarnings("unchecked")
+          Set<Method> existingMethods = (Set<Method>) existingScope.getValue();
+          existingMethods.add(method);
+        }
+        else
+        {
+          // if existingScope is not null here then addChild() will fail, as in the addChild() calls for other members
+          scope.addChild(method.getName(), methodScope);
+        }
       }
       else if (memberAST instanceof ClassDefinitionAST)
       {
         Scope innerClassScope = convertInnerClass((ClassDefinitionAST) memberAST, scope);
         InnerClass innerClass = (InnerClass) innerClassScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addInnerClass(innerClass);
-        combineMembers(membersByName, innerClass.getName(), memberSet);
         innerClasses.add(innerClass);
+        scope.addChild(innerClass.getName(), innerClassScope);
       }
       else if (memberAST instanceof InterfaceDefinitionAST)
       {
         Scope innerInterfaceScope = convertInnerInterface((InterfaceDefinitionAST) memberAST, scope);
         ConceptualInterface innerInterface = (ConceptualInterface) innerInterfaceScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addInnerInterface(innerInterface);
         innerInterfaces.add(innerInterface);
+        scope.addChild(innerInterface.getName(), innerInterfaceScope);
       }
       else if (memberAST instanceof EnumDefinitionAST)
       {
         Scope innerEnumScope = convertInnerEnum((EnumDefinitionAST) memberAST, scope);
         ConceptualEnum innerEnum = (ConceptualEnum) innerEnumScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addInnerEnum(innerEnum);
         innerEnums.add(innerEnum);
+        scope.addChild(innerEnum.getName(), innerEnumScope);
       }
       else
       {
         throw new UnsupportedOperationException("Cannot translate a class member that is not a field, property, static initializer, constructor, method, or type definition.");
       }
-    }
-
-    for (Entry<String, ScopedMemberSet> entry : membersByName.entrySet())
-    {
-      Scope memberSetScope = ScopeFactory.createMemberSetScope(entry.getValue(), scope);
-      scope.addChild(entry.getKey(), memberSetScope);
     }
 
     conceptualClass.setMembers(new StaticInitializer(), new VariableInitializers(),
@@ -327,9 +322,7 @@ public class ASTConverter
     }
 
 
-    // convert each of the members in turn, switching on the member type
-    // each member is added to a list of the members of its type, and also to membersByName, which stores a ScopedMemberSet for each different name
-    Map<String, ScopedMemberSet> membersByName = new HashMap<String, ScopedMemberSet>();
+    // convert each of the members in turn, switching on the member type. each member is added to a list of the members of its type.
     List<MemberVariable>      variables       = new LinkedList<MemberVariable>();
     List<Property>            properties      = new LinkedList<Property>();
     List<Method>              methods         = new LinkedList<Method>();
@@ -351,19 +344,15 @@ public class ASTConverter
             throw new ConceptualException("An interface cannot contain non-static member variables.", memberAST.getParseInfo());
           }
           variables.add(variable);
-          ScopedMemberSet memberSet = new ScopedMemberSet();
-          memberSet.addVariable(variable);
-          combineMembers(membersByName, variable.getName(), memberSet);
+          scope.addChild(variable.getName(), variableScope);
         }
       }
       else if (memberAST instanceof PropertyAST)
       {
         Scope propertyScope = convert((PropertyAST) memberAST, scope);
         Property property = (Property) propertyScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addProperty(property);
-        combineMembers(membersByName, property.getName(), memberSet);
         properties.add(property);
+        scope.addChild(property.getName(), propertyScope);
       }
       else if (memberAST instanceof StaticInitializerAST)
       {
@@ -374,46 +363,46 @@ public class ASTConverter
       {
         Scope methodScope = convert((MethodAST) memberAST, scope);
         Method method = (Method) methodScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addMethod(method);
-        combineMembers(membersByName, method.getName(), memberSet);
         methods.add(method);
+        // combine the scopes for existing methods
+        Scope existingScope = scope.getChild(method.getName());
+        if (existingScope != null && existingScope.getType() == ScopeType.METHOD)
+        {
+          @SuppressWarnings("unchecked")
+          Set<Method> existingMethods = (Set<Method>) existingScope.getValue();
+          existingMethods.add(method);
+        }
+        else
+        {
+          // if existingScope is not null here then addChild() will fail, as in the addChild() calls for other members
+          scope.addChild(method.getName(), methodScope);
+        }
       }
       else if (memberAST instanceof ClassDefinitionAST)
       {
         Scope innerClassScope = convertInnerClass((ClassDefinitionAST) memberAST, scope);
         InnerClass innerClass = (InnerClass) innerClassScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addInnerClass(innerClass);
-        combineMembers(membersByName, innerClass.getName(), memberSet);
         innerClasses.add(innerClass);
+        scope.addChild(innerClass.getName(), innerClassScope);
       }
       else if (memberAST instanceof InterfaceDefinitionAST)
       {
         Scope innerInterfaceScope = convertInnerInterface((InterfaceDefinitionAST) memberAST, scope);
         ConceptualInterface innerInterface = (ConceptualInterface) innerInterfaceScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addInnerInterface(innerInterface);
         innerInterfaces.add(innerInterface);
+        scope.addChild(innerInterface.getName(), innerInterfaceScope);
       }
       else if (memberAST instanceof EnumDefinitionAST)
       {
         Scope innerEnumScope = convertInnerEnum((EnumDefinitionAST) memberAST, scope);
         ConceptualEnum innerEnum = (ConceptualEnum) innerEnumScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addInnerEnum(innerEnum);
         innerEnums.add(innerEnum);
+        scope.addChild(innerEnum.getName(), innerEnumScope);
       }
       else
       {
         throw new UnsupportedOperationException("Cannot translate an interface member that is not a static field, property, static initializer, method, or type definition.");
       }
-    }
-
-    for (Entry<String, ScopedMemberSet> entry : membersByName.entrySet())
-    {
-      Scope memberSetScope = ScopeFactory.createMemberSetScope(entry.getValue(), scope);
-      scope.addChild(entry.getKey(), memberSetScope);
     }
 
     conceptualInterface.setMembers(new StaticInitializer(),
@@ -455,9 +444,7 @@ public class ASTConverter
     Scope scope = ScopeFactory.createEnumDefinitionScope(conceptualEnum, enclosingScope);
     scopes.put(conceptualEnum, scope);
 
-    // convert each of the members in turn, switching on the member type
-    // each member is added to a list of the members of its type, and also to membersByName, which stores a ScopedMemberSet for each different name
-    Map<String, ScopedMemberSet> membersByName = new HashMap<String, ScopedMemberSet>();
+    // convert each of the members in turn, switching on the member type. each member is added to a list of the members of its type.
 
     // convert the enum constants
     EnumConstantAST[] constantASTs = enumDefinition.getConstants();
@@ -466,9 +453,7 @@ public class ASTConverter
     {
       Scope constantScope = convert(constantASTs[i], scope);
       constants[i] = (EnumConstant) constantScope.getValue();
-      ScopedMemberSet memberSet = new ScopedMemberSet();
-      memberSet.addEnumConstant(constants[i]);
-      combineMembers(membersByName, constants[i].getName(), memberSet);
+      scope.addChild(constants[i].getName(), constantScope);
     }
     conceptualEnum.setConstants(constants);
 
@@ -491,19 +476,15 @@ public class ASTConverter
         {
           MemberVariable variable = (MemberVariable) variableScope.getValue();
           variables.add(variable);
-          ScopedMemberSet memberSet = new ScopedMemberSet();
-          memberSet.addVariable(variable);
-          combineMembers(membersByName, variable.getName(), memberSet);
+          scope.addChild(variable.getName(), variableScope);
         }
       }
       else if (memberAST instanceof PropertyAST)
       {
         Scope propertyScope = convert((PropertyAST) memberAST, scope);
         Property property = (Property) propertyScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addProperty(property);
-        combineMembers(membersByName, property.getName(), memberSet);
         properties.add(property);
+        scope.addChild(property.getName(), propertyScope);
       }
       else if (memberAST instanceof StaticInitializerAST)
       {
@@ -515,51 +496,52 @@ public class ASTConverter
         Scope constructorScope = convert((ConstructorAST) memberAST, scope);
         Constructor constructor = (Constructor) constructorScope.getValue();
         constructors.add(constructor);
+        // no need to add to the scope here, you cannot reference a constructor directly, just via the enum constant definitions
       }
       else if (memberAST instanceof MethodAST)
       {
         Scope methodScope = convert((MethodAST) memberAST, scope);
         Method method = (Method) methodScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addMethod(method);
-        combineMembers(membersByName, method.getName(), memberSet);
         methods.add(method);
+        // combine the scopes for existing methods
+        Scope existingScope = scope.getChild(method.getName());
+        if (existingScope != null && existingScope.getType() == ScopeType.METHOD)
+        {
+          @SuppressWarnings("unchecked")
+          Set<Method> existingMethods = (Set<Method>) existingScope.getValue();
+          existingMethods.add(method);
+        }
+        else
+        {
+          // if existingScope is not null here then addChild() will fail, as in the addChild() calls for other members
+          scope.addChild(method.getName(), methodScope);
+        }
       }
       else if (memberAST instanceof ClassDefinitionAST)
       {
         Scope innerClassScope = convertInnerClass((ClassDefinitionAST) memberAST, scope);
         InnerClass innerClass = (InnerClass) innerClassScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addInnerClass(innerClass);
-        combineMembers(membersByName, innerClass.getName(), memberSet);
         innerClasses.add(innerClass);
+        scope.addChild(innerClass.getName(), innerClassScope);
       }
       else if (memberAST instanceof InterfaceDefinitionAST)
       {
         Scope innerInterfaceScope = convertInnerInterface((InterfaceDefinitionAST) memberAST, scope);
         ConceptualInterface innerInterface = (ConceptualInterface) innerInterfaceScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addInnerInterface(innerInterface);
         innerInterfaces.add(innerInterface);
+        scope.addChild(innerInterface.getName(), innerInterfaceScope);
       }
       else if (memberAST instanceof EnumDefinitionAST)
       {
         Scope innerEnumScope = convertInnerEnum((EnumDefinitionAST) memberAST, scope);
         ConceptualEnum innerEnum = (ConceptualEnum) innerEnumScope.getValue();
-        ScopedMemberSet memberSet = new ScopedMemberSet();
-        memberSet.addInnerEnum(innerEnum);
         innerEnums.add(innerEnum);
+        scope.addChild(innerEnum.getName(), innerEnumScope);
       }
       else
       {
         throw new UnsupportedOperationException("Cannot translate a class member that is not a field, property, static initializer, constructor, method, or type definition.");
       }
-    }
-
-    for (Entry<String, ScopedMemberSet> entry : membersByName.entrySet())
-    {
-      Scope memberSetScope = ScopeFactory.createMemberSetScope(entry.getValue(), scope);
-      scope.addChild(entry.getKey(), memberSetScope);
     }
 
     conceptualEnum.setMembers(new StaticInitializer(), new VariableInitializers(),
@@ -575,27 +557,9 @@ public class ASTConverter
   }
 
   /**
-   * Combines the member set with the specified name in the membersByName map with the specified memberSet.
-   * If no set with the specified name already exists, the specified set is added to the map.
-   * @param membersByName - the mapping from name to a list of members with the specified name
-   * @param name - the name of the members to add
-   * @param memberSet - the set of members to add
-   */
-  private static void combineMembers(Map<String, ScopedMemberSet> membersByName, String name, ScopedMemberSet memberSet)
-  {
-    ScopedMemberSet existingSet = membersByName.get(name);
-    if (existingSet == null)
-    {
-      membersByName.put(name, memberSet);
-      return;
-    }
-    existingSet.addAll(memberSet);
-  }
-
-  /**
    * Converts the specified TypeArgumentAST into a TypeArgument.
    * @param typeArgumentAST - the TypeArgumentAST to convert
-   * @param enclosingScope - the scope to make the parentof the new conceptual object's scope
+   * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
    * @return the Scope of the TypeArgument created, which has the TypeArgument as its value
    */
   private Scope convert(TypeArgumentAST typeArgumentAST, Scope enclosingScope)

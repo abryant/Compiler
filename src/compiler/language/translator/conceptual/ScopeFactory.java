@@ -2,8 +2,8 @@ package compiler.language.translator.conceptual;
 
 import compiler.language.conceptual.Scope;
 import compiler.language.conceptual.ScopeType;
-import compiler.language.conceptual.ScopedMemberSet;
 import compiler.language.conceptual.member.MemberVariable;
+import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
 import compiler.language.conceptual.type.TypeArgument;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
@@ -114,17 +114,6 @@ public class ScopeFactory
   }
 
   /**
-   * Creates a new scope for a set of members in a type definition.
-   * @param memberSet - the member set to store in the new scope
-   * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
-   * @return the scope created
-   */
-  public static Scope createMemberSetScope(ScopedMemberSet memberSet, Scope parentScope)
-  {
-    return new Scope(parentScope, ScopeType.MEMBER, memberSet);
-  }
-
-  /**
    * Creates a new scope for a member variable.
    * @param variable - the member variable value to store in the new scope
    * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
@@ -144,5 +133,16 @@ public class ScopeFactory
   public static Scope createPropertyScope(Property property, Scope parentScope)
   {
     return new Scope(parentScope, ScopeType.PROPERTY, property);
+  }
+
+  /**
+   * Creates a new scope for a member variable.
+   * @param method - the method value to store in the new scope
+   * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
+   * @return the scope created
+   */
+  public static Scope createMethodScope(Method method, Scope parentScope)
+  {
+    return new Scope(parentScope, ScopeType.METHOD, method);
   }
 }
