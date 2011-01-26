@@ -1,10 +1,5 @@
 package compiler.language.conceptual.member;
 
-import compiler.language.ast.member.MethodAST;
-import compiler.language.ast.misc.ModifierAST;
-import compiler.language.ast.misc.NativeSpecifierAST;
-import compiler.language.ast.terminal.SinceSpecifierAST;
-import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.Argument;
 import compiler.language.conceptual.misc.NativeSpecifier;
@@ -63,55 +58,6 @@ public class Method
     this.sinceSpecifier = sinceSpecifier;
     this.nativeSpecifier = nativeSpecifier;
     this.name = name;
-  }
-
-  /**
-   * Creates a Method from the specified MethodAST.
-   * @param methodAST - the MethodAST to base the new Method on
-   * @return the Method created
-   * @throws ConceptualException - if there is a problem converting the AST instance to a Conceptual instance
-   */
-  public static Method fromAST(MethodAST methodAST) throws ConceptualException
-  {
-    AccessSpecifier accessSpecifier = AccessSpecifier.fromAST(methodAST.getAccessSpecifier());
-    boolean isAbstract = false;
-    boolean isSealed = false;
-    boolean isStatic = false;
-    boolean isSynchronized = false;
-    boolean isImmutable = false;
-    SinceSpecifier sinceSpecifier = null;
-    NativeSpecifier nativeSpecifier = null;
-    ModifierAST[] modifiers = methodAST.getModifiers();
-    for (ModifierAST modifier : modifiers)
-    {
-      switch (modifier.getType())
-      {
-      case ABSTRACT:
-        isAbstract = true;
-        break;
-      case SEALED:
-        isSealed = true;
-        break;
-      case IMMUTABLE:
-        isImmutable = true;
-        break;
-      case NATIVE_SPECIFIER:
-        nativeSpecifier = NativeSpecifier.fromAST((NativeSpecifierAST) modifier);
-        break;
-      case SINCE_SPECIFIER:
-        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier);
-        break;
-      case STATIC:
-        isStatic = true;
-        break;
-      case SYNCHRONIZED:
-        isSynchronized = true;
-        break;
-      default:
-        throw new ConceptualException("Illegal Modifier for a Method", modifier.getParseInfo());
-      }
-    }
-    return new Method(accessSpecifier, isAbstract, isSealed, isStatic, isSynchronized, isImmutable, sinceSpecifier, nativeSpecifier, methodAST.getName().getName());
   }
 
   /**

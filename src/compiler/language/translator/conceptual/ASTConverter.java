@@ -14,6 +14,7 @@ import compiler.language.ast.member.PropertyAST;
 import compiler.language.ast.member.StaticInitializerAST;
 import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.misc.ModifierAST;
+import compiler.language.ast.misc.NativeSpecifierAST;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
 import compiler.language.ast.topLevel.CompilationUnitAST;
@@ -35,6 +36,7 @@ import compiler.language.conceptual.member.Property;
 import compiler.language.conceptual.member.StaticInitializer;
 import compiler.language.conceptual.member.VariableInitializers;
 import compiler.language.conceptual.misc.AccessSpecifier;
+import compiler.language.conceptual.misc.NativeSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.type.TypeArgument;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
@@ -631,7 +633,7 @@ public class ASTConverter
    * @param propertyAST - the PropertyAST to convert
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
    * @return the Scope of the Property created, which has the Property as its value
-   * @throws ConceptualException
+   * @throws ConceptualException - if there is a problem with the conversion
    */
   private Scope convert(PropertyAST propertyAST, Scope enclosingScope) throws ConceptualException
   {
@@ -685,6 +687,60 @@ public class ASTConverter
     scopes.put(property, scope);
 
     return scope;
+  }
+
+  /**
+   * Converts the specified MethodAST into a Method
+   * @param methodAST - the MethodAST to convert
+   * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
+   * @return the Scope of the Method created, which has the Method as its value
+   * @throws ConceptualException - if there is a problem with the conversion
+   */
+  private Scope convert(MethodAST methodAST, Scope enclosingScope) throws ConceptualException
+  {
+    boolean isStatic = false;
+    boolean isSealed = false;
+    boolean isAbstract = false;
+    boolean isImmutable = false;
+    boolean isSynchronized = false;
+    SinceSpecifier sinceSpecifier = null;
+    NativeSpecifier nativeSpecifier = null;
+    for (ModifierAST modifier : methodAST.getModifiers())
+    {
+      switch (modifier.getType())
+      {
+      case ABSTRACT:
+        isAbstract = true;
+        break;
+      case IMMUTABLE:
+        isImmutable = true;
+        break;
+      case NATIVE_SPECIFIER:
+        nativeSpecifier = convert((NativeSpecifierAST) modifier);
+        break;
+      case SEALED:
+        isSealed = true;
+        break;
+      case SINCE_SPECIFIER:
+        sinceSpecifier = convert((SinceSpecifierAST) modifier);
+        break;
+      case STATIC:
+        isStatic = true;
+        break;
+      case SYNCHRONIZED:
+        isSynchronized = true;
+        break;
+      default:
+        throw new ConceptualException("Illegal Modifier for a Method", modifier.getParseInfo());
+      }
+    }
+
+    AccessSpecifier accessSpecifier = convert(methodAST.getAccessSpecifier());
+
+    Method method = new Method(accessSpecifier, isAbstract, isSealed, isStatic, isSynchronized, isImmutable,
+                               sinceSpecifier, nativeSpecifier, methodAST.getName().getName());
+
+    return ScopeFactory.createMethodScope(method, enclosingScope);
   }
 
   private Scope convert(ConstructorAST constructorAST, Scope enclosingScope)
