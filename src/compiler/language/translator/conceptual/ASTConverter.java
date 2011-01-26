@@ -1,11 +1,13 @@
 package compiler.language.translator.conceptual;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import compiler.language.ast.member.AccessSpecifierAST;
 import compiler.language.ast.member.ConstructorAST;
 import compiler.language.ast.member.FieldAST;
 import compiler.language.ast.member.MemberAST;
@@ -16,7 +18,9 @@ import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.misc.NativeSpecifierAST;
 import compiler.language.ast.misc.QNameAST;
+import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
+import compiler.language.ast.terminal.VersionNumberAST;
 import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.ast.topLevel.PackageDeclarationAST;
 import compiler.language.ast.topLevel.TypeDefinitionAST;
@@ -139,7 +143,7 @@ public class ASTConverter
   private Scope convert(ClassDefinitionAST classDefinition, Scope enclosingScope) throws ConceptualException
   {
     // convert AccessSpecifier and Modifiers
-    AccessSpecifier access = AccessSpecifier.fromAST(classDefinition.getAccess());
+    AccessSpecifier access = convert(classDefinition.getAccess(), AccessSpecifier.PUBLIC);
     ModifierAST[] modifiers = classDefinition.getModifiers();
     boolean isAbstract = false;
     boolean isSealed = false;
@@ -159,7 +163,7 @@ public class ASTConverter
         isImmutable = true;
         break;
       case SINCE_SPECIFIER:
-        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier);
+        sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       default:
         throw new ConceptualException("Illegal Modifier for a Class Definition", modifier.getParseInfo());
@@ -290,7 +294,7 @@ public class ASTConverter
    */
   private Scope convert(InterfaceDefinitionAST interfaceDefinition, Scope enclosingScope) throws ConceptualException
   {
-    AccessSpecifier access = AccessSpecifier.fromAST(interfaceDefinition.getAccess());
+    AccessSpecifier access = convert(interfaceDefinition.getAccess(), AccessSpecifier.PUBLIC);
     ModifierAST[] modifiers = interfaceDefinition.getModifiers();
     boolean isImmutable = false;
     SinceSpecifier sinceSpecifier = null;
@@ -302,7 +306,7 @@ public class ASTConverter
         isImmutable = true;
         break;
       case SINCE_SPECIFIER:
-        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier); // TODO: move to a convert() method
+        sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       default:
         throw new ConceptualException("Illegal Modifier for an Interface Definition", modifier.getParseInfo());
@@ -427,7 +431,7 @@ public class ASTConverter
    */
   private Scope convert(EnumDefinitionAST enumDefinition, Scope enclosingScope) throws ConceptualException
   {
-    AccessSpecifier accessSpecifier = AccessSpecifier.fromAST(enumDefinition.getAccessSpecifier());
+    AccessSpecifier accessSpecifier = convert(enumDefinition.getAccessSpecifier(), AccessSpecifier.PUBLIC);
     ModifierAST[] modifiers = enumDefinition.getModifiers();
     SinceSpecifier sinceSpecifier = null;
     for (ModifierAST modifier : modifiers)
@@ -435,7 +439,7 @@ public class ASTConverter
       switch (modifier.getType())
       {
       case SINCE_SPECIFIER:
-        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier); // TODO: move to a convert() method
+        sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       default:
         throw new ConceptualException("Illegal Modifier for an Enum Definition", modifier.getParseInfo());
@@ -581,7 +585,7 @@ public class ASTConverter
    */
   private Scope[] convert(FieldAST fieldAST, Scope enclosingScope) throws ConceptualException
   {
-    AccessSpecifier accessSpecifier = AccessSpecifier.fromAST(fieldAST.getAccessSpecifier());
+    AccessSpecifier accessSpecifier = convert(fieldAST.getAccessSpecifier(), AccessSpecifier.PRIVATE);
 
     boolean isFinal = false;
     boolean isMutable = false;
@@ -600,7 +604,7 @@ public class ASTConverter
         isMutable = true;
         break;
       case SINCE_SPECIFIER:
-        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier);
+        sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       case STATIC:
         isStatic = true;
@@ -659,7 +663,7 @@ public class ASTConverter
         isSealed = true;
         break;
       case SINCE_SPECIFIER:
-        sinceSpecifier = SinceSpecifier.fromAST((SinceSpecifierAST) modifier); // TODO: change this to a convert() method
+        sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       case STATIC:
         isStatic = true;
@@ -678,8 +682,8 @@ public class ASTConverter
       }
     }
 
-    AccessSpecifier retrieveAccessSpecifier = AccessSpecifier.fromAST(propertyAST.getRetrieveAccess()); // TODO: change these to use a convert() method
-    AccessSpecifier assignAccessSpecifier = AccessSpecifier.fromAST(propertyAST.getAssignAccess());
+    AccessSpecifier retrieveAccessSpecifier = convert(propertyAST.getRetrieveAccess(), AccessSpecifier.PUBLIC);
+    AccessSpecifier assignAccessSpecifier = convert(propertyAST.getAssignAccess(), AccessSpecifier.PUBLIC);
 
     Property property = new Property(isSealed, isMutable, isFinal, isStatic, isSynchronized, isTransient, isVolatile, sinceSpecifier,
                                      propertyAST.getName().getName(), retrieveAccessSpecifier, assignAccessSpecifier);
@@ -735,7 +739,7 @@ public class ASTConverter
       }
     }
 
-    AccessSpecifier accessSpecifier = convert(methodAST.getAccessSpecifier());
+    AccessSpecifier accessSpecifier = convert(methodAST.getAccessSpecifier(), AccessSpecifier.PUBLIC);
 
     Method method = new Method(accessSpecifier, isAbstract, isSealed, isStatic, isSynchronized, isImmutable,
                                sinceSpecifier, nativeSpecifier, methodAST.getName().getName());
@@ -746,6 +750,66 @@ public class ASTConverter
   private Scope convert(ConstructorAST constructorAST, Scope enclosingScope)
   {
 
+  }
+
+  /**
+   * Converts the specified AccessSpecifierAST into an AccessSpecifier
+   * @param accessSpecifierAST - the AccessSpecifierAST to convert
+   * @param defaultValue - the default value to return if the AccessSpecifierAST is null
+   * @return the AccessSpecifier converted
+   */
+  private AccessSpecifier convert(AccessSpecifierAST accessSpecifierAST, AccessSpecifier defaultValue)
+  {
+    switch (accessSpecifierAST.getType())
+    {
+    case PACKAGE:
+      return AccessSpecifier.PACKAGE;
+    case PACKAGE_PROTECTED:
+      return AccessSpecifier.PACKAGE_PROTECTED;
+    case PRIVATE:
+      return AccessSpecifier.PRIVATE;
+    case PROTECTED:
+      return AccessSpecifier.PROTECTED;
+    case PUBLIC:
+      return AccessSpecifier.PUBLIC;
+    default:
+      return defaultValue;
+    }
+  }
+
+  /**
+   * Converts the specified SinceSpecifierAST into a SinceSpecifier
+   * @param sinceSpecifierAST - the SinceSpecifierAST to convert
+   * @return the SinceSpecifier created
+   * @throws ConceptualException - if the version number contains an illegal value (less than 0 or more than Integer.MAX_VALUE)
+   */
+  private SinceSpecifier convert(SinceSpecifierAST sinceSpecifierAST) throws ConceptualException
+  {
+    VersionNumberAST version = sinceSpecifierAST.getVersion();
+    IntegerLiteralAST[] literals = version.getVersionParts();
+    int[] values = new int[literals.length];
+    for (int i = 0; i < literals.length; i++)
+    {
+      BigInteger value = literals[i].getValue();
+      int intValue = value.intValue();
+      if (intValue < 0 || !BigInteger.valueOf(intValue).equals(value))
+      {
+        throw new ConceptualException("Illegal value in a Since Specifier: " + value, literals[i].getParseInfo());
+      }
+      values[i] = intValue;
+    }
+    return new SinceSpecifier(values);
+  }
+
+  /**
+   * Converts the specified NativeSpecifierAST into a NativeSpecifier
+   * @param nativeSpecifierAST - the NativeSpecifierAST to convert
+   * @return the NativeSpecifier created
+   */
+  private NativeSpecifier convert(NativeSpecifierAST nativeSpecifierAST)
+  {
+    String nativeName = nativeSpecifierAST.getNativeName().getLiteralValue();
+    return new NativeSpecifier(nativeName);
   }
 
 }
