@@ -14,7 +14,6 @@ public class InnerClass extends ConceptualClass
 {
 
   private boolean isStatic; // true if objects of this type do not store a reference to the outer class
-  private ConceptualClass outerClass;
 
   /**
    * Creates a new InnerClass with the specified properties.
@@ -25,14 +24,12 @@ public class InnerClass extends ConceptualClass
    * @param sinceSpecifier
    * @param name
    * @param isStatic
-   * @param outerClass
    */
   public InnerClass(AccessSpecifier accessSpecifier, boolean isAbstract, boolean isFinal, boolean isImmutable,
-                    SinceSpecifier sinceSpecifier, String name, boolean isStatic, ConceptualClass outerClass)
+                    SinceSpecifier sinceSpecifier, String name, boolean isStatic)
   {
     super(accessSpecifier, isAbstract, isFinal, isImmutable, sinceSpecifier, name);
     this.isStatic = isStatic;
-    this.outerClass = outerClass;
   }
 
   /**
@@ -42,12 +39,4 @@ public class InnerClass extends ConceptualClass
   {
     return isStatic;
   }
-  /**
-   * @return the outerClass
-   */
-  public ConceptualClass getOuterClass()
-  {
-    return outerClass;
-  }
-
 }

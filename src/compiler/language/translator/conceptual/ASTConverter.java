@@ -139,8 +139,9 @@ public class ASTConverter
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
    * @return the Scope of the ConceptualClass created, which has the ConceptualClass as its value
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws ScopeException - if there is a scope collision
    */
-  private Scope convert(ClassDefinitionAST classDefinition, Scope enclosingScope) throws ConceptualException
+  private Scope convert(ClassDefinitionAST classDefinition, Scope enclosingScope) throws ConceptualException, ScopeException
   {
     // convert AccessSpecifier and Modifiers
     AccessSpecifier access = convert(classDefinition.getAccess(), AccessSpecifier.PUBLIC);
@@ -175,6 +176,22 @@ public class ASTConverter
     Scope scope = ScopeFactory.createClassDefinitionScope(conceptualClass, enclosingScope);
     scopes.put(conceptualClass, scope);
 
+    addClassData(scope, classDefinition);
+
+    return scope;
+  }
+
+  /**
+   * Adds all of the data to a conceptual class that is not specified in the constructor.
+   * @param scope - the scope of the class definition, which contains a ConceptualClass as its value
+   * @param classDefinition - the ClassDefinitionAST to convert the type arguments and members of
+   * @throws ConceptualException - if there is a problem with the conversion
+   * @throws ScopeException - if there is a scope collision
+   */
+  private void addClassData(Scope scope, ClassDefinitionAST classDefinition) throws ConceptualException, ScopeException
+  {
+    ConceptualClass conceptualClass = (ConceptualClass) scope.getValue();
+
     // convert the type arguments
     TypeArgumentAST[] typeArgumentASTs = classDefinition.getTypeArguments();
     TypeArgument[] typeArguments = new TypeArgument[typeArgumentASTs.length];
@@ -184,6 +201,7 @@ public class ASTConverter
       typeArguments[i] = (TypeArgument) typeArgumentScope.getValue();
       scope.addChild(typeArgumentASTs[i].getName().getName(), typeArgumentScope);
     }
+    conceptualClass.setTypeArguments(typeArguments);
 
 
     // convert each of the members in turn, switching on the member type. each member is added to a list of the members of its type
@@ -281,8 +299,6 @@ public class ASTConverter
                                innerClasses.toArray(new InnerClass[0]),
                                innerInterfaces.toArray(new ConceptualInterface[0]),
                                innerEnums.toArray(new ConceptualEnum[0]));
-
-    return scope;
   }
 
   /**
@@ -291,8 +307,9 @@ public class ASTConverter
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
    * @return the Scope of the ConceptualInterface created, which has the ConceptualInterface as its value
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws ScopeException - if there is a scope collision
    */
-  private Scope convert(InterfaceDefinitionAST interfaceDefinition, Scope enclosingScope) throws ConceptualException
+  private Scope convert(InterfaceDefinitionAST interfaceDefinition, Scope enclosingScope) throws ConceptualException, ScopeException
   {
     AccessSpecifier access = convert(interfaceDefinition.getAccess(), AccessSpecifier.PUBLIC);
     ModifierAST[] modifiers = interfaceDefinition.getModifiers();
@@ -326,6 +343,7 @@ public class ASTConverter
       typeArguments[i] = (TypeArgument) typeArgumentScope.getValue();
       scope.addChild(typeArgumentASTs[i].getName().getName(), typeArgumentScope);
     }
+    conceptualInterface.setTypeArguments(typeArguments);
 
 
     // convert each of the members in turn, switching on the member type. each member is added to a list of the members of its type.
@@ -777,6 +795,82 @@ public class ASTConverter
     scopes.put(method, scope);
 
     return scope;
+  }
+
+  /**
+   * Converts the specified ClassDefinitionAST into an InnerClass
+   * @param classDefinitionAST - the ClassDefinitionAST to convert
+   * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
+   * @return the Scope of the InnerClass created, which has the InnerClass as its value
+   * @throws ConceptualException - if there is a problem with the conversion
+   */
+  private Scope convertInnerClass(ClassDefinitionAST classDefinitionAST, Scope enclosingScope) throws ConceptualException
+  {
+    // convert AccessSpecifier and Modifiers
+    AccessSpecifier access = convert(classDefinitionAST.getAccess(), AccessSpecifier.PUBLIC);
+    ModifierAST[] modifiers = classDefinitionAST.getModifiers();
+    boolean isAbstract = false;
+    boolean isSealed = false;
+    boolean isImmutable = false;
+    boolean isStatic = false;
+    SinceSpecifier sinceSpecifier = null;
+    for (ModifierAST modifier : modifiers)
+    {
+      switch (modifier.getType())
+      {
+      case ABSTRACT:
+        isAbstract = true;
+        break;
+      case SEALED:
+        isSealed = true;
+        break;
+      case STATIC:
+        isStatic = true;
+        break;
+      case IMMUTABLE:
+        isImmutable = true;
+        break;
+      case SINCE_SPECIFIER:
+        sinceSpecifier = convert((SinceSpecifierAST) modifier);
+        break;
+      default:
+        throw new ConceptualException("Illegal Modifier for an Inner Class Definition", modifier.getParseInfo());
+      }
+    }
+
+    // Create the InnerClass and the scope for it
+    InnerClass conceptualClass = new InnerClass(access, isAbstract, isSealed, isImmutable, sinceSpecifier, classDefinitionAST.getName().getName(), isStatic);
+    Scope scope = ScopeFactory.createClassDefinitionScope(conceptualClass, enclosingScope);
+    scopes.put(conceptualClass, scope);
+
+    addClassData(scope, classDefinitionAST);
+
+    return scope;
+
+  }
+
+  /**
+   * Converts the specified InterfaceDefinitionAST into a ConceptualInterface
+   * @param interfaceDefinitionAST - the InterfaceDefinitionAST to convert
+   * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
+   * @return the Scope of the ConceptualInterface created, which has the ConceptualInterface as its value
+   * @throws ConceptualException - if there is a problem with the conversion
+   */
+  private Scope convertInnerInterface(InterfaceDefinitionAST interfaceDefinitionAST, Scope enclosingScope) throws ConceptualException
+  {
+    return convert(interfaceDefinitionAST, enclosingScope);
+  }
+
+  /**
+   * Converts the specified EnumDefinitionAST into a ConceptualEnum
+   * @param enumDefinitionAST - the EnumDefinitionAST to convert
+   * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
+   * @return the Scope of the ConceptualEnum created, which has the ConceptualEnum as its value
+   * @throws ConceptualException - if there is a problem with the conversion
+   */
+  private Scope convertInnerEnum(EnumDefinitionAST enumDefinitionAST, Scope enclosingScope) throws ConceptualException
+  {
+    return convert(enumDefinitionAST, enclosingScope);
   }
 
   /**

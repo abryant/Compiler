@@ -55,6 +55,15 @@ public class ConceptualInterface
   }
 
   /**
+   * Sets the type arguments of this conceptual interface
+   * @param typeArguments
+   */
+  public void setTypeArguments(TypeArgument[] typeArguments)
+  {
+    this.typeArguments = typeArguments;
+  }
+
+  /**
    * Sets the members of this conceptual interface
    * @param staticInitializer
    * @param staticVariables
