@@ -694,6 +694,36 @@ public class ASTConverter
   }
 
   /**
+   * Converts the specified ConstructorAST into a Constructor
+   * @param constructorAST - the ConstructorAST to convert
+   * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
+   * @return the Scope of the Constructor created, which has the Constructor as its value
+   * @throws ConceptualException - if there is a problem with the conversion
+   */
+  private Scope convert(ConstructorAST constructorAST, Scope enclosingScope) throws ConceptualException
+  {
+    AccessSpecifier accessSpecifier = convert(constructorAST.getAccessSpecifier(), AccessSpecifier.PUBLIC);
+    SinceSpecifier sinceSpecifier = null;
+    for (ModifierAST modifier : constructorAST.getModifiers())
+    {
+      switch (modifier.getType())
+      {
+      case SINCE_SPECIFIER:
+        sinceSpecifier = convert((SinceSpecifierAST) modifier);
+        break;
+      default:
+        throw new ConceptualException("Illegal Modifier for a Constructor", modifier.getParseInfo());
+      }
+    }
+
+    Constructor constructor = new Constructor(accessSpecifier, sinceSpecifier, constructorAST.getName().getName());
+    Scope scope = ScopeFactory.createConstructorScope(constructor, enclosingScope);
+    scopes.put(constructor, scope);
+
+    return scope;
+  }
+
+  /**
    * Converts the specified MethodAST into a Method
    * @param methodAST - the MethodAST to convert
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
@@ -702,6 +732,8 @@ public class ASTConverter
    */
   private Scope convert(MethodAST methodAST, Scope enclosingScope) throws ConceptualException
   {
+    AccessSpecifier accessSpecifier = convert(methodAST.getAccessSpecifier(), AccessSpecifier.PUBLIC);
+
     boolean isStatic = false;
     boolean isSealed = false;
     boolean isAbstract = false;
@@ -739,17 +771,12 @@ public class ASTConverter
       }
     }
 
-    AccessSpecifier accessSpecifier = convert(methodAST.getAccessSpecifier(), AccessSpecifier.PUBLIC);
-
     Method method = new Method(accessSpecifier, isAbstract, isSealed, isStatic, isSynchronized, isImmutable,
                                sinceSpecifier, nativeSpecifier, methodAST.getName().getName());
+    Scope scope = ScopeFactory.createMethodScope(method, enclosingScope);
+    scopes.put(method, scope);
 
-    return ScopeFactory.createMethodScope(method, enclosingScope);
-  }
-
-  private Scope convert(ConstructorAST constructorAST, Scope enclosingScope)
-  {
-
+    return scope;
   }
 
   /**

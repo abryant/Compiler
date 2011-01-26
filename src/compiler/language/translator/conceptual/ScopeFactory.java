@@ -2,6 +2,7 @@ package compiler.language.translator.conceptual;
 
 import compiler.language.conceptual.Scope;
 import compiler.language.conceptual.ScopeType;
+import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
@@ -133,6 +134,17 @@ public class ScopeFactory
   public static Scope createPropertyScope(Property property, Scope parentScope)
   {
     return new Scope(parentScope, ScopeType.PROPERTY, property);
+  }
+
+  /**
+   * Creates a new scope for a constructor.
+   * @param constructor - the constructor to store in the new scope
+   * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
+   * @return the scope created
+   */
+  public static Scope createConstructorScope(Constructor constructor, Scope parentScope)
+  {
+    return new Scope(parentScope, ScopeType.CONSTRUCTOR, constructor);
   }
 
   /**

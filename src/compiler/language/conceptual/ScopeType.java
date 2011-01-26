@@ -16,8 +16,9 @@ public enum ScopeType
   INTERFACE,       // ConceptualInterface
   ENUM,            // ConceptualEnum
   TYPE_ARGUMENT,   // TypeArgument
-  METHOD,          // Set<Method>
   MEMBER_VARIABLE, // MemberVariable
   PROPERTY,        // Property
+  CONSTRUCTOR,     // Constructor
+  METHOD,          // Set<Method>
   // TODO: add others
 }
