@@ -64,6 +64,7 @@ public class ASTConverter
   private ConceptualProgram program;
   private Scope rootScope;
 
+  // a map from AST node to Scope
   private Map<Object, Scope> scopes = new HashMap<Object, Scope>();
 
   // TODO: handle duplicate modifiers properly (instead of just disregarding them)
@@ -78,6 +79,11 @@ public class ASTConverter
     this.program = program;
     this.rootScope = rootScope;
     scopes.put(program, rootScope);
+  }
+
+  public Map<Object, Scope> getScopes()
+  {
+    return scopes;
   }
 
   /**
@@ -101,6 +107,7 @@ public class ASTConverter
     }
 
     Scope fileScope = ScopeFactory.createFileScope(enclosingScope);
+    scopes.put(compilationUnit, fileScope);
 
     for (TypeDefinitionAST typeDefinition : compilationUnit.getTypes())
     {
@@ -174,7 +181,7 @@ public class ASTConverter
     // Create the ConceptualClass and the scope for it
     ConceptualClass conceptualClass = new ConceptualClass(access, isAbstract, isSealed, isImmutable, sinceSpecifier, classDefinition.getName().getName());
     Scope scope = ScopeFactory.createClassDefinitionScope(conceptualClass, enclosingScope);
-    scopes.put(conceptualClass, scope);
+    scopes.put(classDefinition, scope);
 
     addClassData(scope, classDefinition);
 
@@ -332,7 +339,7 @@ public class ASTConverter
 
     ConceptualInterface conceptualInterface = new ConceptualInterface(access, isImmutable, sinceSpecifier, interfaceDefinition.getName().getName());
     Scope scope = ScopeFactory.createInterfaceDefinitionScope(conceptualInterface, enclosingScope);
-    scopes.put(conceptualInterface, scope);
+    scopes.put(interfaceDefinition, scope);
 
     // convert the type arguments
     TypeArgumentAST[] typeArgumentASTs = interfaceDefinition.getTypeArguments();
@@ -467,7 +474,7 @@ public class ASTConverter
 
     ConceptualEnum conceptualEnum = new ConceptualEnum(accessSpecifier, sinceSpecifier, enumDefinition.getName().getName());
     Scope scope = ScopeFactory.createEnumDefinitionScope(conceptualEnum, enclosingScope);
-    scopes.put(conceptualEnum, scope);
+    scopes.put(enumDefinition, scope);
 
     // convert each of the members in turn, switching on the member type. each member is added to a list of the members of its type.
 
@@ -593,7 +600,7 @@ public class ASTConverter
   {
     EnumConstant enumConstant = new EnumConstant(enumConstantAST.getName().getName());
     Scope scope = ScopeFactory.createEnumConstantScope(enumConstant, enclosingScope);
-    scopes.put(enumConstant, scope);
+    scopes.put(enumConstantAST, scope);
 
     if (enumConstantAST.getMembers() == null)
     {
@@ -706,7 +713,7 @@ public class ASTConverter
   {
     TypeArgument typeArgument = new TypeArgument(typeArgumentAST.getName().getName());
     Scope scope = ScopeFactory.createTypeArgumentScope(typeArgument, enclosingScope);
-    scopes.put(typeArgument, scope);
+    scopes.put(typeArgumentAST, scope);
     return scope;
   }
 
@@ -761,7 +768,7 @@ public class ASTConverter
     {
       memberVariables[i] = new MemberVariable(accessSpecifier, isFinal, isMutable, isStatic, isVolatile, isTransient, sinceSpecifier, assignees[i].getName().getName());
       memberScopes[i] = ScopeFactory.createMemberVariableScope(memberVariables[i], enclosingScope);
-      scopes.put(memberVariables[i], memberScopes[i]);
+      scopes.put(assignees[i], memberScopes[i]);
     }
     return memberScopes;
   }
@@ -822,7 +829,7 @@ public class ASTConverter
     Property property = new Property(isSealed, isMutable, isFinal, isStatic, isSynchronized, isTransient, isVolatile, sinceSpecifier,
                                      propertyAST.getName().getName(), retrieveAccessSpecifier, assignAccessSpecifier);
     Scope scope = ScopeFactory.createPropertyScope(property, enclosingScope);
-    scopes.put(property, scope);
+    scopes.put(propertyAST, scope);
 
     return scope;
   }
@@ -852,7 +859,7 @@ public class ASTConverter
 
     Constructor constructor = new Constructor(accessSpecifier, sinceSpecifier, constructorAST.getName().getName());
     Scope scope = ScopeFactory.createConstructorScope(constructor, enclosingScope);
-    scopes.put(constructor, scope);
+    scopes.put(constructorAST, scope);
 
     return scope;
   }
@@ -908,7 +915,7 @@ public class ASTConverter
     Method method = new Method(accessSpecifier, isAbstract, isSealed, isStatic, isSynchronized, isImmutable,
                                sinceSpecifier, nativeSpecifier, methodAST.getName().getName());
     Scope scope = ScopeFactory.createMethodScope(method, enclosingScope);
-    scopes.put(method, scope);
+    scopes.put(methodAST, scope);
 
     return scope;
   }
@@ -958,7 +965,7 @@ public class ASTConverter
     // Create the InnerClass and the scope for it
     InnerClass conceptualClass = new InnerClass(access, isAbstract, isSealed, isImmutable, sinceSpecifier, classDefinitionAST.getName().getName(), isStatic);
     Scope scope = ScopeFactory.createClassDefinitionScope(conceptualClass, enclosingScope);
-    scopes.put(conceptualClass, scope);
+    scopes.put(classDefinitionAST, scope);
 
     addClassData(scope, classDefinitionAST);
 

@@ -1,8 +1,10 @@
 package compiler.language.translator.conceptual;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 import compiler.language.ast.topLevel.CompilationUnitAST;
+import compiler.language.ast.topLevel.ImportDeclarationAST;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.ConceptualProgram;
 import compiler.language.conceptual.Scope;
@@ -19,14 +21,14 @@ public class ConceptualTranslator
 
   private Scope rootScope;
   private ConceptualProgram program;
-  private Set<CompilationUnitAST> compilationUnits;
+  private List<CompilationUnitAST> compilationUnits;
   private ASTConverter astConverter;
 
   /**
    * Creates a new ConceptualTranslator for the specified compilation units.
    * @param compilationUnits - the compilation units to translate
    */
-  public ConceptualTranslator(Set<CompilationUnitAST> compilationUnits)
+  public ConceptualTranslator(List<CompilationUnitAST> compilationUnits)
   {
     this.compilationUnits = compilationUnits;
     rootScope = ScopeFactory.createRootScope();
@@ -45,6 +47,7 @@ public class ConceptualTranslator
       {
         astConverter.convert(compilationUnit);
       }
+      resolveImports();
     }
     catch (ScopeException e)
     {
@@ -57,31 +60,37 @@ public class ConceptualTranslator
 
   }
 
-  /* TODO: move this elsewhere
   private void resolveImports() throws ConceptualException
   {
-    Map<CompilationUnitAST, Scope> fileScopes = nameScanner.getFileScopes();
+    Map<Object, Scope> scopes = astConverter.getScopes();
+
+    // TODO: avoid the ConcurrentModificationException here, which would be caused by adding to compilationUnits while looping over it
     for (CompilationUnitAST compilationUnit : compilationUnits)
     {
-      Scope fileScope = fileScopes.get(compilationUnit);
+      Scope fileScope = scopes.get(compilationUnit);
       ImportDeclarationAST[] imports = compilationUnit.getImports();
       for (ImportDeclarationAST importDeclaration : imports)
       {
-        Scope importScope = fileScope.lookup(importDeclaration.getName().getNameStrings());
+        String[] nameStrings = importDeclaration.getName().getNameStrings();
+        Scope importScope = rootScope.lookup(nameStrings);
         if (importScope == null)
         {
-          // TODO: accumulate error messages instead of just throwing one
-          throw new ConceptualException("Unresolved import: " + importDeclaration.getName(),
-                                        importDeclaration.getName().getParseInfo());
+          importScope = lookupExternalQualifiedName(nameStrings);
+          if (importScope == null)
+          {
+            // TODO: accumulate error messages instead of just throwing one
+            throw new ConceptualException("Unresolved import: " + importDeclaration.getName(),
+                                          importDeclaration.getName().getParseInfo());
+          }
         }
+        // TODO: how should static imports be handled here?
         if (importDeclaration.isAll())
         {
           fileScope.copyChildren(importScope);
         }
         else
         {
-          NameAST[] names = importDeclaration.getName().getNames();
-          String name = names[names.length - 1].getName();
+          String name = nameStrings[nameStrings.length - 1];
           try
           {
             fileScope.addChild(name, importScope);
@@ -95,6 +104,17 @@ public class ConceptualTranslator
       }
     }
   }
-  */
+
+  /**
+   * Looks up the specified qualified name in compilation units which have not been loaded into the AST Converter.
+   * @param nameStrings - the qualified name as an array of strings
+   * @return the newly-loaded scope which corresponds to the specified qualified name
+   */
+  private Scope lookupExternalQualifiedName(String[] nameStrings)
+  {
+    // TODO: lookup the specified name strings in files which have not yet been loaded
+    // if a file likely to contain it is found, load it into astConverter and try to resolve the scope again
+    return null;
+  }
 
 }
