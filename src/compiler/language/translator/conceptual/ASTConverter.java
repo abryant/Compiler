@@ -446,8 +446,9 @@ public class ASTConverter
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
    * @return the Scope of the ConceptualEnum created, which has the ConceptualEnum as its value
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws ScopeException - if there is a scope collision
    */
-  private Scope convert(EnumDefinitionAST enumDefinition, Scope enclosingScope) throws ConceptualException
+  private Scope convert(EnumDefinitionAST enumDefinition, Scope enclosingScope) throws ConceptualException, ScopeException
   {
     AccessSpecifier accessSpecifier = convert(enumDefinition.getAccessSpecifier(), AccessSpecifier.PUBLIC);
     ModifierAST[] modifiers = enumDefinition.getModifiers();
@@ -576,6 +577,121 @@ public class ASTConverter
                                innerClasses.toArray(new InnerClass[0]),
                                innerInterfaces.toArray(new ConceptualInterface[0]),
                                innerEnums.toArray(new ConceptualEnum[0]));
+
+    return scope;
+  }
+
+  /**
+   * Converts the specified EnumConstantAST into an EnumConstant.
+   * @param enumConstantAST - the EnumConstantAST to convert
+   * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
+   * @return the Scope of the EnumConstant created, which has the EnumConstant as its value
+   * @throws ConceptualException - if there is a problem with the conversion
+   * @throws ScopeException - if there is a scope collision
+   */
+  private Scope convert(EnumConstantAST enumConstantAST, Scope enclosingScope) throws ConceptualException, ScopeException
+  {
+    EnumConstant enumConstant = new EnumConstant(enumConstantAST.getName().getName());
+    Scope scope = ScopeFactory.createEnumConstantScope(enumConstant, enclosingScope);
+    scopes.put(enumConstant, scope);
+
+    if (enumConstantAST.getMembers() == null)
+    {
+      return scope;
+    }
+
+    Scope dummyScope = ScopeFactory.createDummyScope(scope);
+
+    // convert the other members
+    List<MemberVariable>      variables       = new LinkedList<MemberVariable>();
+    List<Property>            properties      = new LinkedList<Property>();
+    List<Constructor>         constructors    = new LinkedList<Constructor>();
+    List<Method>              methods         = new LinkedList<Method>();
+    List<InnerClass>          innerClasses    = new LinkedList<InnerClass>();
+    List<ConceptualInterface> innerInterfaces = new LinkedList<ConceptualInterface>();
+    List<ConceptualEnum>      innerEnums      = new LinkedList<ConceptualEnum>();
+
+    for (MemberAST memberAST : enumConstantAST.getMembers())
+    {
+      if (memberAST instanceof FieldAST)
+      {
+        Scope[] variableScopes = convert((FieldAST) memberAST, dummyScope);
+        for (Scope variableScope : variableScopes)
+        {
+          MemberVariable variable = (MemberVariable) variableScope.getValue();
+          variables.add(variable);
+          dummyScope.addChild(variable.getName(), variableScope);
+        }
+      }
+      else if (memberAST instanceof PropertyAST)
+      {
+        Scope propertyScope = convert((PropertyAST) memberAST, dummyScope);
+        Property property = (Property) propertyScope.getValue();
+        properties.add(property);
+        dummyScope.addChild(property.getName(), propertyScope);
+      }
+      else if (memberAST instanceof StaticInitializerAST)
+      {
+        // do nothing, as the static initializer contains no information that we need to convert right now
+        // the contained statements will be converted when the scope hierarchy has been built
+      }
+      else if (memberAST instanceof ConstructorAST)
+      {
+        Scope constructorScope = convert((ConstructorAST) memberAST, dummyScope);
+        Constructor constructor = (Constructor) constructorScope.getValue();
+        constructors.add(constructor);
+        // no need to add to the scope here, you cannot reference a constructor directly
+      }
+      else if (memberAST instanceof MethodAST)
+      {
+        Scope methodScope = convert((MethodAST) memberAST, dummyScope);
+        Method method = (Method) methodScope.getValue();
+        methods.add(method);
+        // combine the scopes for existing methods
+        Scope existingScope = dummyScope.getChild(method.getName());
+        if (existingScope != null && existingScope.getType() == ScopeType.METHOD)
+        {
+          @SuppressWarnings("unchecked")
+          Set<Method> existingMethods = (Set<Method>) existingScope.getValue();
+          existingMethods.add(method);
+        }
+        else
+        {
+          // if existingScope is not null here then addChild() will fail, as in the addChild() calls for other members
+          dummyScope.addChild(method.getName(), methodScope);
+        }
+      }
+      else if (memberAST instanceof ClassDefinitionAST)
+      {
+        Scope innerClassScope = convertInnerClass((ClassDefinitionAST) memberAST, dummyScope);
+        InnerClass innerClass = (InnerClass) innerClassScope.getValue();
+        innerClasses.add(innerClass);
+        dummyScope.addChild(innerClass.getName(), innerClassScope);
+      }
+      else if (memberAST instanceof InterfaceDefinitionAST)
+      {
+        Scope innerInterfaceScope = convertInnerInterface((InterfaceDefinitionAST) memberAST, dummyScope);
+        ConceptualInterface innerInterface = (ConceptualInterface) innerInterfaceScope.getValue();
+        innerInterfaces.add(innerInterface);
+        dummyScope.addChild(innerInterface.getName(), innerInterfaceScope);
+      }
+      else if (memberAST instanceof EnumDefinitionAST)
+      {
+        Scope innerEnumScope = convertInnerEnum((EnumDefinitionAST) memberAST, dummyScope);
+        ConceptualEnum innerEnum = (ConceptualEnum) innerEnumScope.getValue();
+        innerEnums.add(innerEnum);
+        dummyScope.addChild(innerEnum.getName(), innerEnumScope);
+      }
+      else
+      {
+        throw new UnsupportedOperationException("Cannot translate an enum constant member that is not a field, property, static initializer, constructor, method, or type definition.");
+      }
+    }
+
+    enumConstant.setMembers(new StaticInitializer(), new VariableInitializers(),
+                            variables.toArray(new MemberVariable[0]), properties.toArray(new Property[0]),
+                            constructors.toArray(new Constructor[0]), methods.toArray(new Method[0]),
+                            innerClasses.toArray(new InnerClass[0]), innerInterfaces.toArray(new ConceptualInterface[0]), innerEnums.toArray(new ConceptualEnum[0]));
 
     return scope;
   }
@@ -803,8 +919,9 @@ public class ASTConverter
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
    * @return the Scope of the InnerClass created, which has the InnerClass as its value
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws ScopeException - if there is a scope collision
    */
-  private Scope convertInnerClass(ClassDefinitionAST classDefinitionAST, Scope enclosingScope) throws ConceptualException
+  private Scope convertInnerClass(ClassDefinitionAST classDefinitionAST, Scope enclosingScope) throws ConceptualException, ScopeException
   {
     // convert AccessSpecifier and Modifiers
     AccessSpecifier access = convert(classDefinitionAST.getAccess(), AccessSpecifier.PUBLIC);
@@ -855,8 +972,9 @@ public class ASTConverter
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
    * @return the Scope of the ConceptualInterface created, which has the ConceptualInterface as its value
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws ScopeException - if there is a scope collision
    */
-  private Scope convertInnerInterface(InterfaceDefinitionAST interfaceDefinitionAST, Scope enclosingScope) throws ConceptualException
+  private Scope convertInnerInterface(InterfaceDefinitionAST interfaceDefinitionAST, Scope enclosingScope) throws ConceptualException, ScopeException
   {
     return convert(interfaceDefinitionAST, enclosingScope);
   }
@@ -867,8 +985,9 @@ public class ASTConverter
    * @param enclosingScope - the scope to make the parent of the new conceptual object's scope
    * @return the Scope of the ConceptualEnum created, which has the ConceptualEnum as its value
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws ScopeException - if there is a scope collision
    */
-  private Scope convertInnerEnum(EnumDefinitionAST enumDefinitionAST, Scope enclosingScope) throws ConceptualException
+  private Scope convertInnerEnum(EnumDefinitionAST enumDefinitionAST, Scope enclosingScope) throws ConceptualException, ScopeException
   {
     return convert(enumDefinitionAST, enclosingScope);
   }

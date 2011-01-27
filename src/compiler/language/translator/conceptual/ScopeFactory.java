@@ -10,6 +10,7 @@ import compiler.language.conceptual.type.TypeArgument;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
+import compiler.language.conceptual.typeDefinition.EnumConstant;
 
 /*
  * Created on 23 Dec 2010
@@ -104,6 +105,17 @@ public class ScopeFactory
   }
 
   /**
+   * Creates a new scope for an enum constant.
+   * @param enumConstant - the enum constant value to store in the new scope
+   * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
+   * @return the scope created
+   */
+  public static Scope createEnumConstantScope(EnumConstant enumConstant, Scope parentScope)
+  {
+    return new Scope(parentScope, ScopeType.ENUM_CONSTANT, enumConstant);
+  }
+
+  /**
    * Creates a new scope for a type argument definition.
    * @param typeArgument - the type argument value to store in the new scope
    * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
@@ -156,5 +168,15 @@ public class ScopeFactory
   public static Scope createMethodScope(Method method, Scope parentScope)
   {
     return new Scope(parentScope, ScopeType.METHOD, method);
+  }
+
+  /**
+   * Creates a new scope that stores no value, which should not be added as the child of any Scope. This will ensure that it has no fully qualified name.
+   * @param parentScope - the parent scope that should be searched if a name cannot be resolved in the new scope
+   * @return the scope created
+   */
+  public static Scope createDummyScope(Scope parentScope)
+  {
+    return new Scope(parentScope, ScopeType.UNRESOLVABLE_DUMMY, null);
   }
 }

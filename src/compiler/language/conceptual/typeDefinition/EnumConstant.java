@@ -65,32 +65,26 @@ public class EnumConstant
   /**
    * Sets the members of this enum constant.
    * @param staticInitializer
-   * @param constructors
-   * @param properties
-   * @param variables
    * @param variableInitializers
+   * @param variables
+   * @param properties
+   * @param constructors
    * @param methods
-   */
-  public void setMembers(StaticInitializer staticInitializer, Constructor[] constructors,
-                         Property[] properties, MemberVariable[] variables,
-                         VariableInitializers variableInitializers, Method[] methods)
-  {
-    this.staticInitializer = staticInitializer;
-    this.constructors = constructors;
-    this.properties = properties;
-    this.variables = variables;
-    this.variableInitializers = variableInitializers;
-    this.methods = methods;
-  }
-
-  /**
-   * Sets the inner type definitions of this enum constant.
    * @param innerClasses
    * @param innerInterfaces
    * @param innerEnums
    */
-  public void setInnerTypeDefinitions(InnerClass[] innerClasses, ConceptualInterface[] innerInterfaces, ConceptualEnum[] innerEnums)
+  public void setMembers(StaticInitializer staticInitializer, VariableInitializers variableInitializers,
+                         MemberVariable[] variables, Property[] properties,
+                         Constructor[] constructors, Method[] methods,
+                         InnerClass[] innerClasses, ConceptualInterface[] innerInterfaces, ConceptualEnum[] innerEnums)
   {
+    this.staticInitializer = staticInitializer;
+    this.variableInitializers = variableInitializers;
+    this.variables = variables;
+    this.properties = properties;
+    this.constructors = constructors;
+    this.methods = methods;
     this.innerClasses = innerClasses;
     this.innerInterfaces = innerInterfaces;
     this.innerEnums = innerEnums;
