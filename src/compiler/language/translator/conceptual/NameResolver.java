@@ -3,10 +3,13 @@ package compiler.language.translator.conceptual;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.ast.topLevel.ImportDeclarationAST;
+import compiler.language.ast.topLevel.TypeDefinitionAST;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.Scope;
 
@@ -20,9 +23,13 @@ import compiler.language.conceptual.Scope;
 public class NameResolver
 {
 
-  private Queue<CompilationUnitAST> toResolve;
   private Scope rootScope;
   private Map<Object, Scope> astScopes;
+
+  private Queue<CompilationUnitAST> toResolveImports;
+  private Queue<TypeDefinitionAST>  toResolveParents;
+  private Queue<TypeDefinitionAST>  toResolveTypes;
+  private Queue<TypeDefinitionAST>  toResolveBlocks; // TODO: change the type of object in this queue?
 
   /**
    * Creates a new NameResolver to resolve names on the specified compilation units.
@@ -33,8 +40,11 @@ public class NameResolver
   public NameResolver(List<CompilationUnitAST> compilationUnits, Scope rootScope, Map<Object, Scope> astScopes)
   {
     this.rootScope = rootScope;
-    this.toResolve = new LinkedList<CompilationUnitAST>(compilationUnits);
     this.astScopes = astScopes;
+    this.toResolveImports = new LinkedList<CompilationUnitAST>(compilationUnits);
+    this.toResolveParents = new LinkedList<TypeDefinitionAST>();
+    this.toResolveTypes   = new LinkedList<TypeDefinitionAST>();
+    this.toResolveBlocks  = new LinkedList<TypeDefinitionAST>();
   }
 
   /**
@@ -43,22 +53,42 @@ public class NameResolver
    */
   public void addCompilationUnit(CompilationUnitAST compilationUnit)
   {
-    toResolve.add(compilationUnit);
+    toResolveImports.add(compilationUnit);
   }
 
-  public void resolveNames()
+  /**
+   * Resolves all of the names in all compilation units that have been added to this NameResolver
+   * (as well as any compilation units which are loaded during name resolution)
+   * @throws ConceptualException - if there is an error during name resolution
+   */
+  public void resolveNames() throws ConceptualException
   {
-    // TODO: this method should not care if more compilation units are added via addCompilationUnit() at any point during resolution
-    // it will not happen in another thread, but if names that cannot be resolved are found, more compilation units may be parsed and added here
+    // do not finish until everything has been resolved
+    while (!toResolveImports.isEmpty() || !toResolveParents.isEmpty() || !toResolveTypes.isEmpty() || !toResolveBlocks.isEmpty())
+    {
 
-    // TODO: first resolve all of the imports
+      // resolve all imports
+      while (!toResolveImports.isEmpty())
+      {
+        CompilationUnitAST toResolve = toResolveImports.poll();
+        resolveImports(toResolve);
+        for (TypeDefinitionAST typeDefinition : toResolve.getTypes())
+        {
+          toResolveParents.add(typeDefinition);
+        }
+      }
 
-    // TODO: next resolve the inheritance hierarchies, as their scopes need to be combined
-    // also, check that the inheritance hierarchy is not at all cyclic
-    // this will require a "while (!resolvedMore)" loop, as some supertypes may need to be resolved before others can be
-    // i.e. if A extends B and A has an inner class X, and Foo extends B.X
+      // resolve the inheritance hierarchies
+      while (toResolveImports.isEmpty() && !toResolveParents.isEmpty())
+      {
+        // TODO: next resolve the inheritance hierarchies, as their scopes need to be combined
+        // also, check that the inheritance hierarchy is not at all cyclic
+        // this will require a "while (!resolvedMore)" loop, as some supertypes may need to be resolved before others can be
+        // i.e. if A extends B and A has an inner class X, and Foo extends B.X
+      }
 
-    // TODO: do the rest, including generating the missing parts of the conceptual hierarchy
+      // TODO: do the rest, including generating the missing parts of the conceptual hierarchy
+    }
   }
 
   /**
@@ -85,25 +115,46 @@ public class NameResolver
                                         importDeclaration.getName().getParseInfo());
         }
       }
-      // TODO: how should static imports be handled here?
-      // TODO: only allow certain scope types to be imported
+      boolean isStatic = importDeclaration.isStaticImport();
       if (importDeclaration.isAll())
       {
-        fileScope.copyChildren(importScope);
+        for (Entry<String, Scope> entry : importScope.getChildren().entrySet())
+        {
+          importScopeEntry(entry.getKey(), entry.getValue(), fileScope, isStatic, importDeclaration.getParseInfo());
+        }
       }
       else
       {
         String name = nameStrings[nameStrings.length - 1];
-        try
-        {
-          fileScope.addChild(name, importScope);
-        }
-        catch (ScopeException e)
-        {
-          // TODO: add the other import's ParseInfo to the exception
-          throw new ConceptualException("Conflicting import declarations: " + name, importDeclaration.getParseInfo());
-        }
+        importScopeEntry(name, importScope, fileScope, isStatic, importDeclaration.getParseInfo());
       }
+    }
+  }
+
+  /**
+   * Attempts to import the specified importScope into fileScope, under the specified name.
+   * This method checks that importScope is of a valid scope type and can be imported into a file's scope.
+   * @param name - the name to try to import the scope under
+   * @param importScope - the scope to try to import
+   * @param fileScope - the file scope to import the scope into
+   * @param isStatic - whether this import statement is static (i.e. whether it should import static members)
+   * @param importParseInfo - the ParseInfo of the import statement, in case a name conflict is detected
+   * @throws ConceptualException - if there is a conflict between the new name and an existing one
+   */
+  private void importScopeEntry(String name, Scope importScope, Scope fileScope, boolean isStatic, ParseInfo importParseInfo) throws ConceptualException
+  {
+    // TODO: is having "import" and "import static" as separate things a good idea?
+
+    // TODO: how should static imports be handled here?
+    // TODO: only allow certain scope types to be imported
+    try
+    {
+      fileScope.addChild(name, importScope);
+    }
+    catch (ScopeException e)
+    {
+      // TODO: add the other import's ParseInfo to the exception
+      throw new ConceptualException("Conflicting import declarations: " + name, importParseInfo);
     }
   }
 
@@ -114,13 +165,15 @@ public class NameResolver
   private void findExternalQName(String[] nameStrings)
   {
     // TODO: lookup the specified QName in files which have not yet been loaded
+
+
     StringBuffer buffer = new StringBuffer();
     for (int i = 0; i < nameStrings.length; i++)
     {
       buffer.append(nameStrings[i]);
       if (i != nameStrings.length - 1)
       {
-        buffer.append(", ");
+        buffer.append(".");
       }
     }
     throw new UnsupportedOperationException("Unable to find QName externally: " + buffer.toString());

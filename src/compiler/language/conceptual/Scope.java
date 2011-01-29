@@ -1,5 +1,6 @@
 package compiler.language.conceptual;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import compiler.language.translator.conceptual.ScopeException;
@@ -19,7 +20,7 @@ public class Scope
   private Object value;
 
   private Scope parent;
-  private Map<String, Scope> children;
+  private HashMap<String, Scope> children;
 
   /**
    * Creates a new scope, with the specified parent, type and value
@@ -29,9 +30,10 @@ public class Scope
    */
   public Scope(Scope parent, ScopeType type, Object value)
   {
-    this.parent = parent;
     this.type = type;
     this.value = value;
+    this.parent = parent;
+    children = new HashMap<String, Scope>();
   }
 
   /**
@@ -65,6 +67,15 @@ public class Scope
   public Scope getChild(String name)
   {
     return children.get(name);
+  }
+
+  /**
+   * @return the current map from name to the children of this Scope
+   */
+  @SuppressWarnings("unchecked")
+  public Map<String, Scope> getChildren()
+  {
+    return (Map<String, Scope>) children.clone();
   }
 
   /**
