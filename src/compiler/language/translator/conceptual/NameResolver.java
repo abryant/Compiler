@@ -12,6 +12,10 @@ import compiler.language.ast.topLevel.ImportDeclarationAST;
 import compiler.language.ast.topLevel.TypeDefinitionAST;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.Scope;
+import compiler.language.conceptual.ScopeType;
+import compiler.language.conceptual.member.MemberVariable;
+import compiler.language.conceptual.member.Method;
+import compiler.language.conceptual.member.Property;
 
 /*
  * Created on 27 Jan 2011
@@ -104,29 +108,23 @@ public class NameResolver
     {
       String[] nameStrings = importDeclaration.getName().getNameStrings();
       Scope importScope = rootScope.lookup(nameStrings);
-      if (importScope == null)
+      if (importScope == null) // TODO: eventually this null check will become unnecessary, as the new resolve method will throw an exception instead of returning null
       {
-        findExternalQName(nameStrings);
-        importScope = rootScope.lookup(nameStrings);
-        if (importScope == null)
-        {
-          // TODO: accumulate error messages instead of just throwing one
-          throw new ConceptualException("Unresolved import: " + importDeclaration.getName(),
-                                        importDeclaration.getName().getParseInfo());
-        }
+        // TODO: accumulate error messages instead of just throwing one
+        throw new ConceptualException("Unresolved import: " + importDeclaration.getName(),
+                                      importDeclaration.getName().getParseInfo());
       }
-      boolean isStatic = importDeclaration.isStaticImport();
       if (importDeclaration.isAll())
       {
         for (Entry<String, Scope> entry : importScope.getChildren().entrySet())
         {
-          importScopeEntry(entry.getKey(), entry.getValue(), fileScope, isStatic, importDeclaration.getParseInfo());
+          importScopeEntry(entry.getKey(), entry.getValue(), fileScope, importDeclaration.getParseInfo());
         }
       }
       else
       {
         String name = nameStrings[nameStrings.length - 1];
-        importScopeEntry(name, importScope, fileScope, isStatic, importDeclaration.getParseInfo());
+        importScopeEntry(name, importScope, fileScope, importDeclaration.getParseInfo());
       }
     }
   }
@@ -137,26 +135,36 @@ public class NameResolver
    * @param name - the name to try to import the scope under
    * @param importScope - the scope to try to import
    * @param fileScope - the file scope to import the scope into
-   * @param isStatic - whether this import statement is static (i.e. whether it should import static members)
    * @param importParseInfo - the ParseInfo of the import statement, in case a name conflict is detected
    * @throws ConceptualException - if there is a conflict between the new name and an existing one
    */
-  private void importScopeEntry(String name, Scope importScope, Scope fileScope, boolean isStatic, ParseInfo importParseInfo) throws ConceptualException
+  private void importScopeEntry(String name, Scope importScope, Scope fileScope, ParseInfo importParseInfo) throws ConceptualException
   {
-    // TODO: is having "import" and "import static" as separate things a good idea?
-
-    // TODO: how should static imports be handled here?
-    // TODO: only allow certain scope types to be imported
-    try
+    ScopeType type = importScope.getType();
+    if ( type == ScopeType.PACKAGE       ||
+         type == ScopeType.CLASS         ||
+         type == ScopeType.INTERFACE     ||
+         type == ScopeType.ENUM          ||
+         type == ScopeType.ENUM_CONSTANT ||
+        (type == ScopeType.MEMBER_VARIABLE && ((MemberVariable) importScope.getValue()).isStatic()) ||
+        (type == ScopeType.PROPERTY        && ((Property)       importScope.getValue()).isStatic()) ||
+        (type == ScopeType.METHOD          && ((Method)         importScope.getValue()).isStatic()))
     {
-      fileScope.addChild(name, importScope);
-    }
-    catch (ScopeException e)
-    {
-      // TODO: add the other import's ParseInfo to the exception
-      throw new ConceptualException("Conflicting import declarations: " + name, importParseInfo);
+      try
+      {
+        fileScope.addChild(name, importScope);
+      }
+      catch (ScopeException e)
+      {
+        throw new ConceptualException("Conflicting import declarations: " + name, importParseInfo);
+      }
     }
   }
+
+  // TODO: write a new resolve method here, which takes into account inheritance and Access Specifiers
+  // then use it from resolveImports() and everywhere else in this class
+  // it should also try to load external QNames from files if possible
+  // if it fails to resolve a name, it should throw an exception instead of returning null
 
   /**
    * Attempts to load the file which contains the specified qualified name into the scope hierarchy.
