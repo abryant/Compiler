@@ -152,6 +152,11 @@ public class ASTConverter
   {
     // convert AccessSpecifier and Modifiers
     AccessSpecifier access = convert(classDefinition.getAccess(), AccessSpecifier.PUBLIC);
+    if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
+    {
+      // the getParseInfo() call here will not throw a NullPointerException because if classDefinition.getAccess() was null then access would be PUBLIC
+      throw new ConceptualException("Invalid access specifier for a class.", classDefinition.getAccess().getParseInfo());
+    }
     ModifierAST[] modifiers = classDefinition.getModifiers();
     boolean isAbstract = false;
     boolean isSealed = false;
@@ -319,6 +324,11 @@ public class ASTConverter
   private Scope convert(InterfaceDefinitionAST interfaceDefinition, Scope enclosingScope) throws ConceptualException, ScopeException
   {
     AccessSpecifier access = convert(interfaceDefinition.getAccess(), AccessSpecifier.PUBLIC);
+    if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
+    {
+      // the getParseInfo() call here will not throw a NullPointerException because if interfaceDefinition.getAccess() was null then access would be PUBLIC
+      throw new ConceptualException("Invalid access specifier for an interface.", interfaceDefinition.getAccess().getParseInfo());
+    }
     ModifierAST[] modifiers = interfaceDefinition.getModifiers();
     boolean isImmutable = false;
     SinceSpecifier sinceSpecifier = null;
@@ -457,7 +467,12 @@ public class ASTConverter
    */
   private Scope convert(EnumDefinitionAST enumDefinition, Scope enclosingScope) throws ConceptualException, ScopeException
   {
-    AccessSpecifier accessSpecifier = convert(enumDefinition.getAccessSpecifier(), AccessSpecifier.PUBLIC);
+    AccessSpecifier access = convert(enumDefinition.getAccessSpecifier(), AccessSpecifier.PUBLIC);
+    if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
+    {
+      // the getParseInfo() call here will not throw a NullPointerException because if enumDefinition.getAccess() was null then access would be PUBLIC
+      throw new ConceptualException("Invalid access specifier for an enum.", enumDefinition.getAccessSpecifier().getParseInfo());
+    }
     ModifierAST[] modifiers = enumDefinition.getModifiers();
     SinceSpecifier sinceSpecifier = null;
     for (ModifierAST modifier : modifiers)
@@ -472,7 +487,7 @@ public class ASTConverter
       }
     }
 
-    ConceptualEnum conceptualEnum = new ConceptualEnum(accessSpecifier, sinceSpecifier, enumDefinition.getName().getName());
+    ConceptualEnum conceptualEnum = new ConceptualEnum(access, sinceSpecifier, enumDefinition.getName().getName());
     Scope scope = ScopeFactory.createEnumDefinitionScope(conceptualEnum, enclosingScope);
     scopes.put(enumDefinition, scope);
 
