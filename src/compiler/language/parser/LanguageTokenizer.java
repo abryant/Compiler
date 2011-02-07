@@ -34,7 +34,6 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
   static
   {
     KEYWORDS.put("abstract",     ParseType.ABSTRACT_KEYWORD);
-    KEYWORDS.put("assign",       ParseType.ASSIGN_KEYWORD);
     KEYWORDS.put("bool",         ParseType.BOOLEAN_KEYWORD);
     KEYWORDS.put("break",        ParseType.BREAK_KEYWORD);
     KEYWORDS.put("byte",         ParseType.BYTE_KEYWORD);
@@ -57,6 +56,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
     KEYWORDS.put("finally",      ParseType.FINALLY_KEYWORD);
     KEYWORDS.put("float",        ParseType.FLOAT_KEYWORD);
     KEYWORDS.put("for",          ParseType.FOR_KEYWORD);
+    KEYWORDS.put("getter",       ParseType.GETTER_KEYWORD);
     KEYWORDS.put("if",           ParseType.IF_KEYWORD);
     KEYWORDS.put("immutable",    ParseType.IMMUTABLE_KEYWORD);
     KEYWORDS.put("implements",   ParseType.IMPLEMENTS_KEYWORD);
@@ -74,9 +74,9 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
     KEYWORDS.put("property",     ParseType.PROPERTY_KEYWORD);
     KEYWORDS.put("protected",    ParseType.PROTECTED_KEYWORD);
     KEYWORDS.put("public",       ParseType.PUBLIC_KEYWORD);
-    KEYWORDS.put("retrieve",     ParseType.RETRIEVE_KEYWORD);
     KEYWORDS.put("return",       ParseType.RETURN_KEYWORD);
     KEYWORDS.put("sealed",       ParseType.SEALED_KEYWORD);
+    KEYWORDS.put("setter",       ParseType.SETTER_KEYWORD);
     KEYWORDS.put("short",        ParseType.SHORT_KEYWORD);
     KEYWORDS.put("signed",       ParseType.SIGNED_KEYWORD);
     // "since" is handled differently (the whole "since(1.2.3)" is parsed by the tokenizer)

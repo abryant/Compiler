@@ -21,34 +21,34 @@ public class PropertyAST extends MemberAST
   private TypeAST type;
   private NameAST name;
   private ExpressionAST expression;
-  private AccessSpecifierAST assignAccess;
-  private BlockAST assignBlock;
-  private AccessSpecifierAST retrieveAccess;
-  private BlockAST retrieveBlock;
+  private AccessSpecifierAST setterAccess;
+  private BlockAST setterBlock;
+  private AccessSpecifierAST getterAccess;
+  private BlockAST getterBlock;
 
   /**
-   * Creates a new property with the specified type, name, assigner, retriever and access specifiers
+   * Creates a new property with the specified type, name, setter, getter and access specifiers
    * @param modifiers - the modifiers for this property
    * @param type - the type of variable to store
    * @param name - the name of the property
    * @param expression - the expression for the initial value of the property
-   * @param assignAccess - the access specifier of the assigner
-   * @param assignBlock - the assigner block for the property
-   * @param retrieveAccess - the access specifier of the retriever
-   * @param retrieveBlock - the retriever block for the property
+   * @param setterAccess - the access specifier of the setter
+   * @param setterBlock - the setter block for the property
+   * @param getterAccess - the access specifier of the getter
+   * @param getterBlock - the getter block for the property
    * @param parseInfo - the parsing information
    */
-  public PropertyAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ExpressionAST expression, AccessSpecifierAST assignAccess, BlockAST assignBlock, AccessSpecifierAST retrieveAccess, BlockAST retrieveBlock, ParseInfo parseInfo)
+  public PropertyAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ExpressionAST expression, AccessSpecifierAST setterAccess, BlockAST setterBlock, AccessSpecifierAST getterAccess, BlockAST getterBlock, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.modifiers = modifiers;
     this.type = type;
     this.name = name;
     this.expression = expression;
-    this.assignAccess = assignAccess;
-    this.assignBlock = assignBlock;
-    this.retrieveAccess = retrieveAccess;
-    this.retrieveBlock = retrieveBlock;
+    this.setterAccess = setterAccess;
+    this.setterBlock = setterBlock;
+    this.getterAccess = getterAccess;
+    this.getterBlock = getterBlock;
   }
 
   /**
@@ -84,35 +84,35 @@ public class PropertyAST extends MemberAST
   }
 
   /**
-   * @return the assigner's access specifier
+   * @return the setter's access specifier
    */
-  public AccessSpecifierAST getAssignAccess()
+  public AccessSpecifierAST getSetterAccess()
   {
-    return assignAccess;
+    return setterAccess;
   }
 
   /**
-   * @return the assigner's block
+   * @return the setter's block
    */
-  public BlockAST getAssignBlock()
+  public BlockAST getSetterBlock()
   {
-    return assignBlock;
+    return setterBlock;
   }
 
   /**
-   * @return the retriever's access specifier
+   * @return the getter's access specifier
    */
-  public AccessSpecifierAST getRetrieveAccess()
+  public AccessSpecifierAST getGetterAccess()
   {
-    return retrieveAccess;
+    return getterAccess;
   }
 
   /**
-   * @return the retriever's block
+   * @return the getter's block
    */
-  public BlockAST getRetrieveBlock()
+  public BlockAST getGetterBlock()
   {
-    return retrieveBlock;
+    return getterBlock;
   }
 
   /**
@@ -136,34 +136,34 @@ public class PropertyAST extends MemberAST
       buffer.append(" = ");
       buffer.append(expression);
     }
-    if (assignAccess != null || assignBlock != null)
+    if (setterAccess != null || setterBlock != null)
     {
       buffer.append("\n");
-      if (assignAccess != null)
+      if (setterAccess != null)
       {
-        buffer.append(assignAccess);
+        buffer.append(setterAccess);
         buffer.append(" ");
       }
-      buffer.append("assign");
-      if (assignBlock != null)
+      buffer.append("setter");
+      if (setterBlock != null)
       {
         buffer.append("\n");
-        buffer.append(assignBlock);
+        buffer.append(setterBlock);
       }
     }
-    if (retrieveAccess != null || retrieveBlock != null)
+    if (getterAccess != null || getterBlock != null)
     {
       buffer.append("\n");
-      if (retrieveAccess != null)
+      if (getterAccess != null)
       {
-        buffer.append(retrieveAccess);
+        buffer.append(getterAccess);
         buffer.append(" ");
       }
-      buffer.append("retrieve");
-      if (retrieveBlock != null)
+      buffer.append("getter");
+      if (getterBlock != null)
       {
         buffer.append("\n");
-        buffer.append(retrieveBlock);
+        buffer.append(getterBlock);
       }
     }
     buffer.append(";");

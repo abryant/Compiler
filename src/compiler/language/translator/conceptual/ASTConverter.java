@@ -838,8 +838,8 @@ public class ASTConverter
       }
     }
 
-    AccessSpecifier retrieveAccessSpecifier = convert(propertyAST.getRetrieveAccess(), AccessSpecifier.PUBLIC);
-    AccessSpecifier assignAccessSpecifier = convert(propertyAST.getAssignAccess(), AccessSpecifier.PUBLIC);
+    AccessSpecifier retrieveAccessSpecifier = convert(propertyAST.getGetterAccess(), AccessSpecifier.PUBLIC);
+    AccessSpecifier assignAccessSpecifier = convert(propertyAST.getSetterAccess(), AccessSpecifier.PUBLIC);
 
     Property property = new Property(isSealed, isMutable, isFinal, isStatic, isSynchronized, isTransient, isVolatile, sinceSpecifier,
                                      propertyAST.getName().getName(), retrieveAccessSpecifier, assignAccessSpecifier);

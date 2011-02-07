@@ -25,7 +25,7 @@ import parser.Tokenizer;
  */
 immutable class String
 {
-  property char#[] chars public retrieve private assign;
+  property char#[] chars public getter private setter;
   
   String(char[] chars)
   {
@@ -1374,8 +1374,8 @@ public class LanguageTokenizer extends Tokenizer
   }
 
   static property String foo = "hello"
-  package retrieve
-  assign {foo = value + "-test";};
+  package getter
+  setter {foo = value + "-test";};
 
 }
 

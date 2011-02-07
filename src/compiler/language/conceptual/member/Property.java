@@ -25,10 +25,10 @@ public class Property
   private SinceSpecifier sinceSpecifier;
   private Type type;
   private String name;
-  private AccessSpecifier retrieveAccessSpecifier;
-  private Statement[] retrieveStatements;
-  private AccessSpecifier assignAccessSpecifier;
-  private Statement[] assignStatements;
+  private AccessSpecifier getterAccessSpecifier;
+  private Statement[] getterStatements;
+  private AccessSpecifier setterAccessSpecifier;
+  private Statement[] setterStatements;
 
   /**
    * Creates a new Property with the specified properties.
@@ -42,12 +42,12 @@ public class Property
    * @param isVolatile
    * @param sinceSpecifier
    * @param name
-   * @param retrieveAccessSpecifier
-   * @param assignAccessSpecifier
+   * @param getterAccessSpecifier
+   * @param setterAccessSpecifier
    */
   public Property(boolean isSealed, boolean isMutable, boolean isFinal, boolean isStatic, boolean isSynchronized,
                   boolean isTransient, boolean isVolatile, SinceSpecifier sinceSpecifier,
-                  String name, AccessSpecifier retrieveAccessSpecifier, AccessSpecifier assignAccessSpecifier)
+                  String name, AccessSpecifier getterAccessSpecifier, AccessSpecifier setterAccessSpecifier)
   {
     this.isSealed = isSealed;
     this.isMutable = isMutable;
@@ -58,8 +58,8 @@ public class Property
     this.isVolatile = isVolatile;
     this.sinceSpecifier = sinceSpecifier;
     this.name = name;
-    this.retrieveAccessSpecifier = retrieveAccessSpecifier;
-    this.assignAccessSpecifier = assignAccessSpecifier;
+    this.getterAccessSpecifier = getterAccessSpecifier;
+    this.setterAccessSpecifier = setterAccessSpecifier;
   }
 
   /**
@@ -133,32 +133,32 @@ public class Property
     return name;
   }
   /**
-   * @return the retrieveAccessSpecifier
+   * @return the getterAccessSpecifier
    */
-  public AccessSpecifier getRetrieveAccessSpecifier()
+  public AccessSpecifier getGetterAccessSpecifier()
   {
-    return retrieveAccessSpecifier;
+    return getterAccessSpecifier;
   }
   /**
-   * @return the retrieveStatements
+   * @return the getterStatements
    */
-  public Statement[] getRetrieveStatements()
+  public Statement[] getGetterStatements()
   {
-    return retrieveStatements;
+    return getterStatements;
   }
   /**
-   * @return the assignAccessSpecifier
+   * @return the setterAccessSpecifier
    */
-  public AccessSpecifier getAssignAccessSpecifier()
+  public AccessSpecifier getSetterAccessSpecifier()
   {
-    return assignAccessSpecifier;
+    return setterAccessSpecifier;
   }
   /**
-   * @return the assignStatements
+   * @return the setterStatements
    */
-  public Statement[] getAssignStatements()
+  public Statement[] getSetterStatements()
   {
-    return assignStatements;
+    return setterStatements;
   }
 
 }
