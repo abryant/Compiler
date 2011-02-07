@@ -476,6 +476,9 @@ TypeListNotQNameList = QName            Comma TypeListNotQNameList
 ArrayType = TypeNotQNameList LSquare RSquare
           | QName LSquare RSquare
           | NestedQNameList LSquare RSquare
+          | TypeNotQNameList Hash LSquare RSquare
+          | QName Hash LSquare RSquare
+          | NestedQNameList Hash LSquare RSquare
 
 TupleType = TupleTypeNotQNameList | NestedQNameList
 TupleTypeNotQNameList = LParen TypeListNotQNameList RParen

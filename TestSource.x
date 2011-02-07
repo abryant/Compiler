@@ -25,7 +25,7 @@ import parser.Tokenizer;
  */
 immutable class String
 {
-  property char[] chars public retrieve private assign;
+  property char#[] chars public retrieve private assign;
   
   String(char[] chars)
   {

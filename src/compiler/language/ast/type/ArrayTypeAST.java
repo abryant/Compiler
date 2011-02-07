@@ -13,16 +13,19 @@ public class ArrayTypeAST extends TypeAST
 {
 
   private TypeAST baseType;
+  private boolean isImmutable;
 
   /**
    * Creates a new ArrayTypeAST with the specified base type
    * @param baseType - the base type of the array
+   * @param isImmutable - true if this array type should be immutable, false otherwise
    * @param parseInfo - the parsing information
    */
-  public ArrayTypeAST(TypeAST baseType, ParseInfo parseInfo)
+  public ArrayTypeAST(TypeAST baseType, boolean isImmutable, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.baseType = baseType;
+    this.isImmutable = isImmutable;
   }
 
   /**
@@ -34,13 +37,21 @@ public class ArrayTypeAST extends TypeAST
   }
 
   /**
+   * @return true if this type is immutable, false otherwise
+   */
+  public boolean isImmutable()
+  {
+    return isImmutable;
+  }
+
+  /**
    * {@inheritDoc}
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString()
   {
-    return baseType + "[]";
+    return baseType + (isImmutable ? "#" : "") + "[]";
   }
 
 }
