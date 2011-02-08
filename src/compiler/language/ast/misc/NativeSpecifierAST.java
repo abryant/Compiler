@@ -13,6 +13,7 @@ import compiler.language.ast.terminal.StringLiteralAST;
  */
 public class NativeSpecifierAST extends ModifierAST
 {
+  // TODO: maybe make it possible to omit the nativeName? in this case a generated name will be provided by the compiler
 
   private StringLiteralAST nativeName;
 
@@ -42,7 +43,7 @@ public class NativeSpecifierAST extends ModifierAST
   @Override
   public String toString()
   {
-    return "native(\"" + nativeName + "\")";
+    return "native(" + nativeName + ")";
   }
 
 }
