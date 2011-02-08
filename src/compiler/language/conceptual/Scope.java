@@ -107,7 +107,7 @@ public class Scope
    * @param name - the qualified name to look up
    * @return the Scope found, or null if none could be found
    */
-  public Scope lookup(String[] name)
+  public Scope lookup(String[] name) // TODO: is this ever used?
   {
     Scope root = this;
     while (root != null)
