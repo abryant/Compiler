@@ -14,5 +14,16 @@ public enum AccessSpecifier
   PACKAGE,
   PROTECTED,
   PACKAGE_PROTECTED,
-  PRIVATE,
+  PRIVATE;
+
+  /**
+   * {@inheritDoc}
+   * @see java.lang.Enum#toString()
+   */
+  @Override
+  public String toString()
+  {
+    // convert the name into a more human-readable format
+    return name().toLowerCase().replace('_', ' ');
+  }
 }
