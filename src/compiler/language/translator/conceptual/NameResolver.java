@@ -1,10 +1,12 @@
 package compiler.language.translator.conceptual;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
+import java.util.Set;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.topLevel.CompilationUnitAST;
@@ -350,6 +352,8 @@ public class NameResolver
         enums.add((ConceptualEnum) current.getValue());
       }
 
+      // maintain a visited set in this breadth-first search, in case there is a loop in the inheritance hierarchy
+      Set<Object> visited = new HashSet<Object>();
       while (!enums.isEmpty() || !classes.isEmpty() || !interfaces.isEmpty())
       {
         // determine whether the next item is protectedTo
@@ -360,10 +364,15 @@ public class NameResolver
         if (!classes.isEmpty())
         {
           ConceptualClass testClass = classes.poll();
+          if (visited.contains(testClass))
+          {
+            continue;
+          }
           if (testClass.equals(protectedTo.getValue()))
           {
             return true;
           }
+          visited.add(testClass);
           // do not try to look at the universal base class' base class
           if (testClass.equals(universalBaseType))
           {
@@ -378,20 +387,30 @@ public class NameResolver
         else if (!interfaces.isEmpty())
         {
           ConceptualInterface testInterface = interfaces.poll();
+          if (visited.contains(testInterface))
+          {
+            continue;
+          }
           if (testInterface.equals(protectedTo.getValue()))
           {
             return true;
           }
+          visited.add(testInterface);
           hasBaseClass = false;
           superInterfaces = testInterface.getSuperInterfaces();
         }
         else // !enums.isEmpty()
         {
           ConceptualEnum testEnum = enums.poll();
+          if (visited.contains(testEnum))
+          {
+            continue;
+          }
           if (testEnum.equals(protectedTo.getValue()))
           {
             return true;
           }
+          visited.add(testEnum);
           baseClass = testEnum.getBaseClass();
           superInterfaces = testEnum.getInterfaces();
         }
