@@ -10,8 +10,8 @@ package compiler.language.conceptual;
 public enum ScopeType
 {
   // below are all of the possible scope types, followed by the type of object they contain
-  PACKAGE,         // null - represents a whole package
-  FILE,            // null - represents a single file, including imports
+  PACKAGE,         // ConceptualPackage
+  FILE,            // ConceptualFile
   CLASS,           // ConceptualClass
   INTERFACE,       // ConceptualInterface
   ENUM,            // ConceptualEnum

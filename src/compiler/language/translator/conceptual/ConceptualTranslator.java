@@ -1,11 +1,16 @@
 package compiler.language.translator.conceptual;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.List;
 
 import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.conceptual.ConceptualException;
-import compiler.language.conceptual.ConceptualProgram;
-import compiler.language.conceptual.Scope;
+import compiler.language.conceptual.topLevel.ConceptualFile;
+import compiler.language.conceptual.topLevel.ConceptualPackage;
+import compiler.language.parser.LanguageParser;
+import compiler.language.parser.LanguageTokenizer;
 
 /*
  * Created on 14 Nov 2010
@@ -17,48 +22,55 @@ import compiler.language.conceptual.Scope;
 public class ConceptualTranslator
 {
 
-  private Scope rootScope;
-  private ConceptualProgram program;
+  private LanguageParser parser;
+  private ConceptualPackage rootPackage;
   private List<CompilationUnitAST> compilationUnits;
   private ASTConverter astConverter;
-  private NameResolver nameResolver;
 
   /**
    * Creates a new ConceptualTranslator for the specified compilation units.
+   * @param parser - the LanguageParser to use to parse files
    * @param compilationUnits - the compilation units to translate
    */
-  public ConceptualTranslator(List<CompilationUnitAST> compilationUnits)
+  public ConceptualTranslator(LanguageParser parser, List<CompilationUnitAST> compilationUnits)
   {
+    this.parser = parser;
     this.compilationUnits = compilationUnits;
-    rootScope = ScopeFactory.createRootScope();
-    program = new ConceptualProgram();
-    astConverter = new ASTConverter(program, rootScope);
-    nameResolver = new NameResolver(compilationUnits, rootScope, astConverter.getScopes());
+    rootPackage = new ConceptualPackage(this);
+    astConverter = new ASTConverter(rootPackage);
   }
 
   /**
-   * Translates the ASTs provided to this object's constructor into a conceptual object hierarchy.
+   * Attempts to parse the specified file into a conceptual file. If something fails in the process, an error is printed before returning null.
+   * @param file - the file to parse
+   * @return the ConceptualFile parsed, or null if an error occurred
    */
-  public void translate()
+  public ConceptualFile parseFile(File file)
   {
+    CompilationUnitAST ast;
     try
     {
-      for (CompilationUnitAST compilationUnit : compilationUnits)
-      {
-        astConverter.convert(compilationUnit);
-      }
-
-      nameResolver.resolveNames();
+      FileReader reader = new FileReader(file);
+      LanguageTokenizer tokenizer = new LanguageTokenizer(reader);
+      ast = parser.parse(tokenizer);
     }
-    catch (ScopeException e)
+    catch (FileNotFoundException e)
     {
       e.printStackTrace();
+      return null;
+    }
+
+    try
+    {
+      astConverter.convert(ast);
     }
     catch (ConceptualException e)
     {
       e.printStackTrace();
+      return null;
     }
 
+    return null;
   }
 
 }
