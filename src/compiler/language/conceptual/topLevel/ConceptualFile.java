@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import compiler.language.conceptual.NameConflictException;
+import compiler.language.conceptual.QName;
+import compiler.language.conceptual.ScopeType;
+import compiler.language.conceptual.ScopedResult;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
@@ -20,6 +24,7 @@ import compiler.language.conceptual.typeDefinition.ConceptualInterface;
 public class ConceptualFile
 {
 
+  private ConceptualPackage rootPackage;
   private ConceptualPackage enclosingPackage;
 
   private List<Import> imports;
@@ -30,11 +35,13 @@ public class ConceptualFile
 
   /**
    * Creates a new ConceptualFile with the specified enclosing package, imports and sets of classes, interfaces and enums
+   * @param rootPackage - the root package
    * @param enclosingPackage - the package that this file is defined in
    * @param imports - the imports for this conceptual file
    */
-  public ConceptualFile(ConceptualPackage enclosingPackage, List<Import> imports)
+  public ConceptualFile(ConceptualPackage rootPackage, ConceptualPackage enclosingPackage, List<Import> imports)
   {
+    this.rootPackage = rootPackage;
     this.enclosingPackage = enclosingPackage;
     this.imports = imports;
   }
@@ -128,6 +135,86 @@ public class ConceptualFile
     return enums.get(name);
   }
 
+  /**
+   * Resolves the specified name in this file.
+   * @param name - the name to resolve
+   * @return the result of resolving the specified name, or null if nothing could be resolved
+   * @throws NameConflictException - if a name conflict is detected while trying to resolve the name
+   */
+  private ScopedResult resolve(String name) throws NameConflictException
+  {
+    ConceptualClass conceptualClass = classes.get(name);
+    if (conceptualClass != null)
+    {
+      return new ScopedResult(ScopeType.CLASS, conceptualClass);
+    }
+    ConceptualInterface conceptualInterface = interfaces.get(name);
+    if (conceptualInterface != null)
+    {
+      return new ScopedResult(ScopeType.INTERFACE, conceptualInterface);
+    }
+    ConceptualEnum conceptualEnum = enums.get(name);
+    if (conceptualEnum != null)
+    {
+      return new ScopedResult(ScopeType.ENUM, conceptualEnum);
+    }
 
+    // lookup the name in the imports
+    for (Import imported : imports)
+    {
+      QName importedQName = imported.getImportedQName();
+      if (imported.isAddChildren())
+      {
+        ScopedResult baseResult = rootPackage.resolve(importedQName, false);
+        if (baseResult == null)
+        {
+          // TODO: handle import failure better
+          throw new IllegalStateException("Import resolution failed for: " + importedQName);
+        }
+        ScopedResult wildcardResult = baseResult.resolve(new QName(name));
+        if (wildcardResult != null)
+        {
+          return wildcardResult;
+        }
+      }
+      else if (importedQName.getLastName().equals(name))
+      {
+        ScopedResult result = rootPackage.resolve(importedQName, false);
+        if (result == null)
+        {
+          // TODO: handle import failure better
+          throw new IllegalStateException("Import resolution failed for: " + importedQName);
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Resolves the specified QName from this file.
+   * @param name - the QName to resolve
+   * @param recurseUpwards - true to recurse back to the parent package if there are no results in this file, false to just return null in this scenario
+   * @return the result of resolving the QName, as a ScopedResult, or null if the name could not be resolved
+   * @throws NameConflictException - if a name conflict is detected while trying to resolve the name
+   */
+  public ScopedResult resolve(QName name, boolean recurseUpwards) throws NameConflictException
+  {
+    String first = name.getFirstName();
+    ScopedResult result = resolve(first);
+    if (result != null)
+    {
+      if (name.getLength() == 1)
+      {
+        return result;
+      }
+      return result.resolve(name.getTrailingNames());
+    }
+    if (recurseUpwards)
+    {
+      return enclosingPackage.resolve(name, true);
+    }
+    return null;
+  }
 
 }

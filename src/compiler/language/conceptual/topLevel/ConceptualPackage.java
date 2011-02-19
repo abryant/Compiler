@@ -265,7 +265,7 @@ public final class ConceptualPackage
    * @param name - the QName to resolve
    * @param recurseUpwards - true to recurse back to the parent package if there are no results in this package, false to just return null in this scenario
    * @return the result of resolving the QName, as a ScopedResult, or null if the name could not be resolved
-   * @throws NameConflictException - if a name conflict was detected while resolving the name
+   * @throws NameConflictException - if a name conflict is detected while resolving the name
    */
   public ScopedResult resolve(QName name, boolean recurseUpwards) throws NameConflictException
   {

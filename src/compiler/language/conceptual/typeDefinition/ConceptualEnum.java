@@ -1,5 +1,6 @@
 package compiler.language.conceptual.typeDefinition;
 
+import compiler.language.conceptual.ScopedResult;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
@@ -17,7 +18,7 @@ import compiler.language.conceptual.type.PointerType;
 /**
  * @author Anthony Bryant
  */
-public class ConceptualEnum
+public abstract class ConceptualEnum extends TypeDefinition
 {
   private AccessSpecifier accessSpecifier;
   private SinceSpecifier sinceSpecifier;
@@ -193,6 +194,18 @@ public class ConceptualEnum
   public ConceptualEnum[] getInnerEnums()
   {
     return innerEnums;
+  }
+
+  /**
+   * {@inheritDoc}
+   * @see compiler.language.conceptual.typeDefinition.TypeDefinition#resolve(java.lang.String)
+   */
+  @Override
+  protected final ScopedResult resolve(String name)
+  {
+    // TODO: implement
+    // note that enum constants should really return static member variables instead of the enum constant itself, so that their members cannot be referenced explicitly
+    return null;
   }
 
 }

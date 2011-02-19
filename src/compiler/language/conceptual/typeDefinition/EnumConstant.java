@@ -1,6 +1,5 @@
 package compiler.language.conceptual.typeDefinition;
 
-import compiler.language.ast.typeDefinition.EnumConstantAST;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
@@ -36,21 +35,12 @@ public class EnumConstant
   /**
    * Creates a new Enum Constant with the specified properties.
    * The parameters, members, and any other data must be set later on.
+   * @param enclosingEnum - the enclosing enum
    * @param name
    */
   public EnumConstant(String name)
   {
     this.name = name;
-  }
-
-  /**
-   * Creates a new EnumConstant from the specified EnumConstantAST.
-   * @param enumConstantAST - the EnumConstantAST to base the new EnumConstant on
-   * @return the EnumConstant created
-   */
-  public static EnumConstant fromAST(EnumConstantAST enumConstantAST)
-  {
-    return new EnumConstant(enumConstantAST.getName().getName());
   }
 
   /**
@@ -167,6 +157,5 @@ public class EnumConstant
   {
     return innerEnums;
   }
-
 
 }

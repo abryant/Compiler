@@ -1,5 +1,6 @@
 package compiler.language.conceptual.typeDefinition;
 
+import compiler.language.conceptual.ScopedResult;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
@@ -16,7 +17,7 @@ import compiler.language.conceptual.type.TypeArgument;
 /**
  * @author Anthony Bryant
  */
-public class ConceptualInterface
+public abstract class ConceptualInterface extends TypeDefinition
 {
 
   private AccessSpecifier accessSpecifier;
@@ -176,6 +177,18 @@ public class ConceptualInterface
   public ConceptualEnum[] getInnerEnums()
   {
     return innerEnums;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * @see compiler.language.conceptual.typeDefinition.TypeDefinition#resolve(java.lang.String)
+   */
+  @Override
+  protected final ScopedResult resolve(String name)
+  {
+    // TODO: implement
+    return null;
   }
 
 }

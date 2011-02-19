@@ -50,6 +50,9 @@ import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
 import compiler.language.conceptual.typeDefinition.EnumConstant;
 import compiler.language.conceptual.typeDefinition.InnerClass;
+import compiler.language.conceptual.typeDefinition.OuterClass;
+import compiler.language.conceptual.typeDefinition.OuterEnum;
+import compiler.language.conceptual.typeDefinition.OuterInterface;
 
 /*
  * Created on 19 Jan 2011
@@ -180,7 +183,7 @@ public class ASTConverter
     }
 
     // Create the ConceptualClass and the scope for it
-    ConceptualClass conceptualClass = new ConceptualClass(access, isAbstract, isSealed, isImmutable, sinceSpecifier, classDefinition.getName().getName());
+    ConceptualClass conceptualClass = new OuterClass(enclosingFile, access, isAbstract, isSealed, isImmutable, sinceSpecifier, classDefinition.getName().getName());
 
     addClassData(conceptualClass, classDefinition);
 
@@ -303,7 +306,7 @@ public class ASTConverter
       }
     }
 
-    ConceptualInterface conceptualInterface = new ConceptualInterface(access, isImmutable, sinceSpecifier, interfaceDefinition.getName().getName());
+    ConceptualInterface conceptualInterface = new OuterInterface(enclosingFile, access, isImmutable, sinceSpecifier, interfaceDefinition.getName().getName());
 
     // convert the type arguments
     TypeArgumentAST[] typeArgumentASTs = interfaceDefinition.getTypeArguments();
@@ -409,7 +412,7 @@ public class ASTConverter
       }
     }
 
-    ConceptualEnum conceptualEnum = new ConceptualEnum(access, sinceSpecifier, enumDefinition.getName().getName());
+    ConceptualEnum conceptualEnum = new OuterEnum(enclosingFile, access, sinceSpecifier, enumDefinition.getName().getName());
 
     // convert each of the members in turn, switching on the member type. each member is added to a list of the members of its type.
 
@@ -496,7 +499,7 @@ public class ASTConverter
    * @return the EnumConstant created
    * @throws ConceptualException - if there is a problem with the conversion
    */
-  private EnumConstant convert(EnumConstantAST enumConstantAST, ConceptualEnum enclosingEnum) throws ConceptualException
+  private EnumConstant convert(EnumConstantAST enumConstantAST) throws ConceptualException
   {
     EnumConstant enumConstant = new EnumConstant(enumConstantAST.getName().getName());
 

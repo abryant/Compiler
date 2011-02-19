@@ -61,6 +61,15 @@ public class QName
   }
 
   /**
+   * @return the last name in this QName
+   * @throws ArrayIndexOutOfBoundsException - if this QName contains no names
+   */
+  public String getLastName()
+  {
+    return names[names.length - 1];
+  }
+
+  /**
    * @return a QName representing all of the names after the first name
    */
   public QName getTrailingNames()
@@ -96,6 +105,25 @@ public class QName
       newNames[i - start.names.length] = names[i];
     }
     return new QName(newNames);
+  }
+
+  /**
+   * {@inheritDoc}
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString()
+  {
+    StringBuffer buffer = new StringBuffer();
+    for (int i = 0; i < names.length; i++)
+    {
+      buffer.append(names[i]);
+      if (i != names.length - 1)
+      {
+        buffer.append('.');
+      }
+    }
+    return buffer.toString();
   }
 
   /**
