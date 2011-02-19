@@ -3,6 +3,7 @@ package compiler.language.conceptual.member;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.type.Type;
+import compiler.language.conceptual.typeDefinition.TypeDefinition;
 
 /*
  * Created on 21 Oct 2010
@@ -13,6 +14,8 @@ import compiler.language.conceptual.type.Type;
  */
 public class MemberVariable
 {
+
+  private TypeDefinition enclosingTypeDefinition;
 
   private AccessSpecifier accessSpecifier;
   private boolean isFinal;
@@ -28,6 +31,7 @@ public class MemberVariable
 
   /**
    * Creates a new MemberVariable with the specified parameters.
+   * @param enclosingTypeDefinition - the enclosing type definition
    * @param accessSpecifier
    * @param isFinal
    * @param isMutable
@@ -37,8 +41,9 @@ public class MemberVariable
    * @param sinceSpecifier
    * @param name
    */
-  public MemberVariable(AccessSpecifier accessSpecifier, boolean isFinal, boolean isMutable, boolean isStatic, boolean isVolatile, boolean isTransient, SinceSpecifier sinceSpecifier, String name)
+  public MemberVariable(TypeDefinition enclosingTypeDefinition, AccessSpecifier accessSpecifier, boolean isFinal, boolean isMutable, boolean isStatic, boolean isVolatile, boolean isTransient, SinceSpecifier sinceSpecifier, String name)
   {
+    this.enclosingTypeDefinition = enclosingTypeDefinition;
     this.accessSpecifier = accessSpecifier;
     this.isFinal = isFinal;
     this.isMutable = isMutable;

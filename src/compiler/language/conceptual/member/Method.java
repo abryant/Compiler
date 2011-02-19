@@ -8,6 +8,7 @@ import compiler.language.conceptual.statement.Statement;
 import compiler.language.conceptual.type.PointerType;
 import compiler.language.conceptual.type.Type;
 import compiler.language.conceptual.type.TypeArgument;
+import compiler.language.conceptual.typeDefinition.TypeDefinition;
 
 /*
  * Created on 21 Oct 2010
@@ -18,6 +19,7 @@ import compiler.language.conceptual.type.TypeArgument;
  */
 public class Method
 {
+  private TypeDefinition enclosingTypeDefinition;
 
   private AccessSpecifier accessSpecifier;
   private boolean isAbstract;
@@ -36,6 +38,7 @@ public class Method
 
   /**
    * Creates a new Method with the specified parameters
+   * @param enclosingTypeDefinition - the enclosing type definition
    * @param accessSpecifier
    * @param isAbstract
    * @param isSealed
@@ -46,9 +49,10 @@ public class Method
    * @param nativeSpecifier
    * @param name
    */
-  public Method(AccessSpecifier accessSpecifier, boolean isAbstract, boolean isSealed, boolean isStatic, boolean isSynchronized,
-                boolean isImmutable, SinceSpecifier sinceSpecifier, NativeSpecifier nativeSpecifier, String name)
+  public Method(TypeDefinition enclosingTypeDefinition, AccessSpecifier accessSpecifier, boolean isAbstract, boolean isSealed, boolean isStatic,
+                boolean isSynchronized, boolean isImmutable, SinceSpecifier sinceSpecifier, NativeSpecifier nativeSpecifier, String name)
   {
+    this.enclosingTypeDefinition = enclosingTypeDefinition;
     this.accessSpecifier = accessSpecifier;
     this.isAbstract = isAbstract;
     this.isSealed = isSealed;

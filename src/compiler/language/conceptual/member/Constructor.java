@@ -5,6 +5,7 @@ import compiler.language.conceptual.misc.Argument;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.statement.Statement;
 import compiler.language.conceptual.type.PointerType;
+import compiler.language.conceptual.typeDefinition.TypeDefinition;
 
 /*
  * Created on 21 Oct 2010
@@ -15,6 +16,8 @@ import compiler.language.conceptual.type.PointerType;
  */
 public class Constructor
 {
+  private TypeDefinition enclosingTypeDefinition;
+
   private AccessSpecifier accessSpecifier;
   private SinceSpecifier sinceSpecifier;
   private String name;
@@ -23,13 +26,15 @@ public class Constructor
   private Statement[] statements;
 
   /**
-   * Creates a new Constructor with the specified properties.
+   * Creates a new Constructor with the specified enclosing type definition and other properties.
+   * @param enclosingTypeDefinition - the enclosing type definition
    * @param accessSpecifier
    * @param sinceSpecifier
    * @param name
    */
-  public Constructor(AccessSpecifier accessSpecifier, SinceSpecifier sinceSpecifier, String name)
+  public Constructor(TypeDefinition enclosingTypeDefinition, AccessSpecifier accessSpecifier, SinceSpecifier sinceSpecifier, String name)
   {
+    this.enclosingTypeDefinition = enclosingTypeDefinition;
     this.accessSpecifier = accessSpecifier;
     this.sinceSpecifier = sinceSpecifier;
     this.name = name;

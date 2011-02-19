@@ -4,6 +4,7 @@ import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.statement.Statement;
 import compiler.language.conceptual.type.Type;
+import compiler.language.conceptual.typeDefinition.TypeDefinition;
 
 /*
  * Created on 21 Oct 2010
@@ -14,6 +15,8 @@ import compiler.language.conceptual.type.Type;
  */
 public class Property
 {
+
+  private TypeDefinition enclosingTypeDefinition;
 
   private boolean isSealed;
   private boolean isMutable;
@@ -31,8 +34,9 @@ public class Property
   private Statement[] setterStatements;
 
   /**
-   * Creates a new Property with the specified properties.
+   * Creates a new Property with the specified enclosing type definition and properties.
    * The members of the new Property and other data must be set later on
+   * @param enclosingTypeDefinition - the enclosing type definition
    * @param isSealed
    * @param isMutable
    * @param isFinal
@@ -45,10 +49,11 @@ public class Property
    * @param getterAccessSpecifier
    * @param setterAccessSpecifier
    */
-  public Property(boolean isSealed, boolean isMutable, boolean isFinal, boolean isStatic, boolean isSynchronized,
-                  boolean isTransient, boolean isVolatile, SinceSpecifier sinceSpecifier,
+  public Property(TypeDefinition enclosingTypeDefinition, boolean isSealed, boolean isMutable, boolean isFinal, boolean isStatic,
+                  boolean isSynchronized, boolean isTransient, boolean isVolatile, SinceSpecifier sinceSpecifier,
                   String name, AccessSpecifier getterAccessSpecifier, AccessSpecifier setterAccessSpecifier)
   {
+    this.enclosingTypeDefinition = enclosingTypeDefinition;
     this.isSealed = isSealed;
     this.isMutable = isMutable;
     this.isFinal = isFinal;

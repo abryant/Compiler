@@ -234,6 +234,7 @@ public abstract class ConceptualClass extends TypeDefinition
    * {@inheritDoc}
    * @see compiler.language.conceptual.typeDefinition.TypeDefinition#resolve(java.lang.String)
    */
+  @Override
   protected final ScopedResult resolve(String name)
   {
     // TODO: implement

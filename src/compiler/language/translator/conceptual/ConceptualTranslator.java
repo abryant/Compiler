@@ -3,10 +3,10 @@ package compiler.language.translator.conceptual;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.List;
 
 import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.conceptual.ConceptualException;
+import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.topLevel.ConceptualFile;
 import compiler.language.conceptual.topLevel.ConceptualPackage;
 import compiler.language.parser.LanguageParser;
@@ -24,18 +24,15 @@ public class ConceptualTranslator
 
   private LanguageParser parser;
   private ConceptualPackage rootPackage;
-  private List<CompilationUnitAST> compilationUnits;
   private ASTConverter astConverter;
 
   /**
-   * Creates a new ConceptualTranslator for the specified compilation units.
+   * Creates a new ConceptualTranslator to parse and convert files to the conceptual hierarchy.
    * @param parser - the LanguageParser to use to parse files
-   * @param compilationUnits - the compilation units to translate
    */
-  public ConceptualTranslator(LanguageParser parser, List<CompilationUnitAST> compilationUnits)
+  public ConceptualTranslator(LanguageParser parser)
   {
     this.parser = parser;
-    this.compilationUnits = compilationUnits;
     rootPackage = new ConceptualPackage(this);
     astConverter = new ASTConverter(rootPackage);
   }
@@ -65,6 +62,11 @@ public class ConceptualTranslator
       astConverter.convert(ast);
     }
     catch (ConceptualException e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+    catch (NameConflictException e)
     {
       e.printStackTrace();
       return null;
