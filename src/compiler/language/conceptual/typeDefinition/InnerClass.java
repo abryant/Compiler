@@ -1,8 +1,7 @@
 package compiler.language.conceptual.typeDefinition;
 
-import compiler.language.conceptual.NameConflictException;
-import compiler.language.conceptual.QName;
-import compiler.language.conceptual.ScopedResult;
+import compiler.language.conceptual.Resolvable;
+import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
 
@@ -49,11 +48,19 @@ public final class InnerClass extends ConceptualClass
 
   /**
    * {@inheritDoc}
-   * @see compiler.language.conceptual.typeDefinition.TypeDefinition#resolveEnclosing(compiler.language.conceptual.QName)
    */
   @Override
-  protected ScopedResult resolveEnclosing(QName qname) throws NameConflictException
+  public ScopeType getType()
   {
-    return enclosingTypeDefinition.resolve(qname, true);
+    return ScopeType.INNER_CLASS;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected Resolvable getParent()
+  {
+    return enclosingTypeDefinition;
   }
 }

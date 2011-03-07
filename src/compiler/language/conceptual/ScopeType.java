@@ -9,12 +9,15 @@ package compiler.language.conceptual;
  */
 public enum ScopeType
 {
-  // below are all of the possible scope types, followed by the type of object they contain
+  // below are all of the possible scope types, followed by the type of object they represent
   PACKAGE,         // ConceptualPackage
   FILE,            // ConceptualFile
-  CLASS,           // ConceptualClass
-  INTERFACE,       // ConceptualInterface
-  ENUM,            // ConceptualEnum
+  OUTER_CLASS,     // OuterClass
+  INNER_CLASS,     // InnerClass
+  OUTER_INTERFACE, // OuterInterface
+  INNER_INTERFACE, // InnerInterface
+  OUTER_ENUM,      // OuterEnum
+  INNER_ENUM,      // InnerEnum
   ENUM_CONSTANT,   // EnumConstant
   TYPE_ARGUMENT,   // TypeArgument
   MEMBER_VARIABLE, // MemberVariable

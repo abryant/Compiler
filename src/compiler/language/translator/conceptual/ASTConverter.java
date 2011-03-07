@@ -1,9 +1,11 @@
 package compiler.language.translator.conceptual;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import compiler.language.ast.member.AccessSpecifierAST;
@@ -23,7 +25,21 @@ import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.ast.topLevel.ImportDeclarationAST;
 import compiler.language.ast.topLevel.PackageDeclarationAST;
 import compiler.language.ast.topLevel.TypeDefinitionAST;
+import compiler.language.ast.type.ArrayTypeAST;
+import compiler.language.ast.type.BooleanTypeAST;
+import compiler.language.ast.type.CharacterTypeAST;
+import compiler.language.ast.type.ClosureTypeAST;
+import compiler.language.ast.type.FloatingTypeAST;
+import compiler.language.ast.type.FloatingTypeLengthAST;
+import compiler.language.ast.type.IntegerTypeAST;
+import compiler.language.ast.type.NormalTypeParameterAST;
+import compiler.language.ast.type.PointerTypeAST;
+import compiler.language.ast.type.TupleTypeAST;
+import compiler.language.ast.type.TypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.ast.type.TypeParameterAST;
+import compiler.language.ast.type.VoidTypeAST;
+import compiler.language.ast.type.WildcardTypeParameterAST;
 import compiler.language.ast.typeDefinition.ClassDefinitionAST;
 import compiler.language.ast.typeDefinition.EnumConstantAST;
 import compiler.language.ast.typeDefinition.EnumDefinitionAST;
@@ -31,8 +47,8 @@ import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.QName;
+import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
-import compiler.language.conceptual.ScopedResult;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
@@ -45,7 +61,16 @@ import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.topLevel.ConceptualFile;
 import compiler.language.conceptual.topLevel.ConceptualPackage;
 import compiler.language.conceptual.topLevel.Import;
+import compiler.language.conceptual.type.ArrayType;
+import compiler.language.conceptual.type.ClosureType;
+import compiler.language.conceptual.type.NormalTypeParameter;
+import compiler.language.conceptual.type.PointerType;
+import compiler.language.conceptual.type.PrimitiveType;
+import compiler.language.conceptual.type.TupleType;
+import compiler.language.conceptual.type.Type;
 import compiler.language.conceptual.type.TypeArgument;
+import compiler.language.conceptual.type.TypeParameter;
+import compiler.language.conceptual.type.WildcardTypeParameter;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
@@ -72,6 +97,9 @@ public class ASTConverter
 
   private ConceptualPackage rootPackage;
 
+  // a mapping from conceptual node back to AST node, which allows the name resolver to find the names this ASTConverter cannot convert
+  private Map<Object, Object> conceptualASTNodes;
+
   // TODO: handle duplicate modifiers properly (instead of just disregarding them)
 
   /**
@@ -82,6 +110,15 @@ public class ASTConverter
   public ASTConverter(ConceptualPackage rootPackage)
   {
     this.rootPackage = rootPackage;
+    conceptualASTNodes = new HashMap<Object, Object>();
+  }
+
+  /**
+   * @return the mapping from Conceptual node back to AST node
+   */
+  public Map<Object, Object> getConceptualASTNodes()
+  {
+    return conceptualASTNodes;
   }
 
   /**
@@ -103,12 +140,12 @@ public class ASTConverter
     else
     {
       QName packageName = new QName(packageDeclaration.getPackageName().getNameStrings());
-      ScopedResult packageResult = rootPackage.resolve(packageName, false);
+      Resolvable packageResult = rootPackage.resolve(packageName, false);
       if (packageResult.getType() != ScopeType.PACKAGE)
       {
         throw new ConceptualException("Package name does not resolve to a package", packageDeclaration.getPackageName().getParseInfo());
       }
-      enclosingPackage = (ConceptualPackage) packageResult.getValue();
+      enclosingPackage = (ConceptualPackage) packageResult;
     }
 
     // convert the imports
@@ -145,6 +182,7 @@ public class ASTConverter
       }
     }
 
+    conceptualASTNodes.put(file, compilationUnit);
     return file;
   }
 
@@ -195,6 +233,7 @@ public class ASTConverter
 
     addClassData(outerClass, classDefinition);
 
+    conceptualASTNodes.put(outerClass, classDefinition);
     return outerClass;
   }
 
@@ -318,6 +357,7 @@ public class ASTConverter
 
     addInterfaceData(outerInterface, interfaceDefinition);
 
+    conceptualASTNodes.put(outerInterface, interfaceDefinition);
     return outerInterface;
   }
 
@@ -434,6 +474,8 @@ public class ASTConverter
     OuterEnum outerEnum = new OuterEnum(enclosingFile, access, sinceSpecifier, enumDefinition.getName().getName());
 
     addEnumData(outerEnum, enumDefinition);
+
+    conceptualASTNodes.put(outerEnum, enumDefinition);
     return outerEnum;
   }
 
@@ -529,7 +571,9 @@ public class ASTConverter
    */
   private EnumConstant convert(EnumConstantAST enumConstantAST)
   {
-    return new EnumConstant(enumConstantAST.getName().getName());
+    EnumConstant constant = new EnumConstant(enumConstantAST.getName().getName());
+    conceptualASTNodes.put(constant, enumConstantAST);
+    return constant;
   }
 
   /**
@@ -592,6 +636,7 @@ public class ASTConverter
     {
       memberVariables[i] = new MemberVariable(enclosingTypeDefinition, accessSpecifier, isFinal, isMutable, isStatic,
                                               isVolatile, isTransient, sinceSpecifier, assignees[i].getName().getName());
+      conceptualASTNodes.put(memberVariables[i], assignees[i]);
     }
     return memberVariables;
   }
@@ -652,6 +697,7 @@ public class ASTConverter
     Property property = new Property(enclosingTypeDefinition, isSealed, isMutable, isFinal, isStatic, isSynchronized, isTransient, isVolatile,
                                      sinceSpecifier, propertyAST.getName().getName(), retrieveAccessSpecifier, assignAccessSpecifier);
 
+    conceptualASTNodes.put(property, propertyAST);
     return property;
   }
 
@@ -680,6 +726,7 @@ public class ASTConverter
 
     Constructor constructor = new Constructor(enclosingTypeDefinition, accessSpecifier, sinceSpecifier, constructorAST.getName().getName());
 
+    conceptualASTNodes.put(constructor, constructorAST);
     return constructor;
   }
 
@@ -734,6 +781,7 @@ public class ASTConverter
     Method method = new Method(enclosingTypeDefinition, accessSpecifier, isAbstract, isSealed, isStatic, isSynchronized,
                                isImmutable, sinceSpecifier, nativeSpecifier, methodAST.getName().getName());
 
+    conceptualASTNodes.put(method, methodAST);
     return method;
   }
 
@@ -783,6 +831,7 @@ public class ASTConverter
 
     addClassData(innerClass, classDefinitionAST);
 
+    conceptualASTNodes.put(innerClass, classDefinitionAST);
     return innerClass;
 
   }
@@ -819,6 +868,7 @@ public class ASTConverter
 
     addInterfaceData(innerInterface, interfaceDefinition);
 
+    conceptualASTNodes.put(innerInterface, interfaceDefinition);
     return innerInterface;
   }
 
@@ -854,6 +904,8 @@ public class ASTConverter
     InnerEnum innerEnum = new InnerEnum(enclosingTypeDefinition, access, sinceSpecifier, enumDefinition.getName().getName());
 
     addEnumData(innerEnum, enumDefinition);
+
+    conceptualASTNodes.put(innerEnum, enumDefinition);
     return innerEnum;
   }
 
@@ -915,6 +967,194 @@ public class ASTConverter
   {
     String nativeName = nativeSpecifierAST.getNativeName().getLiteralValue();
     return new NativeSpecifier(nativeName);
+  }
+
+  // TODO: is this the right place to put the following methods? and should they be static? (they are called from NameResolver)
+
+  /**
+   * Converts the specified TypeArgumentAST into a TypeArgument.
+   * @param typeArgumentAST - the TypeArgumentAST to convert
+   * @param nameResolver - the NameResolver to use to resolve any names (e.g. in super types)
+   * @param startScope - the starting scope to lookup names in
+   * @return the converted TypeArgument
+   * @throws NameConflictException - if a name conflict is detected while looking up any names
+   * @throws ConceptualException - if a conceptual problem occurs while converting this type argument
+   */
+  private static TypeArgument convert(TypeArgumentAST typeArgumentAST, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException
+  {
+    TypeArgument typeArgument = new TypeArgument(typeArgumentAST.getName().getName());
+    PointerTypeAST[] superTypeASTs = typeArgumentAST.getSuperTypes();
+    PointerTypeAST[] subTypeASTs = typeArgumentAST.getSubTypes();
+    PointerType[] superTypes = new PointerType[superTypeASTs.length];
+    for (int i = 0; i < superTypeASTs.length; i++)
+    {
+      superTypes[i] = nameResolver.resolvePointerType(superTypeASTs[i], startScope);
+    }
+    PointerType[] subTypes = new PointerType[subTypeASTs.length];
+    for (int i = 0; i < subTypeASTs.length; i++)
+    {
+      subTypes[i] = nameResolver.resolvePointerType(subTypeASTs[i], startScope);
+    }
+    typeArgument.setSuperTypes(superTypes);
+    typeArgument.setSubTypes(subTypes);
+    return typeArgument;
+  }
+
+  /**
+   * Converts the specified TypeParameterASTs into TypeParameters.
+   * @param typeParameterASTs - the TypeParameterASTs to convert
+   * @param nameResolver - the NameResolver to use to resolve any names
+   * @param startScope - the starting scope to resolve the names from
+   * @return the converted TypeParameters
+   * @throws NameConflictException - if a name conflict is detected while looking up any names
+   * @throws ConceptualException - if a conceptual problem occurs while resolving the type parameters
+   */
+  public static TypeParameter[] convert(TypeParameterAST[] typeParameterASTs, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException
+  {
+    TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
+    for (int i = 0; i < typeParameterASTs.length; i++)
+    {
+      if (typeParameterASTs[i] instanceof NormalTypeParameterAST)
+      {
+        TypeAST typeAST = ((NormalTypeParameterAST) typeParameterASTs[i]).getType();
+        typeParameters[i] = new NormalTypeParameter(ASTConverter.convert(typeAST, nameResolver, startScope));
+      }
+      else if (typeParameterASTs[i] instanceof WildcardTypeParameterAST)
+      {
+        WildcardTypeParameterAST wildcardTypeParameterAST = (WildcardTypeParameterAST) typeParameterASTs[i];
+        PointerTypeAST[] superTypeASTs = wildcardTypeParameterAST.getSuperTypes();
+        PointerTypeAST[] subTypeASTs = wildcardTypeParameterAST.getSubTypes();
+        PointerType[] superTypes = new PointerType[superTypeASTs.length];
+        for (int j = 0; j < superTypeASTs.length; j++)
+        {
+          superTypes[j] = nameResolver.resolvePointerType(superTypeASTs[j], startScope);
+        }
+        PointerType[] subTypes = new PointerType[subTypeASTs.length];
+        for (int j = 0; j < subTypeASTs.length; j++)
+        {
+          subTypes[j] = nameResolver.resolvePointerType(subTypeASTs[j], startScope);
+        }
+        typeParameters[i] = new WildcardTypeParameter(superTypes, subTypes);
+      }
+      else
+      {
+        throw new IllegalArgumentException("Only normal and wildcard type parameters can be resolved");
+      }
+    }
+    return typeParameters;
+  }
+
+  /**
+   * Converts the specified TypeAST into a Type
+   * @param typeAST - the TypeAST to convert
+   * @param nameResolver - the NameResolver to use to resolve any names (e.g. in PointerTypeASTs)
+   * @param startScope - the starting scope to lookup names in
+   * @return the converted Type
+   * @throws NameConflictException - if a name conflict is detected while looking up any names
+   * @throws ConceptualException - if a conceptual problem occurs while converting this type
+   */
+  public static Type convert(TypeAST typeAST, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException
+  {
+    if (typeAST instanceof ArrayTypeAST)
+    {
+      ArrayTypeAST arrayTypeAST = (ArrayTypeAST) typeAST;
+      return new ArrayType(convert(arrayTypeAST.getBaseType(), nameResolver, startScope), arrayTypeAST.isImmutable());
+    }
+    if (typeAST instanceof ClosureTypeAST)
+    {
+      ClosureTypeAST closureTypeAST = (ClosureTypeAST) typeAST;
+      TypeArgumentAST[] typeArgumentASTs = closureTypeAST.getTypeArguments();
+      TypeAST[] parameterTypeASTs = closureTypeAST.getParameterTypes();
+      TypeAST[] resultTypeASTs = closureTypeAST.getResultTypes();
+      PointerTypeAST[] exceptionTypeASTs = closureTypeAST.getExceptionTypes();
+      TypeArgument[] typeArguments = new TypeArgument[typeArgumentASTs.length];
+      for (int i = 0; i < typeArgumentASTs.length; i++)
+      {
+        typeArguments[i] = convert(typeArgumentASTs[i], nameResolver, startScope);
+      }
+      Type[] parameterTypes = new Type[parameterTypeASTs.length];
+      for (int i = 0; i < parameterTypeASTs.length; i++)
+      {
+        parameterTypes[i] = convert(parameterTypeASTs[i], nameResolver, startScope);
+      }
+      Type[] resultTypes = new Type[resultTypeASTs.length];
+      for (int i = 0; i < resultTypeASTs.length; i++)
+      {
+        resultTypes[i] = convert(resultTypeASTs[i], nameResolver, startScope);
+      }
+      PointerType[] exceptionTypes = new PointerType[exceptionTypeASTs.length];
+      for (int i = 0; i < exceptionTypeASTs.length; i++)
+      {
+        exceptionTypes[i] = nameResolver.resolvePointerType(exceptionTypeASTs[i], startScope);
+      }
+      return new ClosureType(typeArguments, parameterTypes, resultTypes, exceptionTypes);
+    }
+    if (typeAST instanceof PointerTypeAST)
+    {
+      return nameResolver.resolvePointerType((PointerTypeAST) typeAST, startScope);
+    }
+    if (typeAST instanceof BooleanTypeAST)
+    {
+      return PrimitiveType.BOOLEAN;
+    }
+    if (typeAST instanceof CharacterTypeAST)
+    {
+      return PrimitiveType.CHARACTER;
+    }
+    if (typeAST instanceof FloatingTypeAST)
+    {
+      if (((FloatingTypeAST) typeAST).getTypeLength() == FloatingTypeLengthAST.DOUBLE)
+      {
+        return PrimitiveType.DOUBLE;
+      }
+      return PrimitiveType.FLOAT;
+    }
+    if (typeAST instanceof IntegerTypeAST)
+    {
+      Boolean signed = ((IntegerTypeAST) typeAST).getSigned();
+      switch (((IntegerTypeAST) typeAST).getTypeLength())
+      {
+      case BYTE:
+        if (signed != null && signed)
+        {
+          return PrimitiveType.SIGNED_BYTE;
+        }
+        return PrimitiveType.UNSIGNED_BYTE;
+      case SHORT:
+        if (signed == null || signed)
+        {
+          return PrimitiveType.SIGNED_SHORT;
+        }
+        return PrimitiveType.UNSIGNED_SHORT;
+      case INT:
+        if (signed == null || signed)
+        {
+          return PrimitiveType.SIGNED_INT;
+        }
+        return PrimitiveType.UNSIGNED_INT;
+      case LONG:
+        if (signed == null || signed)
+        {
+          return PrimitiveType.SIGNED_LONG;
+        }
+        return PrimitiveType.UNSIGNED_LONG;
+      }
+    }
+    if (typeAST instanceof TupleTypeAST)
+    {
+      TypeAST[] subTypeASTs = ((TupleTypeAST) typeAST).getTypes();
+      Type[] subTypes = new Type[subTypeASTs.length];
+      for (int i = 0; i < subTypeASTs.length; i++)
+      {
+        subTypes[i] = convert(subTypeASTs[i], nameResolver, startScope);
+      }
+      return new TupleType(subTypes);
+    }
+    if (typeAST instanceof VoidTypeAST)
+    {
+      return PrimitiveType.VOID;
+    }
+    throw new IllegalArgumentException();
   }
 
 }

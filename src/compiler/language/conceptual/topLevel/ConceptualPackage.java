@@ -7,8 +7,8 @@ import java.util.Map;
 import compiler.language.ast.ParseInfo;
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.QName;
+import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
-import compiler.language.conceptual.ScopedResult;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
@@ -23,7 +23,7 @@ import compiler.language.translator.conceptual.ConceptualTranslator;
  * Contains mappings from the names of type definitions it contains to the conceptual files they are defined in.
  * @author Anthony Bryant
  */
-public final class ConceptualPackage
+public final class ConceptualPackage extends Resolvable
 {
   private static final String FILE_EXTENSION = ".x"; // TODO: move this constant to a more sensible place
 
@@ -225,17 +225,15 @@ public final class ConceptualPackage
   }
 
   /**
-   * Resolves the specified name in this package.
-   * @param name - the name to resolve
-   * @return the result of resolving the specified name, or null if the name could not be resolved
-   * @throws NameConflictException - if a name conflict was detected while resolving the name
+   * {@inheritDoc}
    */
-  public ScopedResult resolve(String name) throws NameConflictException
+  @Override
+  public Resolvable resolve(String name) throws NameConflictException
   {
     ConceptualPackage subPackage = getSubPackage(name);
     if (subPackage != null)
     {
-      return new ScopedResult(ScopeType.PACKAGE, subPackage);
+      return subPackage;
     }
     ConceptualFile file = typeFiles.get(name);
     if (file == null)
@@ -245,45 +243,37 @@ public final class ConceptualPackage
     ConceptualClass conceptualClass = file.getClass(name);
     if (conceptualClass != null)
     {
-      return new ScopedResult(ScopeType.CLASS, conceptualClass);
+      return conceptualClass;
     }
     ConceptualInterface conceptualInterface = file.getInterface(name);
     if (conceptualInterface != null)
     {
-      return new ScopedResult(ScopeType.INTERFACE, conceptualInterface);
+      return conceptualInterface;
     }
     ConceptualEnum conceptualEnum = file.getEnum(name);
     if (conceptualEnum != null)
     {
-      return new ScopedResult(ScopeType.ENUM, conceptualEnum);
+      return conceptualEnum;
     }
     return null;
   }
 
   /**
-   * Resolves the specified QName from this package.
-   * @param name - the QName to resolve
-   * @param recurseUpwards - true to recurse back to the parent package if there are no results in this package, false to just return null in this scenario
-   * @return the result of resolving the QName, as a ScopedResult, or null if the name could not be resolved
-   * @throws NameConflictException - if a name conflict is detected while resolving the name
+   * {@inheritDoc}
    */
-  public ScopedResult resolve(QName name, boolean recurseUpwards) throws NameConflictException
+  @Override
+  public ScopeType getType()
   {
-    String first = name.getFirstName();
-    ScopedResult result = resolve(first);
-    if (result != null)
-    {
-      if (name.getLength() == 1)
-      {
-        return result;
-      }
-      return result.resolve(name.getTrailingNames());
-    }
-    if (recurseUpwards && parentPackage != null)
-    {
-      return parentPackage.resolve(name, true);
-    }
-    return null;
+    return ScopeType.PACKAGE;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected Resolvable getParent()
+  {
+    return parentPackage;
   }
 
 }

@@ -1,5 +1,6 @@
 package compiler.language.conceptual.topLevel;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,8 +9,8 @@ import java.util.Set;
 
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.QName;
+import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
-import compiler.language.conceptual.ScopedResult;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
@@ -21,7 +22,7 @@ import compiler.language.conceptual.typeDefinition.ConceptualInterface;
 /**
  * @author Anthony Bryant
  */
-public class ConceptualFile
+public final class ConceptualFile extends Resolvable
 {
 
   private ConceptualPackage rootPackage;
@@ -106,6 +107,30 @@ public class ConceptualFile
   }
 
   /**
+   * @return the classes
+   */
+  public Collection<ConceptualClass> getClasses()
+  {
+    return classes.values();
+  }
+
+  /**
+   * @return the interfaces
+   */
+  public Collection<ConceptualInterface> getInterfaces()
+  {
+    return interfaces.values();
+  }
+
+  /**
+   * @return the enums
+   */
+  public Collection<ConceptualEnum> getEnums()
+  {
+    return enums.values();
+  }
+
+  /**
    * Finds the class with the specified name.
    * @param name - the name of the class to get
    * @return the class with the specified name, or null if none exists
@@ -136,27 +161,25 @@ public class ConceptualFile
   }
 
   /**
-   * Resolves the specified name in this file.
-   * @param name - the name to resolve
-   * @return the result of resolving the specified name, or null if nothing could be resolved
-   * @throws NameConflictException - if a name conflict is detected while trying to resolve the name
+   * {@inheritDoc}
    */
-  private ScopedResult resolve(String name) throws NameConflictException
+  @Override
+  public Resolvable resolve(String name) throws NameConflictException
   {
     ConceptualClass conceptualClass = classes.get(name);
     if (conceptualClass != null)
     {
-      return new ScopedResult(ScopeType.CLASS, conceptualClass);
+      return conceptualClass;
     }
     ConceptualInterface conceptualInterface = interfaces.get(name);
     if (conceptualInterface != null)
     {
-      return new ScopedResult(ScopeType.INTERFACE, conceptualInterface);
+      return conceptualInterface;
     }
     ConceptualEnum conceptualEnum = enums.get(name);
     if (conceptualEnum != null)
     {
-      return new ScopedResult(ScopeType.ENUM, conceptualEnum);
+      return conceptualEnum;
     }
 
     // lookup the name in the imports
@@ -165,13 +188,13 @@ public class ConceptualFile
       QName importedQName = imported.getImportedQName();
       if (imported.isAddChildren())
       {
-        ScopedResult baseResult = rootPackage.resolve(importedQName, false);
+        Resolvable baseResult = rootPackage.resolve(importedQName, false);
         if (baseResult == null)
         {
           // TODO: handle import failure better
           throw new IllegalStateException("Import resolution failed for: " + importedQName);
         }
-        ScopedResult wildcardResult = baseResult.resolve(new QName(name));
+        Resolvable wildcardResult = baseResult.resolve(new QName(name), false);
         if (wildcardResult != null)
         {
           return wildcardResult;
@@ -179,12 +202,13 @@ public class ConceptualFile
       }
       else if (importedQName.getLastName().equals(name))
       {
-        ScopedResult result = rootPackage.resolve(importedQName, false);
+        Resolvable result = rootPackage.resolve(importedQName, false);
         if (result == null)
         {
           // TODO: handle import failure better
           throw new IllegalStateException("Import resolution failed for: " + importedQName);
         }
+        return result;
       }
     }
 
@@ -192,29 +216,21 @@ public class ConceptualFile
   }
 
   /**
-   * Resolves the specified QName from this file.
-   * @param name - the QName to resolve
-   * @param recurseUpwards - true to recurse back to the parent package if there are no results in this file, false to just return null in this scenario
-   * @return the result of resolving the QName, as a ScopedResult, or null if the name could not be resolved
-   * @throws NameConflictException - if a name conflict is detected while trying to resolve the name
+   * {@inheritDoc}
    */
-  public ScopedResult resolve(QName name, boolean recurseUpwards) throws NameConflictException
+  @Override
+  public ScopeType getType()
   {
-    String first = name.getFirstName();
-    ScopedResult result = resolve(first);
-    if (result != null)
-    {
-      if (name.getLength() == 1)
-      {
-        return result;
-      }
-      return result.resolve(name.getTrailingNames());
-    }
-    if (recurseUpwards)
-    {
-      return enclosingPackage.resolve(name, true);
-    }
-    return null;
+    return ScopeType.FILE;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected Resolvable getParent()
+  {
+    return enclosingPackage;
   }
 
 }

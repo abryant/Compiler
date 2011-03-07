@@ -7,7 +7,7 @@ package compiler.language.conceptual.type;
 /**
  * @author Anthony Bryant
  */
-public abstract class PointerType extends Type
+public class PointerType extends Type
 {
   private boolean immutable;
   private TypeInstance typeInstance;

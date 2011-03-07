@@ -1,5 +1,8 @@
 package compiler.language.conceptual.member;
 
+import compiler.language.conceptual.NameConflictException;
+import compiler.language.conceptual.Resolvable;
+import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.type.Type;
@@ -12,7 +15,7 @@ import compiler.language.conceptual.typeDefinition.TypeDefinition;
 /**
  * @author Anthony Bryant
  */
-public class MemberVariable
+public class MemberVariable extends Resolvable
 {
 
   private TypeDefinition enclosingTypeDefinition;
@@ -122,7 +125,7 @@ public class MemberVariable
   /**
    * @return the type
    */
-  public Type getType()
+  public Type getVariableType()
   {
     return type;
   }
@@ -133,6 +136,34 @@ public class MemberVariable
   public String getName()
   {
     return name;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ScopeType getType()
+  {
+    return ScopeType.MEMBER_VARIABLE;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Resolvable resolve(String name) throws NameConflictException
+  {
+    // TODO: implement
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected Resolvable getParent()
+  {
+    return enclosingTypeDefinition;
   }
 
 }

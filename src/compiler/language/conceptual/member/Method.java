@@ -1,5 +1,8 @@
 package compiler.language.conceptual.member;
 
+import compiler.language.conceptual.NameConflictException;
+import compiler.language.conceptual.Resolvable;
+import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.Argument;
 import compiler.language.conceptual.misc.NativeSpecifier;
@@ -17,7 +20,7 @@ import compiler.language.conceptual.typeDefinition.TypeDefinition;
 /**
  * @author Anthony Bryant
  */
-public class Method
+public class Method extends Resolvable
 {
   private TypeDefinition enclosingTypeDefinition;
 
@@ -174,6 +177,34 @@ public class Method
   public Statement[] getStatements()
   {
     return statements;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ScopeType getType()
+  {
+    return ScopeType.METHOD;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Resolvable resolve(String name) throws NameConflictException
+  {
+    // TODO: implement
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected Resolvable getParent()
+  {
+    return enclosingTypeDefinition;
   }
 
 

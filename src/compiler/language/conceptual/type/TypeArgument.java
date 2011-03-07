@@ -1,5 +1,9 @@
 package compiler.language.conceptual.type;
 
+import compiler.language.conceptual.NameConflictException;
+import compiler.language.conceptual.Resolvable;
+import compiler.language.conceptual.ScopeType;
+
 
 /*
  * Created on 17 Oct 2010
@@ -8,12 +12,12 @@ package compiler.language.conceptual.type;
 /**
  * @author Anthony Bryant
  */
-public class TypeArgument
+public class TypeArgument extends Resolvable
 {
 
   private String name;
-  private PointerType superType;
-  private PointerType subType;
+  private PointerType[] superTypes;
+  private PointerType[] subTypes;
 
   /**
    * Creates a new TypeArgument with the specified name.
@@ -33,35 +37,64 @@ public class TypeArgument
   }
 
   /**
-   * @return the superType
+   * @return the superTypes
    */
-  public PointerType getSuperType()
+  public PointerType[] getSuperTypes()
   {
-    return superType;
+    return superTypes;
   }
 
   /**
-   * @param superType - the superType to set
+   * @param superTypes - the superTypes to set
    */
-  public void setSuperType(PointerType superType)
+  public void setSuperTypes(PointerType[] superTypes)
   {
-    this.superType = superType;
+    this.superTypes = superTypes;
   }
 
   /**
-   * @return the subType
+   * @return the subTypes
    */
-  public PointerType getSubType()
+  public PointerType[] getSubTypes()
   {
-    return subType;
+    return subTypes;
   }
 
   /**
-   * @param subType - the subType to set
+   * @param subTypes - the subTypes to set
    */
-  public void setSubType(PointerType subType)
+  public void setSubTypes(PointerType[] subTypes)
   {
-    this.subType = subType;
+    this.subTypes = subTypes;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ScopeType getType()
+  {
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Resolvable resolve(String name) throws NameConflictException
+  {
+    // TODO: implement
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected Resolvable getParent()
+  {
+    // TODO: implement (should it just return null?)
+    return null;
   }
 
 }

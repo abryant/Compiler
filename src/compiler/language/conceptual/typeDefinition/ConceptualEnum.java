@@ -1,6 +1,6 @@
 package compiler.language.conceptual.typeDefinition;
 
-import compiler.language.conceptual.ScopedResult;
+import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
@@ -198,10 +198,9 @@ public abstract class ConceptualEnum extends TypeDefinition
 
   /**
    * {@inheritDoc}
-   * @see compiler.language.conceptual.typeDefinition.TypeDefinition#resolve(java.lang.String)
    */
   @Override
-  protected final ScopedResult resolve(String name)
+  public final Resolvable resolve(String name)
   {
     // TODO: implement
     // note that enum constants should really return static member variables instead of the enum constant itself, so that their members cannot be referenced explicitly

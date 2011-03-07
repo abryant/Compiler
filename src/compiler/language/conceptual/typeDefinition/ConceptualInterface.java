@@ -1,6 +1,6 @@
 package compiler.language.conceptual.typeDefinition;
 
-import compiler.language.conceptual.ScopedResult;
+import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
@@ -182,10 +182,9 @@ public abstract class ConceptualInterface extends TypeDefinition
 
   /**
    * {@inheritDoc}
-   * @see compiler.language.conceptual.typeDefinition.TypeDefinition#resolve(java.lang.String)
    */
   @Override
-  protected final ScopedResult resolve(String name)
+  public final Resolvable resolve(String name)
   {
     // TODO: implement
     return null;

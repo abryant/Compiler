@@ -10,33 +10,33 @@ package compiler.language.conceptual.type;
 public class WildcardTypeParameter extends TypeParameter
 {
 
-  private PointerType superType;
-  private PointerType subType;
+  private PointerType[] superTypes;
+  private PointerType[] subTypes;
 
   /**
    * Creates a new WildcardTypeParameter with the specified super and sub types
-   * @param superType - the supertype of the type parameter
-   * @param subType - the subtype of the type parameter
+   * @param superTypes - the supertypes of the type parameter
+   * @param subTypes - the subtypes of the type parameter
    */
-  public WildcardTypeParameter(PointerType superType, PointerType subType)
+  public WildcardTypeParameter(PointerType[] superTypes, PointerType[] subTypes)
   {
-    this.superType = superType;
-    this.subType = subType;
+    this.superTypes = superTypes;
+    this.subTypes = subTypes;
   }
 
   /**
-   * @return the superType
+   * @return the superTypes
    */
-  public PointerType getSuperType()
+  public PointerType[] getSuperTypes()
   {
-    return superType;
+    return superTypes;
   }
   /**
-   * @return the subType
+   * @return the subTypes
    */
-  public PointerType getSubType()
+  public PointerType[] getSubTypes()
   {
-    return subType;
+    return subTypes;
   }
 
 }
