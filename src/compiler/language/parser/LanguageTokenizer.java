@@ -96,8 +96,6 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
     KEYWORDS.put("while",        ParseType.WHILE_KEYWORD);
   }
 
-  private static final int TAB_WIDTH = 8;
-
   private RandomAccessReader reader;
   private int currentLine;
   private int currentColumn;
@@ -117,7 +115,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
    * Skips all whitespace and comment characters at the start of the stream, while updating the current position in the file.
    * @throws IOException - if an error occurs while reading
    */
-  private void skipWhitespaceAndComments() throws IOException
+  private void skipWhitespaceAndComments() throws IOException, LanguageParseException
   {
     int index = 0;
     while (true)
@@ -150,9 +148,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
       }
       else if (nextChar == '\t')
       {
-        currentColumn += TAB_WIDTH;
-        index++;
-        continue;
+        throw new LanguageParseException("Tabs are not permitted in this language.", new ParseInfo(currentLine, currentColumn));
       }
       else if (Character.isWhitespace(nextChar))
       {
@@ -202,8 +198,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
             }
             else if (commentChar == '\t')
             {
-              currentColumn += TAB_WIDTH;
-              index++;
+              throw new LanguageParseException("Tabs are not permitted in this language.", new ParseInfo(currentLine, currentColumn));
             }
             else
             {
@@ -243,8 +238,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
             }
             else if (commentChar == '\t')
             {
-              currentColumn += TAB_WIDTH;
-              index++;
+              throw new LanguageParseException("Tabs are not permitted in this language.", new ParseInfo(currentLine, currentColumn));
             }
             else
             {
