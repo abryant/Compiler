@@ -35,7 +35,6 @@ public final class Production<T extends Enum<T>> implements Serializable
 
   /**
    * {@inheritDoc}
-   * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public boolean equals(Object o)
@@ -60,5 +59,16 @@ public final class Production<T extends Enum<T>> implements Serializable
       }
     }
     return true;
+  }
+
+  @Override
+  public int hashCode()
+  {
+    int hash = 0;
+    for (int i = 0; i < types.length; i++)
+    {
+      hash = 31 * hash + types[i].hashCode();
+    }
+    return hash;
   }
 }
