@@ -25,6 +25,7 @@ import compiler.language.ast.terminal.VersionNumberAST;
  */
 
 /**
+ * The tokenizer for the language. This contains everything necessary to parse and read tokens in order from a given Reader.
  * @author Anthony Bryant
  */
 public class LanguageTokenizer extends Tokenizer<ParseType>

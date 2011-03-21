@@ -8,6 +8,8 @@ import parser.lalr.LALRRuleSet;
  */
 
 /**
+ * A utility program which regenerates the GeneratedLanguageParser using a LALRParserCodeGenerator.
+ * The generated code is very simple, and is just printed to System.out.
  * @author Anthony Bryant
  */
 public class LanguageParserGenerator

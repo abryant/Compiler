@@ -5,6 +5,7 @@ package compiler.language.conceptual;
  */
 
 /**
+ * An enum containing all of the possible types of scope in the language. These are returned by Resolvable's getType() method.
  * @author Anthony Bryant
  */
 public enum ScopeType

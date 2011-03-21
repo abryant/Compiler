@@ -6,6 +6,8 @@ package compiler.language.conceptual;
 
 /**
  * A part of the conceptual hierarchy which can resolve names.
+ *
+ * Contains an abstract method to resolve a method directly inside itself, and a non-abstract method for recursively resolving a name starting at this scope.
  * @author Anthony Bryant
  */
 public abstract class Resolvable

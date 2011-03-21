@@ -15,6 +15,8 @@ import parser.lalr.LALRState;
  */
 
 /**
+ * A parser generator that writes its results to an object output file using Java's Serialisation API.
+ * The parser can then be loaded back in on demand whenever it is desired by LanguageParseTableLoader.
  * @author Anthony Bryant
  */
 public class LanguageParseTableGenerator

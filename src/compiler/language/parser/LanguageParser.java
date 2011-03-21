@@ -3,6 +3,7 @@ package compiler.language.parser;
 import parser.BadTokenException;
 import parser.ParseException;
 import parser.Token;
+
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.ast.terminal.NameAST;
@@ -14,6 +15,8 @@ import compiler.language.ast.topLevel.CompilationUnitAST;
  */
 
 /**
+ * Provides an easy interface for parsing something into a CompilationUnitAST given a tokenizer.
+ * Also prints out its own error messages.
  * @author Anthony Bryant
  */
 public class LanguageParser

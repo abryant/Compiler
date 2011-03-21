@@ -7,6 +7,8 @@ import compiler.language.ast.ParseInfo;
  */
 
 /**
+ * An exception that is thrown whenever a name conflict is detected.
+ * This happens when two fields (or packages, classes etc) are found to have the same name.
  * @author Anthony Bryant
  */
 public class NameConflictException extends Exception

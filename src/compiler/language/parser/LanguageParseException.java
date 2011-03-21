@@ -1,6 +1,7 @@
 package compiler.language.parser;
 
 import parser.ParseException;
+
 import compiler.language.ast.ParseInfo;
 
 /*
@@ -8,6 +9,7 @@ import compiler.language.ast.ParseInfo;
  */
 
 /**
+ * An exception which represents a parse error in a source file of this language.
  * @author Anthony Bryant
  */
 public class LanguageParseException extends ParseException

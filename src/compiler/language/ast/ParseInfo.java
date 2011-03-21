@@ -5,7 +5,7 @@ package compiler.language.ast;
  */
 
 /**
- * An immutable class which stores information from the parser, such as file location
+ * An immutable class which stores information from the parser, such as the location in a file that something came from.
  * @author Anthony Bryant
  */
 public class ParseInfo

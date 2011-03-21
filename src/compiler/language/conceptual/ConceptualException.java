@@ -7,6 +7,7 @@ import compiler.language.ast.ParseInfo;
  */
 
 /**
+ * An exception that is thrown if something is conceptually wrong with the program. For example if an access specifier or modifier is invalid.
  * TODO: eventually, everywhere throwing this should be replaced by printing an error message in a standard way
  * @author Anthony Bryant
  */

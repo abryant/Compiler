@@ -2,6 +2,7 @@ package compiler.language.parser;
 
 import parser.Rule;
 import parser.lalr.LALRRuleSet;
+
 import compiler.language.parser.rules.expression.AdditiveExpressionRule;
 import compiler.language.parser.rules.expression.ArrayAccessExpressionRule;
 import compiler.language.parser.rules.expression.ArrayInitializerRule;
@@ -177,8 +178,7 @@ import compiler.language.parser.rules.typeDefinition.InterfaceListRule;
  */
 
 /**
- * Manages the set of rules used by the language parser.
- *
+ * Manages the set of rules used by the language parser. This is really just a list of all rules used in the language, and is used in parser generation.
  * @author Anthony Bryant
  */
 public class LanguageRules

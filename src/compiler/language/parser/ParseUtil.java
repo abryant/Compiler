@@ -8,7 +8,6 @@ import compiler.language.ast.ParseInfo;
 
 /**
  * A class containing various static utility methods which are useful while parsing the language.
- *
  * @author Anthony Bryant
  */
 public class ParseUtil
