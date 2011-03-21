@@ -9,11 +9,11 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.LanguageParseException;
+import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseType;
 
 /*

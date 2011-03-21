@@ -11,10 +11,10 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.StatementAST;
 import compiler.language.ast.statement.SwitchCaseAST;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
 /*

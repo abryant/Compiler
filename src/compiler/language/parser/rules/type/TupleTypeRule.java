@@ -7,8 +7,8 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
+import compiler.language.parser.QNameElementAST;
 
 /*
  * Created on 13 Jul 2010

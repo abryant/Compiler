@@ -8,8 +8,8 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.ParameterAST;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
 /*

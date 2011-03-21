@@ -13,11 +13,11 @@ import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.ast.type.ArrayTypeAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
+import compiler.language.parser.QNameElementAST;
 
 /*
  * Created on 8 Aug 2010

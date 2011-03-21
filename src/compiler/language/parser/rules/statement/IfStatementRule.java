@@ -10,13 +10,13 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.ElseIfClauseAST;
 import compiler.language.ast.statement.IfStatementAST;
+import compiler.language.parser.ParseContainer;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
 /*

@@ -14,7 +14,6 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.member.MemberHeaderAST;
 import compiler.language.ast.member.MethodAST;
 import compiler.language.ast.misc.ArgumentListAST;
@@ -23,6 +22,7 @@ import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
 /*

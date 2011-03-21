@@ -1,11 +1,11 @@
-package compiler.language.ast.misc;
+package compiler.language.parser;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.expression.ParenthesisedExpressionAST;
 import compiler.language.ast.expression.TupleExpressionAST;
+import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TupleTypeAST;
@@ -17,8 +17,8 @@ import compiler.language.ast.type.TypeParameterAST;
  */
 
 /**
- * A class which holds either a QNameAST or a nested list of QNameElements.
- * This should only be used during parsing, and should not be used in the final
+ * A class which holds either a QNameAST or a nested list of QNameElementASTs.
+ * This should only be used during parsing, and should never occur in the final
  * AST.
  * @author Anthony Bryant
  */

@@ -9,14 +9,14 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.ArrayAccessExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.misc.QNameElementAST;
+import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseType;
+import compiler.language.parser.QNameElementAST;
 
 /*
  * Created on 11 Aug 2010

@@ -10,9 +10,9 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.WildcardTypeParameterAST;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
 /*

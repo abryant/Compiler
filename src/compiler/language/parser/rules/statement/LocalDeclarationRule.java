@@ -11,12 +11,12 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.statement.LocalDeclarationStatementAST;
 import compiler.language.ast.type.TypeAST;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
 /*

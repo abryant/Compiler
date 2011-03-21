@@ -14,8 +14,8 @@ import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.expression.RelationalExpressionAST;
 import compiler.language.ast.expression.RelationalExpressionTypeAST;
 import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.parser.ParseType;
+import compiler.language.parser.QNameElementAST;
 
 /*
  * Created on 19 Aug 2010

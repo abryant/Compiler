@@ -9,10 +9,10 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.misc.QNameElementAST;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
+import compiler.language.parser.QNameElementAST;
 
 /*
  * Created on 17 Aug 2010

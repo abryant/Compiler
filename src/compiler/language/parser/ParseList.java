@@ -1,14 +1,18 @@
-package compiler.language.ast;
+package compiler.language.parser;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import compiler.language.ast.ParseInfo;
 
 /*
  * Created on 5 Aug 2010
  */
 
 /**
+ * Represents a list of AST nodes which have been parsed.
+ * This should only ever be used while parsing, never in the final AST.
  * @author Anthony Bryant
  * @param <E> - the type of elements of the list
  */

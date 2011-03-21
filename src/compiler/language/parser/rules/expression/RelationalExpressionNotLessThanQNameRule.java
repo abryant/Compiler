@@ -22,9 +22,9 @@ import compiler.language.ast.expression.InstanceOfExpressionAST;
 import compiler.language.ast.expression.RelationalExpressionAST;
 import compiler.language.ast.expression.RelationalExpressionTypeAST;
 import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
+import compiler.language.parser.QNameElementAST;
 
 /*
  * Created on 4 Aug 2010

@@ -5,10 +5,10 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseList;
-import compiler.language.ast.misc.QNameElementAST;
 import compiler.language.ast.type.TypeAST;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
+import compiler.language.parser.QNameElementAST;
 
 /*
  * Created on 13 Jul 2010

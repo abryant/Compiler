@@ -9,11 +9,11 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.misc.AssigneeAST;
 import compiler.language.ast.misc.FieldAssigneeAST;
 import compiler.language.ast.misc.QNameAST;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
 /*

@@ -9,12 +9,12 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.CatchClauseAST;
 import compiler.language.ast.statement.TryStatementAST;
+import compiler.language.parser.ParseContainer;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
 /*

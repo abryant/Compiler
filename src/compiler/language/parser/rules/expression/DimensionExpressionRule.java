@@ -8,9 +8,9 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseType;
 
 /*

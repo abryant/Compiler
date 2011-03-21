@@ -14,7 +14,6 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.DefaultArgumentAST;
 import compiler.language.ast.misc.ModifierAST;
@@ -22,6 +21,7 @@ import compiler.language.ast.misc.SingleArgumentAST;
 import compiler.language.ast.misc.VariadicArgumentAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.TypeAST;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
 /*

@@ -11,12 +11,12 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseContainer;
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.ParseList;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.ast.type.WildcardTypeParameterAST;
+import compiler.language.parser.ParseContainer;
+import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 import compiler.language.parser.ParseUtil;
 

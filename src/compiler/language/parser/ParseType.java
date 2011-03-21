@@ -6,7 +6,7 @@ package compiler.language.parser;
 
 /**
  * The types used by the language parser.
- * The comment after each type represents the type of value that will be stored in the same token as it.
+ * The comment after each type represents the type of value that will be stored alongside it.
  * @author Anthony Bryant
  */
 public enum ParseType
