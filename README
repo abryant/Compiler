@@ -77,10 +77,26 @@ Better binary compatibility (if possible)
   Allowing the addition of virtual methods and fields in newer versions of a
   program without breaking binary compatibility, using a new "since" modifier.
   To use the since modifier, a version number must be provided, like this:
-  protected since(1.12.3) void foo() {}
+    protected since(1.12.3) void foo() {}
   This has not yet been implemented, but should be possible to implement by
   sorting the members by their since specifier when writing the fields and
   virtual function tables into code.
+
+Cleaned-up / different syntax
+  Several pieces of syntax may be unfamiliar if you are coming from Java:
+  * Casting is: cast<Type> expression()
+  * Final does not apply to methods, instead 'sealed' is used as in C#, in
+    order to separate the two different meanings of 'final' in Java
+  * if statements, while loops, for loops, etc do not require brackets around
+    their conditions, but do require braces around their blocks.
+  * switch statements break at the end of each case by default, and fallthrough
+    is a keyword like break and continue, which will fall through to the next
+    case. Also, an empty switch is possible, in which case boolean conditions
+    may be used in case statements. The first case to fire is executed.
+  * Assignment and inc/decrements do not return a value, and are statements.
+  * &&= and ||= are included as operators (as well as ^^ and ^^= for xor).
+  * Tabs are not allowed, as they almost always mess up indentation
+    (see the Java source code using non-8-width tabs for an example)
 
 Default arguments
   Default arguments is one of the very nice features of Python. In particular,
@@ -90,7 +106,7 @@ Default arguments
     void foo(int a, int @b = 3, float @x = 5.0 / 3, String @c = "hello") {}
   Then call the method with the default arguments in any order, and only
   specify the required ones:
-    foo(3, @x = "world", @b = 90);
+    foo(3, @c = "world", @b = 90);
   This is not quite as powerful as python's default arguments, for lack of a
   built-in map data structure, but is equally flexible, and only requires that
   the default expressions/values are known at compile time.
@@ -106,7 +122,7 @@ First class functions
   They can be assigned from other methods, and can be created inline like this:
     {int, String -> void} myFunction = closure(int a, String b -> void)
     {
-      println(a + b);
+      println("" + a + b);
     };
   Calling them is just like calling any other function:
     myFunction(1, "a");
@@ -168,7 +184,7 @@ Return type as a disambiguator
     void foo() {}
     String foo() {}
   To call these methods, the following can be done:
-    (void) foo();
+    cast<void> foo();
     (cast<{void -> void}> foo)(); // cast to a closure and call
     String s = foo();
   This is useful where the same interface is implemented on a single class
@@ -186,7 +202,9 @@ Tuples
     a, b = b, a;
   As well as various other things.
   Also useful here is a way of throwing values away in an assignment:
-  _, x, _ = bar(); // discarding the first and last results of bar()
+    _, x, _ = bar(); // discarding the first and last results of bar()
+  There is also a way of indexing an element of a tuple:
+    (String, int) t = baz(); String s = t ! 0; int i = t ! 1;
 
 Unsigned and Signed integer types
   Unsigned integer types can be very useful, in addition to signed ones.
@@ -198,4 +216,4 @@ Unsigned and Signed integer types
   The data types are all signed by default, as it causes fewer programming
   errors in loop counters. So the following will work even though an array's
   length is stored unsigned:
-    for int i = array.length; i > 0; i-- { println(i); }
+    for int i = array.length - 1; i >= 0; i-- { println(i); }
