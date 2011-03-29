@@ -23,8 +23,9 @@ public abstract class Resolvable
    * @param name - the name to resolve
    * @return the Resolvable object found, or null if the name could not be resolved
    * @throws NameConflictException - if a name conflict is detected while trying to resolve this name
+   * @throws UnresolvableException - if it is unknown whether the name can be resolved
    */
-  public abstract Resolvable resolve(String name) throws NameConflictException;
+  public abstract Resolvable resolve(String name) throws NameConflictException, UnresolvableException;
 
   /**
    * @return the parent resolvable object that should be consulted about resolving names that this cannot resolve
@@ -37,8 +38,9 @@ public abstract class Resolvable
    * @param recurseUpwards - true to recurse back to the parent conceptual node if there are no results in this one, false to just return null in this scenario
    * @return the result of resolving the QName, as a Resolvable, or null if the name could not be resolved
    * @throws NameConflictException - if a name conflict is detected while trying to resolve the name
+   * @throws UnresolvableException - if it is unknown whether the name can be resolved
    */
-  public final Resolvable resolve(QName name, boolean recurseUpwards) throws NameConflictException
+  public final Resolvable resolve(QName name, boolean recurseUpwards) throws NameConflictException, UnresolvableException
   {
     Resolvable resolvable = this;
     boolean resolvedOne = false;

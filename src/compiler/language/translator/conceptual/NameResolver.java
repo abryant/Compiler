@@ -13,6 +13,7 @@ import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
+import compiler.language.conceptual.UnresolvableException;
 import compiler.language.conceptual.topLevel.ConceptualFile;
 import compiler.language.conceptual.type.ClassTypeInstance;
 import compiler.language.conceptual.type.EnumTypeInstance;
@@ -100,21 +101,24 @@ public final class NameResolver
    * @return the PointerType converted
    * @throws NameConflictException - if a name conflict is detected while resolving this pointer type
    * @throws ConceptualException - if a conceptual problem occurs while resolving the pointer type
-   *
-   * TODO: add another type of exception specifically for failures in name resolution (so that they can be caught and ignored if we might not have filled something in yet)
-   *       ... unless there's a way of actually detecting that the name can't be resolved because something hasn't been filled in yet
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
    */
-  public PointerType resolvePointerType(PointerTypeAST pointerTypeAST, Resolvable startScope) throws NameConflictException, ConceptualException
+  public PointerType resolvePointerType(PointerTypeAST pointerTypeAST, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
     NameAST[] names = pointerTypeAST.getNames();
     TypeParameterAST[][] typeParameterLists = pointerTypeAST.getTypeParameterLists();
 
+    // go through the names, and look them up in current each iteration to find the new current resolvable
+    // also build a type instance hierarchy while doing this, to give to the PointerType
     Resolvable current = startScope.resolve(new QName(names[0].getName()), true);
     TypeInstance currentTypeInstance = null;
     for (int i = 0; i < names.length; i++)
     {
       if (i > 0) // the first name is looked up separately
       {
+        // lookup this name in the current Resolvable object
+        // this can fail if the Resolvable has not had all of its data filled in yet,
+        // for example if current is a class and does not contain this name itself but must fall back on a not-yet-filled-in parent class/interface
         current = current.resolve(names[i].getName());
       }
       if (current == null)
@@ -173,12 +177,30 @@ public final class NameResolver
         {
           throw new IllegalStateException();
         }
+        if (typeParameterLists[i].length > 0)
+        {
+          ParseInfo[] parseInfo = new ParseInfo[typeParameterLists[i].length];
+          for (int j = 0; j < typeParameterLists[i].length; j++)
+          {
+            parseInfo[j] = typeParameterLists[i][j].getParseInfo();
+          }
+          throw new ConceptualException("An enum cannot have type parameters", parseInfo);
+        }
         currentTypeInstance = new EnumTypeInstance((ConceptualEnum) current);
         break;
       case INNER_ENUM:
         if (currentTypeInstance == null)
         {
           throw new IllegalStateException();
+        }
+        if (typeParameterLists[i].length > 0)
+        {
+          ParseInfo[] parseInfo = new ParseInfo[typeParameterLists[i].length];
+          for (int j = 0; j < typeParameterLists[i].length; j++)
+          {
+            parseInfo[j] = typeParameterLists[i][j].getParseInfo();
+          }
+          throw new ConceptualException("An enum cannot have type parameters", parseInfo);
         }
         currentTypeInstance = new InnerEnumTypeInstance((ConceptualEnum) current, currentTypeInstance);
         break;
@@ -189,6 +211,11 @@ public final class NameResolver
       default:
         throw new ConceptualException("Cannot reference a " + current.getType() + " in a pointer type", names[i].getParseInfo());
       }
+    }
+    if (currentTypeInstance == null)
+    {
+      // the type instance can only be null if the last name processed was a package
+      throw new ConceptualException("Cannot create a pointer type to represent a package", pointerTypeAST.getParseInfo());
     }
     return new PointerType(pointerTypeAST.isImmutable(), currentTypeInstance);
   }

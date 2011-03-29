@@ -29,6 +29,18 @@ public class ConceptualException extends Exception
   }
 
   /**
+   * Creates a new ConceptualException with the specified message and ParseInfo
+   * @param message - the message for this ConceptualException
+   * @param cause - the cause of this exception
+   * @param parseInfo - all of the parsing information specifying where the mistake occurred (this can contain multiple ParseInfo objects)
+   */
+  public ConceptualException(String message, Throwable cause, ParseInfo... parseInfo)
+  {
+    super(message, cause);
+    this.parseInfo = parseInfo;
+  }
+
+  /**
    * @return all of the parseInfo objects related to this exception
    */
   public ParseInfo[] getParseInfo()

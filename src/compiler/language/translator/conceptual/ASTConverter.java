@@ -49,6 +49,7 @@ import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
+import compiler.language.conceptual.UnresolvableException;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
@@ -140,7 +141,15 @@ public class ASTConverter
     else
     {
       QName packageName = new QName(packageDeclaration.getPackageName().getNameStrings());
-      Resolvable packageResult = rootPackage.resolve(packageName, false);
+      Resolvable packageResult = null;
+      try
+      {
+        packageResult = rootPackage.resolve(packageName, false);
+      }
+      catch (UnresolvableException e)
+      {
+        throw new ConceptualException("Package name cannot be resolved!", e, packageDeclaration.getPackageName().getParseInfo());
+      }
       if (packageResult.getType() != ScopeType.PACKAGE)
       {
         throw new ConceptualException("Package name does not resolve to a package", packageDeclaration.getPackageName().getParseInfo());
@@ -979,8 +988,9 @@ public class ASTConverter
    * @return the converted TypeArgument
    * @throws NameConflictException - if a name conflict is detected while looking up any names
    * @throws ConceptualException - if a conceptual problem occurs while converting this type argument
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
    */
-  private static TypeArgument convert(TypeArgumentAST typeArgumentAST, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException
+  private static TypeArgument convert(TypeArgumentAST typeArgumentAST, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
     TypeArgument typeArgument = new TypeArgument(typeArgumentAST.getName().getName());
     PointerTypeAST[] superTypeASTs = typeArgumentAST.getSuperTypes();
@@ -1008,8 +1018,9 @@ public class ASTConverter
    * @return the converted TypeParameters
    * @throws NameConflictException - if a name conflict is detected while looking up any names
    * @throws ConceptualException - if a conceptual problem occurs while resolving the type parameters
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
    */
-  public static TypeParameter[] convert(TypeParameterAST[] typeParameterASTs, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException
+  public static TypeParameter[] convert(TypeParameterAST[] typeParameterASTs, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
     TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
     for (int i = 0; i < typeParameterASTs.length; i++)
@@ -1052,8 +1063,9 @@ public class ASTConverter
    * @return the converted Type
    * @throws NameConflictException - if a name conflict is detected while looking up any names
    * @throws ConceptualException - if a conceptual problem occurs while converting this type
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
    */
-  public static Type convert(TypeAST typeAST, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException
+  public static Type convert(TypeAST typeAST, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
     if (typeAST instanceof ArrayTypeAST)
     {

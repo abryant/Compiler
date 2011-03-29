@@ -11,6 +11,7 @@ import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
+import compiler.language.conceptual.UnresolvableException;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
@@ -164,7 +165,7 @@ public final class ConceptualFile extends Resolvable
    * {@inheritDoc}
    */
   @Override
-  public Resolvable resolve(String name) throws NameConflictException
+  public Resolvable resolve(String name) throws NameConflictException, UnresolvableException
   {
     ConceptualClass conceptualClass = classes.get(name);
     if (conceptualClass != null)
