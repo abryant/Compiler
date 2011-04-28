@@ -56,6 +56,15 @@ public abstract class ConceptualInterface extends TypeDefinition
   }
 
   /**
+   * Sets the parent interfaces of this interface
+   * @param superInterfaces - the parent interfaces
+   */
+  public void setSuperInterfaces(PointerType[] superInterfaces)
+  {
+    this.superInterfaces = superInterfaces;
+  }
+
+  /**
    * Sets the type arguments of this conceptual interface
    * @param typeArguments
    */

@@ -68,6 +68,24 @@ public abstract class ConceptualClass extends TypeDefinition
   }
 
   /**
+   * Sets the base class of this conceptual class
+   * @param baseClass - the new base class of this conceptual class
+   */
+  public void setBaseClass(PointerType baseClass)
+  {
+    this.baseClass = baseClass;
+  }
+
+  /**
+   * Sets the interfaces of this conceptual class
+   * @param interfaces - the implemented interfaces of this conceptual class
+   */
+  public void setInterfaces(PointerType[] interfaces)
+  {
+    this.interfaces = interfaces;
+  }
+
+  /**
    * Sets the type arguments of this conceptual class
    * @param typeArguments - the new type arguments for this conceptual class
    */

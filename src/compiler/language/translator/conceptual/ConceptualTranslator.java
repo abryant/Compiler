@@ -25,6 +25,7 @@ public class ConceptualTranslator
   private LanguageParser parser;
   private ConceptualPackage rootPackage;
   private ASTConverter astConverter;
+  private NameResolver nameResolver;
 
   /**
    * Creates a new ConceptualTranslator to parse and convert files to the conceptual hierarchy.
@@ -35,10 +36,12 @@ public class ConceptualTranslator
     this.parser = parser;
     rootPackage = new ConceptualPackage(this);
     astConverter = new ASTConverter(rootPackage);
+    nameResolver = new NameResolver(astConverter.getConceptualASTNodes());
   }
 
   /**
    * Attempts to parse the specified file into a conceptual file. If something fails in the process, an error is printed before returning null.
+   * If a file is correctly parsed and converted into a ConceptualFile, it is also added to the NameResolver.
    * @param file - the file to parse
    * @return the ConceptualFile parsed, or null if an error occurred
    */
@@ -59,7 +62,9 @@ public class ConceptualTranslator
 
     try
     {
-      astConverter.convert(ast);
+      ConceptualFile conceptualFile = astConverter.convert(ast);
+      nameResolver.addFile(conceptualFile);
+      return conceptualFile;
     }
     catch (ConceptualException e)
     {
@@ -71,8 +76,6 @@ public class ConceptualTranslator
       e.printStackTrace();
       return null;
     }
-
-    return null;
   }
 
 }

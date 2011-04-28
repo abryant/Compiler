@@ -55,6 +55,24 @@ public abstract class ConceptualEnum extends TypeDefinition
   }
 
   /**
+   * Sets the base class of this conceptual enum
+   * @param baseClass - the new base class of this conceptual enum
+   */
+  public void setBaseClass(PointerType baseClass)
+  {
+    this.baseClass = baseClass;
+  }
+
+  /**
+   * Sets the interfaces of this conceptual enum
+   * @param interfaces - the implemented interfaces of this conceptual enum
+   */
+  public void setInterfaces(PointerType[] interfaces)
+  {
+    this.interfaces = interfaces;
+  }
+
+  /**
    * Sets the enum constants for this conceptual enum
    * @param constants
    */
