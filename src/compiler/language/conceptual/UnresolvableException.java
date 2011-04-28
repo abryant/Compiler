@@ -1,5 +1,7 @@
 package compiler.language.conceptual;
 
+import compiler.language.ast.ParseInfo;
+
 /*
  * Created on 29 Mar 2011
  */
@@ -13,20 +15,25 @@ public class UnresolvableException extends Exception
 {
   private static final long serialVersionUID = 1L;
 
-  /**
-   * Default constructor.
-   */
-  public UnresolvableException()
-  {
-    // do nothing
-  }
+  private ParseInfo parseInfo;
 
   /**
    * Creates a new UnresolvableException with the specified message.
    * @param message - the message to embed in this exception
+   * @param parseInfo - the ParseInfo of the name that could not be resolved
    */
-  public UnresolvableException(String message)
+  public UnresolvableException(String message, ParseInfo parseInfo)
   {
     super(message);
+    this.parseInfo = parseInfo;
   }
+
+  /**
+   * @return the parseInfo of the unresolved name
+   */
+  public ParseInfo getParseInfo()
+  {
+    return parseInfo;
+  }
+
 }
