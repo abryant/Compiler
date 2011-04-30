@@ -34,6 +34,7 @@ import compiler.language.conceptual.type.TypeInstance;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
+import compiler.language.conceptual.typeDefinition.TypeDefinition;
 
 /*
  * Created on 20 Feb 2011
@@ -80,40 +81,69 @@ public final class NameResolver
     }
   }
 
-  public void resolve() throws NameConflictException, ConceptualException
+  /**
+   * Resolves the parent types (base classes and super-interfaces) of all types in files which have been added via addFile()
+   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem occurs while resolving parent types
+   */
+  public void resolveParents() throws NameConflictException, ConceptualException
   {
     // resolve base types
     boolean changed = true;
+    Set<TypeDefinition> unresolvedSinceLastChange = new HashSet<TypeDefinition>();
 
     while (changed && !(interfacesToResolve.isEmpty() && classesToResolve.isEmpty() && enumsToResolve.isEmpty()))
     {
-      // resolving parent interfaces does not depend on classes/enums being resolved,
-      // so it can only fail by throwing an exception, therefore there is no boolean return value
-      resolveInterfaceParents();
+      // clear the unresolvedSinceLastChange set, as it will be repopulated during the loop
+      unresolvedSinceLastChange.clear();
 
-      // resolving the parent interfaces of a class can fail,
-      // so set the changed variable according to whether anything was accomplished
-      changed = resolveClassParents();
+      // resolve the super-interfaces of all unresolved interfaces
+      changed = resolveInterfaceParents(unresolvedSinceLastChange);
 
-      // resolving the parent classes/interfaces of an enum can fail, so also update the changed variable here
-      changed = resolveEnumParents() || changed;
+      // resolve the base class and super-interfaces of all unresolved classes
+      changed = resolveClassParents(unresolvedSinceLastChange) || changed;
+
+      // resolve the base class and super-interfaces of all unresolved enums
+      changed = resolveEnumParents(unresolvedSinceLastChange) || changed;
     }
 
     if (!interfacesToResolve.isEmpty() || !classesToResolve.isEmpty() || !enumsToResolve.isEmpty())
     {
-      // something could not be resolved
-      // TODO: throw an exception, but where should the ParseInfo for it come from? all unresolvable parents should be included
+      // something could not be resolved, so throw an exception with the correct ParseInfo
+      List<ParseInfo> parseInfo = new LinkedList<ParseInfo>();
+      for (TypeDefinition typeDefinition : unresolvedSinceLastChange)
+      {
+        if (typeDefinition instanceof ConceptualInterface)
+        {
+          parseInfo.add(((InterfaceDefinitionAST) conceptualASTNodes.get(typeDefinition)).getParseInfo());
+        }
+        else if (typeDefinition instanceof ConceptualClass)
+        {
+          parseInfo.add(((ClassDefinitionAST) conceptualASTNodes.get(typeDefinition)).getParseInfo());
+        }
+        else if (typeDefinition instanceof ConceptualEnum)
+        {
+          parseInfo.add(((EnumDefinitionAST) conceptualASTNodes.get(typeDefinition)).getParseInfo());
+        }
+        else
+        {
+          throw new IllegalStateException("Invalid type definition encountered while building error message for \"Unresolvable parent type(s)\"");
+        }
+      }
+      throw new ConceptualException("Unresolvable parent type(s)", parseInfo.toArray(new ParseInfo[parseInfo.size()]));
     }
   }
 
   /**
    * Resolves the parent interfaces of all interfaces in the interfacesToResolve queue.
+   * @param unresolvedSinceLastChange - the set of all type definitions which have been tried for resolution unsuccessfully since the last change was made
+   * @return true if changes were made to the conceptual hierarchy, false otherwise
    * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
    * @throws ConceptualException - if a conceptual problem occurs while resolving parent interfaces
    */
-  private void resolveInterfaceParents() throws NameConflictException, ConceptualException
+  private boolean resolveInterfaceParents(Set<TypeDefinition> unresolvedSinceLastChange) throws NameConflictException, ConceptualException
   {
-    Set<ConceptualInterface> processedSinceLastChange = new HashSet<ConceptualInterface>();
+    boolean changed = false;
 
     // try to resolve the parent interfaces of every interface
     // this uses a queue instead of an iterator because new interfaces can be added to the list while we are working on it
@@ -121,19 +151,12 @@ public final class NameResolver
     while (!interfacesToResolve.isEmpty())
     {
       ConceptualInterface toResolve = interfacesToResolve.poll();
-      if (processedSinceLastChange.contains(toResolve))
+      if (unresolvedSinceLastChange.contains(toResolve))
       {
         // all of the interfaces in the queue have been processed since a change has been made
         // (this depends on interfacesToResolve being a queue)
-        List<ParseInfo> parseInfo = new LinkedList<ParseInfo>();
-        for (ConceptualInterface unresolvable : processedSinceLastChange)
-        {
-          parseInfo.add(((InterfaceDefinitionAST) conceptualASTNodes.get(unresolvable)).getParseInfo());
-        }
-
-        throw new ConceptualException("Unresolvable parent interface(s)", parseInfo.toArray(new ParseInfo[parseInfo.size()]));
+        return changed;
       }
-      processedSinceLastChange.add(toResolve);
       InterfaceDefinitionAST astNode = (InterfaceDefinitionAST) conceptualASTNodes.get(toResolve);
       PointerTypeAST[] parentInterfaces = astNode.getInterfaces();
       PointerType[] pointerTypes = toResolve.getSuperInterfaces();
@@ -157,7 +180,8 @@ public final class NameResolver
         try
         {
           pointerTypes[i] = resolvePointerType(parentInterfaces[i], toResolve);
-          processedSinceLastChange.clear();
+          changed = true;
+          unresolvedSinceLastChange.clear();
         }
         catch (UnresolvableException e)
         {
@@ -176,29 +200,32 @@ public final class NameResolver
             //   when the parents of Z are being resolved, Y is lazily parsed, but we cannot resolve B until Y is also resolved, so Y is added to the queue before Z is re-added
             //   when the parents of Y are being resolved, X is lazily parsed, but we cannot resolve A until X is also resolved, so X is added to the queue before Y is re-added
             //   Z reaches the front of the queue again, and no changes have been made, despite some progress being made, which would cause an "Unresolvable parent" exception to be thrown
-            // to counter this, we count adding something to the queue as a change, and clear the processedSinceLastChange set
-            processedSinceLastChange.clear();
+            // to counter this, we count adding something to the queue as a change, and clear the unresolvedSinceLastChange set
+            changed = true;
+            unresolvedSinceLastChange.clear();
           }
         }
       }
       if (!fullyResolved)
       {
         // some parent interfaces still need filling in, so add this to the end of the queue again
+        unresolvedSinceLastChange.add(toResolve);
         interfacesToResolve.add(toResolve);
       }
     }
+    return changed;
   }
 
   /**
    * Resolves the parent classes and interfaces of all classes in the classesToResolve queue.
+   * @param unresolvedSinceLastChange - the set of all type definitions which have been tried for resolution unsuccessfully since the last change was made
    * @return true if changes were made to the conceptual hierarchy, false otherwise
    * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
    * @throws ConceptualException - if a conceptual problem occurs while resolving parent classes/interfaces
    */
-  private boolean resolveClassParents() throws NameConflictException, ConceptualException
+  private boolean resolveClassParents(Set<TypeDefinition> unresolvedSinceLastChange) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
-    Set<ConceptualClass> processedSinceLastChange = new HashSet<ConceptualClass>();
 
     // try to resolve the parent classes and interfaces of every class
     // this uses a queue instead of an iterator because new classes can be added to the list while we are working on it
@@ -206,13 +233,12 @@ public final class NameResolver
     while (interfacesToResolve.isEmpty() && !classesToResolve.isEmpty())
     {
       ConceptualClass toResolve = classesToResolve.poll();
-      if (processedSinceLastChange.contains(toResolve))
+      if (unresolvedSinceLastChange.contains(toResolve))
       {
         // all of the classes in the queue have been processed since a change has been made
         // (this depends on classesToResolve being a queue)
         return changed;
       }
-      processedSinceLastChange.add(toResolve);
       ClassDefinitionAST astNode = (ClassDefinitionAST) conceptualASTNodes.get(toResolve);
 
       boolean fullyResolved = true;
@@ -225,7 +251,7 @@ public final class NameResolver
           baseClass = new PointerType(false, new AutomaticBaseTypeInstance());
           toResolve.setBaseClass(baseClass);
           changed = true;
-          processedSinceLastChange.clear();
+          unresolvedSinceLastChange.clear();
         }
         else
         {
@@ -235,7 +261,7 @@ public final class NameResolver
             baseClass = resolvePointerType(baseClassAST, toResolve);
             toResolve.setBaseClass(baseClass);
             changed = true;
-            processedSinceLastChange.clear();
+            unresolvedSinceLastChange.clear();
           }
           catch (UnresolvableException e)
           {
@@ -246,7 +272,7 @@ public final class NameResolver
               // because a new file was loaded and addFile() was called.
               // this must count as a change, for reasons described above
               changed = true;
-              processedSinceLastChange.clear();
+              unresolvedSinceLastChange.clear();
             }
           }
         }
@@ -274,7 +300,7 @@ public final class NameResolver
         {
           parentInterfaces[i] = resolvePointerType(parentInterfaceASTs[i], toResolve);
           changed = true;
-          processedSinceLastChange.clear();
+          unresolvedSinceLastChange.clear();
         }
         catch (UnresolvableException e)
         {
@@ -287,13 +313,14 @@ public final class NameResolver
             // because a new file was loaded and addFile() was called.
             // this must count as a change, for reasons described above
             changed = true;
-            processedSinceLastChange.clear();
+            unresolvedSinceLastChange.clear();
           }
         }
       }
       if (!fullyResolved)
       {
         // some parent classes/interfaces still need filling in, so add this to the end of the queue again
+        unresolvedSinceLastChange.add(toResolve);
         classesToResolve.add(toResolve);
       }
     }
@@ -302,14 +329,14 @@ public final class NameResolver
 
   /**
    * Resolves the parent classes and interfaces of all enums in the enumsToResolve queue.
+   * @param unresolvedSinceLastChange - the set of all type definitions which have been tried for resolution unsuccessfully since the last change was made
    * @return true if changes were made to the conceptual hierarchy, false otherwise
    * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
    * @throws ConceptualException - if a conceptual problem occurs while resolving parent classes/interfaces
    */
-  private boolean resolveEnumParents() throws NameConflictException, ConceptualException
+  private boolean resolveEnumParents(Set<TypeDefinition> unresolvedSinceLastChange) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
-    Set<ConceptualEnum> processedSinceLastChange = new HashSet<ConceptualEnum>();
 
     // try to resolve the parent classes and interfaces of every class
     // this uses a queue instead of an iterator because new classes can be added to the list while we are working on it
@@ -317,13 +344,12 @@ public final class NameResolver
     while (interfacesToResolve.isEmpty() && classesToResolve.isEmpty() && !enumsToResolve.isEmpty())
     {
       ConceptualEnum toResolve = enumsToResolve.poll();
-      if (processedSinceLastChange.contains(toResolve))
+      if (unresolvedSinceLastChange.contains(toResolve))
       {
         // all of the enums in the queue have been processed since a change has been made
         // (this depends on enumsToResolve being a queue)
         return changed;
       }
-      processedSinceLastChange.add(toResolve);
       EnumDefinitionAST astNode = (EnumDefinitionAST) conceptualASTNodes.get(toResolve);
 
       boolean fullyResolved = true;
@@ -336,7 +362,7 @@ public final class NameResolver
           baseClass = new PointerType(false, new AutomaticBaseTypeInstance());
           toResolve.setBaseClass(baseClass);
           changed = true;
-          processedSinceLastChange.clear();
+          unresolvedSinceLastChange.clear();
         }
         else
         {
@@ -346,7 +372,7 @@ public final class NameResolver
             baseClass = resolvePointerType(baseClassAST, toResolve);
             toResolve.setBaseClass(baseClass);
             changed = true;
-            processedSinceLastChange.clear();
+            unresolvedSinceLastChange.clear();
           }
           catch (UnresolvableException e)
           {
@@ -357,7 +383,7 @@ public final class NameResolver
               // because a new file was loaded and addFile() was called.
               // this must count as a change, for reasons described above
               changed = true;
-              processedSinceLastChange.clear();
+              unresolvedSinceLastChange.clear();
             }
           }
         }
@@ -385,7 +411,7 @@ public final class NameResolver
         {
           parentInterfaces[i] = resolvePointerType(parentInterfaceASTs[i], toResolve);
           changed = true;
-          processedSinceLastChange.clear();
+          unresolvedSinceLastChange.clear();
         }
         catch (UnresolvableException e)
         {
@@ -398,13 +424,14 @@ public final class NameResolver
             // because a new file was loaded and addFile() was called.
             // this must count as a change, for reasons described above
             changed = true;
-            processedSinceLastChange.clear();
+            unresolvedSinceLastChange.clear();
           }
         }
       }
       if (!fullyResolved)
       {
         // some parent classes/interfaces still need filling in, so add this to the end of the queue again
+        unresolvedSinceLastChange.add(toResolve);
         enumsToResolve.add(toResolve);
       }
     }
