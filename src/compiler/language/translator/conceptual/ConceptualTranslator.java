@@ -40,6 +40,16 @@ public class ConceptualTranslator
   }
 
   /**
+   * Translates the files which have been parsed into the conceptual representation.
+   * @throws NameConflictException - if a name conflict was detected
+   * @throws ConceptualException - if a conceptual problem was detected during the translation
+   */
+  public void translate() throws NameConflictException, ConceptualException
+  {
+    nameResolver.resolveParents();
+  }
+
+  /**
    * Attempts to parse the specified file into a conceptual file. If something fails in the process, an error is printed before returning null.
    * If a file is correctly parsed and converted into a ConceptualFile, it is also added to the NameResolver.
    * @param file - the file to parse
