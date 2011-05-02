@@ -1,5 +1,6 @@
 package compiler.language.translator.conceptual;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -101,6 +102,8 @@ public class ASTConverter
   // a mapping from conceptual node back to AST node, which allows the name resolver to find the names this ASTConverter cannot convert
   private Map<Object, Object> conceptualASTNodes;
 
+  private Map<File, ConceptualFile> convertedFiles = new HashMap<File, ConceptualFile>();
+
   // TODO: handle duplicate modifiers properly (instead of just disregarding them)
 
   /**
@@ -124,12 +127,13 @@ public class ASTConverter
 
   /**
    * Converts the specified CompilationUnitAST into a ConceptualFile
+   * @param file - the file that is being converted (which was parsed to produce compilationUnit)
    * @param compilationUnit - the CompilationUnitAST to convert
    * @return the ConceptualFile converted
    * @throws ConceptualException - if there is a problem converting the AST to the conceptual view
    * @throws NameConflictException - if a name conflict is detected while converting the compilation unit
    */
-  public ConceptualFile convert(CompilationUnitAST compilationUnit) throws ConceptualException, NameConflictException
+  public ConceptualFile convert(File file, CompilationUnitAST compilationUnit) throws ConceptualException, NameConflictException
   {
     // convert the package, and look it up in the package hierarchy
     PackageDeclarationAST packageDeclaration = compilationUnit.getPackageDeclaration();
@@ -157,6 +161,13 @@ public class ASTConverter
       enclosingPackage = (ConceptualPackage) packageResult;
     }
 
+    // check the cache of converted files first
+    ConceptualFile existingConceptualFile = convertedFiles.get(file);
+    if (existingConceptualFile != null)
+    {
+      return existingConceptualFile;
+    }
+
     // convert the imports
     List<Import> imports = new LinkedList<Import>();
     for (ImportDeclarationAST importDeclaration : compilationUnit.getImports())
@@ -165,7 +176,7 @@ public class ASTConverter
       imports.add(new Import(qname, importDeclaration.isAll()));
     }
 
-    ConceptualFile file = new ConceptualFile(rootPackage, enclosingPackage, imports);
+    ConceptualFile conceptualFile = new ConceptualFile(rootPackage, enclosingPackage, imports);
 
     // convert the type definitions
     Set<ConceptualClass> classes = new HashSet<ConceptualClass>();
@@ -173,26 +184,29 @@ public class ASTConverter
     Set<ConceptualEnum> enums = new HashSet<ConceptualEnum>();
     for (TypeDefinitionAST typeDefinition : compilationUnit.getTypes())
     {
+      System.out.println("Converting type definition: " + typeDefinition); // TODO
       if (typeDefinition instanceof ClassDefinitionAST)
       {
-        classes.add(convert((ClassDefinitionAST) typeDefinition, file));
+        classes.add(convert((ClassDefinitionAST) typeDefinition, conceptualFile));
       }
       else if (typeDefinition instanceof InterfaceDefinitionAST)
       {
-        interfaces.add(convert((InterfaceDefinitionAST) typeDefinition, file));
+        interfaces.add(convert((InterfaceDefinitionAST) typeDefinition, conceptualFile));
       }
       else if (typeDefinition instanceof EnumDefinitionAST)
       {
-        enums.add(convert((EnumDefinitionAST) typeDefinition, file));
+        enums.add(convert((EnumDefinitionAST) typeDefinition, conceptualFile));
       }
       else
       {
         throw new UnsupportedOperationException("Cannot translate a type definition that does not represent a class, interface or enum.");
       }
     }
+    conceptualFile.setTypes(classes, interfaces, enums);
 
-    conceptualASTNodes.put(file, compilationUnit);
-    return file;
+    conceptualASTNodes.put(conceptualFile, compilationUnit);
+    convertedFiles.put(file, conceptualFile);
+    return conceptualFile;
   }
 
   /**
@@ -926,6 +940,10 @@ public class ASTConverter
    */
   private AccessSpecifier convert(AccessSpecifierAST accessSpecifierAST, AccessSpecifier defaultValue)
   {
+    if (accessSpecifierAST == null)
+    {
+      return defaultValue;
+    }
     switch (accessSpecifierAST.getType())
     {
     case PACKAGE:

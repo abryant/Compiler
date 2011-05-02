@@ -90,6 +90,7 @@ public final class NameResolver
   {
     // resolve base types
     boolean changed = true;
+    // TODO: change this set to a Map<TypeDefinition, PointerTypeAST>, so that we can point out exactly which names could not be resolved
     Set<TypeDefinition> unresolvedSinceLastChange = new HashSet<TypeDefinition>();
 
     while (changed && !(interfacesToResolve.isEmpty() && classesToResolve.isEmpty() && enumsToResolve.isEmpty()))

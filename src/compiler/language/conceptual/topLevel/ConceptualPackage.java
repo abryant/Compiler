@@ -2,6 +2,8 @@ package compiler.language.conceptual.topLevel;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import compiler.language.ast.ParseInfo;
@@ -36,13 +38,13 @@ public final class ConceptualPackage extends Resolvable
 
   private QName name;
 
-  // this stores the directory that the source for this package is stored in
-  // if there is no source in this package or any of the packages above it then this is not set,
-  // which allows this ConceptualPackage to be used as a generic parent of any packages which have this somewhere in their hierarchy
-  private File packageDirectory;
+  // this stores the directories that this package can represent
+  // if there are source files in this package, then only one directory is allowed in this list (unless it is the root package)
+  // otherwise, multiple directories can be stored, which will be based on the original classpath
+  private List<File> directories;
 
-  // the sub-packages of this package - this is not populated until addSubPackages() is called
-  private Map<String, ConceptualPackage> subPackages;
+  // the sub-packages of this package - this is populated by addSubPackage()
+  private Map<String, ConceptualPackage> subPackages = new HashMap<String, ConceptualPackage>();
 
   // stores a mapping from type definition name to the conceptual file it is declared in
   private Map<String, ConceptualFile> typeFiles = new HashMap<String, ConceptualFile>();
@@ -50,11 +52,13 @@ public final class ConceptualPackage extends Resolvable
   /**
    * Creates a new ConceptualPackage to act as a root package.
    * @param translator - the ConceptualTranslator to use to create any ConceptualFile in this package and its sub-packages
+   * @param directories - the directories that this root package can represent, this should be initialised to the classpath
    */
-  public ConceptualPackage(ConceptualTranslator translator)
+  public ConceptualPackage(ConceptualTranslator translator, List<File> directories)
   {
     this.translator = translator;
     name = new QName();
+    this.directories = directories;
   }
 
   /**
@@ -63,9 +67,9 @@ public final class ConceptualPackage extends Resolvable
    * @param rootPackage - the root package
    * @param parentPackage - the package directly above this one in the hierarchy
    * @param packageName - the name of this package inside its parent
-   * @param directory - the directory to read the files in this package from
+   * @param directories - the directories that this package can represent
    */
-  public ConceptualPackage(ConceptualTranslator translator, ConceptualPackage rootPackage, ConceptualPackage parentPackage, String packageName)
+  public ConceptualPackage(ConceptualTranslator translator, ConceptualPackage rootPackage, ConceptualPackage parentPackage, String packageName, List<File> directories)
   {
     this.translator = translator;
     this.rootPackage = rootPackage;
@@ -74,20 +78,26 @@ public final class ConceptualPackage extends Resolvable
     {
       this.name = new QName(parentPackage.getName(), packageName);
     }
+    this.directories = directories;
   }
 
   /**
-   * Sets the directory of this package to the specified directory, and loads all of the files inside it
-   * @param directory - the directory to load
+   * Loads all of the source files from this package's only directory.
+   * @throws IllegalStateException - if this package has multiple directories
    */
-  public void loadFiles(File directory)
+  public void loadFiles()
   {
+    if (directories.size() != 1)
+    {
+      throw new IllegalStateException("Cannot load source files for a package unless it has only one directory");
+    }
+    File directory = directories.get(0);
+
     // populate the unparsed files map
     if (!directory.isDirectory())
     {
-      throw new IllegalArgumentException("Cannot create a ConceptualPackage without a valid directory to read from.");
+      throw new IllegalStateException("Cannot create a ConceptualPackage without a valid directory to read from.");
     }
-    boolean parsedFiles = false;
     for (File file : directory.listFiles())
     {
       if (!file.isFile())
@@ -104,15 +114,10 @@ public final class ConceptualPackage extends Resolvable
       {
         continue;
       }
-      parsedFiles = true;
       for (String typeName : conceptualFile.getDeclaredTypeNames())
       {
         typeFiles.put(typeName, conceptualFile);
       }
-    }
-    if (parsedFiles || parentPackage.hasDirectory())
-    {
-      packageDirectory = directory;
     }
   }
 
@@ -125,104 +130,91 @@ public final class ConceptualPackage extends Resolvable
   }
 
   /**
-   * @return true if this package is associated with a directory, false otherwise
+   * @return the directories of this ConceptualPackage
    */
-  public boolean hasDirectory()
+  public List<File> getDirectories()
   {
-    return packageDirectory != null;
-  }
-
-  /**
-   * @return the directory of this ConceptualPackage, or null if it does not have a specific directory
-   */
-  public File getDirectory()
-  {
-    return packageDirectory;
-  }
-
-  /**
-   * Adds all sub-packages in the specified directory to this package, if they do not already exist.
-   * If this ConceptualPackage has an associated directory, then adding packages from any directory but that one will cause an IllegalStateException.
-   * Also if there is an associated directory, it is only scanned once no matter how many times this is called.
-   * @param directory - a directory that this package could represent
-   * @throws NameConflictException - if an existing sub-package has the same name as a new one, and they do not refer to the same directory
-   */
-  public void addSubPackages(File directory) throws NameConflictException
-  {
-    if (hasDirectory() && !packageDirectory.equals(directory))
-    {
-      throw new IllegalStateException("Cannot add subpackages to a ConceptualPackage which already has a directory");
-    }
-    if (hasDirectory() && subPackages != null)
-    {
-      // we have already scanned the only possible directory for sub-packages
-      return;
-    }
-
-    if (subPackages == null)
-    {
-      subPackages = new HashMap<String, ConceptualPackage>();
-    }
-
-    for (File file : directory.listFiles())
-    {
-      if (!file.isDirectory())
-      {
-        if (file.isFile() && file.getName().endsWith(FILE_EXTENSION))
-        {
-          throw new IllegalArgumentException("Cannot add subpackages from a package that contains source files.");
-        }
-        continue;
-      }
-      String name = file.getName();
-      if (typeFiles.containsKey(name))
-      {
-        // TODO: fill in this ParseInfo object with references to both the package directory and the type definition
-        throw new NameConflictException("Package name \"" + name + "\" conflicts with a type definition.", (ParseInfo[]) null);
-      }
-      ConceptualPackage existingPackage = subPackages.get(name);
-      ConceptualPackage newPackage = new ConceptualPackage(translator, rootPackage == null ? this : rootPackage, this, name);
-      if (existingPackage == null)
-      {
-        // no existing subpackage, add it
-        subPackages.put(name, newPackage);
-        newPackage.loadFiles(file);
-      }
-      else
-      {
-        File existingDir = existingPackage.getDirectory();
-        File newDir = newPackage.getDirectory(); // this will either be equal to file or null
-        if (existingDir == null ? newDir != null : !existingDir.equals(newDir))
-        {
-          // either existingDir != null, or newDir != null, or both are non-null but not equal
-          // this means one of them is a duplicate package
-          throw new NameConflictException("Duplicate package found.", (ParseInfo[]) null);
-          // TODO: fill in this ParseInfo object (above), it should contain a reference to both of the directories
-        }
-
-        // existingDir and newDir are either both null or both point to the same directory
-        // so there is no point replacing existingPackage with newPackage, doing it could only lose us data
-      }
-    }
+    return directories;
   }
 
   /**
    * Finds the sub-package with the specified name.
-   * @param name - the name of the sub-package to find
-   * @return the ConceptualPackage under this one with the specified name, or null if none could be found
-   * @throws NameConflictException - if there was a package conflict (two different directories referring to a single package, with at least one containing files)
+   * If the package does not already exist, this method will search through it's associated folder(s) for matching subdirectory names and add the package is possible.
+   * @param name - the name of the sub-package
+   * @return the ConceptualPackage added, or null if no directory for a package with that name could be found
+   * @throws NameConflictException - if there is a conflict between a package and a source file, or
+   *                                 if two package directories are found with the specified name which both contain source files
    */
   public ConceptualPackage getSubPackage(String name) throws NameConflictException
   {
-    if (hasDirectory())
+    ConceptualPackage existing = subPackages.get(name);
+    if (existing != null)
     {
-      addSubPackages(packageDirectory);
+      return existing;
     }
-    else
+
+    List<File> newPackageDirs = new LinkedList<File>();
+    for (File directory : directories)
     {
-      // TODO: find a list of directories from the classpath to scan from, and add them with addSubPackages() until the subpackage is found
+      for (File file : directory.listFiles())
+      {
+        if (!file.isDirectory())
+        {
+          continue;
+        }
+        String dirName = file.getName();
+        if (typeFiles.containsKey(dirName))
+        {
+          // TODO: fill in this ParseInfo object with references to both the package directory and the type definition
+          throw new NameConflictException("Package name \"" + name + "\" conflicts with a type definition.", (ParseInfo[]) null);
+        }
+        if (name.equals(dirName))
+        {
+          newPackageDirs.add(file);
+        }
+      }
     }
-    return subPackages.get(name);
+    if (newPackageDirs.isEmpty())
+    {
+      return null;
+    }
+
+    File sourceFilesDir = null;
+    for (File dir : newPackageDirs)
+    {
+      boolean hasSourceFiles = false;
+      for (File file : dir.listFiles())
+      {
+        if (file.isFile() && file.getName().endsWith(FILE_EXTENSION))
+        {
+          hasSourceFiles = true;
+          break;
+        }
+      }
+      if (hasSourceFiles)
+      {
+        if (sourceFilesDir != null)
+        {
+          // TODO: add the ParseInfo of the two conflicting package directories
+          throw new NameConflictException("Unable to add sub-package " + this.name + "." + name + " as multiple package directories exist.");
+        }
+        sourceFilesDir = dir;
+      }
+    }
+    if (sourceFilesDir != null)
+    {
+      // remove all but the directory containing the source files
+      newPackageDirs.clear();
+      newPackageDirs.add(sourceFilesDir);
+    }
+
+    ConceptualPackage conceptualPackage = new ConceptualPackage(translator, rootPackage, this, name, newPackageDirs);
+    subPackages.put(name, conceptualPackage);
+    if (newPackageDirs.size() == 1)
+    {
+      conceptualPackage.loadFiles();
+    }
+    return conceptualPackage;
   }
 
   /**

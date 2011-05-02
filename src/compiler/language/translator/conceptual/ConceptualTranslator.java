@@ -3,6 +3,8 @@ package compiler.language.translator.conceptual;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.LinkedList;
+import java.util.List;
 
 import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.conceptual.ConceptualException;
@@ -30,13 +32,23 @@ public class ConceptualTranslator
   /**
    * Creates a new ConceptualTranslator to parse and convert files to the conceptual hierarchy.
    * @param parser - the LanguageParser to use to parse files
+   * @param classpath - the classpath for this translator
    */
-  public ConceptualTranslator(LanguageParser parser)
+  public ConceptualTranslator(LanguageParser parser, List<File> classpath)
   {
     this.parser = parser;
-    rootPackage = new ConceptualPackage(this);
+    rootPackage = new ConceptualPackage(this, classpath);
     astConverter = new ASTConverter(rootPackage);
     nameResolver = new NameResolver(astConverter.getConceptualASTNodes());
+  }
+
+  /**
+   * @return the classpath to load source files from, as a List&lt;File&gt;
+   */
+  public List<File> getClassPath()
+  {
+    // TODO: get a proper classpath from somewhere
+    return new LinkedList<File>();
   }
 
   /**
@@ -72,7 +84,7 @@ public class ConceptualTranslator
 
     try
     {
-      ConceptualFile conceptualFile = astConverter.convert(ast);
+      ConceptualFile conceptualFile = astConverter.convert(file, ast);
       nameResolver.addFile(conceptualFile);
       return conceptualFile;
     }
