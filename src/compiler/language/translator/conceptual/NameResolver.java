@@ -1,5 +1,6 @@
 package compiler.language.translator.conceptual;
 
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -180,7 +181,9 @@ public final class NameResolver
         int queueSize = interfacesToResolve.size();
         try
         {
-          pointerTypes[i] = resolvePointerType(parentInterfaces[i], toResolve);
+          PointerType parentPointerType = resolvePointerType(parentInterfaces[i], toResolve);
+          checkParentInterface(parentPointerType, parentInterfaces[i], toResolve);
+          pointerTypes[i] = parentPointerType;
           changed = true;
           unresolvedSinceLastChange.clear();
         }
@@ -215,6 +218,57 @@ public final class NameResolver
       }
     }
     return changed;
+  }
+
+  /**
+   * Checks the specified PointerType as being a valid parent interface. This just means checking that it represents an interface.
+   * If a child interface is provided, this method checks that the child will not become one of its own parents.
+   * @param parent - the parent interface's PointerType, to check
+   * @param parentAST - the parent type's PointerTypeAST, to extract ParseInfo from in case of error
+   * @param child - the prospective child interface, if any
+   * @throws ConceptualException - if there is a problem and the PointerType is not a valid parent interface
+   */
+  private void checkParentInterface(PointerType parent, PointerTypeAST parentAST, ConceptualInterface child) throws ConceptualException
+  {
+    TypeInstance typeInstance = parent.getTypeInstance();
+    if (!(typeInstance instanceof InterfaceTypeInstance))
+    {
+      throw new ConceptualException("Only interfaces can be implemented.", parentAST.getParseInfo());
+    }
+    if (child == null)
+    {
+      return;
+    }
+
+    // check that child is not parent or one of its parent interfaces, using a breadth first search
+    ConceptualInterface startInterface = ((InterfaceTypeInstance) typeInstance).getInterfaceType();
+
+    Deque<ConceptualInterface> queue = new LinkedList<ConceptualInterface>();
+    queue.add(startInterface);
+    while (!queue.isEmpty())
+    {
+      ConceptualInterface current = queue.poll();
+      if (child.equals(current))
+      {
+        throw new ConceptualException("Cycle detected in interface inheritance hierarchy", parentAST.getParseInfo());
+      }
+      if (current.getSuperInterfaces() == null)
+      {
+        continue;
+      }
+      for (PointerType superType : current.getSuperInterfaces())
+      {
+        if (superType == null)
+        {
+          continue;
+        }
+        if (!(superType.getTypeInstance() instanceof InterfaceTypeInstance))
+        {
+          throw new IllegalStateException("A parent interface's PointerType has a non-interface type instance.");
+        }
+        queue.add(((InterfaceTypeInstance) superType.getTypeInstance()).getInterfaceType());
+      }
+    }
   }
 
   /**
@@ -260,6 +314,7 @@ public final class NameResolver
           try
           {
             baseClass = resolvePointerType(baseClassAST, toResolve);
+            checkParentClass(baseClass, baseClassAST, toResolve);
             toResolve.setBaseClass(baseClass);
             changed = true;
             unresolvedSinceLastChange.clear();
@@ -299,7 +354,9 @@ public final class NameResolver
         int queueSize = classesToResolve.size();
         try
         {
-          parentInterfaces[i] = resolvePointerType(parentInterfaceASTs[i], toResolve);
+          PointerType parentInterface = resolvePointerType(parentInterfaceASTs[i], toResolve);
+          checkParentInterface(parentInterface, parentInterfaceASTs[i], null);
+          parentInterfaces[i] = parentInterface;
           changed = true;
           unresolvedSinceLastChange.clear();
         }
@@ -326,6 +383,51 @@ public final class NameResolver
       }
     }
     return changed;
+  }
+
+  /**
+   * Checks the specified PointerType as being a valid parent class. This just means checking that it represents a class.
+   * If a child class is provided, this method checks that the child will not become one of its own parents.
+   * @param parent - the parent class's PointerType, to check
+   * @param parentAST - the parent type's PointerTypeAST, to extract ParseInfo from in case of error
+   * @param child - the prospective child class, if any
+   * @throws ConceptualException - if there is a problem and the PointerType is not a valid parent class
+   */
+  private void checkParentClass(PointerType parent, PointerTypeAST parentAST, ConceptualClass child) throws ConceptualException
+  {
+    TypeInstance typeInstance = parent.getTypeInstance();
+    if (!(typeInstance instanceof ClassTypeInstance))
+    {
+      throw new ConceptualException("Only classes can be extended", parentAST.getParseInfo());
+    }
+    if (child == null)
+    {
+      return;
+    }
+
+    // check that child is not parent or one of its base classes
+    ConceptualClass current = ((ClassTypeInstance) typeInstance).getClassType();
+    while (current != null)
+    {
+      if (current.equals(child))
+      {
+        throw new ConceptualException("Cycle detected in class inheritance hierarchy", parentAST.getParseInfo());
+      }
+      if (current.getBaseClass() == null)
+      {
+        break;
+      }
+      TypeInstance baseTypeInstance = current.getBaseClass().getTypeInstance();
+      if (baseTypeInstance instanceof AutomaticBaseTypeInstance)
+      {
+        break;
+      }
+      if (!(baseTypeInstance instanceof ClassTypeInstance))
+      {
+        throw new IllegalStateException("A parent class' PointerType has a non-class type instance.");
+      }
+      current = ((ClassTypeInstance) baseTypeInstance).getClassType();
+    }
   }
 
   /**
@@ -371,6 +473,7 @@ public final class NameResolver
           try
           {
             baseClass = resolvePointerType(baseClassAST, toResolve);
+            checkParentClass(baseClass, baseClassAST, null);
             toResolve.setBaseClass(baseClass);
             changed = true;
             unresolvedSinceLastChange.clear();
@@ -410,7 +513,9 @@ public final class NameResolver
         int queueSize = enumsToResolve.size();
         try
         {
-          parentInterfaces[i] = resolvePointerType(parentInterfaceASTs[i], toResolve);
+          PointerType parentInterface = resolvePointerType(parentInterfaceASTs[i], toResolve);
+          checkParentInterface(parentInterface, parentInterfaceASTs[i], null);
+          parentInterfaces[i] = parentInterface;
           changed = true;
           unresolvedSinceLastChange.clear();
         }

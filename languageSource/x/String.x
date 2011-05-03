@@ -1,6 +1,14 @@
 package x;
 
-immutable sealed class String
+interface Foo
+{
+}
+
+interface Bar extends Foo
+{
+}
+
+immutable sealed class String extends Object implements Bar
 {
   final property char#[] chars
   private setter
