@@ -118,7 +118,7 @@ public class InterfaceDefinitionAST extends TypeDefinitionAST
       buffer.append(">");
     }
     buffer.append(" ");
-    if (parentInterfaces != null)
+    if (parentInterfaces != null && parentInterfaces.length > 0)
     {
       buffer.append("extends ");
       for (int i = 0; i < parentInterfaces.length; i++)
