@@ -195,7 +195,49 @@ public abstract class ConceptualInterface extends TypeDefinition
   @Override
   public final Resolvable resolve(String name)
   {
-    // TODO: implement
+    for (TypeArgument typeArgument : typeArguments)
+    {
+      if (typeArgument.getName().equals(name))
+      {
+        return typeArgument;
+      }
+    }
+    for (MemberVariable staticVariable : staticVariables)
+    {
+      if (staticVariable.getName().equals(name))
+      {
+        return staticVariable;
+      }
+    }
+    for (Property property : properties)
+    {
+      if (property.getName().equals(name))
+      {
+        return property;
+      }
+    }
+    // TODO: how will methods work here? there can be multiple methods with one name
+    for (InnerClass innerClass : innerClasses)
+    {
+      if (innerClass.getName().equals(name))
+      {
+        return innerClass;
+      }
+    }
+    for (ConceptualInterface innerInterface : innerInterfaces)
+    {
+      if (innerInterface.getName().equals(name))
+      {
+        return innerInterface;
+      }
+    }
+    for (ConceptualEnum innerEnum : innerEnums)
+    {
+      if (innerEnum.getName().equals(name))
+      {
+        return innerEnum;
+      }
+    }
     return null;
   }
 

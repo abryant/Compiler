@@ -1,14 +1,12 @@
 package x;
 
-interface Foo
+import y.*;
+
+interface Bar
 {
 }
 
-interface Bar extends Foo
-{
-}
-
-immutable sealed class String extends Object implements Bar
+immutable sealed class String extends Foo.Bar implements Bar
 {
   final property char#[] chars
   private setter

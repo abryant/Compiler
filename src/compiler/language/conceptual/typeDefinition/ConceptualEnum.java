@@ -220,8 +220,52 @@ public abstract class ConceptualEnum extends TypeDefinition
   @Override
   public final Resolvable resolve(String name)
   {
-    // TODO: implement
-    // note that enum constants should really return static member variables instead of the enum constant itself, so that their members cannot be referenced explicitly
+    // TODO: create static member variables out of the enum constants and return these instead of the actual
+    //       enum constants when resolving, so that an enum constant's members cannot be referenced explicitly
+    /*
+    for (EnumConstant constant : constants)
+    {
+      if (constant.getName().equals(name))
+      {
+      }
+    }
+    */
+    for (MemberVariable variable : variables)
+    {
+      if (variable.getName().equals(name))
+      {
+        return variable;
+      }
+    }
+    for (Property property : properties)
+    {
+      if (property.getName().equals(name))
+      {
+        return property;
+      }
+    }
+    // TODO: how will methods work here? there can be multiple methods with one name
+    for (InnerClass innerClass : innerClasses)
+    {
+      if (innerClass.getName().equals(name))
+      {
+        return innerClass;
+      }
+    }
+    for (ConceptualInterface innerInterface : innerInterfaces)
+    {
+      if (innerInterface.getName().equals(name))
+      {
+        return innerInterface;
+      }
+    }
+    for (ConceptualEnum innerEnum : innerEnums)
+    {
+      if (innerEnum.getName().equals(name))
+      {
+        return innerEnum;
+      }
+    }
     return null;
   }
 
