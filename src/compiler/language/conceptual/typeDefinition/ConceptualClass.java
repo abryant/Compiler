@@ -9,8 +9,12 @@ import compiler.language.conceptual.member.StaticInitializer;
 import compiler.language.conceptual.member.VariableInitializers;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
+import compiler.language.conceptual.type.AutomaticBaseTypeInstance;
+import compiler.language.conceptual.type.ClassTypeInstance;
+import compiler.language.conceptual.type.InterfaceTypeInstance;
 import compiler.language.conceptual.type.PointerType;
 import compiler.language.conceptual.type.TypeArgument;
+import compiler.language.conceptual.type.TypeInstance;
 
 /*
  * Created on 16 Oct 2010
@@ -295,6 +299,43 @@ public abstract class ConceptualClass extends TypeDefinition
       if (innerEnum.getName().equals(name))
       {
         return innerEnum;
+      }
+    }
+    if (baseClass != null)
+    {
+      TypeInstance typeInstance = baseClass.getTypeInstance();
+      if (typeInstance instanceof ClassTypeInstance)
+      {
+        Resolvable result = ((ClassTypeInstance) typeInstance).getClassType().resolve(name);
+        if (result != null)
+        {
+          return result;
+        }
+      }
+      else if (!(typeInstance instanceof AutomaticBaseTypeInstance))
+      {
+        throw new IllegalStateException("A base class' type instance must be either a ClassTypeInstance or an AutomaticBaseTypeInstance");
+      }
+    }
+    if (interfaces != null)
+    {
+      for (PointerType type : interfaces)
+      {
+        if (type == null)
+        {
+          // the type has not yet been populated, so go on to the next one
+          continue;
+        }
+        TypeInstance typeInstance = type.getTypeInstance();
+        if (!(typeInstance instanceof InterfaceTypeInstance))
+        {
+          throw new IllegalStateException("An implemented interface's type instance must be an InterfaceTypeInstance");
+        }
+        Resolvable result = ((InterfaceTypeInstance) typeInstance).getInterfaceType().resolve(name);
+        if (result != null)
+        {
+          return result;
+        }
       }
     }
     return null;

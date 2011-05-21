@@ -7,8 +7,10 @@ import compiler.language.conceptual.member.Property;
 import compiler.language.conceptual.member.StaticInitializer;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
+import compiler.language.conceptual.type.InterfaceTypeInstance;
 import compiler.language.conceptual.type.PointerType;
 import compiler.language.conceptual.type.TypeArgument;
+import compiler.language.conceptual.type.TypeInstance;
 
 /*
  * Created on 21 Oct 2010
@@ -236,6 +238,27 @@ public abstract class ConceptualInterface extends TypeDefinition
       if (innerEnum.getName().equals(name))
       {
         return innerEnum;
+      }
+    }
+    if (superInterfaces != null)
+    {
+      for (PointerType type : superInterfaces)
+      {
+        if (type == null)
+        {
+          // the type has not yet been populated, so go on to the next one
+          continue;
+        }
+        TypeInstance typeInstance = type.getTypeInstance();
+        if (!(typeInstance instanceof InterfaceTypeInstance))
+        {
+          throw new IllegalStateException("An implemented interface's type instance must be an InterfaceTypeInstance");
+        }
+        Resolvable result = ((InterfaceTypeInstance) typeInstance).getInterfaceType().resolve(name);
+        if (result != null)
+        {
+          return result;
+        }
       }
     }
     return null;
