@@ -9,7 +9,6 @@ import java.util.Queue;
 import java.util.Set;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.ast.typeDefinition.ClassDefinitionAST;
@@ -19,22 +18,20 @@ import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
+import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
 import compiler.language.conceptual.topLevel.ConceptualFile;
-import compiler.language.conceptual.type.AutomaticBaseTypeInstance;
-import compiler.language.conceptual.type.ClassTypeInstance;
-import compiler.language.conceptual.type.EnumTypeInstance;
-import compiler.language.conceptual.type.InnerClassTypeInstance;
-import compiler.language.conceptual.type.InnerEnumTypeInstance;
-import compiler.language.conceptual.type.InnerInterfaceTypeInstance;
-import compiler.language.conceptual.type.InterfaceTypeInstance;
+import compiler.language.conceptual.type.AutomaticBaseClassPointerType;
+import compiler.language.conceptual.type.ClassPointerType;
+import compiler.language.conceptual.type.EnumPointerType;
+import compiler.language.conceptual.type.InterfacePointerType;
+import compiler.language.conceptual.type.OuterClassPointerType;
 import compiler.language.conceptual.type.PointerType;
-import compiler.language.conceptual.type.TypeArgument;
-import compiler.language.conceptual.type.TypeArgumentInstance;
-import compiler.language.conceptual.type.TypeInstance;
+import compiler.language.conceptual.type.TypeParameter;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
+import compiler.language.conceptual.typeDefinition.InnerClass;
 import compiler.language.conceptual.typeDefinition.TypeDefinition;
 
 /*
@@ -161,10 +158,10 @@ public final class NameResolver
       }
       InterfaceDefinitionAST astNode = (InterfaceDefinitionAST) conceptualASTNodes.get(toResolve);
       PointerTypeAST[] parentInterfaces = astNode.getInterfaces();
-      PointerType[] pointerTypes = toResolve.getSuperInterfaces();
+      InterfacePointerType[] pointerTypes = toResolve.getSuperInterfaces();
       if (pointerTypes == null)
       {
-        pointerTypes = new PointerType[parentInterfaces.length];
+        pointerTypes = new InterfacePointerType[parentInterfaces.length];
         toResolve.setSuperInterfaces(pointerTypes);
       }
       if (pointerTypes.length != parentInterfaces.length)
@@ -181,7 +178,7 @@ public final class NameResolver
         int queueSize = interfacesToResolve.size();
         try
         {
-          PointerType parentPointerType = resolvePointerType(parentInterfaces[i], toResolve);
+          InterfacePointerType parentPointerType = resolveInterfacePointerType(parentInterfaces[i], toResolve);
           checkParentInterface(parentPointerType, parentInterfaces[i], toResolve);
           pointerTypes[i] = parentPointerType;
           changed = true;
@@ -221,27 +218,22 @@ public final class NameResolver
   }
 
   /**
-   * Checks the specified PointerType as being a valid parent interface. This just means checking that it represents an interface.
+   * Checks the specified InterfacePointerType as being a valid parent interface.
    * If a child interface is provided, this method checks that the child will not become one of its own parents.
    * @param parent - the parent interface's PointerType, to check
    * @param parentAST - the parent type's PointerTypeAST, to extract ParseInfo from in case of error
    * @param child - the prospective child interface, if any
    * @throws ConceptualException - if there is a problem and the PointerType is not a valid parent interface
    */
-  private void checkParentInterface(PointerType parent, PointerTypeAST parentAST, ConceptualInterface child) throws ConceptualException
+  private void checkParentInterface(InterfacePointerType parent, PointerTypeAST parentAST, ConceptualInterface child) throws ConceptualException
   {
-    TypeInstance typeInstance = parent.getTypeInstance();
-    if (!(typeInstance instanceof InterfaceTypeInstance))
-    {
-      throw new ConceptualException("Only interfaces can be implemented.", parentAST.getParseInfo());
-    }
     if (child == null)
     {
       return;
     }
 
     // check that child is not parent or one of its parent interfaces, using a breadth first search
-    ConceptualInterface startInterface = ((InterfaceTypeInstance) typeInstance).getInterfaceType();
+    ConceptualInterface startInterface = parent.getInterfaceType();
 
     Deque<ConceptualInterface> queue = new LinkedList<ConceptualInterface>();
     queue.add(startInterface);
@@ -256,17 +248,13 @@ public final class NameResolver
       {
         continue;
       }
-      for (PointerType superType : current.getSuperInterfaces())
+      for (InterfacePointerType superType : current.getSuperInterfaces())
       {
         if (superType == null)
         {
           continue;
         }
-        if (!(superType.getTypeInstance() instanceof InterfaceTypeInstance))
-        {
-          throw new IllegalStateException("A parent interface's PointerType has a non-interface type instance.");
-        }
-        queue.add(((InterfaceTypeInstance) superType.getTypeInstance()).getInterfaceType());
+        queue.add(superType.getInterfaceType());
       }
     }
   }
@@ -298,12 +286,12 @@ public final class NameResolver
 
       boolean fullyResolved = true;
       PointerTypeAST baseClassAST = astNode.getBaseClass();
-      PointerType baseClass = toResolve.getBaseClass();
+      ClassPointerType baseClass = toResolve.getBaseClass();
       if (baseClass == null)
       {
         if (baseClassAST == null)
         {
-          baseClass = new PointerType(false, new AutomaticBaseTypeInstance());
+          baseClass = new AutomaticBaseClassPointerType();
           toResolve.setBaseClass(baseClass);
           changed = true;
           unresolvedSinceLastChange.clear();
@@ -313,7 +301,7 @@ public final class NameResolver
           int queueSize = classesToResolve.size();
           try
           {
-            baseClass = resolvePointerType(baseClassAST, toResolve);
+            baseClass = resolveClassPointerType(baseClassAST, toResolve);
             checkParentClass(baseClass, baseClassAST, toResolve);
             toResolve.setBaseClass(baseClass);
             changed = true;
@@ -335,10 +323,10 @@ public final class NameResolver
       }
 
       PointerTypeAST[] parentInterfaceASTs = astNode.getInterfaces();
-      PointerType[] parentInterfaces = toResolve.getInterfaces();
+      InterfacePointerType[] parentInterfaces = toResolve.getInterfaces();
       if (parentInterfaces == null)
       {
-        parentInterfaces = new PointerType[parentInterfaceASTs.length];
+        parentInterfaces = new InterfacePointerType[parentInterfaceASTs.length];
         toResolve.setInterfaces(parentInterfaces);
       }
       if (parentInterfaceASTs.length != parentInterfaces.length)
@@ -354,7 +342,7 @@ public final class NameResolver
         int queueSize = classesToResolve.size();
         try
         {
-          PointerType parentInterface = resolvePointerType(parentInterfaceASTs[i], toResolve);
+          InterfacePointerType parentInterface = resolveInterfacePointerType(parentInterfaceASTs[i], toResolve);
           checkParentInterface(parentInterface, parentInterfaceASTs[i], null);
           parentInterfaces[i] = parentInterface;
           changed = true;
@@ -386,47 +374,34 @@ public final class NameResolver
   }
 
   /**
-   * Checks the specified PointerType as being a valid parent class. This just means checking that it represents a class.
+   * Checks the specified ClassPointerType as being a valid parent class.
    * If a child class is provided, this method checks that the child will not become one of its own parents.
-   * @param parent - the parent class's PointerType, to check
+   * @param parent - the parent class's ClassPointerType, to check
    * @param parentAST - the parent type's PointerTypeAST, to extract ParseInfo from in case of error
    * @param child - the prospective child class, if any
    * @throws ConceptualException - if there is a problem and the PointerType is not a valid parent class
    */
-  private void checkParentClass(PointerType parent, PointerTypeAST parentAST, ConceptualClass child) throws ConceptualException
+  private void checkParentClass(ClassPointerType parent, PointerTypeAST parentAST, ConceptualClass child) throws ConceptualException
   {
-    TypeInstance typeInstance = parent.getTypeInstance();
-    if (!(typeInstance instanceof ClassTypeInstance))
-    {
-      throw new ConceptualException("Only classes can be extended", parentAST.getParseInfo());
-    }
     if (child == null)
     {
       return;
     }
 
     // check that child is not parent or one of its base classes
-    ConceptualClass current = ((ClassTypeInstance) typeInstance).getClassType();
+    ConceptualClass current = parent.getClassType();
     while (current != null)
     {
       if (current.equals(child))
       {
         throw new ConceptualException("Cycle detected in class inheritance hierarchy", parentAST.getParseInfo());
       }
-      if (current.getBaseClass() == null)
+      ClassPointerType baseClass = current.getBaseClass();
+      if (baseClass == null || baseClass instanceof AutomaticBaseClassPointerType)
       {
         break;
       }
-      TypeInstance baseTypeInstance = current.getBaseClass().getTypeInstance();
-      if (baseTypeInstance instanceof AutomaticBaseTypeInstance)
-      {
-        break;
-      }
-      if (!(baseTypeInstance instanceof ClassTypeInstance))
-      {
-        throw new IllegalStateException("A parent class' PointerType has a non-class type instance.");
-      }
-      current = ((ClassTypeInstance) baseTypeInstance).getClassType();
+      current = baseClass.getClassType();
     }
   }
 
@@ -457,12 +432,12 @@ public final class NameResolver
 
       boolean fullyResolved = true;
       PointerTypeAST baseClassAST = astNode.getBaseClass();
-      PointerType baseClass = toResolve.getBaseClass();
+      ClassPointerType baseClass = toResolve.getBaseClass();
       if (baseClass == null)
       {
         if (baseClassAST == null)
         {
-          baseClass = new PointerType(false, new AutomaticBaseTypeInstance());
+          baseClass = new AutomaticBaseClassPointerType();
           toResolve.setBaseClass(baseClass);
           changed = true;
           unresolvedSinceLastChange.clear();
@@ -472,8 +447,7 @@ public final class NameResolver
           int queueSize = enumsToResolve.size();
           try
           {
-            baseClass = resolvePointerType(baseClassAST, toResolve);
-            checkParentClass(baseClass, baseClassAST, null);
+            baseClass = resolveClassPointerType(baseClassAST, toResolve);
             toResolve.setBaseClass(baseClass);
             changed = true;
             unresolvedSinceLastChange.clear();
@@ -494,10 +468,10 @@ public final class NameResolver
       }
 
       PointerTypeAST[] parentInterfaceASTs = astNode.getInterfaces();
-      PointerType[] parentInterfaces = toResolve.getInterfaces();
+      InterfacePointerType[] parentInterfaces = toResolve.getInterfaces();
       if (parentInterfaces == null)
       {
-        parentInterfaces = new PointerType[parentInterfaceASTs.length];
+        parentInterfaces = new InterfacePointerType[parentInterfaceASTs.length];
         toResolve.setInterfaces(parentInterfaces);
       }
       if (parentInterfaceASTs.length != parentInterfaces.length)
@@ -513,7 +487,7 @@ public final class NameResolver
         int queueSize = enumsToResolve.size();
         try
         {
-          PointerType parentInterface = resolvePointerType(parentInterfaceASTs[i], toResolve);
+          InterfacePointerType parentInterface = resolveInterfacePointerType(parentInterfaceASTs[i], toResolve);
           checkParentInterface(parentInterface, parentInterfaceASTs[i], null);
           parentInterfaces[i] = parentInterface;
           changed = true;
@@ -545,6 +519,44 @@ public final class NameResolver
   }
 
   /**
+   * Resolves the specified PointerTypeAST into a ClassPointerType
+   * @param pointerTypeAST - the PointerTypeAST to resolve
+   * @param startScope - the starting scope
+   * @return the ClassPointerType converted
+   * @throws NameConflictException - if a name conflict is detected while resolving this pointer type
+   * @throws ConceptualException - if a conceptual problem occurs while resolving the pointer type
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
+   */
+  public ClassPointerType resolveClassPointerType(PointerTypeAST pointerTypeAST, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
+  {
+    PointerType result = resolvePointerType(pointerTypeAST, startScope);
+    if (!(result instanceof ClassPointerType))
+    {
+      throw new ConceptualException("This type should resolve to a class, but does not", pointerTypeAST.getParseInfo());
+    }
+    return (ClassPointerType) result;
+  }
+
+  /**
+   * Resolves the specified PointerTypeAST into an InterfacePointerType
+   * @param pointerTypeAST - the PointerTypeAST to resolve
+   * @param startScope - the starting scope
+   * @return the InterfacePointerType converted
+   * @throws NameConflictException - if a name conflict is detected while resolving this pointer type
+   * @throws ConceptualException - if a conceptual problem occurs while resolving the pointer type
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
+   */
+  public InterfacePointerType resolveInterfacePointerType(PointerTypeAST pointerTypeAST, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
+  {
+    PointerType result = resolvePointerType(pointerTypeAST, startScope);
+    if (!(result instanceof InterfacePointerType))
+    {
+      throw new ConceptualException("This type should resolve to an interface, but does not", pointerTypeAST.getParseInfo());
+    }
+    return (InterfacePointerType) result;
+  }
+
+  /**
    * Resolves the specified PointerTypeAST into a PointerType
    * @param pointerTypeAST - the PointerTypeAST to resolve
    * @param startScope - the starting scope
@@ -555,118 +567,97 @@ public final class NameResolver
    */
   public PointerType resolvePointerType(PointerTypeAST pointerTypeAST, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
-    NameAST[] names = pointerTypeAST.getNames();
-    TypeParameterAST[][] typeParameterLists = pointerTypeAST.getTypeParameterLists();
+    // resolve the QName without taking the type parameter lists into account
+    QName qname = ASTConverter.convert(pointerTypeAST.getNames());
+    Resolvable resolved = startScope.resolve(qname, true);
 
-    // go through the names, and look them up in current each iteration to find the new current resolvable
-    // also build a type instance hierarchy while doing this, to give to the PointerType
-    Resolvable current = startScope.resolve(new QName(names[0].getName()), true);
-    TypeInstance currentTypeInstance = null;
-    for (int i = 0; i < names.length; i++)
+    if (resolved == null)
     {
-      if (i > 0) // the first name is looked up separately
-      {
-        // lookup this name in the current Resolvable object
-        // this can fail if the Resolvable has not had all of its data filled in yet,
-        // for example if current is a class and does not contain this name itself but must fall back on a not-yet-filled-in parent class/interface
-        current = current.resolve(names[i].getName());
-      }
-      if (current == null)
-      {
-        throw new ConceptualException("Could not resolve name", names[i].getParseInfo());
-      }
-      switch (current.getType())
-      {
-      case PACKAGE:
-        if (typeParameterLists[i].length > 0)
-        {
-          ParseInfo[] parseInfo = new ParseInfo[typeParameterLists[i].length];
-          for (int j = 0; j < typeParameterLists[i].length; j++)
-          {
-            parseInfo[j] = typeParameterLists[i][j].getParseInfo();
-          }
-          throw new ConceptualException("A package cannot have type parameters", parseInfo);
-        }
-        break;
-      case OUTER_CLASS:
-        if (currentTypeInstance != null)
-        {
-          throw new IllegalStateException();
-        }
-        currentTypeInstance = new ClassTypeInstance((ConceptualClass) current,
-                                                    ASTConverter.convert(typeParameterLists[i], this, startScope));
-        break;
-      case INNER_CLASS:
-        if (currentTypeInstance == null)
-        {
-          throw new IllegalStateException();
-        }
-        currentTypeInstance = new InnerClassTypeInstance((ConceptualClass) current,
-                                                         ASTConverter.convert(typeParameterLists[i], this, startScope),
-                                                         currentTypeInstance);
-        break;
-      case OUTER_INTERFACE:
-        if (currentTypeInstance != null)
-        {
-          throw new IllegalStateException();
-        }
-        currentTypeInstance = new InterfaceTypeInstance((ConceptualInterface) current,
-                                                        ASTConverter.convert(typeParameterLists[i], this, startScope));
-        break;
-      case INNER_INTERFACE:
-        if (currentTypeInstance == null)
-        {
-          throw new IllegalStateException();
-        }
-        currentTypeInstance = new InnerInterfaceTypeInstance((ConceptualInterface) current,
-                                                             ASTConverter.convert(typeParameterLists[i], this, startScope),
-                                                             currentTypeInstance);
-        break;
-      case OUTER_ENUM:
-        if (currentTypeInstance != null)
-        {
-          throw new IllegalStateException();
-        }
-        if (typeParameterLists[i].length > 0)
-        {
-          ParseInfo[] parseInfo = new ParseInfo[typeParameterLists[i].length];
-          for (int j = 0; j < typeParameterLists[i].length; j++)
-          {
-            parseInfo[j] = typeParameterLists[i][j].getParseInfo();
-          }
-          throw new ConceptualException("An enum cannot have type parameters", parseInfo);
-        }
-        currentTypeInstance = new EnumTypeInstance((ConceptualEnum) current);
-        break;
-      case INNER_ENUM:
-        if (currentTypeInstance == null)
-        {
-          throw new IllegalStateException();
-        }
-        if (typeParameterLists[i].length > 0)
-        {
-          ParseInfo[] parseInfo = new ParseInfo[typeParameterLists[i].length];
-          for (int j = 0; j < typeParameterLists[i].length; j++)
-          {
-            parseInfo[j] = typeParameterLists[i][j].getParseInfo();
-          }
-          throw new ConceptualException("An enum cannot have type parameters", parseInfo);
-        }
-        currentTypeInstance = new InnerEnumTypeInstance((ConceptualEnum) current, currentTypeInstance);
-        break;
-      case TYPE_ARGUMENT:
-        // TODO: check this
-        currentTypeInstance = new TypeArgumentInstance((TypeArgument) current);
-        break;
-      default:
-        throw new ConceptualException("Cannot reference a " + current.getType() + " in a pointer type", names[i].getParseInfo());
-      }
+      throw new ConceptualException("Could not resolve PointerType", pointerTypeAST.getParseInfo());
     }
-    if (currentTypeInstance == null)
+
+    TypeParameterAST[][] typeParameterLists = pointerTypeAST.getTypeParameterLists();
+    TypeParameterAST[] lastTypeParameters = typeParameterLists[typeParameterLists.length - 1];
+
+    if (resolved.getType() == ScopeType.OUTER_CLASS ||
+        resolved.getType() == ScopeType.OUTER_INTERFACE ||
+        resolved.getType() == ScopeType.OUTER_ENUM ||
+        resolved.getType() == ScopeType.INNER_INTERFACE ||
+        resolved.getType() == ScopeType.INNER_ENUM)
     {
-      // the type instance can only be null if the last name processed was a package
-      throw new ConceptualException("Cannot create a pointer type to represent a package", pointerTypeAST.getParseInfo());
+      // make sure all but the last type parameter list is null
+      for (int i = 0; i < typeParameterLists.length - 1; i++)
+      {
+        if (typeParameterLists[i] != null)
+        {
+          throw new ConceptualException("Type parameters are not allowed on this name", pointerTypeAST.getNames()[i].getParseInfo());
+        }
+      }
+      if (resolved.getType() == ScopeType.OUTER_CLASS)
+      {
+        return new OuterClassPointerType((ConceptualClass) resolved, ASTConverter.convert(lastTypeParameters, this, startScope), pointerTypeAST.isImmutable());
+      }
+      if (resolved.getType() == ScopeType.OUTER_INTERFACE ||
+          resolved.getType() == ScopeType.INNER_INTERFACE)
+      {
+        return new InterfacePointerType((ConceptualInterface) resolved, ASTConverter.convert(lastTypeParameters, this, startScope), pointerTypeAST.isImmutable());
+      }
+      return new EnumPointerType((ConceptualEnum) resolved, pointerTypeAST.isImmutable());
     }
-    return new PointerType(pointerTypeAST.isImmutable(), currentTypeInstance);
+    else if (resolved.getType() != ScopeType.INNER_CLASS)
+    {
+      throw new ConceptualException("Cannot refer to a " + resolved.getType() + " as a pointer type", pointerTypeAST.getParseInfo());
+    }
+
+    // we have an inner class, so find the type parameters for it
+    InnerClass innerClass = (InnerClass) resolved;
+    LinkedList<ConceptualClass> classes = new LinkedList<ConceptualClass>();
+    LinkedList<TypeParameter[]> typeParameters = new LinkedList<TypeParameter[]>();
+    while (true)
+    {
+      classes.addFirst(innerClass);
+      if (innerClass.getTypeArguments() == null || innerClass.getTypeArguments().length == 0)
+      {
+        // this class does not need type parameters
+        typeParameters.addFirst(null);
+      }
+      else if (typeParameterLists.length >= classes.size())
+      {
+        // get the type parameters from the PointerTypeAST
+        typeParameters.addFirst(ASTConverter.convert(typeParameterLists[typeParameterLists.length - classes.size()], this, startScope));
+      }
+      else
+      {
+        // TODO: resolve the missing type parameters from elsewhere, e.g. the current class
+        // TODO: this will require implicitly generating some TypeArgumentPointerTypes, so that the user can do:
+        /*
+         * class X<A> {
+         *   class Y {}
+         *   Y y;      // this
+         *   X<A>.Y y; // instead of this
+         * }
+         */
+        // TODO: there may also be other situations where missing type parameters can be filled in from elsewhere
+        throw new ConceptualException("Not enough type parameters were provided to resolve this pointer type", pointerTypeAST.getParseInfo());
+      }
+
+      TypeDefinition parent = innerClass.getParent();
+      if (parent.getType() == ScopeType.OUTER_CLASS)
+      {
+        classes.addFirst((ConceptualClass) parent);
+        break;
+      }
+      if (parent.getType() != ScopeType.INNER_CLASS || ((InnerClass) parent).isStatic())
+      {
+        // the parent is either not a class, or it is a static inner class, so leave the list here
+        break;
+      }
+      // we now know that parent.getType() == ScopeType.INNER_CLASS, so we can cast safely for the next iteration
+      innerClass = (InnerClass) parent;
+    }
+
+    return new ClassPointerType(classes.toArray(new ConceptualClass[classes.size()]),
+                                typeParameters.toArray(new TypeParameter[typeParameters.size()][]),
+                                pointerTypeAST.isImmutable());
   }
 }

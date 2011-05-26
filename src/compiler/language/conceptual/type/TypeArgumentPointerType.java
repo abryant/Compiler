@@ -8,17 +8,19 @@ package compiler.language.conceptual.type;
  * A TypeInstance which just points to a TypeArgument.
  * @author Anthony Bryant
  */
-public final class TypeArgumentInstance extends TypeInstance
+public final class TypeArgumentPointerType extends PointerType
 {
 
   private TypeArgument typeArgument;
 
   /**
-   * Creates a new TypeArgumentInstance with the specified TypeArgument
+   * Creates a new TypeArgumentPointerType with the specified TypeArgument and immutability
    * @param typeArgument - the TypeArgument that this TypeArgumentInstance points to
+   * @param immutable - true if this PointerType should be immutable, false otherwise
    */
-  public TypeArgumentInstance(TypeArgument typeArgument)
+  public TypeArgumentPointerType(TypeArgument typeArgument, boolean immutable)
   {
+    super(immutable);
     this.typeArgument = typeArgument;
   }
 

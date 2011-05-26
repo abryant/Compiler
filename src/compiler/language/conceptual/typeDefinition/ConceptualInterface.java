@@ -7,10 +7,8 @@ import compiler.language.conceptual.member.Property;
 import compiler.language.conceptual.member.StaticInitializer;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
-import compiler.language.conceptual.type.InterfaceTypeInstance;
-import compiler.language.conceptual.type.PointerType;
+import compiler.language.conceptual.type.InterfacePointerType;
 import compiler.language.conceptual.type.TypeArgument;
-import compiler.language.conceptual.type.TypeInstance;
 
 /*
  * Created on 21 Oct 2010
@@ -29,7 +27,7 @@ public abstract class ConceptualInterface extends TypeDefinition
 
   // headers
   private TypeArgument[] typeArguments;
-  private PointerType[] superInterfaces;
+  private InterfacePointerType[] superInterfaces;
 
   // members
   private StaticInitializer staticInitializer;
@@ -61,7 +59,7 @@ public abstract class ConceptualInterface extends TypeDefinition
    * Sets the parent interfaces of this interface
    * @param superInterfaces - the parent interfaces
    */
-  public void setSuperInterfaces(PointerType[] superInterfaces)
+  public void setSuperInterfaces(InterfacePointerType[] superInterfaces)
   {
     this.superInterfaces = superInterfaces;
   }
@@ -136,7 +134,7 @@ public abstract class ConceptualInterface extends TypeDefinition
   /**
    * @return the superInterfaces
    */
-  public PointerType[] getSuperInterfaces()
+  public InterfacePointerType[] getSuperInterfaces()
   {
     return superInterfaces;
   }
@@ -242,19 +240,14 @@ public abstract class ConceptualInterface extends TypeDefinition
     }
     if (superInterfaces != null)
     {
-      for (PointerType type : superInterfaces)
+      for (InterfacePointerType type : superInterfaces)
       {
         if (type == null)
         {
           // the type has not yet been populated, so go on to the next one
           continue;
         }
-        TypeInstance typeInstance = type.getTypeInstance();
-        if (!(typeInstance instanceof InterfaceTypeInstance))
-        {
-          throw new IllegalStateException("An implemented interface's type instance must be an InterfaceTypeInstance");
-        }
-        Resolvable result = ((InterfaceTypeInstance) typeInstance).getInterfaceType().resolve(name);
+        Resolvable result = type.getInterfaceType().resolve(name);
         if (result != null)
         {
           return result;

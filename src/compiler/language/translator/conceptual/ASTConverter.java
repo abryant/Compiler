@@ -20,6 +20,7 @@ import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.misc.NativeSpecifierAST;
 import compiler.language.ast.terminal.IntegerLiteralAST;
+import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
 import compiler.language.ast.terminal.VersionNumberAST;
 import compiler.language.ast.topLevel.CompilationUnitAST;
@@ -1040,6 +1041,10 @@ public class ASTConverter
    */
   public static TypeParameter[] convert(TypeParameterAST[] typeParameterASTs, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
+    if (typeParameterASTs == null)
+    {
+      return null;
+    }
     TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
     for (int i = 0; i < typeParameterASTs.length; i++)
     {
@@ -1185,6 +1190,21 @@ public class ASTConverter
       return PrimitiveType.VOID;
     }
     throw new IllegalArgumentException();
+  }
+
+  /**
+   * Converts the specified array of NameASTs into a QName
+   * @param names - the NameAST[] to convert
+   * @return the QName created
+   */
+  public static QName convert(NameAST[] names)
+  {
+    String[] nameStrings = new String[names.length];
+    for (int i = 0; i < names.length; i++)
+    {
+      nameStrings[i] = names[i].getName();
+    }
+    return new QName(nameStrings);
   }
 
 }

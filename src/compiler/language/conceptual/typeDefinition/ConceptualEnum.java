@@ -9,11 +9,8 @@ import compiler.language.conceptual.member.StaticInitializer;
 import compiler.language.conceptual.member.VariableInitializers;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
-import compiler.language.conceptual.type.AutomaticBaseTypeInstance;
-import compiler.language.conceptual.type.ClassTypeInstance;
-import compiler.language.conceptual.type.InterfaceTypeInstance;
-import compiler.language.conceptual.type.PointerType;
-import compiler.language.conceptual.type.TypeInstance;
+import compiler.language.conceptual.type.ClassPointerType;
+import compiler.language.conceptual.type.InterfacePointerType;
 
 /*
  * Created on 21 Oct 2010
@@ -27,8 +24,8 @@ public abstract class ConceptualEnum extends TypeDefinition
   private AccessSpecifier accessSpecifier;
   private SinceSpecifier sinceSpecifier;
   private String name;
-  private PointerType baseClass;
-  private PointerType[] interfaces;
+  private ClassPointerType baseClass;
+  private InterfacePointerType[] interfaces;
 
   private EnumConstant[] constants;
 
@@ -62,7 +59,7 @@ public abstract class ConceptualEnum extends TypeDefinition
    * Sets the base class of this conceptual enum
    * @param baseClass - the new base class of this conceptual enum
    */
-  public void setBaseClass(PointerType baseClass)
+  public void setBaseClass(ClassPointerType baseClass)
   {
     this.baseClass = baseClass;
   }
@@ -71,7 +68,7 @@ public abstract class ConceptualEnum extends TypeDefinition
    * Sets the interfaces of this conceptual enum
    * @param interfaces - the implemented interfaces of this conceptual enum
    */
-  public void setInterfaces(PointerType[] interfaces)
+  public void setInterfaces(InterfacePointerType[] interfaces)
   {
     this.interfaces = interfaces;
   }
@@ -136,14 +133,14 @@ public abstract class ConceptualEnum extends TypeDefinition
   /**
    * @return the baseClass
    */
-  public PointerType getBaseClass()
+  public ClassPointerType getBaseClass()
   {
     return baseClass;
   }
   /**
    * @return the interfaces
    */
-  public PointerType[] getInterfaces()
+  public InterfacePointerType[] getInterfaces()
   {
     return interfaces;
   }
@@ -272,35 +269,22 @@ public abstract class ConceptualEnum extends TypeDefinition
     }
     if (baseClass != null)
     {
-      TypeInstance typeInstance = baseClass.getTypeInstance();
-      if (typeInstance instanceof ClassTypeInstance)
+      Resolvable result = baseClass.getClassType().resolve(name);
+      if (result != null)
       {
-        Resolvable result = ((ClassTypeInstance) typeInstance).getClassType().resolve(name);
-        if (result != null)
-        {
-          return result;
-        }
-      }
-      else if (!(typeInstance instanceof AutomaticBaseTypeInstance))
-      {
-        throw new IllegalStateException("A base class' type instance must be either a ClassTypeInstance or an AutomaticBaseTypeInstance");
+        return result;
       }
     }
     if (interfaces != null)
     {
-      for (PointerType type : interfaces)
+      for (InterfacePointerType type : interfaces)
       {
         if (type == null)
         {
           // the type has not yet been populated, so go on to the next one
           continue;
         }
-        TypeInstance typeInstance = type.getTypeInstance();
-        if (!(typeInstance instanceof InterfaceTypeInstance))
-        {
-          throw new IllegalStateException("An implemented interface's type instance must be an InterfaceTypeInstance");
-        }
-        Resolvable result = ((InterfaceTypeInstance) typeInstance).getInterfaceType().resolve(name);
+        Resolvable result = type.getInterfaceType().resolve(name);
         if (result != null)
         {
           return result;

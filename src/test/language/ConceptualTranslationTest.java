@@ -70,7 +70,7 @@ public class ConceptualTranslationTest
       for (ConceptualClass conceptualClass : conceptualFile.getClasses())
       {
         System.out.println("  " + conceptualClass.getName());
-        System.out.println("  extends: " + conceptualClass.getBaseClass().getTypeInstance());
+        System.out.println("  extends: " + conceptualClass.getBaseClass());
       }
 
     }

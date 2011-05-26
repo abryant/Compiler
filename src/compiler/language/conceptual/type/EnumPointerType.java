@@ -9,17 +9,19 @@ import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 /**
  * @author Anthony Bryant
  */
-public class EnumTypeInstance extends TypeInstance
+public class EnumPointerType extends PointerType
 {
 
   private ConceptualEnum enumType;
 
   /**
-   * Creates a new EnumTypeInstance with the specified ConceptualEnum
+   * Creates a new EnumPointerType with the specified ConceptualEnum
    * @param enumType - the enum type
+   * @param immutable - true if this PointerType should be immutable, false otherwise
    */
-  public EnumTypeInstance(ConceptualEnum enumType)
+  public EnumPointerType(ConceptualEnum enumType, boolean immutable)
   {
+    super(immutable);
     this.enumType = enumType;
   }
 
