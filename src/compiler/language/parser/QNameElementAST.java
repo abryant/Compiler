@@ -93,10 +93,6 @@ public class QNameElementAST
     {
       NameAST[] names = qname.getNames();
       TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
-      for (int i = 0; i < typeParameterLists.length; i++)
-      {
-        typeParameterLists[i] = new TypeParameterAST[0];
-      }
       return new PointerTypeAST(false, qname.getNames(), typeParameterLists, qname.getParseInfo());
     }
 

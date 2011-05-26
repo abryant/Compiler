@@ -32,7 +32,7 @@ public class PointerTypeAST extends TypeAST
     typeParameterLists = new TypeParameterAST[names.length][];
     for (int i = 0; i < typeParameterLists.length; i++)
     {
-      typeParameterLists[i] = new TypeParameterAST[0];
+      typeParameterLists[i] = null;
     }
   }
 
@@ -122,7 +122,7 @@ public class PointerTypeAST extends TypeAST
     {
       buffer.append(names[i]);
       TypeParameterAST[] typeParameterList = typeParameterLists[i];
-      if (typeParameterList.length > 0)
+      if (typeParameterList != null && typeParameterList.length > 0)
       {
         buffer.append("<");
         for (int j = 0; j < typeParameterList.length; j++)

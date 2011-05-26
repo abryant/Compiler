@@ -48,10 +48,6 @@ public final class PointerTypeNoTrailingParamsNotQNameRule extends Rule<ParseTyp
       QNameAST qname = (QNameAST) args[1];
       NameAST[] names = qname.getNames();
       TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
-      for (int i = 0; i < typeParameterLists.length; i++)
-      {
-        typeParameterLists[i] = new TypeParameterAST[0];
-      }
       return new PointerTypeAST(true, names, typeParameterLists, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo()));
     }
     if (TRAILING_PARAMS_QNAME_PRODUCTION.equals(production))
@@ -60,10 +56,6 @@ public final class PointerTypeNoTrailingParamsNotQNameRule extends Rule<ParseTyp
       QNameAST qname = (QNameAST) args[2];
       NameAST[] names = qname.getNames();
       TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
-      for (int i = 0; i < typeParameterLists.length; i++)
-      {
-        typeParameterLists[i] = new TypeParameterAST[0];
-      }
       return new PointerTypeAST(oldType, oldType.isImmutable(), names, typeParameterLists,
                              ParseInfo.combine(oldType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo()));
     }

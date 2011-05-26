@@ -96,11 +96,7 @@ public final class PointerTypeTrailingParamsDoubleRAngleRule extends Rule<ParseT
 
       NameAST[] names = qname.getNames();
       TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
-      for (int i = 0; i < typeParameterLists.length - 1; i++)
-      {
-        typeParameterLists[i] = new TypeParameterAST[0];
-      }
-      typeParameterLists[typeParameterLists.length - 1] = parameters.toArray(new TypeParameterAST[0]);
+      typeParameterLists[typeParameterLists.length - 1] = parameters.toArray(new TypeParameterAST[parameters.size()]);
 
       startInfo = ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1]);
       type = new PointerTypeAST(false, names, typeParameterLists,
@@ -112,11 +108,7 @@ public final class PointerTypeTrailingParamsDoubleRAngleRule extends Rule<ParseT
 
       NameAST[] names = qname.getNames();
       TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
-      for (int i = 0; i < typeParameterLists.length - 1; i++)
-      {
-        typeParameterLists[i] = new TypeParameterAST[0];
-      }
-      typeParameterLists[typeParameterLists.length - 1] = parameters.toArray(new TypeParameterAST[0]);
+      typeParameterLists[typeParameterLists.length - 1] = parameters.toArray(new TypeParameterAST[parameters.size()]);
 
       startInfo = ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2]);
       type = new PointerTypeAST(true, names, typeParameterLists,
@@ -129,11 +121,7 @@ public final class PointerTypeTrailingParamsDoubleRAngleRule extends Rule<ParseT
 
       NameAST[] names = qname.getNames();
       TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
-      for (int i = 0; i < typeParameterLists.length - 1; i++)
-      {
-        typeParameterLists[i] = new TypeParameterAST[0];
-      }
-      typeParameterLists[typeParameterLists.length - 1] = parameters.toArray(new TypeParameterAST[0]);
+      typeParameterLists[typeParameterLists.length - 1] = parameters.toArray(new TypeParameterAST[parameters.size()]);
 
       startInfo = ParseInfo.combine(baseType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3]);
       type = new PointerTypeAST(baseType, baseType.isImmutable(), names, typeParameterLists,
