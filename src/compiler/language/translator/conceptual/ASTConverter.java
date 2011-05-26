@@ -130,11 +130,12 @@ public class ASTConverter
    * Converts the specified CompilationUnitAST into a ConceptualFile
    * @param file - the file that is being converted (which was parsed to produce compilationUnit)
    * @param compilationUnit - the CompilationUnitAST to convert
+   * @param expectedPackage - the package that this file is expected to be in
    * @return the ConceptualFile converted
    * @throws ConceptualException - if there is a problem converting the AST to the conceptual view
    * @throws NameConflictException - if a name conflict is detected while converting the compilation unit
    */
-  public ConceptualFile convert(File file, CompilationUnitAST compilationUnit) throws ConceptualException, NameConflictException
+  public ConceptualFile convert(File file, CompilationUnitAST compilationUnit, ConceptualPackage expectedPackage) throws ConceptualException, NameConflictException
   {
     // convert the package, and look it up in the package hierarchy
     PackageDeclarationAST packageDeclaration = compilationUnit.getPackageDeclaration();
@@ -150,6 +151,10 @@ public class ASTConverter
       try
       {
         packageResult = rootPackage.resolve(packageName, false);
+        if (packageResult == null)
+        {
+          throw new ConceptualException("Package name cannot be resolved!", packageDeclaration.getPackageName().getParseInfo());
+        }
       }
       catch (UnresolvableException e)
       {
@@ -160,6 +165,10 @@ public class ASTConverter
         throw new ConceptualException("Package name does not resolve to a package", packageDeclaration.getPackageName().getParseInfo());
       }
       enclosingPackage = (ConceptualPackage) packageResult;
+      if (enclosingPackage != expectedPackage)
+      {
+        throw new ConceptualException("Expected package name to be \"" + expectedPackage.getName() + "\"", packageDeclaration.getPackageName().getParseInfo());
+      }
     }
 
     // check the cache of converted files first

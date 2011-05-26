@@ -109,7 +109,7 @@ public final class ConceptualPackage extends Resolvable
       {
         continue;
       }
-      ConceptualFile conceptualFile = translator.parseFile(file);
+      ConceptualFile conceptualFile = translator.parseFile(file, this);
       if (conceptualFile == null)
       {
         continue;

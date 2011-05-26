@@ -7,7 +7,10 @@ import java.util.List;
 import compiler.language.ast.ParseInfo;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
-import compiler.language.conceptual.topLevel.ConceptualFile;
+import compiler.language.conceptual.QName;
+import compiler.language.conceptual.Resolvable;
+import compiler.language.conceptual.ScopeType;
+import compiler.language.conceptual.UnresolvableException;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.parser.LanguageParser;
 import compiler.language.translator.conceptual.ConceptualTranslator;
@@ -26,16 +29,18 @@ public class ConceptualTranslationTest
   {
     if (args.length < 2)
     {
-      System.err.println("Usage: java test.language.ConceptualTranslationTest <SourceFile> <ClasspathFolder>");
+      System.err.println("Usage: java test.language.ConceptualTranslationTest <Class> <ClasspathFolder>");
       System.exit(1);
     }
 
+    /*
     File file = new File(args[0]);
     if (!file.isFile())
     {
       System.err.println("Could not find source file: " + file.getAbsolutePath());
       System.exit(1);
     }
+    */
     List<File> classpath = new LinkedList<File>();
     classpath.add(new File(args[1]));
 
@@ -43,37 +48,37 @@ public class ConceptualTranslationTest
 
     ConceptualTranslator translator = new ConceptualTranslator(parser, classpath);
 
-    ConceptualFile conceptualFile = translator.parseFile(file);
-
-    if (conceptualFile != null)
+    String[] names = args[0].split("\\.");
+    try
     {
-      System.out.println("Successfully parsed " + file.getAbsolutePath());
-      System.out.println(conceptualFile);
-
-      try
+      Resolvable resolved = translator.translate(new QName(names));
+      if (resolved == null || resolved.getType() != ScopeType.OUTER_CLASS)
       {
-        translator.translate();
-      }
-      catch (NameConflictException e)
-      {
-        printConceptualException(e.getMessage(), e.getParseInfo());
+        System.out.println("\"" + args[0] + "\" could not be resolved to a class");
         return;
       }
-      catch (ConceptualException e)
-      {
-        printConceptualException(e.getMessage(), e.getParseInfo());
-        return;
-      }
+      ConceptualClass conceptualClass = (ConceptualClass) resolved;
+      System.out.println("Translated: " + conceptualClass);
 
-      System.out.println("Successfully translated");
-      System.out.println("Classes: ");
-      for (ConceptualClass conceptualClass : conceptualFile.getClasses())
-      {
-        System.out.println("  " + conceptualClass.getName());
-        System.out.println("  extends: " + conceptualClass.getBaseClass());
-      }
-
+      translator.translate();
     }
+    catch (NameConflictException e)
+    {
+      printConceptualException(e.getMessage(), e.getParseInfo());
+      return;
+    }
+    catch (UnresolvableException e)
+    {
+      printConceptualException(e.getMessage(), e.getParseInfo());
+      return;
+    }
+    catch (ConceptualException e)
+    {
+      printConceptualException(e.getMessage(), e.getParseInfo());
+      return;
+    }
+
+    System.out.println("Successfully translated");
   }
 
   private static void printConceptualException(String message, ParseInfo... parseInfos)

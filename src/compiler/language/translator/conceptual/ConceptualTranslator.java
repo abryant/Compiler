@@ -9,6 +9,9 @@ import java.util.List;
 import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
+import compiler.language.conceptual.QName;
+import compiler.language.conceptual.Resolvable;
+import compiler.language.conceptual.UnresolvableException;
 import compiler.language.conceptual.topLevel.ConceptualFile;
 import compiler.language.conceptual.topLevel.ConceptualPackage;
 import compiler.language.parser.LanguageParser;
@@ -62,12 +65,25 @@ public class ConceptualTranslator
   }
 
   /**
+   * Resolves the specified QName on the root package
+   * @param name - the name to resolve
+   * @return the Resolvable resolved
+   * @throws NameConflictException - if a name conflict was detected
+   * @throws UnresolvableException - if the name is not resolvable without more information
+   */
+  public Resolvable translate(QName name) throws NameConflictException, UnresolvableException
+  {
+    return rootPackage.resolve(name, false);
+  }
+
+  /**
    * Attempts to parse the specified file into a conceptual file. If something fails in the process, an error is printed before returning null.
    * If a file is correctly parsed and converted into a ConceptualFile, it is also added to the NameResolver.
    * @param file - the file to parse
+   * @param expectedPackage - the package that the file is expected to be in, which should be checked against the package declaration inside it
    * @return the ConceptualFile parsed, or null if an error occurred
    */
-  public ConceptualFile parseFile(File file)
+  public ConceptualFile parseFile(File file, ConceptualPackage expectedPackage)
   {
     CompilationUnitAST ast;
     try
@@ -84,7 +100,7 @@ public class ConceptualTranslator
 
     try
     {
-      ConceptualFile conceptualFile = astConverter.convert(file, ast);
+      ConceptualFile conceptualFile = astConverter.convert(file, ast, expectedPackage);
       nameResolver.addFile(conceptualFile);
       return conceptualFile;
     }
