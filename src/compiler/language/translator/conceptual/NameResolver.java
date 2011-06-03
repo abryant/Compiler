@@ -97,14 +97,51 @@ public final class NameResolver
     for (ConceptualClass conceptualClass : file.getClasses())
     {
       classesToResolve.add(conceptualClass);
+      addInnerTypes(conceptualClass.getInnerClasses(), conceptualClass.getInnerInterfaces(), conceptualClass.getInnerEnums());
     }
     for (ConceptualInterface conceptualInterface : file.getInterfaces())
     {
       interfacesToResolve.add(conceptualInterface);
+      addInnerTypes(conceptualInterface.getInnerClasses(), conceptualInterface.getInnerInterfaces(), conceptualInterface.getInnerEnums());
     }
     for (ConceptualEnum conceptualEnum : file.getEnums())
     {
       enumsToResolve.add(conceptualEnum);
+      addInnerTypes(conceptualEnum.getInnerClasses(), conceptualEnum.getInnerInterfaces(), conceptualEnum.getInnerEnums());
+    }
+  }
+
+  /**
+   * Adds the specified inner types to the queues, along with their own inner types.
+   * @param innerClasses - the inner classes to add
+   * @param innerInterfaces - the inner interfaces to add
+   * @param innerEnums - the inner enums to add
+   */
+  private void addInnerTypes(ConceptualClass[] innerClasses, ConceptualInterface[] innerInterfaces, ConceptualEnum[] innerEnums)
+  {
+    if (innerClasses != null)
+    {
+      for (ConceptualClass innerClass : innerClasses)
+      {
+        classesToResolve.add(innerClass);
+        addInnerTypes(innerClass.getInnerClasses(), innerClass.getInnerInterfaces(), innerClass.getInnerEnums());
+      }
+    }
+    if (innerInterfaces != null)
+    {
+      for (ConceptualInterface innerInterface : innerInterfaces)
+      {
+        interfacesToResolve.add(innerInterface);
+        addInnerTypes(innerInterface.getInnerClasses(), innerInterface.getInnerInterfaces(), innerInterface.getInnerEnums());
+      }
+    }
+    if (innerEnums != null)
+    {
+      for (ConceptualEnum innerEnum : innerEnums)
+      {
+        enumsToResolve.add(innerEnum);
+        addInnerTypes(innerEnum.getInnerClasses(), innerEnum.getInnerInterfaces(), innerEnum.getInnerEnums());
+      }
     }
   }
 
@@ -640,13 +677,13 @@ public final class NameResolver
     }
 
     // we have an inner class, so find the type parameters for it
-    InnerClass innerClass = (InnerClass) resolved;
+    ConceptualClass currentClass = (ConceptualClass) resolved;
     LinkedList<ConceptualClass> classes = new LinkedList<ConceptualClass>();
     LinkedList<TypeParameter[]> typeParameters = new LinkedList<TypeParameter[]>();
     while (true)
     {
-      classes.addFirst(innerClass);
-      if (innerClass.getTypeArguments() == null || innerClass.getTypeArguments().length == 0)
+      classes.addFirst(currentClass);
+      if (currentClass.getTypeArguments() == null || currentClass.getTypeArguments().length == 0)
       {
         // this class does not need type parameters
         typeParameters.addFirst(null);
@@ -671,19 +708,19 @@ public final class NameResolver
         throw new ConceptualException("Not enough type parameters were provided to resolve this pointer type", pointerTypeAST.getParseInfo());
       }
 
-      TypeDefinition parent = innerClass.getParent();
-      if (parent.getType() == ScopeType.OUTER_CLASS)
+      // find out whether or not we need to progress to the parent type
+      // never progress if we are not a non-static inner class
+      if (currentClass.getType() != ScopeType.INNER_CLASS || ((InnerClass) currentClass).isStatic())
       {
-        classes.addFirst((ConceptualClass) parent);
         break;
       }
-      if (parent.getType() != ScopeType.INNER_CLASS || ((InnerClass) parent).isStatic())
+      TypeDefinition parent = ((InnerClass) currentClass).getParent();
+      // never progress if the parent is not a class
+      if (parent.getType() != ScopeType.OUTER_CLASS && parent.getType() != ScopeType.INNER_CLASS)
       {
-        // the parent is either not a class, or it is a static inner class, so leave the list here
         break;
       }
-      // we now know that parent.getType() == ScopeType.INNER_CLASS, so we can cast safely for the next iteration
-      innerClass = (InnerClass) parent;
+      currentClass = (ConceptualClass) parent;
     }
 
     return new ClassPointerType(classes.toArray(new ConceptualClass[classes.size()]),
