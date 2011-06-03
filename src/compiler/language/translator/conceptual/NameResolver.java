@@ -21,7 +21,7 @@ import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
 import compiler.language.conceptual.topLevel.ConceptualFile;
-import compiler.language.conceptual.type.AutomaticBaseClassPointerType;
+import compiler.language.conceptual.topLevel.ConceptualPackage;
 import compiler.language.conceptual.type.ClassPointerType;
 import compiler.language.conceptual.type.EnumPointerType;
 import compiler.language.conceptual.type.InterfacePointerType;
@@ -50,6 +50,9 @@ public final class NameResolver
   private Queue<ConceptualClass> classesToResolve = new LinkedList<ConceptualClass>();
   private Queue<ConceptualEnum> enumsToResolve = new LinkedList<ConceptualEnum>();
 
+  private static final QName UNIVERSAL_BASE_CLASS_QNAME = new QName("x", "Object");
+  private OuterClassPointerType universalBaseClass;
+
   /**
    * Creates a new NameResolver with the specified mapping from Conceptual node to AST node.
    * @param conceptualASTNodes - the mapping which stores the AST node of each conceptual node which has been converted
@@ -57,6 +60,32 @@ public final class NameResolver
   public NameResolver(Map<Object, Object> conceptualASTNodes)
   {
     this.conceptualASTNodes = conceptualASTNodes;
+  }
+
+  /**
+   * Resolves the universal base class, so that it can be used later in the place of missing base classes.
+   * @param rootPackage - the root package to resolve the universal base class from
+   */
+  public void buildUniversalBaseClass(ConceptualPackage rootPackage)
+  {
+    Resolvable baseClass;
+    try
+    {
+      baseClass = rootPackage.resolve(UNIVERSAL_BASE_CLASS_QNAME, false);
+    }
+    catch (NameConflictException e)
+    {
+      throw new IllegalStateException("Detected a name conflict while resolving the universal base class: " + UNIVERSAL_BASE_CLASS_QNAME, e);
+    }
+    catch (UnresolvableException e)
+    {
+      throw new IllegalStateException("Unable to resolve the universal base class: " + UNIVERSAL_BASE_CLASS_QNAME, e);
+    }
+    if (baseClass.getType() != ScopeType.OUTER_CLASS)
+    {
+      throw new IllegalStateException("Universal base class " + UNIVERSAL_BASE_CLASS_QNAME + " does not resolve to an outer class!");
+    }
+    universalBaseClass = new OuterClassPointerType((ConceptualClass) baseClass, null, false);
   }
 
   /**
@@ -287,11 +316,12 @@ public final class NameResolver
       boolean fullyResolved = true;
       PointerTypeAST baseClassAST = astNode.getBaseClass();
       ClassPointerType baseClass = toResolve.getBaseClass();
-      if (baseClass == null)
+      // skip the universal base class, as its base class is the only one that should be null
+      if (baseClass == null && !universalBaseClass.getClassType().equals(toResolve))
       {
         if (baseClassAST == null)
         {
-          baseClass = new AutomaticBaseClassPointerType();
+          baseClass = universalBaseClass;
           toResolve.setBaseClass(baseClass);
           changed = true;
           unresolvedSinceLastChange.clear();
@@ -397,7 +427,7 @@ public final class NameResolver
         throw new ConceptualException("Cycle detected in class inheritance hierarchy", parentAST.getParseInfo());
       }
       ClassPointerType baseClass = current.getBaseClass();
-      if (baseClass == null || baseClass instanceof AutomaticBaseClassPointerType)
+      if (baseClass == null)
       {
         break;
       }
@@ -437,7 +467,7 @@ public final class NameResolver
       {
         if (baseClassAST == null)
         {
-          baseClass = new AutomaticBaseClassPointerType();
+          baseClass = universalBaseClass;
           toResolve.setBaseClass(baseClass);
           changed = true;
           unresolvedSinceLastChange.clear();
