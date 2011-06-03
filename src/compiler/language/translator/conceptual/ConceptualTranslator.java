@@ -3,7 +3,6 @@ package compiler.language.translator.conceptual;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.LinkedList;
 import java.util.List;
 
 import compiler.language.ast.topLevel.CompilationUnitAST;
@@ -44,15 +43,6 @@ public class ConceptualTranslator
     astConverter = new ASTConverter(rootPackage);
     nameResolver = new NameResolver(astConverter.getConceptualASTNodes());
     nameResolver.buildUniversalBaseClass(rootPackage);
-  }
-
-  /**
-   * @return the classpath to load source files from, as a List&lt;File&gt;
-   */
-  public List<File> getClassPath()
-  {
-    // TODO: get a proper classpath from somewhere
-    return new LinkedList<File>();
   }
 
   /**
