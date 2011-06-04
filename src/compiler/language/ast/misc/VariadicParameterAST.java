@@ -11,23 +11,23 @@ import compiler.language.ast.type.TypeAST;
 /**
  * @author Anthony Bryant
  */
-public class VariadicArgumentAST extends SingleArgumentAST
+public class VariadicParameterAST extends SingleParameterAST
 {
 
   /**
-   * Creates a new Variadic ArgumentAST with the specified type and name
-   * @param modifiers - the modifiers of the argument
-   * @param type - the type of the argument
-   * @param name - the name of the argument
+   * Creates a new VariadicParameterAST with the specified type and name
+   * @param modifiers - the modifiers of the parameter
+   * @param type - the type of the parameter
+   * @param name - the name of the parameter
    * @param parseInfo - the parsing information
    */
-  public VariadicArgumentAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ParseInfo parseInfo)
+  public VariadicParameterAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ParseInfo parseInfo)
   {
     super(modifiers, type, name, parseInfo);
   }
 
   /**
-   * @see compiler.language.ast.misc.SingleArgumentAST#toString()
+   * @see compiler.language.ast.misc.SingleParameterAST#toString()
    */
   @Override
   public String toString()

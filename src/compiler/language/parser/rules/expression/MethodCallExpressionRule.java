@@ -1,7 +1,7 @@
 package compiler.language.parser.rules.expression;
 
 import static compiler.language.parser.ParseType.METHOD_CALL_EXPRESSION;
-import static compiler.language.parser.ParseType.PARAMETERS;
+import static compiler.language.parser.ParseType.ARGUMENTS;
 import static compiler.language.parser.ParseType.PRIMARY;
 import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 import parser.ParseException;
@@ -11,7 +11,7 @@ import parser.Rule;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.MethodCallExpressionAST;
-import compiler.language.ast.misc.ParameterAST;
+import compiler.language.ast.misc.ArgumentAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
@@ -26,8 +26,8 @@ public final class MethodCallExpressionRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(PRIMARY, PARAMETERS);
-  private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(QNAME_EXPRESSION, PARAMETERS);
+  private static final Production<ParseType> PRODUCTION = new Production<ParseType>(PRIMARY, ARGUMENTS);
+  private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(QNAME_EXPRESSION, ARGUMENTS);
 
   @SuppressWarnings("unchecked")
   public MethodCallExpressionRule()
@@ -48,9 +48,9 @@ public final class MethodCallExpressionRule extends Rule<ParseType>
       // use the same code to generate the MethodCallExpressionAST
       ExpressionAST expression = (ExpressionAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseList<ParameterAST> parameters = (ParseList<ParameterAST>) args[1];
-      return new MethodCallExpressionAST(expression, parameters.toArray(new ParameterAST[0]),
-                                      ParseInfo.combine(expression.getParseInfo(), parameters.getParseInfo()));
+      ParseList<ArgumentAST> arguments = (ParseList<ArgumentAST>) args[1];
+      return new MethodCallExpressionAST(expression, arguments.toArray(new ArgumentAST[0]),
+                                      ParseInfo.combine(expression.getParseInfo(), arguments.getParseInfo()));
     }
     throw badTypeList();
   }

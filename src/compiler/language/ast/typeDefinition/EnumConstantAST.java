@@ -2,7 +2,7 @@ package compiler.language.ast.typeDefinition;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.MemberAST;
-import compiler.language.ast.misc.ParameterAST;
+import compiler.language.ast.misc.ArgumentAST;
 import compiler.language.ast.terminal.NameAST;
 
 /*
@@ -18,21 +18,21 @@ public class EnumConstantAST
   private ParseInfo parseInfo;
 
   private NameAST name;
-  private ParameterAST[] parameters;
+  private ArgumentAST[] arguments;
   private MemberAST[] members;
 
   /**
-   * Creates a new Enum Constant with the specified name and parameters
+   * Creates a new Enum Constant with the specified name and arguments
    * @param name - the name of the constant
-   * @param parameters - the parameters to be passed into the enum's constructor
+   * @param arguments - the arguments to be passed into the enum's constructor
    * @param members - the list of members of this enum constant, or null if there is no body for it
    * @param parseInfo - the parsing information
    */
-  public EnumConstantAST(NameAST name, ParameterAST[] parameters, MemberAST[] members, ParseInfo parseInfo)
+  public EnumConstantAST(NameAST name, ArgumentAST[] arguments, MemberAST[] members, ParseInfo parseInfo)
   {
     this.parseInfo = parseInfo;
     this.name = name;
-    this.parameters = parameters;
+    this.arguments = arguments;
     this.members = members;
   }
 
@@ -45,11 +45,11 @@ public class EnumConstantAST
   }
 
   /**
-   * @return the parameters
+   * @return the arguments
    */
-  public ParameterAST[] getParameters()
+  public ArgumentAST[] getArguments()
   {
-    return parameters;
+    return arguments;
   }
 
   /**
@@ -76,13 +76,13 @@ public class EnumConstantAST
   {
     StringBuffer buffer = new StringBuffer();
     buffer.append(name);
-    if (parameters != null)
+    if (arguments != null)
     {
       buffer.append("(");
-      for (int i = 0; i < parameters.length; i++)
+      for (int i = 0; i < arguments.length; i++)
       {
-        buffer.append(parameters[i]);
-        if (i != parameters.length - 1)
+        buffer.append(arguments[i]);
+        if (i != arguments.length - 1)
         {
           buffer.append(", ");
         }

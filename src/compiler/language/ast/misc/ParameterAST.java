@@ -3,7 +3,7 @@ package compiler.language.ast.misc;
 import compiler.language.ast.ParseInfo;
 
 /*
- * Created on 16 Jul 2010
+ * Created on 10 Jul 2010
  */
 
 /**

@@ -17,7 +17,7 @@ public class PointerTypeAST extends TypeAST
   private boolean immutable;
 
   private NameAST[] names;
-  private TypeParameterAST[][] typeParameterLists;
+  private TypeArgumentAST[][] typeArgumentLists;
 
   /**
    * Creates a new PointerTypeAST that consists only of the specified QNameAST
@@ -29,58 +29,58 @@ public class PointerTypeAST extends TypeAST
     super(parseInfo);
     immutable = false;
     names = qname.getNames();
-    typeParameterLists = new TypeParameterAST[names.length][];
-    for (int i = 0; i < typeParameterLists.length; i++)
+    typeArgumentLists = new TypeArgumentAST[names.length][];
+    for (int i = 0; i < typeArgumentLists.length; i++)
     {
-      typeParameterLists[i] = null;
+      typeArgumentLists[i] = null;
     }
   }
 
   /**
-   * Creates a new PointerTypeAST with the specified immutability, qualifying names and type parameter lists.
+   * Creates a new PointerTypeAST with the specified immutability, qualifying names and type argument lists.
    * @param immutable - true if this type should be immutable, false otherwise
    * @param names - the list of (qualifier) names in this PointerTypeAST, ending in the actual type name
-   * @param typeParameterLists - the type parameter list for each name in this pointer type, with empty arrays for names that do not have type parameters
+   * @param typeArgumentLists - the type argument list for each name in this pointer type, with empty arrays for names that do not have type arguments
    * @param parseInfo - the parsing information
    */
-  public PointerTypeAST(boolean immutable, NameAST[] names, TypeParameterAST[][] typeParameterLists, ParseInfo parseInfo)
+  public PointerTypeAST(boolean immutable, NameAST[] names, TypeArgumentAST[][] typeArgumentLists, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.immutable = immutable;
 
-    if (names.length != typeParameterLists.length)
+    if (names.length != typeArgumentLists.length)
     {
-      throw new IllegalArgumentException("A PointerTypeAST must have an equal number of names and lists of type parameters");
+      throw new IllegalArgumentException("A PointerTypeAST must have an equal number of names and lists of type arguments");
     }
     this.names = names;
-    this.typeParameterLists = typeParameterLists;
+    this.typeArgumentLists = typeArgumentLists;
   }
 
   /**
-   * Creates a new PointerTypeAST with the specified immutability, qualifying names and type parameter lists.
-   * @param baseType - the base PointerTypeAST to copy the old qualifying names and type parameters from
+   * Creates a new PointerTypeAST with the specified immutability, qualifying names and type argument lists.
+   * @param baseType - the base PointerTypeAST to copy the old qualifying names and type arguments from
    * @param immutable - true if this type should be immutable, false otherwise
    * @param addedNames - the list of added (qualifier) names in this PointerTypeAST, ending in the actual type name
-   * @param addedTypeParameterLists - the type parameter list for each added name in this pointer type, with empty arrays for names that do not have type parameters
+   * @param addedTypeArgumentLists - the type argument list for each added name in this pointer type, with empty arrays for names that do not have type arguments
    * @param parseInfo - the parsing information
    */
-  public PointerTypeAST(PointerTypeAST baseType, boolean immutable, NameAST[] addedNames, TypeParameterAST[][] addedTypeParameterLists, ParseInfo parseInfo)
+  public PointerTypeAST(PointerTypeAST baseType, boolean immutable, NameAST[] addedNames, TypeArgumentAST[][] addedTypeArgumentLists, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.immutable = immutable;
-    if (addedNames.length != addedTypeParameterLists.length)
+    if (addedNames.length != addedTypeArgumentLists.length)
     {
-      throw new IllegalArgumentException("A PointerTypeAST must have an equal number of names and lists of type parameters");
+      throw new IllegalArgumentException("A PointerTypeAST must have an equal number of names and lists of type arguments");
     }
     NameAST[] oldNames = baseType.getNames();
-    TypeParameterAST[][] oldTypeParameterLists = baseType.getTypeParameterLists();
+    TypeArgumentAST[][] oldTypeArgumentLists = baseType.getTypeArgumentLists();
 
     names = new NameAST[oldNames.length + addedNames.length];
-    typeParameterLists = new TypeParameterAST[oldTypeParameterLists.length + addedTypeParameterLists.length][];
+    typeArgumentLists = new TypeArgumentAST[oldTypeArgumentLists.length + addedTypeArgumentLists.length][];
     System.arraycopy(oldNames, 0, names, 0, oldNames.length);
     System.arraycopy(addedNames, 0, names, oldNames.length, addedNames.length);
-    System.arraycopy(oldTypeParameterLists, 0, typeParameterLists, 0, oldTypeParameterLists.length);
-    System.arraycopy(addedTypeParameterLists, 0, typeParameterLists, oldTypeParameterLists.length, addedTypeParameterLists.length);
+    System.arraycopy(oldTypeArgumentLists, 0, typeArgumentLists, 0, oldTypeArgumentLists.length);
+    System.arraycopy(addedTypeArgumentLists, 0, typeArgumentLists, oldTypeArgumentLists.length, addedTypeArgumentLists.length);
   }
 
   /**
@@ -100,11 +100,11 @@ public class PointerTypeAST extends TypeAST
   }
 
   /**
-   * @return the typeParameterLists
+   * @return the typeArgumentLists
    */
-  public TypeParameterAST[][] getTypeParameterLists()
+  public TypeArgumentAST[][] getTypeArgumentLists()
   {
-    return typeParameterLists;
+    return typeArgumentLists;
   }
 
   /**
@@ -121,14 +121,14 @@ public class PointerTypeAST extends TypeAST
     for (int i = 0; i < names.length; i++)
     {
       buffer.append(names[i]);
-      TypeParameterAST[] typeParameterList = typeParameterLists[i];
-      if (typeParameterList != null && typeParameterList.length > 0)
+      TypeArgumentAST[] typeArgumentList = typeArgumentLists[i];
+      if (typeArgumentList != null && typeArgumentList.length > 0)
       {
         buffer.append("<");
-        for (int j = 0; j < typeParameterList.length; j++)
+        for (int j = 0; j < typeArgumentList.length; j++)
         {
-          buffer.append(typeParameterList[j]);
-          if (j != typeParameterList.length - 1)
+          buffer.append(typeArgumentList[j]);
+          if (j != typeArgumentList.length - 1)
           {
             buffer.append(", ");
           }

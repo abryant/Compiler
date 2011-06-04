@@ -10,7 +10,7 @@ import java.util.Set;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.PointerTypeAST;
-import compiler.language.ast.type.TypeParameterAST;
+import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.ast.typeDefinition.ClassDefinitionAST;
 import compiler.language.ast.typeDefinition.EnumDefinitionAST;
 import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
@@ -27,7 +27,7 @@ import compiler.language.conceptual.type.EnumPointerType;
 import compiler.language.conceptual.type.InterfacePointerType;
 import compiler.language.conceptual.type.OuterClassPointerType;
 import compiler.language.conceptual.type.PointerType;
-import compiler.language.conceptual.type.TypeParameter;
+import compiler.language.conceptual.type.TypeArgument;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
@@ -634,7 +634,7 @@ public final class NameResolver
    */
   public PointerType resolvePointerType(PointerTypeAST pointerTypeAST, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
-    // resolve the QName without taking the type parameter lists into account
+    // resolve the QName without taking the type argument lists into account
     QName qname = ASTConverter.convert(pointerTypeAST.getNames());
     Resolvable resolved = startScope.resolve(qname, true);
 
@@ -643,8 +643,8 @@ public final class NameResolver
       throw new ConceptualException("Could not resolve PointerType", pointerTypeAST.getParseInfo());
     }
 
-    TypeParameterAST[][] typeParameterLists = pointerTypeAST.getTypeParameterLists();
-    TypeParameterAST[] lastTypeParameters = typeParameterLists[typeParameterLists.length - 1];
+    TypeArgumentAST[][] typeArgumentLists = pointerTypeAST.getTypeArgumentLists();
+    TypeArgumentAST[] lastTypeArguments = typeArgumentLists[typeArgumentLists.length - 1];
 
     if (resolved.getType() == ScopeType.OUTER_CLASS ||
         resolved.getType() == ScopeType.OUTER_INTERFACE ||
@@ -652,22 +652,22 @@ public final class NameResolver
         resolved.getType() == ScopeType.INNER_INTERFACE ||
         resolved.getType() == ScopeType.INNER_ENUM)
     {
-      // make sure all but the last type parameter list is null
-      for (int i = 0; i < typeParameterLists.length - 1; i++)
+      // make sure all but the last type argument list is null
+      for (int i = 0; i < typeArgumentLists.length - 1; i++)
       {
-        if (typeParameterLists[i] != null)
+        if (typeArgumentLists[i] != null)
         {
-          throw new ConceptualException("Type parameters are not allowed on this name", pointerTypeAST.getNames()[i].getParseInfo());
+          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[i].getParseInfo());
         }
       }
       if (resolved.getType() == ScopeType.OUTER_CLASS)
       {
-        return new OuterClassPointerType((ConceptualClass) resolved, ASTConverter.convert(lastTypeParameters, this, startScope), pointerTypeAST.isImmutable());
+        return new OuterClassPointerType((ConceptualClass) resolved, ASTConverter.convert(lastTypeArguments, this, startScope), pointerTypeAST.isImmutable());
       }
       if (resolved.getType() == ScopeType.OUTER_INTERFACE ||
           resolved.getType() == ScopeType.INNER_INTERFACE)
       {
-        return new InterfacePointerType((ConceptualInterface) resolved, ASTConverter.convert(lastTypeParameters, this, startScope), pointerTypeAST.isImmutable());
+        return new InterfacePointerType((ConceptualInterface) resolved, ASTConverter.convert(lastTypeArguments, this, startScope), pointerTypeAST.isImmutable());
       }
       return new EnumPointerType((ConceptualEnum) resolved, pointerTypeAST.isImmutable());
     }
@@ -676,27 +676,27 @@ public final class NameResolver
       throw new ConceptualException("Cannot refer to a " + resolved.getType() + " as a pointer type", pointerTypeAST.getParseInfo());
     }
 
-    // we have an inner class, so find the type parameters for it
+    // we have an inner class, so find the type arguments for it
     ConceptualClass currentClass = (ConceptualClass) resolved;
     LinkedList<ConceptualClass> classes = new LinkedList<ConceptualClass>();
-    LinkedList<TypeParameter[]> typeParameters = new LinkedList<TypeParameter[]>();
+    LinkedList<TypeArgument[]> typeArguments = new LinkedList<TypeArgument[]>();
     while (true)
     {
       classes.addFirst(currentClass);
-      if (currentClass.getTypeArguments() == null || currentClass.getTypeArguments().length == 0)
+      if (currentClass.getTypeParameters() == null || currentClass.getTypeParameters().length == 0)
       {
-        // this class does not need type parameters
-        typeParameters.addFirst(null);
+        // this class does not need type arguments
+        typeArguments.addFirst(null);
       }
-      else if (typeParameterLists.length >= classes.size())
+      else if (typeArgumentLists.length >= classes.size())
       {
-        // get the type parameters from the PointerTypeAST
-        typeParameters.addFirst(ASTConverter.convert(typeParameterLists[typeParameterLists.length - classes.size()], this, startScope));
+        // get the type arguments from the PointerTypeAST
+        typeArguments.addFirst(ASTConverter.convert(typeArgumentLists[typeArgumentLists.length - classes.size()], this, startScope));
       }
       else
       {
-        // TODO: resolve the missing type parameters from elsewhere, e.g. the current class
-        // TODO: this will require implicitly generating some TypeArgumentPointerTypes, so that the user can do:
+        // TODO: resolve the missing type arguments from elsewhere, e.g. the current class
+        // TODO: this will require implicitly generating some TypeParameterPointerTypes, so that the user can do:
         /*
          * class X<A> {
          *   class Y {}
@@ -704,8 +704,8 @@ public final class NameResolver
          *   X<A>.Y y; // instead of this
          * }
          */
-        // TODO: there may also be other situations where missing type parameters can be filled in from elsewhere
-        throw new ConceptualException("Not enough type parameters were provided to resolve this pointer type", pointerTypeAST.getParseInfo());
+        // TODO: there may also be other situations where missing type arguments can be filled in from elsewhere
+        throw new ConceptualException("Not enough type arguments were provided to resolve this pointer type", pointerTypeAST.getParseInfo());
       }
 
       // find out whether or not we need to progress to the parent type
@@ -724,7 +724,7 @@ public final class NameResolver
     }
 
     return new ClassPointerType(classes.toArray(new ConceptualClass[classes.size()]),
-                                typeParameters.toArray(new TypeParameter[typeParameters.size()][]),
+                                typeArguments.toArray(new TypeArgument[typeArguments.size()][]),
                                 pointerTypeAST.isImmutable());
   }
 }

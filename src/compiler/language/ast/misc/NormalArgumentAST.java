@@ -10,17 +10,17 @@ import compiler.language.ast.expression.ExpressionAST;
 /**
  * @author Anthony Bryant
  */
-public class NormalParameterAST extends ParameterAST
+public class NormalArgumentAST extends ArgumentAST
 {
 
   private ExpressionAST expression;
 
   /**
-   * Creates a new normal parameter with the specified expression
-   * @param expression - the expression to create this normal parameter with
+   * Creates a new normal argument with the specified expression
+   * @param expression - the expression to create this normal argument with
    * @param parseInfo - the parsing information
    */
-  public NormalParameterAST(ExpressionAST expression, ParseInfo parseInfo)
+  public NormalArgumentAST(ExpressionAST expression, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.expression = expression;

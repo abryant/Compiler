@@ -3,7 +3,7 @@ package compiler.language.parser.rules.type;
 import static compiler.language.parser.ParseType.EXTENDS_KEYWORD;
 import static compiler.language.parser.ParseType.NAME;
 import static compiler.language.parser.ParseType.SUPER_KEYWORD;
-import static compiler.language.parser.ParseType.TYPE_ARGUMENT;
+import static compiler.language.parser.ParseType.TYPE_PARAMETER;
 import static compiler.language.parser.ParseType.TYPE_BOUND_LIST;
 import parser.ParseException;
 import parser.Production;
@@ -12,7 +12,7 @@ import parser.Rule;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
-import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
@@ -23,7 +23,7 @@ import compiler.language.parser.ParseType;
 /**
  * @author Anthony Bryant
  */
-public final class TypeArgumentRule extends Rule<ParseType>
+public final class TypeParameterRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
@@ -34,9 +34,9 @@ public final class TypeArgumentRule extends Rule<ParseType>
   private static final Production<ParseType> SUPER_EXTENDS_PRODUCTION = new Production<ParseType>(NAME, SUPER_KEYWORD,   TYPE_BOUND_LIST, EXTENDS_KEYWORD, TYPE_BOUND_LIST);
 
   @SuppressWarnings("unchecked")
-  public TypeArgumentRule()
+  public TypeParameterRule()
   {
-    super(TYPE_ARGUMENT, NAME_PRODUCTION, EXTENDS_PRODUCTION, SUPER_PRODUCTION, EXTENDS_SUPER_PRODUCTION, SUPER_EXTENDS_PRODUCTION);
+    super(TYPE_PARAMETER, NAME_PRODUCTION, EXTENDS_PRODUCTION, SUPER_PRODUCTION, EXTENDS_SUPER_PRODUCTION, SUPER_EXTENDS_PRODUCTION);
   }
 
   /**
@@ -50,20 +50,20 @@ public final class TypeArgumentRule extends Rule<ParseType>
     NameAST name = (NameAST) args[0];
     if (NAME_PRODUCTION.equals(production))
     {
-      return new TypeArgumentAST(name, new PointerTypeAST[0], new PointerTypeAST[0], name.getParseInfo());
+      return new TypeParameterAST(name, new PointerTypeAST[0], new PointerTypeAST[0], name.getParseInfo());
     }
     if (EXTENDS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> superTypes = (ParseList<PointerTypeAST>) args[2];
-      return new TypeArgumentAST(name, superTypes.toArray(new PointerTypeAST[0]), new PointerTypeAST[0],
+      return new TypeParameterAST(name, superTypes.toArray(new PointerTypeAST[0]), new PointerTypeAST[0],
                               ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo()));
     }
     if (SUPER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> subTypes = (ParseList<PointerTypeAST>) args[2];
-      return new TypeArgumentAST(name, new PointerTypeAST[0], subTypes.toArray(new PointerTypeAST[0]),
+      return new TypeParameterAST(name, new PointerTypeAST[0], subTypes.toArray(new PointerTypeAST[0]),
                               ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo()));
     }
     if (EXTENDS_SUPER_PRODUCTION.equals(production))
@@ -72,7 +72,7 @@ public final class TypeArgumentRule extends Rule<ParseType>
       ParseList<PointerTypeAST> superTypes = (ParseList<PointerTypeAST>) args[2];
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> subTypes = (ParseList<PointerTypeAST>) args[4];
-      return new TypeArgumentAST(name, superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
+      return new TypeParameterAST(name, superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
                               ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], subTypes.getParseInfo()));
     }
     if (SUPER_EXTENDS_PRODUCTION.equals(production))
@@ -81,7 +81,7 @@ public final class TypeArgumentRule extends Rule<ParseType>
       ParseList<PointerTypeAST> subTypes = (ParseList<PointerTypeAST>) args[2];
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> superTypes = (ParseList<PointerTypeAST>) args[4];
-      return new TypeArgumentAST(name, superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
+      return new TypeParameterAST(name, superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
                               ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], superTypes.getParseInfo()));
     }
     throw badTypeList();

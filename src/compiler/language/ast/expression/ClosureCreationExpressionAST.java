@@ -1,11 +1,11 @@
 package compiler.language.ast.expression;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.ArgumentAST;
+import compiler.language.ast.misc.ParameterAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
-import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.ast.type.TypeParameterAST;
 
 /*
  * Created on 3 Aug 2010
@@ -17,45 +17,45 @@ import compiler.language.ast.type.TypeArgumentAST;
 public class ClosureCreationExpressionAST extends ExpressionAST
 {
 
-  private TypeArgumentAST[] typeArguments;
-  private ArgumentAST[] arguments;
+  private TypeParameterAST[] typeParameters;
+  private ParameterAST[] parameters;
   private TypeAST[] returnTypes;
   private PointerTypeAST[] exceptionTypes;
   private BlockAST block;
 
   /**
-   * Creates a new ClosureCreationExpressionAST with the specified type arguments, return type, arguments, thrown exception types and block
-   * @param typeArguments - the type arguments of the closure
-   * @param arguments - the arguments to the closure
+   * Creates a new ClosureCreationExpressionAST with the specified type parameters, return type, parameters, thrown exception types and block
+   * @param typeParameters - the type parameters of the closure
+   * @param parameters - the parameters to the closure
    * @param returnTypes - the return types of the closure
    * @param exceptionTypes - the types of exceptions that this closure can throw
    * @param block - the block containing the closure's statements
    * @param parseInfo - the parsing information
    */
-  public ClosureCreationExpressionAST(TypeArgumentAST[] typeArguments, ArgumentAST[] arguments, TypeAST[] returnTypes, PointerTypeAST[] exceptionTypes, BlockAST block, ParseInfo parseInfo)
+  public ClosureCreationExpressionAST(TypeParameterAST[] typeParameters, ParameterAST[] parameters, TypeAST[] returnTypes, PointerTypeAST[] exceptionTypes, BlockAST block, ParseInfo parseInfo)
   {
     super(parseInfo);
-    this.typeArguments = typeArguments;
-    this.arguments = arguments;
+    this.typeParameters = typeParameters;
+    this.parameters = parameters;
     this.returnTypes = returnTypes;
     this.exceptionTypes = exceptionTypes;
     this.block = block;
   }
 
   /**
-   * @return the typeArguments
+   * @return the typeParameters
    */
-  public TypeArgumentAST[] getTypeArguments()
+  public TypeParameterAST[] getTypeParameters()
   {
-    return typeArguments;
+    return typeParameters;
   }
 
   /**
-   * @return the arguments
+   * @return the parameters
    */
-  public ArgumentAST[] getArguments()
+  public ParameterAST[] getParameters()
   {
-    return arguments;
+    return parameters;
   }
 
   /**
@@ -91,13 +91,13 @@ public class ClosureCreationExpressionAST extends ExpressionAST
   {
     StringBuffer buffer = new StringBuffer();
     buffer.append("closure");
-    if (typeArguments.length > 0)
+    if (typeParameters.length > 0)
     {
       buffer.append("<");
-      for (int i = 0; i < typeArguments.length; i++)
+      for (int i = 0; i < typeParameters.length; i++)
       {
-        buffer.append(typeArguments[i]);
-        if (i != typeArguments.length - 1)
+        buffer.append(typeParameters[i]);
+        if (i != typeParameters.length - 1)
         {
           buffer.append(", ");
         }
@@ -105,16 +105,16 @@ public class ClosureCreationExpressionAST extends ExpressionAST
       buffer.append(">");
     }
     buffer.append("(");
-    if (arguments.length == 0)
+    if (parameters.length == 0)
     {
       buffer.append("void");
     }
     else
     {
-      for (int i = 0; i < arguments.length; i++)
+      for (int i = 0; i < parameters.length; i++)
       {
-        buffer.append(arguments[i]);
-        if (i != arguments.length - 1)
+        buffer.append(parameters[i]);
+        if (i != parameters.length - 1)
         {
           buffer.append(", ");
         }

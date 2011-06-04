@@ -10,17 +10,17 @@ import compiler.language.ast.ParseInfo;
 /**
  * @author Anthony Bryant
  */
-public class NormalTypeParameterAST extends TypeParameterAST
+public class NormalTypeArgumentAST extends TypeArgumentAST
 {
 
   private TypeAST type;
 
   /**
-   * Creates a new normal type parameter with the specified type.
-   * @param type - the type assigned to this type parameter
+   * Creates a new normal type argument with the specified type.
+   * @param type - the type assigned to this type argument
    * @param parseInfo - the parsing information
    */
-  public NormalTypeParameterAST(TypeAST type, ParseInfo parseInfo)
+  public NormalTypeArgumentAST(TypeAST type, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.type = type;

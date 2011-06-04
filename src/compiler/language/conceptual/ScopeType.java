@@ -20,7 +20,7 @@ public enum ScopeType
   OUTER_ENUM,      // OuterEnum
   INNER_ENUM,      // InnerEnum
   ENUM_CONSTANT,   // EnumConstant
-  TYPE_ARGUMENT,   // TypeArgument
+  TYPE_PARAMETER,  // TypeParameter
   MEMBER_VARIABLE, // MemberVariable
   PROPERTY,        // Property
   CONSTRUCTOR,     // Constructor

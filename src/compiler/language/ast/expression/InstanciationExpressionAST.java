@@ -2,7 +2,7 @@ package compiler.language.ast.expression;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.MemberAST;
-import compiler.language.ast.misc.ParameterAST;
+import compiler.language.ast.misc.ArgumentAST;
 import compiler.language.ast.type.PointerTypeAST;
 
 /*
@@ -16,21 +16,21 @@ public class InstanciationExpressionAST extends StatementExpressionAST
 {
 
   private PointerTypeAST type;
-  private ParameterAST[] parameters;
+  private ArgumentAST[] arguments;
   private MemberAST[] members;
 
   /**
-   * Creates a new InstanciationExpressionAST with the specified type, parameters and overridden members
+   * Creates a new InstanciationExpressionAST with the specified type, arguments and overridden members
    * @param type - the type of the class to create
-   * @param parameters - the parameters for the constructor call
+   * @param arguments - the arguments for the constructor call
    * @param members - the list of members for the class, or null if no class body was specified
    * @param parseInfo - the parsing information
    */
-  public InstanciationExpressionAST(PointerTypeAST type, ParameterAST[] parameters, MemberAST[] members, ParseInfo parseInfo)
+  public InstanciationExpressionAST(PointerTypeAST type, ArgumentAST[] arguments, MemberAST[] members, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.type = type;
-    this.parameters = parameters;
+    this.arguments = arguments;
     this.members = members;
   }
 
@@ -43,11 +43,11 @@ public class InstanciationExpressionAST extends StatementExpressionAST
   }
 
   /**
-   * @return the parameters
+   * @return the arguments
    */
-  public ParameterAST[] getParameters()
+  public ArgumentAST[] getArguments()
   {
-    return parameters;
+    return arguments;
   }
 
   /**
@@ -69,10 +69,10 @@ public class InstanciationExpressionAST extends StatementExpressionAST
     buffer.append("new ");
     buffer.append(type);
     buffer.append("(");
-    for (int i = 0; i < parameters.length; i++)
+    for (int i = 0; i < arguments.length; i++)
     {
-      buffer.append(parameters[i]);
-      if (i != parameters.length - 1)
+      buffer.append(arguments[i]);
+      if (i != arguments.length - 1)
       {
         buffer.append(", ");
       }

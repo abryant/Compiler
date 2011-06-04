@@ -16,19 +16,19 @@ public class ClassPointerType extends PointerType
 {
 
   private ConceptualClass[] nestedClasses;
-  private TypeParameter[][] nestedTypeParameters;
+  private TypeArgument[][] nestedTypeArguments;
 
   /**
-   * Creates a new ClassPointerType with the specified nested conceptual classes and type parameters, and the specified immutability
+   * Creates a new ClassPointerType with the specified nested conceptual classes and type arguments, and the specified immutability
    * @param nestedClasses - the classes in the nested class chain that leads to this inner class
-   * @param nestedTypeParameters - the type parameters associated with the nested classes
+   * @param nestedTypeArguments - the type arguments associated with the nested classes
    * @param immutable - true if this PointerType should be immutable, false otherwise
    */
-  public ClassPointerType(ConceptualClass[] nestedClasses, TypeParameter[][] nestedTypeParameters, boolean immutable)
+  public ClassPointerType(ConceptualClass[] nestedClasses, TypeArgument[][] nestedTypeArguments, boolean immutable)
   {
     super(immutable);
     this.nestedClasses = nestedClasses;
-    this.nestedTypeParameters = nestedTypeParameters;
+    this.nestedTypeArguments = nestedTypeArguments;
   }
 
   /**
@@ -40,11 +40,11 @@ public class ClassPointerType extends PointerType
   }
 
   /**
-   * @return the nestedTypeParameters
+   * @return the nestedTypeArguments
    */
-  public TypeParameter[][] getNestedTypeParameters()
+  public TypeArgument[][] getNestedTypeArguments()
   {
-    return nestedTypeParameters;
+    return nestedTypeArguments;
   }
 
   /**
@@ -55,11 +55,11 @@ public class ClassPointerType extends PointerType
     return nestedClasses[nestedClasses.length - 1];
   }
   /**
-   * @return the typeParameters of the most nested class
+   * @return the typeArguments of the most nested class
    */
-  public TypeParameter[] getTypeParameters()
+  public TypeArgument[] getTypeArguments()
   {
-    return nestedTypeParameters[nestedTypeParameters.length - 1];
+    return nestedTypeArguments[nestedTypeArguments.length - 1];
   }
 
 }

@@ -11,7 +11,7 @@ import compiler.language.ast.type.TypeAST;
 /**
  * @author Anthony Bryant
  */
-public class SingleArgumentAST extends ArgumentAST
+public class SingleParameterAST extends ParameterAST
 {
 
   protected ModifierAST[] modifiers;
@@ -19,13 +19,13 @@ public class SingleArgumentAST extends ArgumentAST
   protected NameAST name;
 
   /**
-   * Creates a new single argument with the specified modifiers, type and name.
-   * @param modifiers - the modifiers of this argument
-   * @param type - the type of this argument
-   * @param name - the name of this argument
+   * Creates a new single parameter with the specified modifiers, type and name.
+   * @param modifiers - the modifiers of this parameter
+   * @param type - the type of this parameter
+   * @param name - the name of this parameter
    * @param parseInfo - the parsing information
    */
-  public SingleArgumentAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ParseInfo parseInfo)
+  public SingleParameterAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.modifiers = modifiers;
@@ -42,7 +42,7 @@ public class SingleArgumentAST extends ArgumentAST
   }
 
   /**
-   * @return the type of this argument
+   * @return the type of this parameter
    */
   public TypeAST getType()
   {
@@ -50,7 +50,7 @@ public class SingleArgumentAST extends ArgumentAST
   }
 
   /**
-   * @return the name of this argument
+   * @return the name of this parameter
    */
   public NameAST getName()
   {

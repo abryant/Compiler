@@ -8,7 +8,7 @@ import compiler.language.conceptual.member.StaticInitializer;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.type.InterfacePointerType;
-import compiler.language.conceptual.type.TypeArgument;
+import compiler.language.conceptual.type.TypeParameter;
 
 /*
  * Created on 21 Oct 2010
@@ -26,7 +26,7 @@ public abstract class ConceptualInterface extends TypeDefinition
   private String name;
 
   // headers
-  private TypeArgument[] typeArguments;
+  private TypeParameter[] typeParameters;
   private InterfacePointerType[] superInterfaces;
 
   // members
@@ -65,12 +65,12 @@ public abstract class ConceptualInterface extends TypeDefinition
   }
 
   /**
-   * Sets the type arguments of this conceptual interface
-   * @param typeArguments
+   * Sets the type parameters of this conceptual interface
+   * @param typeParameters - the type parameters to set
    */
-  public void setTypeArguments(TypeArgument[] typeArguments)
+  public void setTypeParameters(TypeParameter[] typeParameters)
   {
-    this.typeArguments = typeArguments;
+    this.typeParameters = typeParameters;
   }
 
   /**
@@ -125,11 +125,11 @@ public abstract class ConceptualInterface extends TypeDefinition
     return name;
   }
   /**
-   * @return the typeArguments
+   * @return the typeParameters
    */
-  public TypeArgument[] getTypeArguments()
+  public TypeParameter[] getTypeParameters()
   {
-    return typeArguments;
+    return typeParameters;
   }
   /**
    * @return the superInterfaces
@@ -195,11 +195,11 @@ public abstract class ConceptualInterface extends TypeDefinition
   @Override
   public final Resolvable resolve(String name)
   {
-    for (TypeArgument typeArgument : typeArguments)
+    for (TypeParameter typeParameter : typeParameters)
     {
-      if (typeArgument.getName().equals(name))
+      if (typeParameter.getName().equals(name))
       {
-        return typeArgument;
+        return typeParameter;
       }
     }
     for (MemberVariable staticVariable : staticVariables)

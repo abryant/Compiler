@@ -117,22 +117,26 @@ import compiler.language.parser.rules.type.ClosureTypeRule;
 import compiler.language.parser.rules.type.FloatingTypeRule;
 import compiler.language.parser.rules.type.IntegerTypeRule;
 import compiler.language.parser.rules.type.PointerTypeDoubleRAngleRule;
-import compiler.language.parser.rules.type.PointerTypeNoTrailingParamsNotQNameRule;
+import compiler.language.parser.rules.type.PointerTypeNoTrailingArgsNotQNameRule;
 import compiler.language.parser.rules.type.PointerTypeNotQNameRule;
 import compiler.language.parser.rules.type.PointerTypeRAngleRule;
 import compiler.language.parser.rules.type.PointerTypeRule;
-import compiler.language.parser.rules.type.PointerTypeTrailingParamsDoubleRAngleRule;
-import compiler.language.parser.rules.type.PointerTypeTrailingParamsRAngleRule;
-import compiler.language.parser.rules.type.PointerTypeTrailingParamsRule;
-import compiler.language.parser.rules.type.PointerTypeTrailingParamsTripleRAngleRule;
+import compiler.language.parser.rules.type.PointerTypeTrailingArgsDoubleRAngleRule;
+import compiler.language.parser.rules.type.PointerTypeTrailingArgsRAngleRule;
+import compiler.language.parser.rules.type.PointerTypeTrailingArgsRule;
+import compiler.language.parser.rules.type.PointerTypeTrailingArgsTripleRAngleRule;
 import compiler.language.parser.rules.type.PointerTypeTripleRAngleRule;
 import compiler.language.parser.rules.type.PrimitiveTypeRule;
 import compiler.language.parser.rules.type.TupleTypeNotQNameListRule;
 import compiler.language.parser.rules.type.TupleTypeRule;
+import compiler.language.parser.rules.type.TypeArgumentDoubleRAngleRule;
+import compiler.language.parser.rules.type.TypeArgumentListDoubleRAngleRule;
 import compiler.language.parser.rules.type.TypeArgumentListRAngleRule;
 import compiler.language.parser.rules.type.TypeArgumentListRule;
+import compiler.language.parser.rules.type.TypeArgumentListTripleRAngleRule;
+import compiler.language.parser.rules.type.TypeArgumentNotQNameListRule;
 import compiler.language.parser.rules.type.TypeArgumentRAngleRule;
-import compiler.language.parser.rules.type.TypeArgumentRule;
+import compiler.language.parser.rules.type.TypeArgumentTripleRAngleRule;
 import compiler.language.parser.rules.type.TypeArgumentsRule;
 import compiler.language.parser.rules.type.TypeBoundListDoubleRAngleRule;
 import compiler.language.parser.rules.type.TypeBoundListRAngleRule;
@@ -145,23 +149,19 @@ import compiler.language.parser.rules.type.TypeNotArrayTypeRule;
 import compiler.language.parser.rules.type.TypeNotPointerTypeNotTupleTypeRule;
 import compiler.language.parser.rules.type.TypeNotQNameListRule;
 import compiler.language.parser.rules.type.TypeNotQNameRule;
-import compiler.language.parser.rules.type.TypeParameterDoubleRAngleRule;
-import compiler.language.parser.rules.type.TypeParameterListDoubleRAngleRule;
 import compiler.language.parser.rules.type.TypeParameterListRAngleRule;
 import compiler.language.parser.rules.type.TypeParameterListRule;
-import compiler.language.parser.rules.type.TypeParameterListTripleRAngleRule;
-import compiler.language.parser.rules.type.TypeParameterNotQNameListRule;
 import compiler.language.parser.rules.type.TypeParameterRAngleRule;
-import compiler.language.parser.rules.type.TypeParameterTripleRAngleRule;
+import compiler.language.parser.rules.type.TypeParameterRule;
 import compiler.language.parser.rules.type.TypeParametersRule;
 import compiler.language.parser.rules.type.TypeRAngleRule;
 import compiler.language.parser.rules.type.TypeRule;
 import compiler.language.parser.rules.type.TypeTripleRAngleRule;
 import compiler.language.parser.rules.type.VoidTypeRule;
-import compiler.language.parser.rules.type.WildcardTypeParameterDoubleRAngleRule;
-import compiler.language.parser.rules.type.WildcardTypeParameterRAngleRule;
-import compiler.language.parser.rules.type.WildcardTypeParameterRule;
-import compiler.language.parser.rules.type.WildcardTypeParameterTripleRAngleRule;
+import compiler.language.parser.rules.type.WildcardTypeArgumentDoubleRAngleRule;
+import compiler.language.parser.rules.type.WildcardTypeArgumentRAngleRule;
+import compiler.language.parser.rules.type.WildcardTypeArgumentRule;
+import compiler.language.parser.rules.type.WildcardTypeArgumentTripleRAngleRule;
 import compiler.language.parser.rules.typeDefinition.ClassDefinitionRule;
 import compiler.language.parser.rules.typeDefinition.ClassExtendsClauseRule;
 import compiler.language.parser.rules.typeDefinition.EnumConstantListRule;
@@ -305,22 +305,26 @@ public class LanguageRules
     new IntegerTypeRule(),
     new PointerTypeDoubleRAngleRule(),
     new PointerTypeNotQNameRule(),
-    new PointerTypeNoTrailingParamsNotQNameRule(),
+    new PointerTypeNoTrailingArgsNotQNameRule(),
     new PointerTypeRAngleRule(),
     new PointerTypeRule(),
-    new PointerTypeTrailingParamsDoubleRAngleRule(),
-    new PointerTypeTrailingParamsRAngleRule(),
-    new PointerTypeTrailingParamsRule(),
-    new PointerTypeTrailingParamsTripleRAngleRule(),
+    new PointerTypeTrailingArgsDoubleRAngleRule(),
+    new PointerTypeTrailingArgsRAngleRule(),
+    new PointerTypeTrailingArgsRule(),
+    new PointerTypeTrailingArgsTripleRAngleRule(),
     new PointerTypeTripleRAngleRule(),
     new PrimitiveTypeRule(),
     new TupleTypeNotQNameListRule(),
     new TupleTypeRule(),
+    new TypeArgumentDoubleRAngleRule(),
+    new TypeArgumentListDoubleRAngleRule(),
     new TypeArgumentListRAngleRule(),
     new TypeArgumentListRule(),
+    new TypeArgumentListTripleRAngleRule(),
+    new TypeArgumentNotQNameListRule(),
     new TypeArgumentRAngleRule(),
-    new TypeArgumentRule(),
     new TypeArgumentsRule(),
+    new TypeArgumentTripleRAngleRule(),
     new TypeBoundListDoubleRAngleRule(),
     new TypeBoundListRAngleRule(),
     new TypeBoundListRule(),
@@ -332,23 +336,19 @@ public class LanguageRules
     new TypeNotPointerTypeNotTupleTypeRule(),
     new TypeNotQNameListRule(),
     new TypeNotQNameRule(),
-    new TypeParameterDoubleRAngleRule(),
-    new TypeParameterListDoubleRAngleRule(),
     new TypeParameterListRAngleRule(),
     new TypeParameterListRule(),
-    new TypeParameterListTripleRAngleRule(),
-    new TypeParameterNotQNameListRule(),
     new TypeParameterRAngleRule(),
+    new TypeParameterRule(),
     new TypeParametersRule(),
-    new TypeParameterTripleRAngleRule(),
     new TypeRAngleRule(),
     new TypeRule(),
     new TypeTripleRAngleRule(),
     new VoidTypeRule(),
-    new WildcardTypeParameterDoubleRAngleRule(),
-    new WildcardTypeParameterRAngleRule(),
-    new WildcardTypeParameterRule(),
-    new WildcardTypeParameterTripleRAngleRule(),
+    new WildcardTypeArgumentDoubleRAngleRule(),
+    new WildcardTypeArgumentRAngleRule(),
+    new WildcardTypeArgumentRule(),
+    new WildcardTypeArgumentTripleRAngleRule(),
 
     // miscellaneous
     new ArgumentListRule(),

@@ -3,60 +3,55 @@ package compiler.language.ast.misc;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.terminal.NameAST;
-import compiler.language.ast.type.TypeAST;
 
 /*
- * Created on 10 Jul 2010
+ * Created on 16 Jul 2010
  */
 
 /**
  * @author Anthony Bryant
  */
-public class DefaultArgumentAST extends SingleArgumentAST
+public class DefaultArgumentAST extends ArgumentAST
 {
 
-  private ExpressionAST defaultExpression;
+  private NameAST name;
+  private ExpressionAST expression;
 
   /**
-   * Creates a new Default ArgumentAST with the specified modifiers, type, name and default expresion.
-   * @param modifiers - the modifiers of this default argument
-   * @param type - the type of this default argument
-   * @param name - the name of this default argument
-   * @param defaultExpression - the default expression for this default argument
+   * Creates a new default argument with the specified name and expression.
+   * @param name - the name of the default argument
+   * @param expression - the expression for the default argument
    * @param parseInfo - the parsing information
    */
-  public DefaultArgumentAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ExpressionAST defaultExpression, ParseInfo parseInfo)
+  public DefaultArgumentAST(NameAST name, ExpressionAST expression, ParseInfo parseInfo)
   {
-    super(modifiers, type, name, parseInfo);
-    this.defaultExpression = defaultExpression;
+    super(parseInfo);
+    this.name = name;
+    this.expression = expression;
   }
 
   /**
-   * @return the default expression for this default argument
+   * @return the name
    */
-  public ExpressionAST getDefaultExpression()
+  public NameAST getName()
   {
-    return defaultExpression;
+    return name;
   }
 
   /**
-   * @see compiler.language.ast.misc.SingleArgumentAST#toString()
+   * @return the expression
+   */
+  public ExpressionAST getExpression()
+  {
+    return expression;
+  }
+
+  /**
+   * @see java.lang.Object#toString()
    */
   @Override
   public String toString()
   {
-    StringBuffer buffer = new StringBuffer();
-    for (ModifierAST modifier : modifiers)
-    {
-      buffer.append(modifier);
-      buffer.append(" ");
-    }
-    buffer.append(type);
-    buffer.append(" @");
-    buffer.append(name);
-    buffer.append(" = ");
-    buffer.append(defaultExpression);
-    return buffer.toString();
+    return "@" + name + " = " + expression;
   }
-
 }

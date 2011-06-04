@@ -1,8 +1,8 @@
 package compiler.language.parser.rules.misc;
 
-import static compiler.language.parser.ParseType.LPAREN;
 import static compiler.language.parser.ParseType.PARAMETERS;
 import static compiler.language.parser.ParseType.PARAMETER_LIST;
+import static compiler.language.parser.ParseType.LPAREN;
 import static compiler.language.parser.ParseType.RPAREN;
 import parser.ParseException;
 import parser.Production;
@@ -10,11 +10,12 @@ import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.ParameterAST;
+import compiler.language.ast.misc.ParameterListAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 
 /*
- * Created on 31 Jul 2010
+ * Created on 10 Jul 2010
  */
 
 /**
@@ -41,14 +42,13 @@ public final class ParametersRule extends Rule<ParseType>
   {
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseList<ParameterAST>(ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new ParameterListAST(new ParameterAST[0], ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
     }
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseList<ParameterAST> list = (ParseList<ParameterAST>) args[1];
-      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
-      return list;
+      ParseList<ParameterAST> parameters = (ParseList<ParameterAST>) args[1];
+      return new ParameterListAST(parameters.toArray(new ParameterAST[0]), ParseInfo.combine((ParseInfo) args[0], parameters.getParseInfo(), (ParseInfo) args[2]));
     }
     throw badTypeList();
   }

@@ -7,7 +7,7 @@ import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.topLevel.TypeDefinitionAST;
 import compiler.language.ast.type.PointerTypeAST;
-import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.ast.type.TypeParameterAST;
 
 /*
  * Created on 1 Jul 2010
@@ -20,7 +20,7 @@ public class ClassDefinitionAST extends TypeDefinitionAST
 {
   private AccessSpecifierAST access;
   private ModifierAST[] modifiers;
-  private TypeArgumentAST[] typeArguments;
+  private TypeParameterAST[] typeParameters;
   private PointerTypeAST baseClass;
   private PointerTypeAST[] interfaces;
   private MemberAST[] members;
@@ -30,18 +30,18 @@ public class ClassDefinitionAST extends TypeDefinitionAST
    * @param access - the access specifier, or null for the default access specifier
    * @param modifiers - the list of modifiers for this class
    * @param name - the name of this class
-   * @param typeArguments - the type arguments to this class
+   * @param typeParameters - the type parameters to this class
    * @param baseClass - the base class of this class
    * @param interfaces - the list of interfaces that this class implements
    * @param members - the list of members of this class
    * @param parseInfo - the parsing information
    */
-  public ClassDefinitionAST(AccessSpecifierAST access, ModifierAST[] modifiers, NameAST name, TypeArgumentAST[] typeArguments, PointerTypeAST baseClass, PointerTypeAST[] interfaces, MemberAST[] members, ParseInfo parseInfo)
+  public ClassDefinitionAST(AccessSpecifierAST access, ModifierAST[] modifiers, NameAST name, TypeParameterAST[] typeParameters, PointerTypeAST baseClass, PointerTypeAST[] interfaces, MemberAST[] members, ParseInfo parseInfo)
   {
     super(name, parseInfo);
     this.access = access;
     this.modifiers = modifiers;
-    this.typeArguments = typeArguments;
+    this.typeParameters = typeParameters;
     this.baseClass = baseClass;
     this.interfaces = interfaces;
     this.members = members;
@@ -64,11 +64,11 @@ public class ClassDefinitionAST extends TypeDefinitionAST
   }
 
   /**
-   * @return the type arguments
+   * @return the type parameters
    */
-  public TypeArgumentAST[] getTypeArguments()
+  public TypeParameterAST[] getTypeParameters()
   {
-    return typeArguments;
+    return typeParameters;
   }
 
   /**
@@ -114,13 +114,13 @@ public class ClassDefinitionAST extends TypeDefinitionAST
     }
     buffer.append("class ");
     buffer.append(getName());
-    if (typeArguments.length > 0)
+    if (typeParameters.length > 0)
     {
       buffer.append("<");
-      for (int i = 0; i < typeArguments.length; i++)
+      for (int i = 0; i < typeParameters.length; i++)
       {
-        buffer.append(typeArguments[i]);
-        if (i != typeArguments.length - 1)
+        buffer.append(typeParameters[i]);
+        if (i != typeParameters.length - 1)
         {
           buffer.append(", ");
         }

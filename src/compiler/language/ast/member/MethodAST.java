@@ -1,13 +1,13 @@
 package compiler.language.ast.member;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.ArgumentListAST;
 import compiler.language.ast.misc.ModifierAST;
+import compiler.language.ast.misc.ParameterListAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
-import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.ast.type.TypeParameterAST;
 
 
 /*
@@ -22,10 +22,10 @@ public class MethodAST extends MemberAST
 
   private AccessSpecifierAST accessSpecifier;
   private ModifierAST[] modifiers;
-  private TypeArgumentAST[] typeArguments; // null if there are no type arguments
+  private TypeParameterAST[] typeParameters; // null if there are no type parameters
   private TypeAST returnType;
   private NameAST name;
-  private ArgumentListAST arguments;
+  private ParameterListAST parameters;
   private PointerTypeAST[] thrownTypes;
   private BlockAST body;  // null if no body
 
@@ -33,23 +33,23 @@ public class MethodAST extends MemberAST
    * Creates a new method with the specified options.
    * @param accessSpecifier - the access specifier for the method
    * @param modifiers - the modifiers for the method
-   * @param typeArguments - the type arguments for the method
+   * @param typeParameters - the type parameters for the method
    * @param returnType - the return type for the method, or null if the method does not return anything (void)
    * @param name - the name of the method
-   * @param arguments - the arguments that the method takes
+   * @param parameters - the parameters that the method takes
    * @param thrownTypes - the list of types that the method throws
    * @param body - the body of the method
    * @param parseInfo - the parsing information
    */
-  public MethodAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, TypeArgumentAST[] typeArguments, TypeAST returnType, NameAST name, ArgumentListAST arguments, PointerTypeAST[] thrownTypes, BlockAST body, ParseInfo parseInfo)
+  public MethodAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, TypeParameterAST[] typeParameters, TypeAST returnType, NameAST name, ParameterListAST parameters, PointerTypeAST[] thrownTypes, BlockAST body, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
-    this.typeArguments = typeArguments;
+    this.typeParameters = typeParameters;
     this.returnType = returnType;
     this.name = name;
-    this.arguments = arguments;
+    this.parameters = parameters;
     this.thrownTypes = thrownTypes;
     this.body = body;
   }
@@ -71,11 +71,11 @@ public class MethodAST extends MemberAST
   }
 
   /**
-   * @return the type arguments, or null if there are none
+   * @return the type parameters, or null if there are none
    */
-  public TypeArgumentAST[] getTypeArguments()
+  public TypeParameterAST[] getTypeParameters()
   {
-    return typeArguments;
+    return typeParameters;
   }
 
   /**
@@ -95,11 +95,11 @@ public class MethodAST extends MemberAST
   }
 
   /**
-   * @return the arguments
+   * @return the parameters
    */
-  public ArgumentListAST getArguments()
+  public ParameterListAST getParameters()
   {
-    return arguments;
+    return parameters;
   }
 
   /**
@@ -135,13 +135,13 @@ public class MethodAST extends MemberAST
       buffer.append(mod);
       buffer.append(" ");
     }
-    if (typeArguments.length > 0)
+    if (typeParameters.length > 0)
     {
       buffer.append("<");
-      for (int i = 0; i < typeArguments.length; i++)
+      for (int i = 0; i < typeParameters.length; i++)
       {
-        buffer.append(typeArguments[i]);
-        if (i != typeArguments.length - 1)
+        buffer.append(typeParameters[i]);
+        if (i != typeParameters.length - 1)
         {
           buffer.append(", ");
         }
@@ -151,7 +151,7 @@ public class MethodAST extends MemberAST
     buffer.append(returnType == null ? "void" : returnType);
     buffer.append(" ");
     buffer.append(name);
-    buffer.append(arguments);
+    buffer.append(parameters);
     if (thrownTypes.length > 0)
     {
       buffer.append(" throws ");

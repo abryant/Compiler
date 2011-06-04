@@ -2,8 +2,8 @@ package compiler.language.parser.rules.type;
 
 import static compiler.language.parser.ParseType.DOUBLE_RANGLE;
 import static compiler.language.parser.ParseType.POINTER_TYPE_DOUBLE_RANGLE;
-import static compiler.language.parser.ParseType.POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME;
-import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_PARAMS_DOUBLE_RANGLE;
+import static compiler.language.parser.ParseType.POINTER_TYPE_NO_TRAILING_ARGS_NOT_QNAME;
+import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_ARGS_DOUBLE_RANGLE;
 import static compiler.language.parser.ParseType.QNAME;
 import parser.ParseException;
 import parser.Production;
@@ -28,8 +28,8 @@ public final class PointerTypeDoubleRAngleRule extends Rule<ParseType>
   private static final long serialVersionUID = 1L;
 
   private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(QNAME, DOUBLE_RANGLE);
-  private static final Production<ParseType> NO_TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME, DOUBLE_RANGLE);
-  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_PARAMS_DOUBLE_RANGLE);
+  private static final Production<ParseType> NO_TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_NO_TRAILING_ARGS_NOT_QNAME, DOUBLE_RANGLE);
+  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_ARGS_DOUBLE_RANGLE);
 
   @SuppressWarnings("unchecked")
   public PointerTypeDoubleRAngleRule()

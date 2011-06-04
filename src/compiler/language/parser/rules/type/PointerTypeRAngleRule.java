@@ -1,8 +1,8 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME;
+import static compiler.language.parser.ParseType.POINTER_TYPE_NO_TRAILING_ARGS_NOT_QNAME;
 import static compiler.language.parser.ParseType.POINTER_TYPE_RANGLE;
-import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_PARAMS_RANGLE;
+import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_ARGS_RANGLE;
 import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.RANGLE;
 import parser.ParseException;
@@ -27,8 +27,8 @@ public final class PointerTypeRAngleRule extends Rule<ParseType>
   private static final long serialVersionUID = 1L;
 
   private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(QNAME, RANGLE);
-  private static final Production<ParseType> NO_TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME, RANGLE);
-  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_PARAMS_RANGLE);
+  private static final Production<ParseType> NO_TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_NO_TRAILING_ARGS_NOT_QNAME, RANGLE);
+  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_ARGS_RANGLE);
 
   @SuppressWarnings("unchecked")
   public PointerTypeRAngleRule()

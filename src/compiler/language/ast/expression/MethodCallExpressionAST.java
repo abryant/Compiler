@@ -1,7 +1,7 @@
 package compiler.language.ast.expression;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.ParameterAST;
+import compiler.language.ast.misc.ArgumentAST;
 
 /*
  * Created on 3 Aug 2010
@@ -14,19 +14,19 @@ public class MethodCallExpressionAST extends StatementExpressionAST
 {
 
   private ExpressionAST expression = null;
-  private ParameterAST[] parameters;
+  private ArgumentAST[] arguments;
 
   /**
-   * Creates a new MethodCallExpressionAST which calls the specified expression with the specified parameters
+   * Creates a new MethodCallExpressionAST which calls the specified expression with the specified arguments
    * @param expression - the expression which produces a method/closure to call
-   * @param parameters - the parameters to the method
+   * @param arguments - the arguments to the method
    * @param parseInfo - the parsing information
    */
-  public MethodCallExpressionAST(ExpressionAST expression, ParameterAST[] parameters, ParseInfo parseInfo)
+  public MethodCallExpressionAST(ExpressionAST expression, ArgumentAST[] arguments, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.expression = expression;
-    this.parameters = parameters;
+    this.arguments = arguments;
   }
 
   /**
@@ -38,11 +38,11 @@ public class MethodCallExpressionAST extends StatementExpressionAST
   }
 
   /**
-   * @return the parameters
+   * @return the arguments
    */
-  public ParameterAST[] getParameters()
+  public ArgumentAST[] getArguments()
   {
-    return parameters;
+    return arguments;
   }
 
   /**
@@ -55,10 +55,10 @@ public class MethodCallExpressionAST extends StatementExpressionAST
     StringBuffer buffer = new StringBuffer();
     buffer.append(expression);
     buffer.append("(");
-    for (int i = 0; i < parameters.length; i++)
+    for (int i = 0; i < arguments.length; i++)
     {
-      buffer.append(parameters[i]);
-      if (i != parameters.length - 1)
+      buffer.append(arguments[i]);
+      if (i != arguments.length - 1)
       {
         buffer.append(", ");
       }

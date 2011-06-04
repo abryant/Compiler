@@ -157,33 +157,33 @@ public enum ParseType
   POINTER_TYPE_DOUBLE_RANGLE,        // ParseContainer<ParseContainer<PointerTypeAST>>
   POINTER_TYPE_TRIPLE_RANGLE,        // ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>
   POINTER_TYPE_NOT_QNAME,            // PointerTypeAST
-  POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME,  // PointerTypeAST
-  POINTER_TYPE_TRAILING_PARAMS,               // PointerTypeAST
-  POINTER_TYPE_TRAILING_PARAMS_RANGLE,        // ParseContainer<PointerTypeAST>
-  POINTER_TYPE_TRAILING_PARAMS_DOUBLE_RANGLE, // ParseContainer<ParseContainer<PointerTypeAST>>
-  POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>
-  TYPE_PARAMETERS,                   // ParseList<TypeParameterAST> (length > 0)
-  TYPE_PARAMETER_LIST,               // ParseList<TypeParameterAST> (length > 0)
-  TYPE_PARAMETER_LIST_RANGLE,        // ParseContainer<ParseList<TypeParameterAST>> (length > 0)
-  TYPE_PARAMETER_LIST_DOUBLE_RANGLE, // ParseContainer<ParseContainer<ParseList<TypeParameterAST>>> (length > 0)
-  TYPE_PARAMETER_LIST_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<ParseList<TypeParameterAST>>>> (length > 0)
-  TYPE_PARAMETER_NOT_QNAME_LIST,     // TypeParameterAST
-  TYPE_PARAMETER_RANGLE,             // ParseContainer<TypeParameterAST>
-  TYPE_PARAMETER_DOUBLE_RANGLE,      // ParseContainer<ParseContainer<TypeParameterAST>>
-  TYPE_PARAMETER_TRIPLE_RANGLE,      // ParseContainer<ParseContainer<ParseContainer<TypeParameterAST>>>
-  WILDCARD_TYPE_PARAMETER,           // WildcardTypeParameterAST
-  WILDCARD_TYPE_PARAMETER_RANGLE,    // ParseContainer<TypeParameterAST>
-  WILDCARD_TYPE_PARAMETER_DOUBLE_RANGLE, // ParseContainer<ParseContainer<TypeParameterAST>>
-  WILDCARD_TYPE_PARAMETER_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<TypeParameterAST>>>
+  POINTER_TYPE_NO_TRAILING_ARGS_NOT_QNAME,  // PointerTypeAST
+  POINTER_TYPE_TRAILING_ARGS,               // PointerTypeAST
+  POINTER_TYPE_TRAILING_ARGS_RANGLE,        // ParseContainer<PointerTypeAST>
+  POINTER_TYPE_TRAILING_ARGS_DOUBLE_RANGLE, // ParseContainer<ParseContainer<PointerTypeAST>>
+  POINTER_TYPE_TRAILING_ARGS_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>
+  TYPE_ARGUMENTS,                    // ParseList<TypeArgumentAST> (length > 0)
+  TYPE_ARGUMENT_LIST,                // ParseList<TypeArgumentAST> (length > 0)
+  TYPE_ARGUMENT_LIST_RANGLE,         // ParseContainer<ParseList<TypeArgumentAST>> (length > 0)
+  TYPE_ARGUMENT_LIST_DOUBLE_RANGLE,  // ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>> (length > 0)
+  TYPE_ARGUMENT_LIST_TRIPLE_RANGLE,  // ParseContainer<ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>> (length > 0)
+  TYPE_ARGUMENT_NOT_QNAME_LIST,      // TypeArgumentAST
+  TYPE_ARGUMENT_RANGLE,              // ParseContainer<TypeArgumentAST>
+  TYPE_ARGUMENT_DOUBLE_RANGLE,       // ParseContainer<ParseContainer<TypeArgumentAST>>
+  TYPE_ARGUMENT_TRIPLE_RANGLE,       // ParseContainer<ParseContainer<ParseContainer<TypeArgumentAST>>>
+  WILDCARD_TYPE_ARGUMENT,            // WildcardTypeArgumentAST
+  WILDCARD_TYPE_ARGUMENT_RANGLE,     // ParseContainer<TypeArgumentAST>
+  WILDCARD_TYPE_ARGUMENT_DOUBLE_RANGLE, // ParseContainer<ParseContainer<TypeArgumentAST>>
+  WILDCARD_TYPE_ARGUMENT_TRIPLE_RANGLE, // ParseContainer<ParseContainer<ParseContainer<TypeArgumentAST>>>
   TYPE_BOUND_LIST,                   // ParseList<PointerTypeAST> (length > 0)
   TYPE_BOUND_LIST_RANGLE,            // ParseContainer<ParseList<PointerTypeAST>> (length > 0)
   TYPE_BOUND_LIST_DOUBLE_RANGLE,     // ParseContainer<ParseContainer<ParseList<PointerTypeAST>>> (length > 0)
   TYPE_BOUND_LIST_TRIPLE_RANGLE,     // ParseContainer<ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>> (length > 0)
-  TYPE_ARGUMENT,                     // TypeArgumentAST
-  TYPE_ARGUMENT_RANGLE,              // ParseContainer<TypeArgumentAST>
-  TYPE_ARGUMENT_LIST,                // ParseList<TypeArgumentAST> (length > 0)
-  TYPE_ARGUMENT_LIST_RANGLE,         // ParseContainer<ParseList<TypeArgumentAST>> (length > 0)
-  TYPE_ARGUMENTS,                    // ParseList<TypeArgumentAST> (length > 0)
+  TYPE_PARAMETER,                    // TypeParameterAST
+  TYPE_PARAMETER_RANGLE,             // ParseContainer<TypeParameterAST>
+  TYPE_PARAMETER_LIST,               // ParseList<TypeParameterAST> (length > 0)
+  TYPE_PARAMETER_LIST_RANGLE,        // ParseContainer<ParseList<TypeParameterAST>> (length > 0)
+  TYPE_PARAMETERS,                   // ParseList<TypeParameterAST> (length > 0)
 
   // miscellaneous non-terminals
   MODIFIER,                   // ModifierAST
@@ -192,8 +192,8 @@ public enum ParseType
   MODIFIERS,                  // ParseList<ModifierAST> (length > 0)
   MODIFIERS_NOT_SYNCHRONIZED, // ParseList<ModifierAST> (length > 0)
   ARGUMENT,                   // ArgumentAST
-  ARGUMENT_LIST,              // ParseList<ArgumentAST>
-  ARGUMENTS,                  // ArgumentListAST
+  ARGUMENT_LIST,              // ParseList<ArgumentAST> (length > 0)
+  ARGUMENTS,                  // ParseList<ArgumentAST>
   ASSIGNEE,                   // AssigneeAST
   ASSIGNEE_LIST,              // ParseList<AssigneeAST>
   ASSIGNMENT_OPERATOR,        // ParseContainer<AssignmentOperatorAST>
@@ -201,8 +201,8 @@ public enum ParseType
   DECLARATION_ASSIGNEE_LIST,  // ParseList<DeclarationAssigneeAST>
   DIMENSIONS,                 // DimensionsAST
   PARAMETER,                  // ParameterAST
-  PARAMETER_LIST,             // ParseList<ParameterAST> (length > 0)
-  PARAMETERS,                 // ParseList<ParameterAST>
+  PARAMETER_LIST,             // ParseList<ParameterAST>
+  PARAMETERS,                 // ParameterListAST
   QNAME,                      // QNameAST
   QNAME_LIST,                 // ParseList<QNameElementAST>
   NESTED_QNAME_LIST,          // QNameElementAST

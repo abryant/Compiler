@@ -7,16 +7,16 @@ package compiler.language.conceptual.type;
 /**
  * @author Anthony Bryant
  */
-public class NormalTypeParameter extends TypeParameter
+public class NormalTypeArgument extends TypeArgument
 {
 
   private Type type;
 
   /**
-   * Creates a new NormalTypeParameter to hold the specified type
+   * Creates a new NormalTypeArgument to hold the specified type
    * @param type - the type to store
    */
-  public NormalTypeParameter(Type type)
+  public NormalTypeArgument(Type type)
   {
     this.type = type;
   }

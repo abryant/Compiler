@@ -10,28 +10,28 @@ import compiler.language.ast.ParseInfo;
 /**
  * @author Anthony Bryant
  */
-public class ArgumentListAST extends ArgumentAST
+public class ParameterListAST extends ParameterAST
 {
 
-  private ArgumentAST[] arguments;
+  private ParameterAST[] parameters;
 
   /**
-   * Creates a new ArgumentListAST with the specified arguments.
-   * @param arguments - the arguments to store
+   * Creates a new ParameterListAST with the specified parameters.
+   * @param parameters - the parameters to store
    * @param parseInfo - the parsing information
    */
-  public ArgumentListAST(ArgumentAST[] arguments, ParseInfo parseInfo)
+  public ParameterListAST(ParameterAST[] parameters, ParseInfo parseInfo)
   {
     super(parseInfo);
-    this.arguments = arguments;
+    this.parameters = parameters;
   }
 
   /**
-   * @return the arguments
+   * @return the parameters
    */
-  public ArgumentAST[] getArguments()
+  public ParameterAST[] getParameters()
   {
-    return arguments;
+    return parameters;
   }
 
   /**
@@ -42,10 +42,10 @@ public class ArgumentListAST extends ArgumentAST
   {
     StringBuffer buffer = new StringBuffer();
     buffer.append("(");
-    for (int i = 0; i < arguments.length; i++)
+    for (int i = 0; i < parameters.length; i++)
     {
-      buffer.append(arguments[i]);
-      if (i != arguments.length - 1)
+      buffer.append(parameters[i]);
+      if (i != parameters.length - 1)
       {
         buffer.append(", ");
       }

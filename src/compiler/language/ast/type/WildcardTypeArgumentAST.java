@@ -10,19 +10,19 @@ import compiler.language.ast.ParseInfo;
 /**
  * @author Anthony Bryant
  */
-public class WildcardTypeParameterAST extends TypeParameterAST
+public class WildcardTypeArgumentAST extends TypeArgumentAST
 {
 
   private PointerTypeAST[] superTypes;
   private PointerTypeAST[] subTypes;
 
   /**
-   * Creates a new wildcard type parameter that bounds its type to the specified range of values.
-   * @param superTypes - the super types of this type parameter
-   * @param subTypes - the sub types of this type parameter
+   * Creates a new wildcard type argument that bounds its type to the specified range of values.
+   * @param superTypes - the super types of this type argument
+   * @param subTypes - the sub types of this type argument
    * @param parseInfo - the parsing information
    */
-  public WildcardTypeParameterAST(PointerTypeAST[] superTypes, PointerTypeAST[] subTypes, ParseInfo parseInfo)
+  public WildcardTypeArgumentAST(PointerTypeAST[] superTypes, PointerTypeAST[] subTypes, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.superTypes = superTypes;

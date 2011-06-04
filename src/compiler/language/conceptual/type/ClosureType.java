@@ -10,40 +10,40 @@ package compiler.language.conceptual.type;
 public class ClosureType extends Type
 {
 
-  private TypeArgument[] typeArguments;
-  private Type[] parameterTypes;
+  private TypeParameter[] typeParameters;
+  private Type[] argumentTypes;
   private Type[] resultTypes;
   private PointerType[] exceptionTypes;
 
   /**
-   * Creates a new ClosureType with the specified type arguments, parameter and result types, and exception types
-   * @param typeArguments - the type arguments
-   * @param parameterTypes - the parameter types
+   * Creates a new ClosureType with the specified type parameters, argument and result types, and exception types
+   * @param typeParameters - the type parameters
+   * @param argumentTypes - the argument types
    * @param resultTypes - the result types
    * @param exceptionTypes - the exception types
    */
-  public ClosureType(TypeArgument[] typeArguments, Type[] parameterTypes, Type[] resultTypes, PointerType[] exceptionTypes)
+  public ClosureType(TypeParameter[] typeParameters, Type[] argumentTypes, Type[] resultTypes, PointerType[] exceptionTypes)
   {
-    this.typeArguments = typeArguments;
-    this.parameterTypes = parameterTypes;
+    this.typeParameters = typeParameters;
+    this.argumentTypes = argumentTypes;
     this.resultTypes = resultTypes;
     this.exceptionTypes = exceptionTypes;
   }
 
   /**
-   * @return the typeArguments
+   * @return the typeParameters
    */
-  public TypeArgument[] getTypeArguments()
+  public TypeParameter[] getTypeParameters()
   {
-    return typeArguments;
+    return typeParameters;
   }
 
   /**
-   * @return the parameterTypes
+   * @return the argumentTypes
    */
-  public Type[] getParameterTypes()
+  public Type[] getArgumentTypes()
   {
-    return parameterTypes;
+    return argumentTypes;
   }
 
   /**

@@ -13,42 +13,42 @@ import compiler.language.ast.ParseInfo;
 public class ClosureTypeAST extends TypeAST
 {
 
-  private TypeArgumentAST[] typeArguments;
-  private TypeAST[] parameterTypes;
+  private TypeParameterAST[] typeParameters;
+  private TypeAST[] argumentTypes;
   private TypeAST[] resultTypes;
   private PointerTypeAST[] exceptionTypes;
 
   /**
-   * Creates a new Closure type with the specified type arguments, parameter types, result types, and exception types
-   * @param typeArguments - the type arguments of this closure type
-   * @param parameterTypes - the types of the parameters to this closure
+   * Creates a new Closure type with the specified type parameters, argument types, result types, and exception types
+   * @param typeParameters - the type parameters of this closure type
+   * @param argumentTypes - the types of the arguments to this closure
    * @param resultTypes - the types of the results of this closure
    * @param exceptionTypes - the types of the exceptions thrown by this closure
    * @param parseInfo - the parsing information
    */
-  public ClosureTypeAST(TypeArgumentAST[] typeArguments, TypeAST[] parameterTypes, TypeAST[] resultTypes, PointerTypeAST[] exceptionTypes, ParseInfo parseInfo)
+  public ClosureTypeAST(TypeParameterAST[] typeParameters, TypeAST[] argumentTypes, TypeAST[] resultTypes, PointerTypeAST[] exceptionTypes, ParseInfo parseInfo)
   {
     super(parseInfo);
-    this.typeArguments = typeArguments;
-    this.parameterTypes = parameterTypes;
+    this.typeParameters = typeParameters;
+    this.argumentTypes = argumentTypes;
     this.resultTypes = resultTypes;
     this.exceptionTypes = exceptionTypes;
   }
 
   /**
-   * @return the typeArguments
+   * @return the typeParameters
    */
-  public TypeArgumentAST[] getTypeArguments()
+  public TypeParameterAST[] getTypeParameters()
   {
-    return typeArguments;
+    return typeParameters;
   }
 
   /**
-   * @return the parameter types
+   * @return the argument types
    */
-  public TypeAST[] getParameterTypes()
+  public TypeAST[] getArgumentTypes()
   {
-    return parameterTypes;
+    return argumentTypes;
   }
 
   /**
@@ -75,23 +75,23 @@ public class ClosureTypeAST extends TypeAST
   {
     StringBuffer buffer = new StringBuffer();
     buffer.append("{");
-    if (typeArguments.length > 0)
+    if (typeParameters.length > 0)
     {
       buffer.append("<");
-      for (int i = 0; i < typeArguments.length; i++)
+      for (int i = 0; i < typeParameters.length; i++)
       {
-        buffer.append(typeArguments[i]);
-        if (i != typeArguments.length - 1)
+        buffer.append(typeParameters[i]);
+        if (i != typeParameters.length - 1)
         {
           buffer.append(", ");
         }
       }
       buffer.append("> ");
     }
-    for (int i = 0; i < parameterTypes.length; i++)
+    for (int i = 0; i < argumentTypes.length; i++)
     {
-      buffer.append(parameterTypes[i]);
-      if (i != parameterTypes.length - 1)
+      buffer.append(argumentTypes[i]);
+      if (i != argumentTypes.length - 1)
       {
         buffer.append(", ");
       }

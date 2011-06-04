@@ -34,14 +34,14 @@ import compiler.language.ast.type.ClosureTypeAST;
 import compiler.language.ast.type.FloatingTypeAST;
 import compiler.language.ast.type.FloatingTypeLengthAST;
 import compiler.language.ast.type.IntegerTypeAST;
-import compiler.language.ast.type.NormalTypeParameterAST;
+import compiler.language.ast.type.NormalTypeArgumentAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TupleTypeAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.ast.type.VoidTypeAST;
-import compiler.language.ast.type.WildcardTypeParameterAST;
+import compiler.language.ast.type.WildcardTypeArgumentAST;
 import compiler.language.ast.typeDefinition.ClassDefinitionAST;
 import compiler.language.ast.typeDefinition.EnumConstantAST;
 import compiler.language.ast.typeDefinition.EnumDefinitionAST;
@@ -66,14 +66,14 @@ import compiler.language.conceptual.topLevel.ConceptualPackage;
 import compiler.language.conceptual.topLevel.Import;
 import compiler.language.conceptual.type.ArrayType;
 import compiler.language.conceptual.type.ClosureType;
-import compiler.language.conceptual.type.NormalTypeParameter;
+import compiler.language.conceptual.type.NormalTypeArgument;
 import compiler.language.conceptual.type.PointerType;
 import compiler.language.conceptual.type.PrimitiveType;
 import compiler.language.conceptual.type.TupleType;
 import compiler.language.conceptual.type.Type;
 import compiler.language.conceptual.type.TypeArgument;
 import compiler.language.conceptual.type.TypeParameter;
-import compiler.language.conceptual.type.WildcardTypeParameter;
+import compiler.language.conceptual.type.WildcardTypeArgument;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
@@ -273,19 +273,19 @@ public class ASTConverter
   /**
    * Adds all of the data to a conceptual class that is not specified in the constructor.
    * @param conceptualClass - the converted class definition to add data to
-   * @param classDefinition - the ClassDefinitionAST to convert the type arguments and members of
+   * @param classDefinition - the ClassDefinitionAST to convert the type parameters and members of
    * @throws ConceptualException - if there is a problem with the conversion
    */
   private void addClassData(ConceptualClass conceptualClass, ClassDefinitionAST classDefinition) throws ConceptualException
   {
     // convert the type arguments
-    TypeArgumentAST[] typeArgumentASTs = classDefinition.getTypeArguments();
-    TypeArgument[] typeArguments = new TypeArgument[typeArgumentASTs.length];
-    for (int i = 0; i < typeArgumentASTs.length; i++)
+    TypeParameterAST[] typeParameterASTs = classDefinition.getTypeParameters();
+    TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
+    for (int i = 0; i < typeParameterASTs.length; i++)
     {
-      typeArguments[i] =  convert(typeArgumentASTs[i]);
+      typeParameters[i] =  convert(typeParameterASTs[i]);
     }
-    conceptualClass.setTypeArguments(typeArguments);
+    conceptualClass.setTypeParameters(typeParameters);
 
 
     // convert each of the members in turn, switching on the member type. each member is added to a list of the members of its type
@@ -397,19 +397,19 @@ public class ASTConverter
   /**
    * Adds all of the data to a conceptual interface that is not specified in the constructor.
    * @param conceptualInterface - the converted interface definition to add data to
-   * @param interfaceDefinition - the InterfaceDefinitionAST to convert the type arguments and members of
+   * @param interfaceDefinition - the InterfaceDefinitionAST to convert the type parameters and members of
    * @throws ConceptualException - if there is a problem with the conversion
    */
   private void addInterfaceData(ConceptualInterface conceptualInterface, InterfaceDefinitionAST interfaceDefinition) throws ConceptualException
   {
     // convert the type arguments
-    TypeArgumentAST[] typeArgumentASTs = interfaceDefinition.getTypeArguments();
-    TypeArgument[] typeArguments = new TypeArgument[typeArgumentASTs.length];
-    for (int i = 0; i < typeArgumentASTs.length; i++)
+    TypeParameterAST[] typeParameterASTs = interfaceDefinition.getTypeParameters();
+    TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
+    for (int i = 0; i < typeParameterASTs.length; i++)
     {
-      typeArguments[i] = convert(typeArgumentASTs[i]);
+      typeParameters[i] = convert(typeParameterASTs[i]);
     }
-    conceptualInterface.setTypeArguments(typeArguments);
+    conceptualInterface.setTypeParameters(typeParameters);
 
 
     // convert each of the members in turn, switching on the member type. each member is added to a list of the members of its type.
@@ -610,13 +610,13 @@ public class ASTConverter
   }
 
   /**
-   * Converts the specified TypeArgumentAST into a TypeArgument.
-   * @param typeArgumentAST - the TypeArgumentAST to convert
-   * @return the TypeArgument created
+   * Converts the specified TypeParameterAST into a TypeParameter.
+   * @param typeParameterAST - the TypeParameterAST to convert
+   * @return the TypeParameter created
    */
-  private TypeArgument convert(TypeArgumentAST typeArgumentAST)
+  private TypeParameter convert(TypeParameterAST typeParameterAST)
   {
-    return new TypeArgument(typeArgumentAST.getName().getName());
+    return new TypeParameter(typeParameterAST.getName().getName());
   }
 
   /**
@@ -1009,20 +1009,20 @@ public class ASTConverter
   // TODO: is this the right place to put the following methods? and should they be static? (they are called from NameResolver)
 
   /**
-   * Converts the specified TypeArgumentAST into a TypeArgument.
-   * @param typeArgumentAST - the TypeArgumentAST to convert
+   * Converts the specified TypeParameterAST into a TypeParameter.
+   * @param typeParameterAST - the TypeParameterAST to convert
    * @param nameResolver - the NameResolver to use to resolve any names (e.g. in super types)
    * @param startScope - the starting scope to lookup names in
-   * @return the converted TypeArgument
+   * @return the converted TypeParameter
    * @throws NameConflictException - if a name conflict is detected while looking up any names
-   * @throws ConceptualException - if a conceptual problem occurs while converting this type argument
+   * @throws ConceptualException - if a conceptual problem occurs while converting this type parameter
    * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
    */
-  private static TypeArgument convert(TypeArgumentAST typeArgumentAST, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
+  private static TypeParameter convert(TypeParameterAST typeParameterAST, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
-    TypeArgument typeArgument = new TypeArgument(typeArgumentAST.getName().getName());
-    PointerTypeAST[] superTypeASTs = typeArgumentAST.getSuperTypes();
-    PointerTypeAST[] subTypeASTs = typeArgumentAST.getSubTypes();
+    TypeParameter typeParameter = new TypeParameter(typeParameterAST.getName().getName());
+    PointerTypeAST[] superTypeASTs = typeParameterAST.getSuperTypes();
+    PointerTypeAST[] subTypeASTs = typeParameterAST.getSubTypes();
     PointerType[] superTypes = new PointerType[superTypeASTs.length];
     for (int i = 0; i < superTypeASTs.length; i++)
     {
@@ -1033,40 +1033,40 @@ public class ASTConverter
     {
       subTypes[i] = nameResolver.resolvePointerType(subTypeASTs[i], startScope);
     }
-    typeArgument.setSuperTypes(superTypes);
-    typeArgument.setSubTypes(subTypes);
-    return typeArgument;
+    typeParameter.setSuperTypes(superTypes);
+    typeParameter.setSubTypes(subTypes);
+    return typeParameter;
   }
 
   /**
-   * Converts the specified TypeParameterASTs into TypeParameters.
-   * @param typeParameterASTs - the TypeParameterASTs to convert
+   * Converts the specified TypeArgumentASTs into TypeArguments.
+   * @param typeArgumentASTs - the TypeArgumentASTs to convert
    * @param nameResolver - the NameResolver to use to resolve any names
    * @param startScope - the starting scope to resolve the names from
-   * @return the converted TypeParameters
+   * @return the converted TypeArguments
    * @throws NameConflictException - if a name conflict is detected while looking up any names
-   * @throws ConceptualException - if a conceptual problem occurs while resolving the type parameters
+   * @throws ConceptualException - if a conceptual problem occurs while resolving the type arguments
    * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
    */
-  public static TypeParameter[] convert(TypeParameterAST[] typeParameterASTs, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
+  public static TypeArgument[] convert(TypeArgumentAST[] typeArgumentASTs, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
-    if (typeParameterASTs == null)
+    if (typeArgumentASTs == null)
     {
       return null;
     }
-    TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
-    for (int i = 0; i < typeParameterASTs.length; i++)
+    TypeArgument[] typeArguments = new TypeArgument[typeArgumentASTs.length];
+    for (int i = 0; i < typeArgumentASTs.length; i++)
     {
-      if (typeParameterASTs[i] instanceof NormalTypeParameterAST)
+      if (typeArgumentASTs[i] instanceof NormalTypeArgumentAST)
       {
-        TypeAST typeAST = ((NormalTypeParameterAST) typeParameterASTs[i]).getType();
-        typeParameters[i] = new NormalTypeParameter(ASTConverter.convert(typeAST, nameResolver, startScope));
+        TypeAST typeAST = ((NormalTypeArgumentAST) typeArgumentASTs[i]).getType();
+        typeArguments[i] = new NormalTypeArgument(ASTConverter.convert(typeAST, nameResolver, startScope));
       }
-      else if (typeParameterASTs[i] instanceof WildcardTypeParameterAST)
+      else if (typeArgumentASTs[i] instanceof WildcardTypeArgumentAST)
       {
-        WildcardTypeParameterAST wildcardTypeParameterAST = (WildcardTypeParameterAST) typeParameterASTs[i];
-        PointerTypeAST[] superTypeASTs = wildcardTypeParameterAST.getSuperTypes();
-        PointerTypeAST[] subTypeASTs = wildcardTypeParameterAST.getSubTypes();
+        WildcardTypeArgumentAST wildcardTypeArgumentAST = (WildcardTypeArgumentAST) typeArgumentASTs[i];
+        PointerTypeAST[] superTypeASTs = wildcardTypeArgumentAST.getSuperTypes();
+        PointerTypeAST[] subTypeASTs = wildcardTypeArgumentAST.getSubTypes();
         PointerType[] superTypes = new PointerType[superTypeASTs.length];
         for (int j = 0; j < superTypeASTs.length; j++)
         {
@@ -1077,14 +1077,14 @@ public class ASTConverter
         {
           subTypes[j] = nameResolver.resolvePointerType(subTypeASTs[j], startScope);
         }
-        typeParameters[i] = new WildcardTypeParameter(superTypes, subTypes);
+        typeArguments[i] = new WildcardTypeArgument(superTypes, subTypes);
       }
       else
       {
-        throw new IllegalArgumentException("Only normal and wildcard type parameters can be resolved");
+        throw new IllegalArgumentException("Only normal and wildcard type arguments can be resolved");
       }
     }
-    return typeParameters;
+    return typeArguments;
   }
 
   /**
@@ -1107,19 +1107,19 @@ public class ASTConverter
     if (typeAST instanceof ClosureTypeAST)
     {
       ClosureTypeAST closureTypeAST = (ClosureTypeAST) typeAST;
-      TypeArgumentAST[] typeArgumentASTs = closureTypeAST.getTypeArguments();
-      TypeAST[] parameterTypeASTs = closureTypeAST.getParameterTypes();
+      TypeParameterAST[] typeParameterASTs = closureTypeAST.getTypeParameters();
+      TypeAST[] argumentTypeASTs = closureTypeAST.getArgumentTypes();
       TypeAST[] resultTypeASTs = closureTypeAST.getResultTypes();
       PointerTypeAST[] exceptionTypeASTs = closureTypeAST.getExceptionTypes();
-      TypeArgument[] typeArguments = new TypeArgument[typeArgumentASTs.length];
-      for (int i = 0; i < typeArgumentASTs.length; i++)
+      TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
+      for (int i = 0; i < typeParameterASTs.length; i++)
       {
-        typeArguments[i] = convert(typeArgumentASTs[i], nameResolver, startScope);
+        typeParameters[i] = convert(typeParameterASTs[i], nameResolver, startScope);
       }
-      Type[] parameterTypes = new Type[parameterTypeASTs.length];
-      for (int i = 0; i < parameterTypeASTs.length; i++)
+      Type[] argumentTypes = new Type[argumentTypeASTs.length];
+      for (int i = 0; i < argumentTypeASTs.length; i++)
       {
-        parameterTypes[i] = convert(parameterTypeASTs[i], nameResolver, startScope);
+        argumentTypes[i] = convert(argumentTypeASTs[i], nameResolver, startScope);
       }
       Type[] resultTypes = new Type[resultTypeASTs.length];
       for (int i = 0; i < resultTypeASTs.length; i++)
@@ -1131,7 +1131,7 @@ public class ASTConverter
       {
         exceptionTypes[i] = nameResolver.resolvePointerType(exceptionTypeASTs[i], startScope);
       }
-      return new ClosureType(typeArguments, parameterTypes, resultTypes, exceptionTypes);
+      return new ClosureType(typeParameters, argumentTypes, resultTypes, exceptionTypes);
     }
     if (typeAST instanceof PointerTypeAST)
     {

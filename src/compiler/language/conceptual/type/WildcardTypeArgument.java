@@ -7,18 +7,18 @@ package compiler.language.conceptual.type;
 /**
  * @author Anthony Bryant
  */
-public class WildcardTypeParameter extends TypeParameter
+public class WildcardTypeArgument extends TypeArgument
 {
 
   private PointerType[] superTypes;
   private PointerType[] subTypes;
 
   /**
-   * Creates a new WildcardTypeParameter with the specified super and sub types
-   * @param superTypes - the supertypes of the type parameter
-   * @param subTypes - the subtypes of the type parameter
+   * Creates a new WildcardTypeArgument with the specified super and sub types
+   * @param superTypes - the supertypes of the type argument
+   * @param subTypes - the subtypes of the type argument
    */
-  public WildcardTypeParameter(PointerType[] superTypes, PointerType[] subTypes)
+  public WildcardTypeArgument(PointerType[] superTypes, PointerType[] subTypes)
   {
     this.superTypes = superTypes;
     this.subTypes = subTypes;

@@ -15,13 +15,13 @@ public class OuterClassPointerType extends ClassPointerType
 {
 
   /**
-   * Creates a new OuterClassPointerType with the specified conceptual class, type parameters and immutability
+   * Creates a new OuterClassPointerType with the specified conceptual class, type arguments and immutability
    * @param classType - the class type
-   * @param typeParameters - the type parameters
+   * @param typeArguments - the type arguments
    * @param immutable - true if this PointerType should be immutable, false otherwise
    */
-  public OuterClassPointerType(ConceptualClass classType, TypeParameter[] typeParameters, boolean immutable)
+  public OuterClassPointerType(ConceptualClass classType, TypeArgument[] typeArguments, boolean immutable)
   {
-    super(new ConceptualClass[] {classType}, new TypeParameter[][] {typeParameters}, immutable);
+    super(new ConceptualClass[] {classType}, new TypeArgument[][] {typeArguments}, immutable);
   }
 }

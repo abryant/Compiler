@@ -1,25 +1,18 @@
 package compiler.language.parser.rules.type;
 
 import static compiler.language.parser.ParseType.COMMA;
-import static compiler.language.parser.ParseType.NESTED_QNAME_LIST;
-import static compiler.language.parser.ParseType.QNAME;
+import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST;
 import static compiler.language.parser.ParseType.TYPE_PARAMETER_LIST_RANGLE;
-import static compiler.language.parser.ParseType.TYPE_PARAMETER_NOT_QNAME_LIST;
 import static compiler.language.parser.ParseType.TYPE_PARAMETER_RANGLE;
 import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.type.NormalTypeParameterAST;
-import compiler.language.ast.type.PointerTypeAST;
-import compiler.language.ast.type.TypeAST;
 import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
-import compiler.language.parser.QNameElementAST;
 
 /*
  * Created on 10 Aug 2010
@@ -32,15 +25,13 @@ public final class TypeParameterListRAngleRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production<ParseType> TYPE_PARAMETER_PRODUCTION      = new Production<ParseType>(TYPE_PARAMETER_RANGLE);
-  private static final Production<ParseType> TYPE_PARAMETER_LIST_PRODUCTION = new Production<ParseType>(TYPE_PARAMETER_NOT_QNAME_LIST, COMMA, TYPE_PARAMETER_LIST_RANGLE);
-  private static final Production<ParseType> QNAME_LIST_PRODUCTION          = new Production<ParseType>(QNAME,                         COMMA, TYPE_PARAMETER_LIST_RANGLE);
-  private static final Production<ParseType> NESTED_QNAME_LIST_PRODUCTION   = new Production<ParseType>(NESTED_QNAME_LIST,             COMMA, TYPE_PARAMETER_LIST_RANGLE);
+  private static final Production<ParseType> TYPE_PARAMETER_PRODUCTION = new Production<ParseType>(TYPE_PARAMETER_RANGLE);
+  private static final Production<ParseType> LIST_END_PRODUCTION = new Production<ParseType>(TYPE_PARAMETER_LIST, COMMA, TYPE_PARAMETER_RANGLE);
 
   @SuppressWarnings("unchecked")
   public TypeParameterListRAngleRule()
   {
-    super(TYPE_PARAMETER_LIST_RANGLE, TYPE_PARAMETER_PRODUCTION, TYPE_PARAMETER_LIST_PRODUCTION, QNAME_LIST_PRODUCTION, NESTED_QNAME_LIST_PRODUCTION);
+    super(TYPE_PARAMETER_LIST_RANGLE, TYPE_PARAMETER_PRODUCTION, LIST_END_PRODUCTION);
   }
 
   /**
@@ -53,43 +44,19 @@ public final class TypeParameterListRAngleRule extends Rule<ParseType>
     if (TYPE_PARAMETER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
-      ParseContainer<TypeParameterAST> parameter = (ParseContainer<TypeParameterAST>) args[0];
-      ParseList<TypeParameterAST> list = new ParseList<TypeParameterAST>(parameter.getItem(), parameter.getItem().getParseInfo());
-      return new ParseContainer<ParseList<TypeParameterAST>>(list, parameter.getParseInfo());
+      ParseContainer<TypeParameterAST> typeParameter = (ParseContainer<TypeParameterAST>) args[0];
+      ParseList<TypeParameterAST> list = new ParseList<TypeParameterAST>(typeParameter.getItem(), typeParameter.getItem().getParseInfo());
+      return new ParseContainer<ParseList<TypeParameterAST>>(list, typeParameter.getParseInfo());
     }
-    if (TYPE_PARAMETER_LIST_PRODUCTION.equals(production))
+    if (LIST_END_PRODUCTION.equals(production))
     {
-      TypeParameterAST parameter = (TypeParameterAST) args[0];
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<TypeParameterAST>> container = (ParseContainer<ParseList<TypeParameterAST>>) args[2];
-      ParseList<TypeParameterAST> list = container.getItem();
-
-      list.addFirst(parameter, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
-      return new ParseContainer<ParseList<TypeParameterAST>>(list, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
-    }
-    if (QNAME_LIST_PRODUCTION.equals(production))
-    {
-      QNameAST qname = (QNameAST) args[0];
-      TypeAST type = new PointerTypeAST(qname, qname.getParseInfo());
-      TypeParameterAST parameter = new NormalTypeParameterAST(type, type.getParseInfo());
+      ParseList<TypeParameterAST> list = (ParseList<TypeParameterAST>) args[0];
+      ParseInfo listParseInfo = list.getParseInfo();
       @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<TypeParameterAST>> container = (ParseContainer<ParseList<TypeParameterAST>>) args[2];
-      ParseList<TypeParameterAST> list = container.getItem();
-
-      list.addFirst(parameter, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
-      return new ParseContainer<ParseList<TypeParameterAST>>(list, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
-    }
-    if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
-    {
-      QNameElementAST element = (QNameElementAST) args[0];
-      TypeAST type = element.toType();
-      TypeParameterAST parameter = new NormalTypeParameterAST(type, type.getParseInfo());
-      @SuppressWarnings("unchecked")
-      ParseContainer<ParseList<TypeParameterAST>> container = (ParseContainer<ParseList<TypeParameterAST>>) args[2];
-      ParseList<TypeParameterAST> list = container.getItem();
-
-      list.addFirst(parameter, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
-      return new ParseContainer<ParseList<TypeParameterAST>>(list, ParseInfo.combine(parameter.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
+      ParseContainer<TypeParameterAST> typeParameter = (ParseContainer<TypeParameterAST>) args[2];
+      list.addLast(typeParameter.getItem(), ParseInfo.combine(listParseInfo, (ParseInfo) args[1], typeParameter.getItem().getParseInfo()));
+      return new ParseContainer<ParseList<TypeParameterAST>>(list, ParseInfo.combine(listParseInfo, (ParseInfo) args[1], typeParameter.getParseInfo()));
     }
     throw badTypeList();
   }

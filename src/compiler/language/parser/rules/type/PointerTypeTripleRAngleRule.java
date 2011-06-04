@@ -1,7 +1,7 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME;
-import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE;
+import static compiler.language.parser.ParseType.POINTER_TYPE_NO_TRAILING_ARGS_NOT_QNAME;
+import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_ARGS_TRIPLE_RANGLE;
 import static compiler.language.parser.ParseType.POINTER_TYPE_TRIPLE_RANGLE;
 import static compiler.language.parser.ParseType.QNAME;
 import static compiler.language.parser.ParseType.TRIPLE_RANGLE;
@@ -28,8 +28,8 @@ public final class PointerTypeTripleRAngleRule extends Rule<ParseType>
   private static final long serialVersionUID = 1L;
 
   private static final Production<ParseType> QNAME_PRODUCTION = new Production<ParseType>(QNAME, TRIPLE_RANGLE);
-  private static final Production<ParseType> NO_TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_NO_TRAILING_PARAMS_NOT_QNAME, TRIPLE_RANGLE);
-  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE);
+  private static final Production<ParseType> NO_TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_NO_TRAILING_ARGS_NOT_QNAME, TRIPLE_RANGLE);
+  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_ARGS_TRIPLE_RANGLE);
 
   @SuppressWarnings("unchecked")
   public PointerTypeTripleRAngleRule()

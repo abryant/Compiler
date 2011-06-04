@@ -10,7 +10,7 @@ import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TupleTypeAST;
 import compiler.language.ast.type.TypeAST;
-import compiler.language.ast.type.TypeParameterAST;
+import compiler.language.ast.type.TypeArgumentAST;
 
 /*
  * Created on 17 Aug 2010
@@ -92,8 +92,8 @@ public class QNameElementAST
     if (qname != null)
     {
       NameAST[] names = qname.getNames();
-      TypeParameterAST[][] typeParameterLists = new TypeParameterAST[names.length][];
-      return new PointerTypeAST(false, qname.getNames(), typeParameterLists, qname.getParseInfo());
+      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
+      return new PointerTypeAST(false, qname.getNames(), typeArgumentLists, qname.getParseInfo());
     }
 
     QNameElementAST[] elems = elements.toArray(new QNameElementAST[0]);

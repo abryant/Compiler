@@ -4,13 +4,13 @@ import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.misc.AccessSpecifier;
-import compiler.language.conceptual.misc.Argument;
 import compiler.language.conceptual.misc.NativeSpecifier;
+import compiler.language.conceptual.misc.Parameter;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.statement.Statement;
 import compiler.language.conceptual.type.PointerType;
 import compiler.language.conceptual.type.Type;
-import compiler.language.conceptual.type.TypeArgument;
+import compiler.language.conceptual.type.TypeParameter;
 import compiler.language.conceptual.typeDefinition.TypeDefinition;
 
 /*
@@ -32,9 +32,9 @@ public class Method extends Resolvable
   private boolean isImmutable;
   private SinceSpecifier sinceSpecifier;
   private NativeSpecifier nativeSpecifier;
-  private TypeArgument[] typeArguments;
+  private TypeParameter[] typeParameters;
   private String name;
-  private Argument[] arguments;
+  private Parameter[] parameters;
   private Type returnType;
   private PointerType[] thrownTypes;
   private Statement[] statements;
@@ -132,11 +132,11 @@ public class Method extends Resolvable
   }
 
   /**
-   * @return the typeArguments
+   * @return the typeParameters
    */
-  public TypeArgument[] getTypeArguments()
+  public TypeParameter[] getTypeParameters()
   {
-    return typeArguments;
+    return typeParameters;
   }
 
   /**
@@ -148,11 +148,11 @@ public class Method extends Resolvable
   }
 
   /**
-   * @return the arguments
+   * @return the parameters
    */
-  public Argument[] getArguments()
+  public Parameter[] getParameters()
   {
-    return arguments;
+    return parameters;
   }
 
   /**

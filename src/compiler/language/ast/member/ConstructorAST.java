@@ -1,8 +1,8 @@
 package compiler.language.ast.member;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.misc.ArgumentListAST;
 import compiler.language.ast.misc.ModifierAST;
+import compiler.language.ast.misc.ParameterListAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
@@ -22,7 +22,7 @@ public class ConstructorAST extends MemberAST
   private AccessSpecifierAST accessSpecifier;
   private ModifierAST[] modifiers;
   private NameAST name; // to be checked against the class name later in compilation
-  private ArgumentListAST arguments;
+  private ParameterListAST parameters;
   private PointerTypeAST[] thrownTypes;
   private BlockAST block;
 
@@ -31,18 +31,18 @@ public class ConstructorAST extends MemberAST
    * @param accessSpecifier - the access specifier of the constructor
    * @param modifiers - the modifiers for this constructor
    * @param name - the name of the constructor (this must be equal to the class name, but is checked later in compilation)
-   * @param arguments - the constructor's arguments
+   * @param parameters - the constructor's parameters
    * @param thrownTypes - the list of types that the constructor is declared to throw
    * @param block - the block that will be executed when calling the constructor
    * @param parseInfo - the parsing information
    */
-  public ConstructorAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, NameAST name, ArgumentListAST arguments, PointerTypeAST[] thrownTypes, BlockAST block, ParseInfo parseInfo)
+  public ConstructorAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, NameAST name, ParameterListAST parameters, PointerTypeAST[] thrownTypes, BlockAST block, ParseInfo parseInfo)
   {
     super(parseInfo);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
     this.name = name;
-    this.arguments = arguments;
+    this.parameters = parameters;
     this.thrownTypes = thrownTypes;
     this.block = block;
   }
@@ -72,11 +72,11 @@ public class ConstructorAST extends MemberAST
   }
 
   /**
-   * @return the arguments
+   * @return the parameters
    */
-  public ArgumentListAST getArguments()
+  public ParameterListAST getParameters()
   {
-    return arguments;
+    return parameters;
   }
 
   /**
@@ -108,7 +108,7 @@ public class ConstructorAST extends MemberAST
       buffer.append(" ");
     }
     buffer.append(name);
-    buffer.append(arguments);
+    buffer.append(parameters);
     if (thrownTypes.length > 0)
     {
       buffer.append(" throws ");

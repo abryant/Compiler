@@ -6,7 +6,7 @@ import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
 import compiler.language.conceptual.member.StaticInitializer;
 import compiler.language.conceptual.member.VariableInitializers;
-import compiler.language.conceptual.misc.Parameter;
+import compiler.language.conceptual.misc.Argument;
 
 /*
  * Created on 31 Oct 2010
@@ -18,7 +18,7 @@ import compiler.language.conceptual.misc.Parameter;
 public class EnumConstant
 {
   private String name;
-  private Parameter[] parameters;
+  private Argument[] arguments;
 
   // members
   private StaticInitializer staticInitializer;
@@ -44,12 +44,12 @@ public class EnumConstant
   }
 
   /**
-   * Sets the parameters of this enum constant.
-   * @param parameters
+   * Sets the arguments of this enum constant.
+   * @param arguments
    */
-  public void setParameters(Parameter[] parameters)
+  public void setArguments(Argument[] arguments)
   {
-    this.parameters = parameters;
+    this.arguments = arguments;
   }
 
   /**
@@ -88,11 +88,11 @@ public class EnumConstant
     return name;
   }
   /**
-   * @return the parameters
+   * @return the arguments
    */
-  public Parameter[] getParameters()
+  public Argument[] getArguments()
   {
-    return parameters;
+    return arguments;
   }
   /**
    * @return the staticInitializer

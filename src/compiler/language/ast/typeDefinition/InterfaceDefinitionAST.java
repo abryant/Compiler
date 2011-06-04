@@ -7,7 +7,7 @@ import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.topLevel.TypeDefinitionAST;
 import compiler.language.ast.type.PointerTypeAST;
-import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.ast.type.TypeParameterAST;
 
 
 /*
@@ -21,7 +21,7 @@ public class InterfaceDefinitionAST extends TypeDefinitionAST
 {
   private AccessSpecifierAST access;
   private ModifierAST[] modifiers;
-  private TypeArgumentAST[] typeArguments;
+  private TypeParameterAST[] typeParameters;
   private PointerTypeAST[] parentInterfaces;
   private MemberAST[] members;
 
@@ -30,17 +30,17 @@ public class InterfaceDefinitionAST extends TypeDefinitionAST
    * @param access - the access specifier, or null for the default access specifier
    * @param modifiers - the list of modifiers for this interface
    * @param name - the name of this interface
-   * @param typeArguments - the type arguments to this interface
+   * @param typeParameters - the type parameters to this interface
    * @param parentInterfaces - the list of interfaces that this interface extends
    * @param members - the list of members of this interface
    * @param parseInfo - the parsing information
    */
-  public InterfaceDefinitionAST(AccessSpecifierAST access, ModifierAST[] modifiers, NameAST name, TypeArgumentAST[] typeArguments, PointerTypeAST[] parentInterfaces, MemberAST[] members, ParseInfo parseInfo)
+  public InterfaceDefinitionAST(AccessSpecifierAST access, ModifierAST[] modifiers, NameAST name, TypeParameterAST[] typeParameters, PointerTypeAST[] parentInterfaces, MemberAST[] members, ParseInfo parseInfo)
   {
     super(name, parseInfo);
     this.access = access;
     this.modifiers = modifiers;
-    this.typeArguments = typeArguments;
+    this.typeParameters = typeParameters;
     this.parentInterfaces = parentInterfaces;
     this.members = members;
   }
@@ -62,11 +62,11 @@ public class InterfaceDefinitionAST extends TypeDefinitionAST
   }
 
   /**
-   * @return the type arguments
+   * @return the type parameters
    */
-  public TypeArgumentAST[] getTypeArguments()
+  public TypeParameterAST[] getTypeParameters()
   {
-    return typeArguments;
+    return typeParameters;
   }
 
   /**
@@ -104,13 +104,13 @@ public class InterfaceDefinitionAST extends TypeDefinitionAST
     }
     buffer.append("interface ");
     buffer.append(getName());
-    if (typeArguments.length > 0)
+    if (typeParameters.length > 0)
     {
       buffer.append("<");
-      for (int i = 0; i < typeArguments.length; i++)
+      for (int i = 0; i < typeParameters.length; i++)
       {
-        buffer.append(typeArguments[i]);
-        if (i != typeArguments.length - 1)
+        buffer.append(typeParameters[i]);
+        if (i != typeParameters.length - 1)
         {
           buffer.append(", ");
         }

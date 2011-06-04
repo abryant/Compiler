@@ -1,7 +1,7 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_PARAMS;
-import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE;
+import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_ARGS;
+import static compiler.language.parser.ParseType.POINTER_TYPE_TRAILING_ARGS_TRIPLE_RANGLE;
 import static compiler.language.parser.ParseType.TRIPLE_RANGLE;
 import parser.ParseException;
 import parser.Production;
@@ -20,16 +20,16 @@ import compiler.language.parser.ParseUtil;
 /**
  * @author Anthony Bryant
  */
-public final class PointerTypeTrailingParamsTripleRAngleRule extends Rule<ParseType>
+public final class PointerTypeTrailingArgsTripleRAngleRule extends Rule<ParseType>
 {
   private static final long serialVersionUID = 1L;
 
-  private static final Production<ParseType> TRAILING_PARAMS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_PARAMS, TRIPLE_RANGLE);
+  private static final Production<ParseType> TRAILING_ARGS_PRODUCTION = new Production<ParseType>(POINTER_TYPE_TRAILING_ARGS, TRIPLE_RANGLE);
 
   @SuppressWarnings("unchecked")
-  public PointerTypeTrailingParamsTripleRAngleRule()
+  public PointerTypeTrailingArgsTripleRAngleRule()
   {
-    super(POINTER_TYPE_TRAILING_PARAMS_TRIPLE_RANGLE, TRAILING_PARAMS_PRODUCTION);
+    super(POINTER_TYPE_TRAILING_ARGS_TRIPLE_RANGLE, TRAILING_ARGS_PRODUCTION);
   }
 
   /**
@@ -39,7 +39,7 @@ public final class PointerTypeTrailingParamsTripleRAngleRule extends Rule<ParseT
   @Override
   public Object match(Production<ParseType> production, Object[] args) throws ParseException
   {
-    if (TRAILING_PARAMS_PRODUCTION.equals(production))
+    if (TRAILING_ARGS_PRODUCTION.equals(production))
     {
       PointerTypeAST type = (PointerTypeAST) args[0];
       ParseInfo tripleRAngleInfo = (ParseInfo) args[1];

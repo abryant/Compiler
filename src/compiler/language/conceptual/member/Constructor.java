@@ -4,7 +4,7 @@ import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.misc.AccessSpecifier;
-import compiler.language.conceptual.misc.Argument;
+import compiler.language.conceptual.misc.Parameter;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.statement.Statement;
 import compiler.language.conceptual.type.PointerType;
@@ -24,7 +24,7 @@ public class Constructor extends Resolvable
   private AccessSpecifier accessSpecifier;
   private SinceSpecifier sinceSpecifier;
   private String name;
-  private Argument[] arguments;
+  private Parameter[] parameters;
   private PointerType[] thrownTypes;
   private Statement[] statements;
 
@@ -65,11 +65,11 @@ public class Constructor extends Resolvable
     return name;
   }
   /**
-   * @return the arguments
+   * @return the parameters
    */
-  public Argument[] getArguments()
+  public Parameter[] getParameters()
   {
-    return arguments;
+    return parameters;
   }
   /**
    * @return the thrownTypes

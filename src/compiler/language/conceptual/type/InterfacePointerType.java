@@ -13,19 +13,19 @@ public class InterfacePointerType extends PointerType
 {
 
   private ConceptualInterface interfaceType;
-  private TypeParameter[] typeParameters;
+  private TypeArgument[] typeArguments;
 
   /**
-   * Creates a new InterfacePointerType with the specified conceptual interface, type parameters and immutability
+   * Creates a new InterfacePointerType with the specified conceptual interface, type arguments and immutability
    * @param interfaceType - the interface type
-   * @param typeParameters - the type parameters
+   * @param typeArguments - the type arguments
    * @param immutable - true if this PointerType should be immutable, false otherwise
    */
-  public InterfacePointerType(ConceptualInterface interfaceType, TypeParameter[] typeParameters, boolean immutable)
+  public InterfacePointerType(ConceptualInterface interfaceType, TypeArgument[] typeArguments, boolean immutable)
   {
     super(immutable);
     this.interfaceType = interfaceType;
-    this.typeParameters = typeParameters;
+    this.typeArguments = typeArguments;
   }
 
   /**
@@ -36,11 +36,11 @@ public class InterfacePointerType extends PointerType
     return interfaceType;
   }
   /**
-   * @return the typeParameters
+   * @return the typeArguments
    */
-  public TypeParameter[] getTypeParameters()
+  public TypeArgument[] getTypeArguments()
   {
-    return typeParameters;
+    return typeArguments;
   }
 
 }
