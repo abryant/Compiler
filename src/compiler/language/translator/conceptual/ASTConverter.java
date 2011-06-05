@@ -1011,14 +1011,14 @@ public class ASTConverter
   /**
    * Converts the specified TypeParameterAST into a TypeParameter.
    * @param typeParameterAST - the TypeParameterAST to convert
-   * @param nameResolver - the NameResolver to use to resolve any names (e.g. in super types)
+   * @param typeResolver - the TypeResolver to use to resolve any type names (e.g. in super types)
    * @param startScope - the starting scope to lookup names in
    * @return the converted TypeParameter
    * @throws NameConflictException - if a name conflict is detected while looking up any names
    * @throws ConceptualException - if a conceptual problem occurs while converting this type parameter
    * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
    */
-  private static TypeParameter convert(TypeParameterAST typeParameterAST, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
+  private static TypeParameter convert(TypeParameterAST typeParameterAST, TypeResolver typeResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
     TypeParameter typeParameter = new TypeParameter(typeParameterAST.getName().getName());
     PointerTypeAST[] superTypeASTs = typeParameterAST.getSuperTypes();
@@ -1026,12 +1026,12 @@ public class ASTConverter
     PointerType[] superTypes = new PointerType[superTypeASTs.length];
     for (int i = 0; i < superTypeASTs.length; i++)
     {
-      superTypes[i] = nameResolver.resolvePointerType(superTypeASTs[i], startScope);
+      superTypes[i] = typeResolver.resolvePointerType(superTypeASTs[i], startScope);
     }
     PointerType[] subTypes = new PointerType[subTypeASTs.length];
     for (int i = 0; i < subTypeASTs.length; i++)
     {
-      subTypes[i] = nameResolver.resolvePointerType(subTypeASTs[i], startScope);
+      subTypes[i] = typeResolver.resolvePointerType(subTypeASTs[i], startScope);
     }
     typeParameter.setSuperTypes(superTypes);
     typeParameter.setSubTypes(subTypes);
@@ -1041,14 +1041,14 @@ public class ASTConverter
   /**
    * Converts the specified TypeArgumentASTs into TypeArguments.
    * @param typeArgumentASTs - the TypeArgumentASTs to convert
-   * @param nameResolver - the NameResolver to use to resolve any names
+   * @param typeResolver - the TypeResolver to use to resolve any type names
    * @param startScope - the starting scope to resolve the names from
    * @return the converted TypeArguments
    * @throws NameConflictException - if a name conflict is detected while looking up any names
    * @throws ConceptualException - if a conceptual problem occurs while resolving the type arguments
    * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
    */
-  public static TypeArgument[] convert(TypeArgumentAST[] typeArgumentASTs, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
+  public static TypeArgument[] convert(TypeArgumentAST[] typeArgumentASTs, TypeResolver typeResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
     if (typeArgumentASTs == null)
     {
@@ -1060,7 +1060,7 @@ public class ASTConverter
       if (typeArgumentASTs[i] instanceof NormalTypeArgumentAST)
       {
         TypeAST typeAST = ((NormalTypeArgumentAST) typeArgumentASTs[i]).getType();
-        typeArguments[i] = new NormalTypeArgument(ASTConverter.convert(typeAST, nameResolver, startScope));
+        typeArguments[i] = new NormalTypeArgument(ASTConverter.convert(typeAST, typeResolver, startScope));
       }
       else if (typeArgumentASTs[i] instanceof WildcardTypeArgumentAST)
       {
@@ -1070,12 +1070,12 @@ public class ASTConverter
         PointerType[] superTypes = new PointerType[superTypeASTs.length];
         for (int j = 0; j < superTypeASTs.length; j++)
         {
-          superTypes[j] = nameResolver.resolvePointerType(superTypeASTs[j], startScope);
+          superTypes[j] = typeResolver.resolvePointerType(superTypeASTs[j], startScope);
         }
         PointerType[] subTypes = new PointerType[subTypeASTs.length];
         for (int j = 0; j < subTypeASTs.length; j++)
         {
-          subTypes[j] = nameResolver.resolvePointerType(subTypeASTs[j], startScope);
+          subTypes[j] = typeResolver.resolvePointerType(subTypeASTs[j], startScope);
         }
         typeArguments[i] = new WildcardTypeArgument(superTypes, subTypes);
       }
@@ -1090,19 +1090,19 @@ public class ASTConverter
   /**
    * Converts the specified TypeAST into a Type
    * @param typeAST - the TypeAST to convert
-   * @param nameResolver - the NameResolver to use to resolve any names (e.g. in PointerTypeASTs)
+   * @param typeResolver - the TypeResolver to use to resolve any type names (e.g. in PointerTypeASTs)
    * @param startScope - the starting scope to lookup names in
    * @return the converted Type
    * @throws NameConflictException - if a name conflict is detected while looking up any names
    * @throws ConceptualException - if a conceptual problem occurs while converting this type
    * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
    */
-  public static Type convert(TypeAST typeAST, NameResolver nameResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
+  public static Type convert(TypeAST typeAST, TypeResolver typeResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
     if (typeAST instanceof ArrayTypeAST)
     {
       ArrayTypeAST arrayTypeAST = (ArrayTypeAST) typeAST;
-      return new ArrayType(convert(arrayTypeAST.getBaseType(), nameResolver, startScope), arrayTypeAST.isImmutable());
+      return new ArrayType(convert(arrayTypeAST.getBaseType(), typeResolver, startScope), arrayTypeAST.isImmutable());
     }
     if (typeAST instanceof ClosureTypeAST)
     {
@@ -1114,28 +1114,28 @@ public class ASTConverter
       TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
       for (int i = 0; i < typeParameterASTs.length; i++)
       {
-        typeParameters[i] = convert(typeParameterASTs[i], nameResolver, startScope);
+        typeParameters[i] = convert(typeParameterASTs[i], typeResolver, startScope);
       }
       Type[] argumentTypes = new Type[argumentTypeASTs.length];
       for (int i = 0; i < argumentTypeASTs.length; i++)
       {
-        argumentTypes[i] = convert(argumentTypeASTs[i], nameResolver, startScope);
+        argumentTypes[i] = convert(argumentTypeASTs[i], typeResolver, startScope);
       }
       Type[] resultTypes = new Type[resultTypeASTs.length];
       for (int i = 0; i < resultTypeASTs.length; i++)
       {
-        resultTypes[i] = convert(resultTypeASTs[i], nameResolver, startScope);
+        resultTypes[i] = convert(resultTypeASTs[i], typeResolver, startScope);
       }
       PointerType[] exceptionTypes = new PointerType[exceptionTypeASTs.length];
       for (int i = 0; i < exceptionTypeASTs.length; i++)
       {
-        exceptionTypes[i] = nameResolver.resolvePointerType(exceptionTypeASTs[i], startScope);
+        exceptionTypes[i] = typeResolver.resolvePointerType(exceptionTypeASTs[i], startScope);
       }
       return new ClosureType(typeParameters, argumentTypes, resultTypes, exceptionTypes);
     }
     if (typeAST instanceof PointerTypeAST)
     {
-      return nameResolver.resolvePointerType((PointerTypeAST) typeAST, startScope);
+      return typeResolver.resolvePointerType((PointerTypeAST) typeAST, startScope);
     }
     if (typeAST instanceof BooleanTypeAST)
     {
@@ -1190,7 +1190,7 @@ public class ASTConverter
       Type[] subTypes = new Type[subTypeASTs.length];
       for (int i = 0; i < subTypeASTs.length; i++)
       {
-        subTypes[i] = convert(subTypeASTs[i], nameResolver, startScope);
+        subTypes[i] = convert(subTypeASTs[i], typeResolver, startScope);
       }
       return new TupleType(subTypes);
     }

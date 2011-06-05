@@ -42,7 +42,7 @@ public class ConceptualTranslator
     rootPackage = new ConceptualPackage(this, classpath);
     astConverter = new ASTConverter(rootPackage);
     nameResolver = new NameResolver(astConverter.getConceptualASTNodes());
-    nameResolver.buildUniversalBaseClass(rootPackage);
+    nameResolver.initialize(rootPackage);
   }
 
   /**
