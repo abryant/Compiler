@@ -155,19 +155,12 @@ public final class NameResolver
     boolean changed = true;
     Set<ParseInfo> unresolvedParseInfo = new HashSet<ParseInfo>();
 
-    while (changed && !(interfacesToResolve.isEmpty() && classesToResolve.isEmpty() && enumsToResolve.isEmpty()))
+    while (changed)
     {
-      // clear the unresolvedSinceLastChange set, as it will be repopulated during the loop
+      // clear the unresolvedParseInfo set, as it will be repopulated during the loop, and should only contain the unresolved ParseInfo since the last change
       unresolvedParseInfo.clear();
 
-      // resolve the super-interfaces of all unresolved interfaces
-      changed = resolveInterfaceParents(unresolvedParseInfo);
-
-      // resolve the base class and super-interfaces of all unresolved classes
-      changed = resolveClassParents(unresolvedParseInfo) || changed;
-
-      // resolve the base class and super-interfaces of all unresolved enums
-      changed = resolveEnumParents(unresolvedParseInfo) || changed;
+      changed = resolveNames(unresolvedParseInfo);
     }
 
     if (!interfacesToResolve.isEmpty() || !classesToResolve.isEmpty() || !enumsToResolve.isEmpty())
@@ -178,9 +171,35 @@ public final class NameResolver
   }
 
   /**
+   * Resolves as many QNames as possible from a single queue.
+   * For example, if there are interfaces to resolve the parents of then this method resolves as many as possible, and then returns.
+   * The queues are checked in a fixed order, so that interface parents will always be resolved in preference to class parents.
+   * @param unresolvedParseInfo - the set of ParseInfo objects for names which could not be resolved since the last change was made
+   * @return true if any successful processing was done, false otherwise
+   * @throws NameConflictException - if a name conflict was detected while resolving a name
+   * @throws ConceptualException - if a conceptual problem occurs while resolving a name
+   */
+  private boolean resolveNames(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
+  {
+    if (!interfacesToResolve.isEmpty())
+    {
+      return resolveInterfaceParents(unresolvedParseInfo);
+    }
+    if (!classesToResolve.isEmpty())
+    {
+      return resolveClassParents(unresolvedParseInfo);
+    }
+    if (!enumsToResolve.isEmpty())
+    {
+      return resolveEnumParents(unresolvedParseInfo);
+    }
+    return false;
+  }
+
+  /**
    * Resolves the parent interfaces of all interfaces in the interfacesToResolve queue.
    * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
-   * @return true if changes were made to the conceptual hierarchy, false otherwise
+   * @return true if any successful processing was done, false otherwise
    * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
    * @throws ConceptualException - if a conceptual problem occurs while resolving parent interfaces
    */
@@ -255,11 +274,18 @@ public final class NameResolver
           }
         }
       }
-      if (!fullyResolved)
+      if (fullyResolved)
+      {
+        // we have removed something from the queue, so a change has occurred
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
+      else
       {
         // some parent interfaces still need filling in, so add this to the end of the queue again
-        notFullyResolved.add(toResolve);
         interfacesToResolve.add(toResolve);
+        notFullyResolved.add(toResolve);
       }
     }
     return changed;
@@ -310,7 +336,7 @@ public final class NameResolver
   /**
    * Resolves the parent classes and interfaces of all classes in the classesToResolve queue.
    * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
-   * @return true if changes were made to the conceptual hierarchy, false otherwise
+   * @return true if any successful processing was done, false otherwise
    * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
    * @throws ConceptualException - if a conceptual problem occurs while resolving parent classes/interfaces
    */
@@ -421,7 +447,14 @@ public final class NameResolver
           }
         }
       }
-      if (!fullyResolved)
+      if (fullyResolved)
+      {
+        // we have removed something from the queue, so a change has occurred
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
+      else
       {
         // some parent classes/interfaces still need filling in, so add this to the end of the queue again
         notFullyResolved.add(toResolve);
@@ -466,7 +499,7 @@ public final class NameResolver
   /**
    * Resolves the parent classes and interfaces of all enums in the enumsToResolve queue.
    * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
-   * @return true if changes were made to the conceptual hierarchy, false otherwise
+   * @return true if any successful processing was done, false otherwise
    * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
    * @throws ConceptualException - if a conceptual problem occurs while resolving parent classes/interfaces
    */
@@ -575,7 +608,14 @@ public final class NameResolver
           }
         }
       }
-      if (!fullyResolved)
+      if (fullyResolved)
+      {
+        // we have removed something from the queue, so a change has occurred
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
+      else
       {
         // some parent classes/interfaces still need filling in, so add this to the end of the queue again
         notFullyResolved.add(toResolve);
