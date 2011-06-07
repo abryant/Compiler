@@ -225,8 +225,9 @@ public class ASTConverter
    * @param enclosingFile - the file to make the parent of the new conceptual class
    * @return the ConceptualClass created
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws NameConflictException - if a name conflict is detected in the class data
    */
-  private ConceptualClass convert(ClassDefinitionAST classDefinition, ConceptualFile enclosingFile) throws ConceptualException
+  private ConceptualClass convert(ClassDefinitionAST classDefinition, ConceptualFile enclosingFile) throws ConceptualException, NameConflictException
   {
     // convert AccessSpecifier and Modifiers
     AccessSpecifier access = convert(classDefinition.getAccess(), AccessSpecifier.PUBLIC);
@@ -275,14 +276,24 @@ public class ASTConverter
    * @param conceptualClass - the converted class definition to add data to
    * @param classDefinition - the ClassDefinitionAST to convert the type parameters and members of
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws NameConflictException - if a name conflict is detected in the class data
    */
-  private void addClassData(ConceptualClass conceptualClass, ClassDefinitionAST classDefinition) throws ConceptualException
+  private void addClassData(ConceptualClass conceptualClass, ClassDefinitionAST classDefinition) throws ConceptualException, NameConflictException
   {
-    // convert the type arguments
+    // a Map from the name to whether or not it was used as a method name
+    // if the name exists as a key, it has been used; iff it maps to true, it was used as a method name
+    Map<String, Boolean> usedNames = new HashMap<String, Boolean>();
+
+    // convert the type parameters
     TypeParameterAST[] typeParameterASTs = classDefinition.getTypeParameters();
     TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
     for (int i = 0; i < typeParameterASTs.length; i++)
     {
+      Boolean usedInMethod = usedNames.put(typeParameterASTs[i].getName().getName(), false);
+      if (usedInMethod != null)
+      {
+        throw new NameConflictException(typeParameterASTs[i].getName().getParseInfo());
+      }
       typeParameters[i] =  convert(typeParameterASTs[i]);
     }
     conceptualClass.setTypeParameters(typeParameters);
@@ -305,11 +316,21 @@ public class ASTConverter
         MemberVariable[] memberVariables = convert((FieldAST) memberAST, conceptualClass);
         for (MemberVariable variable : memberVariables)
         {
+          Boolean usedInMethod = usedNames.put(variable.getName(), false);
+          if (usedInMethod != null)
+          {
+            throw new NameConflictException(((DeclarationAssigneeAST) conceptualASTNodes.get(variable)).getName().getParseInfo());
+          }
           variables.add(variable);
         }
       }
       else if (memberAST instanceof PropertyAST)
       {
+        Boolean usedInMethod = usedNames.put(((PropertyAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((PropertyAST) memberAST).getName().getParseInfo());
+        }
         properties.add(convert((PropertyAST) memberAST, conceptualClass));
       }
       else if (memberAST instanceof StaticInitializerAST)
@@ -323,18 +344,39 @@ public class ASTConverter
       }
       else if (memberAST instanceof MethodAST)
       {
+        Boolean usedInMethod = usedNames.put(((MethodAST) memberAST).getName().getName(), true);
+        if (usedInMethod != null && !usedInMethod)
+        {
+          // this name has already been used, and not in another method
+          throw new NameConflictException(((MethodAST) memberAST).getName().getParseInfo());
+        }
         methods.add(convert((MethodAST) memberAST, conceptualClass));
       }
       else if (memberAST instanceof ClassDefinitionAST)
       {
+        Boolean usedInMethod = usedNames.put(((ClassDefinitionAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((ClassDefinitionAST) memberAST).getName().getParseInfo());
+        }
         innerClasses.add(convertInnerClass((ClassDefinitionAST) memberAST, conceptualClass));
       }
       else if (memberAST instanceof InterfaceDefinitionAST)
       {
+        Boolean usedInMethod = usedNames.put(((InterfaceDefinitionAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((InterfaceDefinitionAST) memberAST).getName().getParseInfo());
+        }
         innerInterfaces.add(convertInnerInterface((InterfaceDefinitionAST) memberAST, conceptualClass));
       }
       else if (memberAST instanceof EnumDefinitionAST)
       {
+        Boolean usedInMethod = usedNames.put(((EnumDefinitionAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((EnumDefinitionAST) memberAST).getName().getParseInfo());
+        }
         innerEnums.add(convertInnerEnum((EnumDefinitionAST) memberAST, conceptualClass));
       }
       else
@@ -359,8 +401,9 @@ public class ASTConverter
    * @param enclosingFile - the file to make the parent of the new conceptual interface
    * @return the ConceptualInterface created
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws NameConflictException - if a name conflict is detected in the interface data
    */
-  private ConceptualInterface convert(InterfaceDefinitionAST interfaceDefinition, ConceptualFile enclosingFile) throws ConceptualException
+  private ConceptualInterface convert(InterfaceDefinitionAST interfaceDefinition, ConceptualFile enclosingFile) throws ConceptualException, NameConflictException
   {
     AccessSpecifier access = convert(interfaceDefinition.getAccess(), AccessSpecifier.PUBLIC);
     if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
@@ -399,14 +442,24 @@ public class ASTConverter
    * @param conceptualInterface - the converted interface definition to add data to
    * @param interfaceDefinition - the InterfaceDefinitionAST to convert the type parameters and members of
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws NameConflictException - if a name conflict is detected in the interface data
    */
-  private void addInterfaceData(ConceptualInterface conceptualInterface, InterfaceDefinitionAST interfaceDefinition) throws ConceptualException
+  private void addInterfaceData(ConceptualInterface conceptualInterface, InterfaceDefinitionAST interfaceDefinition) throws ConceptualException, NameConflictException
   {
+    // a Map from the name to whether or not it was used as a method name
+    // if the name exists as a key, it has been used; iff it maps to true, it was used as a method name
+    Map<String, Boolean> usedNames = new HashMap<String, Boolean>();
+
     // convert the type arguments
     TypeParameterAST[] typeParameterASTs = interfaceDefinition.getTypeParameters();
     TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
     for (int i = 0; i < typeParameterASTs.length; i++)
     {
+      Boolean usedInMethod = usedNames.put(typeParameterASTs[i].getName().getName(), false);
+      if (usedInMethod != null)
+      {
+        throw new NameConflictException(typeParameterASTs[i].getName().getParseInfo());
+      }
       typeParameters[i] = convert(typeParameterASTs[i]);
     }
     conceptualInterface.setTypeParameters(typeParameters);
@@ -432,11 +485,21 @@ public class ASTConverter
           {
             throw new ConceptualException("An interface cannot contain non-static member variables.", memberAST.getParseInfo());
           }
+          Boolean usedInMethod = usedNames.put(variable.getName(), false);
+          if (usedInMethod != null)
+          {
+            throw new NameConflictException(((DeclarationAssigneeAST) conceptualASTNodes.get(variable)).getName().getParseInfo());
+          }
           variables.add(variable);
         }
       }
       else if (memberAST instanceof PropertyAST)
       {
+        Boolean usedInMethod = usedNames.put(((PropertyAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((PropertyAST) memberAST).getName().getParseInfo());
+        }
         properties.add(convert((PropertyAST) memberAST, conceptualInterface));
       }
       else if (memberAST instanceof StaticInitializerAST)
@@ -446,18 +509,39 @@ public class ASTConverter
       }
       else if (memberAST instanceof MethodAST)
       {
+        Boolean usedInMethod = usedNames.put(((MethodAST) memberAST).getName().getName(), true);
+        if (usedInMethod != null && !usedInMethod)
+        {
+          // this name has already been used, and not in another method
+          throw new NameConflictException(((MethodAST) memberAST).getName().getParseInfo());
+        }
         methods.add(convert((MethodAST) memberAST, conceptualInterface));
       }
       else if (memberAST instanceof ClassDefinitionAST)
       {
+        Boolean usedInMethod = usedNames.put(((ClassDefinitionAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((ClassDefinitionAST) memberAST).getName().getParseInfo());
+        }
         innerClasses.add(convertInnerClass((ClassDefinitionAST) memberAST, conceptualInterface));
       }
       else if (memberAST instanceof InterfaceDefinitionAST)
       {
+        Boolean usedInMethod = usedNames.put(((InterfaceDefinitionAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((InterfaceDefinitionAST) memberAST).getName().getParseInfo());
+        }
         innerInterfaces.add(convertInnerInterface((InterfaceDefinitionAST) memberAST, conceptualInterface));
       }
       else if (memberAST instanceof EnumDefinitionAST)
       {
+        Boolean usedInMethod = usedNames.put(((EnumDefinitionAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((EnumDefinitionAST) memberAST).getName().getParseInfo());
+        }
         innerEnums.add(convertInnerEnum((EnumDefinitionAST) memberAST, conceptualInterface));
       }
       else
@@ -481,8 +565,9 @@ public class ASTConverter
    * @param enclosingFile - the file to make the parent of the new conceptual enum
    * @return the ConceptualEnum created
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws NameConflictException - if a name conflict is detected in the enum data
    */
-  private ConceptualEnum convert(EnumDefinitionAST enumDefinition, ConceptualFile enclosingFile) throws ConceptualException
+  private ConceptualEnum convert(EnumDefinitionAST enumDefinition, ConceptualFile enclosingFile) throws ConceptualException, NameConflictException
   {
     AccessSpecifier access = convert(enumDefinition.getAccessSpecifier(), AccessSpecifier.PUBLIC);
     if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
@@ -517,9 +602,14 @@ public class ASTConverter
    * @param conceptualEnum - the converted enum definition to add data to
    * @param enumDefinition - the EnumDefinitionAST to convert the members of
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws NameConflictException - if a name conflict is detected in the enum data
    */
-  private void addEnumData(ConceptualEnum conceptualEnum, EnumDefinitionAST enumDefinition) throws ConceptualException
+  private void addEnumData(ConceptualEnum conceptualEnum, EnumDefinitionAST enumDefinition) throws ConceptualException, NameConflictException
   {
+    // a Map from the name to whether or not it was used as a method name
+    // if the name exists as a key, it has been used; iff it maps to true, it was used as a method name
+    Map<String, Boolean> usedNames = new HashMap<String, Boolean>();
+
     // convert each of the members in turn, switching on the member type. each member is added to a list of the members of its type.
 
     // convert the enum constants
@@ -527,6 +617,11 @@ public class ASTConverter
     EnumConstant[] constants = new EnumConstant[constantASTs.length];
     for (int i = 0; i < constantASTs.length; i++)
     {
+      Boolean usedInMethod = usedNames.put(constantASTs[i].getName().getName(), false);
+      if (usedInMethod != null)
+      {
+        throw new NameConflictException(constantASTs[i].getName().getParseInfo());
+      }
       constants[i] = convert(constantASTs[i]);
     }
     conceptualEnum.setConstants(constants);
@@ -548,11 +643,21 @@ public class ASTConverter
         MemberVariable[] memberVariables = convert((FieldAST) memberAST, conceptualEnum);
         for (MemberVariable variable : memberVariables)
         {
+          Boolean usedInMethod = usedNames.put(variable.getName(), false);
+          if (usedInMethod != null)
+          {
+            throw new NameConflictException(((DeclarationAssigneeAST) conceptualASTNodes.get(variable)).getName().getParseInfo());
+          }
           variables.add(variable);
         }
       }
       else if (memberAST instanceof PropertyAST)
       {
+        Boolean usedInMethod = usedNames.put(((PropertyAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((PropertyAST) memberAST).getName().getParseInfo());
+        }
         properties.add(convert((PropertyAST) memberAST, conceptualEnum));
       }
       else if (memberAST instanceof StaticInitializerAST)
@@ -566,18 +671,39 @@ public class ASTConverter
       }
       else if (memberAST instanceof MethodAST)
       {
+        Boolean usedInMethod = usedNames.put(((MethodAST) memberAST).getName().getName(), true);
+        if (usedInMethod != null && !usedInMethod)
+        {
+          // this name has already been used, and not in another method
+          throw new NameConflictException(((MethodAST) memberAST).getName().getParseInfo());
+        }
         methods.add(convert((MethodAST) memberAST, conceptualEnum));
       }
       else if (memberAST instanceof ClassDefinitionAST)
       {
+        Boolean usedInMethod = usedNames.put(((ClassDefinitionAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((ClassDefinitionAST) memberAST).getName().getParseInfo());
+        }
         innerClasses.add(convertInnerClass((ClassDefinitionAST) memberAST, conceptualEnum));
       }
       else if (memberAST instanceof InterfaceDefinitionAST)
       {
+        Boolean usedInMethod = usedNames.put(((InterfaceDefinitionAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((InterfaceDefinitionAST) memberAST).getName().getParseInfo());
+        }
         innerInterfaces.add(convertInnerInterface((InterfaceDefinitionAST) memberAST, conceptualEnum));
       }
       else if (memberAST instanceof EnumDefinitionAST)
       {
+        Boolean usedInMethod = usedNames.put(((EnumDefinitionAST) memberAST).getName().getName(), false);
+        if (usedInMethod != null)
+        {
+          throw new NameConflictException(((EnumDefinitionAST) memberAST).getName().getParseInfo());
+        }
         innerEnums.add(convertInnerEnum((EnumDefinitionAST) memberAST, conceptualEnum));
       }
       else
@@ -824,8 +950,9 @@ public class ASTConverter
    * @param enclosingTypeDefinition - the enclosing type definition
    * @return the InnerClass created
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws NameConflictException - if a name conflict is detected in the class data
    */
-  private InnerClass convertInnerClass(ClassDefinitionAST classDefinitionAST, TypeDefinition enclosingTypeDefinition) throws ConceptualException
+  private InnerClass convertInnerClass(ClassDefinitionAST classDefinitionAST, TypeDefinition enclosingTypeDefinition) throws ConceptualException, NameConflictException
   {
     // convert AccessSpecifier and Modifiers
     AccessSpecifier access = convert(classDefinitionAST.getAccess(), AccessSpecifier.PUBLIC);
@@ -875,8 +1002,9 @@ public class ASTConverter
    * @param enclosingTypeDefinition - the enclosing type definition
    * @return the InnerInterface created
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws NameConflictException - if a name conflict is detected in the interface data
    */
-  private InnerInterface convertInnerInterface(InterfaceDefinitionAST interfaceDefinition, TypeDefinition enclosingTypeDefinition) throws ConceptualException
+  private InnerInterface convertInnerInterface(InterfaceDefinitionAST interfaceDefinition, TypeDefinition enclosingTypeDefinition) throws ConceptualException, NameConflictException
   {
     AccessSpecifier access = convert(interfaceDefinition.getAccess(), AccessSpecifier.PUBLIC);
     ModifierAST[] modifiers = interfaceDefinition.getModifiers();
@@ -911,8 +1039,9 @@ public class ASTConverter
    * @param enclosingTypeDefinition - the enclosing type definition
    * @return the ConceptualEnum created
    * @throws ConceptualException - if there is a problem with the conversion
+   * @throws NameConflictException - if a name conflict is detected in the enum data
    */
-  private InnerEnum convertInnerEnum(EnumDefinitionAST enumDefinition, TypeDefinition enclosingTypeDefinition) throws ConceptualException
+  private InnerEnum convertInnerEnum(EnumDefinitionAST enumDefinition, TypeDefinition enclosingTypeDefinition) throws ConceptualException, NameConflictException
   {
     AccessSpecifier access = convert(enumDefinition.getAccessSpecifier(), AccessSpecifier.PUBLIC);
     if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
