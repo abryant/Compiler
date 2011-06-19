@@ -74,7 +74,7 @@ public class TypeParameter extends Resolvable
   @Override
   public ScopeType getType()
   {
-    return null;
+    return ScopeType.TYPE_PARAMETER;
   }
 
   /**

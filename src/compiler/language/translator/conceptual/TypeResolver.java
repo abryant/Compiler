@@ -10,6 +10,7 @@ import java.util.Set;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
+import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.ast.typeDefinition.ClassDefinitionAST;
 import compiler.language.ast.typeDefinition.EnumDefinitionAST;
 import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
@@ -27,6 +28,8 @@ import compiler.language.conceptual.type.InterfacePointerType;
 import compiler.language.conceptual.type.OuterClassPointerType;
 import compiler.language.conceptual.type.PointerType;
 import compiler.language.conceptual.type.TypeArgument;
+import compiler.language.conceptual.type.TypeParameter;
+import compiler.language.conceptual.type.TypeParameterPointerType;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
@@ -45,9 +48,17 @@ public class TypeResolver
 
   private Map<Object, Object> conceptualASTNodes;
 
-  private Queue<ConceptualInterface> interfacesToResolve = new LinkedList<ConceptualInterface>();
-  private Queue<ConceptualClass> classesToResolve = new LinkedList<ConceptualClass>();
-  private Queue<ConceptualEnum> enumsToResolve = new LinkedList<ConceptualEnum>();
+  private Queue<ConceptualInterface> interfacesToResolveParents = new LinkedList<ConceptualInterface>();
+  private Queue<ConceptualClass> classesToResolveParents = new LinkedList<ConceptualClass>();
+  private Queue<ConceptualEnum> enumsToResolveParents = new LinkedList<ConceptualEnum>();
+
+  // TODO: implement methods to resolve things from these queues:
+  private Queue<ConceptualInterface> interfacesToResolveTypeBounds = new LinkedList<ConceptualInterface>();
+  private Queue<ConceptualClass> classesToResolveTypeBounds = new LinkedList<ConceptualClass>();
+
+  private Queue<ConceptualInterface> interfacesToResolveMembers = new LinkedList<ConceptualInterface>();
+  private Queue<ConceptualClass> classesToResolveMembers = new LinkedList<ConceptualClass>();
+  private Queue<ConceptualEnum> enumsToResolveMembers = new LinkedList<ConceptualEnum>();
 
   private static final QName UNIVERSAL_BASE_CLASS_QNAME = new QName("x", "Object");
   private OuterClassPointerType universalBaseClass;
@@ -63,6 +74,47 @@ public class TypeResolver
   }
 
   /**
+   * Represents the state of all of the queues, storing only the size of each of them.
+   * This class serves as an an easy way of checking whether addFile() added something to a queue during a call to resolvePointerType()
+   * @author Anthony Bryant
+   */
+  private class QueueState
+  {
+    private int interfaceParentsLength;
+    private int classParentsLength;
+    private int enumParentsLength;
+    private int interfaceTypeBoundsLength;
+    private int classTypeBoundsLength;
+    private int interfaceMembersLength;
+    private int classMembersLength;
+    private int enumMembersLength;
+
+    private QueueState()
+    {
+      interfaceParentsLength    = interfacesToResolveParents.size();
+      classParentsLength        = classesToResolveParents.size();
+      enumParentsLength         = enumsToResolveParents.size();
+      interfaceTypeBoundsLength = interfacesToResolveTypeBounds.size();
+      classTypeBoundsLength     = classesToResolveTypeBounds.size();
+      interfaceMembersLength    = interfacesToResolveMembers.size();
+      classMembersLength        = classesToResolveMembers.size();
+      enumMembersLength         = enumsToResolveMembers.size();
+    }
+
+    private boolean hasChanged()
+    {
+      return interfaceParentsLength    != interfacesToResolveParents.size()    ||
+             classParentsLength        != classesToResolveParents.size()       ||
+             enumParentsLength         != enumsToResolveParents.size()         ||
+             interfaceTypeBoundsLength != interfacesToResolveTypeBounds.size() ||
+             classTypeBoundsLength     != classesToResolveTypeBounds.size()    ||
+             interfaceMembersLength    != interfacesToResolveMembers.size()    ||
+             classMembersLength        != classesToResolveMembers.size()       ||
+             enumMembersLength         != enumsToResolveMembers.size();
+    }
+  }
+
+  /**
    * Adds all of the type definitions in the specified ConceptualFile to this resolver's queues
    * @param file - the file to add the type definitions of
    */
@@ -70,17 +122,17 @@ public class TypeResolver
   {
     for (ConceptualClass conceptualClass : file.getClasses())
     {
-      classesToResolve.add(conceptualClass);
+      classesToResolveParents.add(conceptualClass);
       addInnerTypes(conceptualClass.getInnerClasses(), conceptualClass.getInnerInterfaces(), conceptualClass.getInnerEnums());
     }
     for (ConceptualInterface conceptualInterface : file.getInterfaces())
     {
-      interfacesToResolve.add(conceptualInterface);
+      interfacesToResolveParents.add(conceptualInterface);
       addInnerTypes(conceptualInterface.getInnerClasses(), conceptualInterface.getInnerInterfaces(), conceptualInterface.getInnerEnums());
     }
     for (ConceptualEnum conceptualEnum : file.getEnums())
     {
-      enumsToResolve.add(conceptualEnum);
+      enumsToResolveParents.add(conceptualEnum);
       addInnerTypes(conceptualEnum.getInnerClasses(), conceptualEnum.getInnerInterfaces(), conceptualEnum.getInnerEnums());
     }
   }
@@ -97,7 +149,7 @@ public class TypeResolver
     {
       for (ConceptualClass innerClass : innerClasses)
       {
-        classesToResolve.add(innerClass);
+        classesToResolveParents.add(innerClass);
         addInnerTypes(innerClass.getInnerClasses(), innerClass.getInnerInterfaces(), innerClass.getInnerEnums());
       }
     }
@@ -105,7 +157,7 @@ public class TypeResolver
     {
       for (ConceptualInterface innerInterface : innerInterfaces)
       {
-        interfacesToResolve.add(innerInterface);
+        interfacesToResolveParents.add(innerInterface);
         addInnerTypes(innerInterface.getInnerClasses(), innerInterface.getInnerInterfaces(), innerInterface.getInnerEnums());
       }
     }
@@ -113,7 +165,7 @@ public class TypeResolver
     {
       for (ConceptualEnum innerEnum : innerEnums)
       {
-        enumsToResolve.add(innerEnum);
+        enumsToResolveParents.add(innerEnum);
         addInnerTypes(innerEnum.getInnerClasses(), innerEnum.getInnerInterfaces(), innerEnum.getInnerEnums());
       }
     }
@@ -210,7 +262,8 @@ public class TypeResolver
         resolved.getType() == ScopeType.OUTER_INTERFACE ||
         resolved.getType() == ScopeType.OUTER_ENUM ||
         resolved.getType() == ScopeType.INNER_INTERFACE ||
-        resolved.getType() == ScopeType.INNER_ENUM)
+        resolved.getType() == ScopeType.INNER_ENUM ||
+        resolved.getType() == ScopeType.TYPE_PARAMETER)
     {
       // make sure all but the last type argument list is null
       for (int i = 0; i < typeArgumentLists.length - 1; i++)
@@ -220,16 +273,54 @@ public class TypeResolver
           throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[i].getParseInfo());
         }
       }
+      if (resolved.getType() == ScopeType.OUTER_ENUM ||
+          resolved.getType() == ScopeType.INNER_ENUM)
+      {
+        // make sure the last type argument list is null, as enums do not have type parameters
+        if (typeArgumentLists[typeArgumentLists.length - 1] != null)
+        {
+          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[typeArgumentLists.length - 1].getParseInfo());
+        }
+        return new EnumPointerType((ConceptualEnum) resolved, pointerTypeAST.isImmutable());
+      }
+      if (resolved.getType() == ScopeType.TYPE_PARAMETER)
+      {
+        // make sure the last type argument list is null, as type parameters do not have type parameters of their own
+        if (typeArgumentLists[typeArgumentLists.length - 1] != null)
+        {
+          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[typeArgumentLists.length - 1].getParseInfo());
+        }
+        return new TypeParameterPointerType((TypeParameter) resolved, pointerTypeAST.isImmutable());
+      }
+
+      // the type definition can accept type arguments, so check that they correspond to the type parameters
+      TypeArgument[] typeArguments = null;
+      TypeParameter[] typeParameters = null;
       if (resolved.getType() == ScopeType.OUTER_CLASS)
       {
-        return new OuterClassPointerType((ConceptualClass) resolved, ASTConverter.convert(lastTypeArguments, this, startScope), pointerTypeAST.isImmutable());
+        typeParameters = ((ConceptualClass) resolved).getTypeParameters();
       }
-      if (resolved.getType() == ScopeType.OUTER_INTERFACE ||
-          resolved.getType() == ScopeType.INNER_INTERFACE)
+      else // ScopeType.OUTER_INTERFACE or ScopeType.INNER_INTERFACE:
       {
-        return new InterfacePointerType((ConceptualInterface) resolved, ASTConverter.convert(lastTypeArguments, this, startScope), pointerTypeAST.isImmutable());
+        typeParameters = ((ConceptualInterface) resolved).getTypeParameters();
       }
-      return new EnumPointerType((ConceptualEnum) resolved, pointerTypeAST.isImmutable());
+      if (typeParameters != null && typeParameters.length > 0)
+      {
+        if (lastTypeArguments == null || lastTypeArguments.length != typeParameters.length)
+        {
+          throw new ConceptualException("Expected " + typeParameters.length + " type argument" + (typeParameters.length != 1 ? "s" : "") + " after this name, " +
+                                        "but found " + (lastTypeArguments == null ? "none" : lastTypeArguments.length),
+                                        pointerTypeAST.getNames()[typeArgumentLists.length - 1].getParseInfo());
+        }
+        typeArguments = ASTConverter.convert(lastTypeArguments, this, startScope);
+      }
+
+      if (resolved.getType() == ScopeType.OUTER_CLASS)
+      {
+        return new OuterClassPointerType((ConceptualClass) resolved, typeArguments, pointerTypeAST.isImmutable());
+      }
+      // ScopeType.OUTER_INTERFACE or ScopeType.INNER_INTERFACE:
+      return new InterfacePointerType((ConceptualInterface) resolved, typeArguments, pointerTypeAST.isImmutable());
     }
     else if (resolved.getType() != ScopeType.INNER_CLASS)
     {
@@ -251,7 +342,26 @@ public class TypeResolver
       else if (typeArgumentLists.length >= classes.size())
       {
         // get the type arguments from the PointerTypeAST
-        typeArguments.addFirst(ASTConverter.convert(typeArgumentLists[typeArgumentLists.length - classes.size()], this, startScope));
+
+        // FIXME: this assumes that a previous name must have the parent class's type arguments
+        //        however this is flawed because currently inner types can be inherited
+        //        for example, in the following example the following code will not currently work:
+        // class A<X, Y> {
+        //   class C<Z> {}
+        // }
+        // class B extends A<P, Q> {}
+        // now using B.C<R> will fail with the exception below, but A<X, Y>.C<R> will succeed
+        // one way to fix this is to disable inheritance of inner type definitions
+
+        TypeArgumentAST[] arguments = typeArgumentLists[typeArgumentLists.length - classes.size()];
+        if (arguments == null || arguments.length != currentClass.getTypeParameters().length)
+        {
+          int parameters = currentClass.getTypeParameters().length;
+          throw new ConceptualException("Expected " + parameters + " type argument" + (parameters != 1 ? "s" : "") + " after this name, " +
+                                        "but found " + (arguments == null ? "none" : arguments.length),
+                                        pointerTypeAST.getNames()[typeArgumentLists.length - classes.size()].getParseInfo());
+        }
+        typeArguments.addFirst(ASTConverter.convert(arguments, this, startScope));
       }
       else
       {
@@ -293,7 +403,7 @@ public class TypeResolver
    */
   public boolean finishedProcessing()
   {
-    return interfacesToResolve.isEmpty() && classesToResolve.isEmpty() && enumsToResolve.isEmpty();
+    return interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty();
   }
 
   /**
@@ -301,7 +411,7 @@ public class TypeResolver
    */
   public boolean hasUnresolvedInterfaces()
   {
-    return !interfacesToResolve.isEmpty();
+    return !interfacesToResolveParents.isEmpty();
   }
 
   /**
@@ -309,7 +419,7 @@ public class TypeResolver
    */
   public boolean hasUnresolvedClasses()
   {
-    return !classesToResolve.isEmpty();
+    return !classesToResolveParents.isEmpty();
   }
 
   /**
@@ -317,7 +427,23 @@ public class TypeResolver
    */
   public boolean hasUnresolvedEnums()
   {
-    return !enumsToResolve.isEmpty();
+    return !enumsToResolveParents.isEmpty();
+  }
+
+  /**
+   * @return true if this resolver has more interfaces to resolve the type parameter bounds of, false otherwise
+   */
+  public boolean hasUnresolvedInterfaceTypeBounds()
+  {
+    return !interfacesToResolveTypeBounds.isEmpty();
+  }
+
+  /**
+   * @return true if this resolver has more classes to resolve the type parameter bounds of, false otherwise
+   */
+  public boolean hasUnresolvedClassTypeBounds()
+  {
+    return !classesToResolveTypeBounds.isEmpty();
   }
 
   /**
@@ -335,9 +461,9 @@ public class TypeResolver
     // try to resolve the parent interfaces of every interface
     // this uses a queue instead of an iterator because new interfaces can be added to the list while we are working on it
     // (e.g. if an interface extends an interface which has not been parsed yet)
-    while (!interfacesToResolve.isEmpty())
+    while (!interfacesToResolveParents.isEmpty())
     {
-      ConceptualInterface toResolve = interfacesToResolve.poll();
+      ConceptualInterface toResolve = interfacesToResolveParents.poll();
       if (notFullyResolved.contains(toResolve))
       {
         // all of the interfaces in the queue have been processed since a change has been made
@@ -363,7 +489,7 @@ public class TypeResolver
         {
           continue;
         }
-        int queueSize = interfacesToResolve.size();
+        QueueState queueState = new QueueState();
         try
         {
           InterfacePointerType parentPointerType = resolveInterfacePointerType(parentInterfaces[i], toResolve);
@@ -379,9 +505,9 @@ public class TypeResolver
           fullyResolved = false;
           unresolvedParseInfo.add(parentInterfaces[i].getParseInfo());
 
-          if (queueSize < interfacesToResolve.size())
+          if (queueState.hasChanged())
           {
-            // the queue of interfaces to resolve was modified during the call to resolvePointerType()
+            // one of the queues was modified during the call to resolvePointerType()
             // because a new file was loaded and addFile() was called
 
             // this must count as a change being made or some nasty edge cases crop up
@@ -404,11 +530,13 @@ public class TypeResolver
         changed = true;
         notFullyResolved.clear();
         unresolvedParseInfo.clear();
+        // add the interface to the next queue, to resolve its type parameters' bounds
+        interfacesToResolveTypeBounds.add(toResolve);
       }
       else
       {
         // some parent interfaces still need filling in, so add this to the end of the queue again
-        interfacesToResolve.add(toResolve);
+        interfacesToResolveParents.add(toResolve);
         notFullyResolved.add(toResolve);
       }
     }
@@ -472,9 +600,9 @@ public class TypeResolver
     // try to resolve the parent classes and interfaces of every class
     // this uses a queue instead of an iterator because new classes can be added to the list while we are working on it
     // (e.g. if a class extends another class which has not been parsed yet)
-    while (interfacesToResolve.isEmpty() && !classesToResolve.isEmpty())
+    while (interfacesToResolveParents.isEmpty() && !classesToResolveParents.isEmpty())
     {
-      ConceptualClass toResolve = classesToResolve.poll();
+      ConceptualClass toResolve = classesToResolveParents.poll();
       if (notFullyResolved.contains(toResolve))
       {
         // all of the classes in the queue have been processed since a change has been made
@@ -499,7 +627,7 @@ public class TypeResolver
         }
         else
         {
-          int queueSize = classesToResolve.size();
+          QueueState queueState = new QueueState();
           try
           {
             baseClass = resolveClassPointerType(baseClassAST, toResolve);
@@ -514,9 +642,9 @@ public class TypeResolver
             fullyResolved = false;
             unresolvedParseInfo.add(baseClassAST.getParseInfo());
 
-            if (queueSize != classesToResolve.size())
+            if (queueState.hasChanged())
             {
-              // the queue of classes to resolve was modified during the call to resolvePointerType(),
+              // one of the queues was modified during the call to resolvePointerType(),
               // because a new file was loaded and addFile() was called.
               // this must count as a change, for reasons described above
               changed = true;
@@ -544,7 +672,7 @@ public class TypeResolver
         {
           continue;
         }
-        int queueSize = classesToResolve.size();
+        QueueState queueState = new QueueState();
         try
         {
           InterfacePointerType parentInterface = resolveInterfacePointerType(parentInterfaceASTs[i], toResolve);
@@ -560,9 +688,9 @@ public class TypeResolver
           fullyResolved = false;
           unresolvedParseInfo.add(parentInterfaceASTs[i].getParseInfo());
 
-          if (queueSize < classesToResolve.size())
+          if (queueState.hasChanged())
           {
-            // the queue of classes to resolve was modified during the call to resolvePointerType(),
+            // one of the queues was modified during the call to resolvePointerType(),
             // because a new file was loaded and addFile() was called.
             // this must count as a change, for reasons described above
             changed = true;
@@ -577,12 +705,14 @@ public class TypeResolver
         changed = true;
         notFullyResolved.clear();
         unresolvedParseInfo.clear();
+        // add the class to the next queue, to resolve its type parameters' bounds
+        classesToResolveTypeBounds.add(toResolve);
       }
       else
       {
         // some parent classes/interfaces still need filling in, so add this to the end of the queue again
         notFullyResolved.add(toResolve);
-        classesToResolve.add(toResolve);
+        classesToResolveParents.add(toResolve);
       }
     }
     return changed;
@@ -635,9 +765,9 @@ public class TypeResolver
     // try to resolve the parent classes and interfaces of every class
     // this uses a queue instead of an iterator because new classes can be added to the list while we are working on it
     // (e.g. if a class extends another class which has not been parsed yet)
-    while (interfacesToResolve.isEmpty() && classesToResolve.isEmpty() && !enumsToResolve.isEmpty())
+    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && !enumsToResolveParents.isEmpty())
     {
-      ConceptualEnum toResolve = enumsToResolve.poll();
+      ConceptualEnum toResolve = enumsToResolveParents.poll();
       if (notFullyResolved.contains(toResolve))
       {
         // all of the enums in the queue have been processed since a change has been made
@@ -661,7 +791,7 @@ public class TypeResolver
         }
         else
         {
-          int queueSize = enumsToResolve.size();
+          QueueState queueState = new QueueState();
           try
           {
             baseClass = resolveClassPointerType(baseClassAST, toResolve);
@@ -675,9 +805,9 @@ public class TypeResolver
             fullyResolved = false;
             unresolvedParseInfo.add(baseClassAST.getParseInfo());
 
-            if (queueSize != enumsToResolve.size())
+            if (queueState.hasChanged())
             {
-              // the queue of enums to resolve was modified during the call to resolvePointerType(),
+              // one of the queues was modified during the call to resolvePointerType(),
               // because a new file was loaded and addFile() was called.
               // this must count as a change, for reasons described above
               changed = true;
@@ -705,7 +835,7 @@ public class TypeResolver
         {
           continue;
         }
-        int queueSize = enumsToResolve.size();
+        QueueState queueState = new QueueState();
         try
         {
           InterfacePointerType parentInterface = resolveInterfacePointerType(parentInterfaceASTs[i], toResolve);
@@ -721,9 +851,9 @@ public class TypeResolver
           fullyResolved = false;
           unresolvedParseInfo.add(parentInterfaceASTs[i].getParseInfo());
 
-          if (queueSize < enumsToResolve.size())
+          if (queueState.hasChanged())
           {
-            // the queue of enums to resolve was modified during the call to resolvePointerType(),
+            // one of the queues was modified during the call to resolvePointerType(),
             // because a new file was loaded and addFile() was called.
             // this must count as a change, for reasons described above
             changed = true;
@@ -738,14 +868,278 @@ public class TypeResolver
         changed = true;
         notFullyResolved.clear();
         unresolvedParseInfo.clear();
+        // add this enum to the next queue, to resolve its member variables' types
+        enumsToResolveMembers.add(toResolve);
       }
       else
       {
         // some parent classes/interfaces still need filling in, so add this to the end of the queue again
         notFullyResolved.add(toResolve);
-        enumsToResolve.add(toResolve);
+        enumsToResolveParents.add(toResolve);
       }
     }
+    return changed;
+  }
+
+  /**
+   * Resolves the bounds on each of the type parameters of the interfaces in the queue. Both super- and sub-type bounds are resolved.
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
+   * @return true if any successful processing was done, false otherwise
+   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem occurs while resolving the type bounds
+   */
+  public boolean resolveInterfaceTypeParameterBounds(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
+  {
+    boolean changed = false;
+
+    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty() &&
+           !interfacesToResolveTypeBounds.isEmpty())
+    {
+      ConceptualInterface toResolve = interfacesToResolveTypeBounds.poll();
+      InterfaceDefinitionAST astNode = (InterfaceDefinitionAST) conceptualASTNodes.get(toResolve);
+      TypeParameterAST[] parameterASTs = astNode.getTypeParameters();
+      if (parameterASTs == null)
+      {
+        changed = true;
+        continue;
+      }
+      TypeParameter[] parameters = toResolve.getTypeParameters();
+      if (parameters == null)
+      {
+        parameters = new TypeParameter[parameterASTs.length];
+        toResolve.setTypeParameters(parameters);
+      }
+      if (parameterASTs.length != parameters.length)
+      {
+        throw new IllegalStateException("Illegal length of type parameter array");
+      }
+      boolean fullyResolved = true;
+      for (int i = 0; i < parameterASTs.length; i++)
+      {
+        // resolve the super- and sub-types of this type parameter
+        PointerTypeAST[] superTypeASTs = parameterASTs[i].getSuperTypes();
+        PointerTypeAST[] subTypeASTs = parameterASTs[i].getSubTypes();
+        if (superTypeASTs != null)
+        {
+          PointerType[] superTypes = parameters[i].getSuperTypes();
+          if (superTypes == null)
+          {
+            superTypes = new PointerType[superTypeASTs.length];
+            parameters[i].setSuperTypes(superTypes);
+          }
+          for (int j = 0; j < superTypeASTs.length; j++)
+          {
+            if (superTypes[j] != null)
+            {
+              continue;
+            }
+            QueueState queueState = new QueueState();
+            try
+            {
+              superTypes[j] = resolvePointerType(superTypeASTs[j], toResolve);
+              changed = true;
+              unresolvedParseInfo.clear();
+            }
+            catch (UnresolvableException e)
+            {
+              fullyResolved = false;
+              unresolvedParseInfo.add(superTypeASTs[j].getParseInfo());
+
+              if (queueState.hasChanged())
+              {
+                // one of the queues was modified during the call to resolvePointerType(),
+                // because a new file was loaded and addFile() was called.
+                // this must count as a change, for reasons described above
+                changed = true;
+                unresolvedParseInfo.clear();
+              }
+            }
+          }
+        }
+        if (subTypeASTs != null)
+        {
+          PointerType[] subTypes = parameters[i].getSubTypes();
+          if (subTypes == null)
+          {
+            subTypes = new PointerType[subTypeASTs.length];
+            parameters[i].setSubTypes(subTypes);
+          }
+          for (int j = 0; j < subTypeASTs.length; j++)
+          {
+            if (subTypes[j] != null)
+            {
+              continue;
+            }
+            QueueState queueState = new QueueState();
+            try
+            {
+              subTypes[j] = resolvePointerType(subTypeASTs[j], toResolve);
+              changed = true;
+              unresolvedParseInfo.clear();
+            }
+            catch (UnresolvableException e)
+            {
+              fullyResolved = false;
+              unresolvedParseInfo.add(subTypeASTs[j].getParseInfo());
+
+              if (queueState.hasChanged())
+              {
+                // one of the queues was modified during the call to resolvePointerType(),
+                // because a new file was loaded and addFile() was called.
+                // this must count as a change, for reasons described above
+                changed = true;
+                unresolvedParseInfo.clear();
+              }
+            }
+          }
+        }
+      }
+
+      if (fullyResolved)
+      {
+        // we have removed something from the queue, so a change has occurred
+        changed = true;
+        unresolvedParseInfo.clear();
+      }
+      else
+      {
+        // some parent classes/interfaces still need filling in, so add this to the end of the queue again
+        interfacesToResolveTypeBounds.add(toResolve);
+      }
+
+    }
+
+    return changed;
+  }
+
+  /**
+   * Resolves the bounds on each of the type parameters of the classes in the queue. Both super- and sub-type bounds are resolved.
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
+   * @return true if any successful processing was done, false otherwise
+   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem occurs while resolving the type bounds
+   */
+  public boolean resolveClassTypeParameterBounds(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
+  {
+    boolean changed = false;
+
+    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty() &&
+           interfacesToResolveTypeBounds.isEmpty() && !classesToResolveTypeBounds.isEmpty())
+    {
+      ConceptualClass toResolve = classesToResolveTypeBounds.poll();
+      ClassDefinitionAST astNode = (ClassDefinitionAST) conceptualASTNodes.get(toResolve);
+      TypeParameterAST[] parameterASTs = astNode.getTypeParameters();
+      if (parameterASTs == null)
+      {
+        changed = true;
+        continue;
+      }
+      TypeParameter[] parameters = toResolve.getTypeParameters();
+      if (parameters == null)
+      {
+        parameters = new TypeParameter[parameterASTs.length];
+        toResolve.setTypeParameters(parameters);
+      }
+      if (parameterASTs.length != parameters.length)
+      {
+        throw new IllegalStateException("Illegal length of type parameter array");
+      }
+      boolean fullyResolved = true;
+      for (int i = 0; i < parameterASTs.length; i++)
+      {
+        // resolve the super- and sub-types of this type parameter
+        PointerTypeAST[] superTypeASTs = parameterASTs[i].getSuperTypes();
+        PointerTypeAST[] subTypeASTs = parameterASTs[i].getSubTypes();
+        if (superTypeASTs != null)
+        {
+          PointerType[] superTypes = parameters[i].getSuperTypes();
+          if (superTypes == null)
+          {
+            superTypes = new PointerType[superTypeASTs.length];
+            parameters[i].setSuperTypes(superTypes);
+          }
+          for (int j = 0; j < superTypeASTs.length; j++)
+          {
+            if (superTypes[j] != null)
+            {
+              continue;
+            }
+            QueueState queueState = new QueueState();
+            try
+            {
+              superTypes[j] = resolvePointerType(superTypeASTs[j], toResolve);
+              changed = true;
+              unresolvedParseInfo.clear();
+            }
+            catch (UnresolvableException e)
+            {
+              fullyResolved = false;
+              unresolvedParseInfo.add(superTypeASTs[j].getParseInfo());
+
+              if (queueState.hasChanged())
+              {
+                // one of the queues was modified during the call to resolvePointerType(),
+                // because a new file was loaded and addFile() was called.
+                // this must count as a change, for reasons described above
+                changed = true;
+                unresolvedParseInfo.clear();
+              }
+            }
+          }
+        }
+        if (subTypeASTs != null)
+        {
+          PointerType[] subTypes = parameters[i].getSubTypes();
+          if (subTypes == null)
+          {
+            subTypes = new PointerType[subTypeASTs.length];
+            parameters[i].setSubTypes(subTypes);
+          }
+          for (int j = 0; j < subTypeASTs.length; j++)
+          {
+            if (subTypes[j] != null)
+            {
+              continue;
+            }
+            QueueState queueState = new QueueState();
+            try
+            {
+              subTypes[j] = resolvePointerType(subTypeASTs[j], toResolve);
+              changed = true;
+              unresolvedParseInfo.clear();
+            }
+            catch (UnresolvableException e)
+            {
+              fullyResolved = false;
+              unresolvedParseInfo.add(subTypeASTs[j].getParseInfo());
+
+              if (queueState.hasChanged())
+              {
+                // one of the queues was modified during the call to resolvePointerType(),
+                // because a new file was loaded and addFile() was called.
+                // this must count as a change, for reasons described above
+                changed = true;
+                unresolvedParseInfo.clear();
+              }
+            }
+          }
+        }
+      }
+
+      if (fullyResolved)
+      {
+        // we have removed something from the queue, so a change has occurred
+        changed = true;
+        unresolvedParseInfo.clear();
+      }
+      else
+      {
+        // some parent classes/interfaces still need filling in, so add this to the end of the queue again
+        classesToResolveTypeBounds.add(toResolve);
+      }
+
+    }
+
     return changed;
   }
 

@@ -1,10 +1,10 @@
 package y;
 
-class Foo
+class Foo<A extends x.String super Foo<A>.Bar>
 {
-  class Bar extends Foo
+  class Bar extends Foo<Foo<A>.Bar>
   {
-    class X extends Foo.Bar.Bar.Bar.Bar
+    static class X extends Foo<X>.Bar
     {
     }
     int foo;

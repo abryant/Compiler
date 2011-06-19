@@ -99,6 +99,14 @@ public final class NameResolver
     {
       return typeResolver.resolveEnumParents(unresolvedParseInfo);
     }
+    if (typeResolver.hasUnresolvedInterfaceTypeBounds())
+    {
+      return typeResolver.resolveInterfaceTypeParameterBounds(unresolvedParseInfo);
+    }
+    if (typeResolver.hasUnresolvedClassTypeBounds())
+    {
+      return typeResolver.resolveClassTypeParameterBounds(unresolvedParseInfo);
+    }
     return false;
   }
 }

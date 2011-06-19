@@ -6,7 +6,7 @@ interface Bar
 {
 }
 
-immutable sealed class String extends Foo.Bar implements Bar
+immutable sealed class String extends Foo<String>.Bar implements Bar
 {
   final property char#[] chars
   private setter
