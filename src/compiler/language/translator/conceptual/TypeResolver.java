@@ -342,17 +342,6 @@ public class TypeResolver
       else if (typeArgumentLists.length >= classes.size())
       {
         // get the type arguments from the PointerTypeAST
-
-        // FIXME: this assumes that a previous name must have the parent class's type arguments
-        //        however this is flawed because currently inner types can be inherited
-        //        for example, in the following example the following code will not currently work:
-        // class A<X, Y> {
-        //   class C<Z> {}
-        // }
-        // class B extends A<P, Q> {}
-        // now using B.C<R> will fail with the exception below, but A<X, Y>.C<R> will succeed
-        // one way to fix this is to disable inheritance of inner type definitions
-
         TypeArgumentAST[] arguments = typeArgumentLists[typeArgumentLists.length - classes.size()];
         if (arguments == null || arguments.length != currentClass.getTypeParameters().length)
         {

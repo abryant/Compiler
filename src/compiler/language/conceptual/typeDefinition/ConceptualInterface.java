@@ -238,22 +238,6 @@ public abstract class ConceptualInterface extends TypeDefinition
         return innerEnum;
       }
     }
-    if (superInterfaces != null)
-    {
-      for (InterfacePointerType type : superInterfaces)
-      {
-        if (type == null)
-        {
-          // the type has not yet been populated, so go on to the next one
-          continue;
-        }
-        Resolvable result = type.getInterfaceType().resolve(name);
-        if (result != null)
-        {
-          return result;
-        }
-      }
-    }
     return null;
   }
 

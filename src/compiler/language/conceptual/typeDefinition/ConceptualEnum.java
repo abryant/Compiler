@@ -267,30 +267,6 @@ public abstract class ConceptualEnum extends TypeDefinition
         return innerEnum;
       }
     }
-    if (baseClass != null)
-    {
-      Resolvable result = baseClass.getClassType().resolve(name);
-      if (result != null)
-      {
-        return result;
-      }
-    }
-    if (interfaces != null)
-    {
-      for (InterfacePointerType type : interfaces)
-      {
-        if (type == null)
-        {
-          // the type has not yet been populated, so go on to the next one
-          continue;
-        }
-        Resolvable result = type.getInterfaceType().resolve(name);
-        if (result != null)
-        {
-          return result;
-        }
-      }
-    }
     return null;
   }
 
