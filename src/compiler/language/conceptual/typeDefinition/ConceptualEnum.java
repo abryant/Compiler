@@ -233,19 +233,19 @@ public abstract class ConceptualEnum extends TypeDefinition
     */
     for (MemberVariable variable : variables)
     {
-      if (variable.getName().equals(name))
+      if (variable.getName().equals(name) && variable.isStatic())
       {
         return variable;
       }
     }
     for (Property property : properties)
     {
-      if (property.getName().equals(name))
+      if (property.getName().equals(name) && property.isStatic())
       {
         return property;
       }
     }
-    // TODO: how will methods work here? there can be multiple methods with one name
+    // TODO: how will methods work here? there can be multiple methods with one name (only static methods should be considered here)
     for (InnerClass innerClass : innerClasses)
     {
       if (innerClass.getName().equals(name))
