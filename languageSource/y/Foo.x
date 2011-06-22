@@ -10,3 +10,19 @@ class Foo<A extends x.String super Foo<A>.Bar> // extends Foo<A>.Bar
     int foo;
   }
 }
+
+class Super
+{
+  class A
+  {
+  }
+}
+
+enum SubEnum extends Super
+{
+  FOO, BAR;
+
+  class B extends Super.A
+  {
+  }
+}

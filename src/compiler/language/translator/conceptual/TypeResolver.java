@@ -744,34 +744,72 @@ public class TypeResolver
     {
       InnerClass parentClass = (InnerClass) parent.getClassType();
       TypeDefinition parentOuterType = parentClass.getParent();
-      if (!parentClass.isStatic() && parentOuterType instanceof ConceptualClass)
+      if (!parentClass.isStatic())
       {
-        // the parent class is not static and has an outer class, so the child must also be an inner class
-        // and must be derived from the parent's outer class
-        if (!(child instanceof InnerClass))
+        if (parentOuterType instanceof ConceptualClass)
         {
-          throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
-        }
-        InnerClass childClass = (InnerClass) child;
-        TypeDefinition childOuterType = childClass.getParent();
-        if (childClass.isStatic() || !(childOuterType instanceof ConceptualClass))
-        {
-          throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
-        }
-        ConceptualClass currentClass = (ConceptualClass) childOuterType;
-        while (!currentClass.equals(parentOuterType))
-        {
-          ClassPointerType baseClass = currentClass.getBaseClass();
-          if (baseClass == null)
+          // the parent class is not static and has an outer class, so the child must also be an inner class
+          // and its outer class must be derived from the parent's outer class
+          if (!(child instanceof InnerClass))
           {
-            if (!currentClass.equals(universalBaseClass.getClassType()))
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
+          }
+          InnerClass childClass = (InnerClass) child;
+          TypeDefinition childOuterType = childClass.getParent();
+          if (childClass.isStatic() || !(childOuterType instanceof ConceptualClass || childOuterType instanceof ConceptualEnum))
+          {
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
+          }
+          ConceptualClass currentClass;
+          if (childOuterType instanceof ConceptualEnum)
+          {
+            // take the base class of the enum as the current class
+            ClassPointerType baseClass = ((ConceptualEnum) childOuterType).getBaseClass();
+            if (baseClass == null)
             {
               // we have not reached the top of the inheritance hierarchy, so wait until more of the hierarchy has been resolved
               throw new UnresolvableException("Error checking the parents of an inner class", parentAST.getParseInfo());
             }
-            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
+            currentClass = baseClass.getClassType();
           }
-          currentClass = baseClass.getClassType();
+          else
+          {
+            // childOuterType must be a ConceptualClass, so use it as currentClass
+            currentClass = (ConceptualClass) childOuterType;
+          }
+          while (!currentClass.equals(parentOuterType))
+          {
+            ClassPointerType baseClass = currentClass.getBaseClass();
+            if (baseClass == null)
+            {
+              if (!currentClass.equals(universalBaseClass.getClassType()))
+              {
+                // we have not reached the top of the inheritance hierarchy, so wait until more of the hierarchy has been resolved
+                throw new UnresolvableException("Error checking the parents of an inner class", parentAST.getParseInfo());
+              }
+              throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
+            }
+            currentClass = baseClass.getClassType();
+          }
+        }
+        else if (parentOuterType instanceof ConceptualEnum)
+        {
+          // the parent class is not static and has an outer enum, so the child must also be an inner class
+          // and its outer enum must be the same as the parent's outer enum
+          if (!(child instanceof InnerClass))
+          {
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer enum", parentAST.getParseInfo());
+          }
+          InnerClass childClass = (InnerClass) child;
+          TypeDefinition childOuterType = childClass.getParent();
+          if (childClass.isStatic() || !(childOuterType instanceof ConceptualEnum))
+          {
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer enum", parentAST.getParseInfo());
+          }
+          if (!childOuterType.equals(parentOuterType))
+          {
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer enum", parentAST.getParseInfo());
+          }
         }
       }
     }
