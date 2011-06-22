@@ -714,8 +714,9 @@ public class TypeResolver
    * @param parentAST - the parent type's PointerTypeAST, to extract ParseInfo from in case of error
    * @param child - the prospective child class, if any
    * @throws ConceptualException - if there is a problem and the PointerType is not a valid parent class
+   * @throws UnresolvableException - if a parent class cannot be resolved while checking that the parent class is valid
    */
-  private void checkParentClass(ClassPointerType parent, PointerTypeAST parentAST, ConceptualClass child) throws ConceptualException
+  private void checkParentClass(ClassPointerType parent, PointerTypeAST parentAST, ConceptualClass child) throws ConceptualException, UnresolvableException
   {
     if (child == null)
     {
@@ -736,6 +737,43 @@ public class TypeResolver
         break;
       }
       current = baseClass.getClassType();
+    }
+
+    // check that if parent has any outer classes then child also has them
+    if (parent.getClassType() instanceof InnerClass)
+    {
+      InnerClass parentClass = (InnerClass) parent.getClassType();
+      TypeDefinition parentOuterType = parentClass.getParent();
+      if (!parentClass.isStatic() && parentOuterType instanceof ConceptualClass)
+      {
+        // the parent class is not static and has an outer class, so the child must also be an inner class
+        // and must be derived from the parent's outer class
+        if (!(child instanceof InnerClass))
+        {
+          throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
+        }
+        InnerClass childClass = (InnerClass) child;
+        TypeDefinition childOuterType = childClass.getParent();
+        if (childClass.isStatic() || !(childOuterType instanceof ConceptualClass))
+        {
+          throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
+        }
+        ConceptualClass currentClass = (ConceptualClass) childOuterType;
+        while (!currentClass.equals(parentOuterType))
+        {
+          ClassPointerType baseClass = currentClass.getBaseClass();
+          if (baseClass == null)
+          {
+            if (!currentClass.equals(universalBaseClass.getClassType()))
+            {
+              // we have not reached the top of the inheritance hierarchy, so wait until more of the hierarchy has been resolved
+              throw new UnresolvableException("Error checking the parents of an inner class", parentAST.getParseInfo());
+            }
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
+          }
+          currentClass = baseClass.getClassType();
+        }
+      }
     }
   }
 
