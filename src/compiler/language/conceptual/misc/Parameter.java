@@ -5,9 +5,10 @@ package compiler.language.conceptual.misc;
  */
 
 /**
+ * Represents a parameter in a list of parameters for a closure/method/constructor.
  * @author Anthony Bryant
  */
 public abstract class Parameter
 {
-  // TODO: implement
+  // abstract base class, no members (yet)
 }
