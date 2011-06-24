@@ -8,6 +8,9 @@ import java.util.Queue;
 import java.util.Set;
 
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.member.FieldAST;
+import compiler.language.ast.member.MethodAST;
+import compiler.language.ast.member.PropertyAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.ast.type.TypeParameterAST;
@@ -20,6 +23,10 @@ import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
+import compiler.language.conceptual.member.MemberVariable;
+import compiler.language.conceptual.member.Method;
+import compiler.language.conceptual.member.Property;
+import compiler.language.conceptual.misc.ParameterList;
 import compiler.language.conceptual.topLevel.ConceptualFile;
 import compiler.language.conceptual.topLevel.ConceptualPackage;
 import compiler.language.conceptual.type.ClassPointerType;
@@ -27,6 +34,7 @@ import compiler.language.conceptual.type.EnumPointerType;
 import compiler.language.conceptual.type.InterfacePointerType;
 import compiler.language.conceptual.type.OuterClassPointerType;
 import compiler.language.conceptual.type.PointerType;
+import compiler.language.conceptual.type.Type;
 import compiler.language.conceptual.type.TypeArgument;
 import compiler.language.conceptual.type.TypeParameter;
 import compiler.language.conceptual.type.TypeParameterPointerType;
@@ -388,11 +396,13 @@ public class TypeResolver
   }
 
   /**
-   * @return true if this resolver has no more interfaces, classes or enums to resolve the parents of, false otherwise
+   * @return true if this resolver has no more data to resolve from any interfaces, classes or enums; false otherwise
    */
   public boolean finishedProcessing()
   {
-    return interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty();
+    return interfacesToResolveParents.isEmpty()    && classesToResolveParents.isEmpty()    && enumsToResolveParents.isEmpty() &&
+           interfacesToResolveTypeBounds.isEmpty() && classesToResolveTypeBounds.isEmpty() &&
+           interfacesToResolveMembers.isEmpty();
   }
 
   /**
@@ -433,6 +443,14 @@ public class TypeResolver
   public boolean hasUnresolvedClassTypeBounds()
   {
     return !classesToResolveTypeBounds.isEmpty();
+  }
+
+  /**
+   * @return true if this resolver has more interfaces to resolve the members of, false otherwise
+   */
+  public boolean hasUnresolvedInterfaceMembers()
+  {
+    return !interfacesToResolveMembers.isEmpty();
   }
 
   /**
@@ -1079,6 +1097,8 @@ public class TypeResolver
         changed = true;
         notFullyResolved.clear();
         unresolvedParseInfo.clear();
+        // add this interface to the next queue, to resolve its member variables' types
+        interfacesToResolveMembers.add(toResolve);
       }
       else
       {
@@ -1236,6 +1256,149 @@ public class TypeResolver
     }
 
     return changed;
+  }
+
+  /**
+   * Resolves the types of the members of each of the interfaces in the queue.
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
+   * @return true if any successful processing was done, false otherwise
+   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem occurs while resolving one of the members' types
+   */
+  public boolean resolveInterfaceMembers(Set<ParseInfo> unresolvedParseInfo) throws ConceptualException, NameConflictException
+  {
+    boolean changed = false;
+    Set<ConceptualInterface> notFullyResolved = new HashSet<ConceptualInterface>();
+
+    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty() &&
+           interfacesToResolveTypeBounds.isEmpty() && classesToResolveTypeBounds.isEmpty() &&
+           !interfacesToResolveMembers.isEmpty())
+    {
+      ConceptualInterface toResolve = interfacesToResolveMembers.poll();
+      if (notFullyResolved.contains(toResolve))
+      {
+        // all of the interfaces in the queue have been processed since a change has been made
+        // (this depends on interfacesToResolveMembers being a queue)
+        return changed;
+      }
+      QueueState queueState = new QueueState();
+      try
+      {
+        for (Method method : toResolve.getMethods())
+        {
+          if (resolveMethodType(method, (MethodAST) conceptualASTNodes.get(method)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        for (Property property : toResolve.getProperties())
+        {
+          if (resolvePropertyType(property, (PropertyAST) conceptualASTNodes.get(property)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        for (MemberVariable variable : toResolve.getStaticVariables())
+        {
+          if (resolveVariableType(variable, (FieldAST) conceptualASTNodes.get(variable)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        // if we get here then everything has been processed
+        // we have removed something from the queue, so a change has occurred
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
+      catch (UnresolvableException e)
+      {
+        notFullyResolved.add(toResolve);
+        unresolvedParseInfo.add(e.getParseInfo());
+
+        // some members still need filling in, so add this to the end of the queue again
+        interfacesToResolveMembers.add(toResolve);
+
+        if (queueState.hasChanged())
+        {
+          // one of the queues was modified during a call to resolvePointerType(),
+          // because a new file was loaded and addFile() was called.
+          // this must count as a change, for reasons described above
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+    }
+
+    return changed;
+  }
+
+  /**
+   * Resolves the type of the specified MemberVariable.
+   * @param variable - the variable to resolve the type of
+   * @param astNode - the AST node to get the names to resolve from
+   * @return true if a change was made, false otherwise
+   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem occurs while resolving the variable's type
+   * @throws UnresolvableException - if further initialisation must be done before one of the names can be resolved
+   */
+  private boolean resolveVariableType(MemberVariable variable, FieldAST astNode) throws NameConflictException, ConceptualException, UnresolvableException
+  {
+    if (variable.getVariableType() == null)
+    {
+      variable.setVariableType(ASTConverter.convert(astNode.getType(), this, variable));
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Resolves the type of the specified Property.
+   * @param property - the property to resolve the type of
+   * @param astNode - the AST node to get the names to resolve from
+   * @return true if a change was made, false otherwise
+   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem occurs while resolving the property's type
+   * @throws UnresolvableException - if further initialisation must be done before one of the names can be resolved
+   */
+  private boolean resolvePropertyType(Property property, PropertyAST astNode) throws NameConflictException, ConceptualException, UnresolvableException
+  {
+    if (property.getPropertyType() == null)
+    {
+      property.setPropertyType(ASTConverter.convert(astNode.getType(), this, property));
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Resolves the type of the specified Method, including type parameters, parameters, return type, and thrown types.
+   * @param method - the method to resolve the type of
+   * @param astNode - the AST node to get the names to resolve from
+   * @return true if a change was made, false otherwise
+   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem occurs while resolving the method's type
+   * @throws UnresolvableException - if further initialisation must be done before one of the names can be resolved
+   */
+  private boolean resolveMethodType(Method method, MethodAST astNode) throws ConceptualException, NameConflictException, UnresolvableException
+  {
+    if (method.getTypeParameters() == null || method.getParameters() == null || method.getReturnType() == null || method.getThrownTypes() == null)
+    {
+      TypeParameter[] typeParameters = ASTConverter.convert(astNode.getTypeParameters(), this, method);
+      ParameterList parameterList    = ASTConverter.convert(astNode.getParameters(),     this, method);
+      Type returnType                = ASTConverter.convert(astNode.getReturnType(),     this, method);
+      PointerType[] thrownTypes      = ASTConverter.convert(astNode.getThrownTypes(),    this, method);
+      method.setHeader(typeParameters, parameterList, returnType, thrownTypes);
+      return true;
+    }
+    return false;
   }
 
 }

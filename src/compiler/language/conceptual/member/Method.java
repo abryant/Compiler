@@ -5,7 +5,7 @@ import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.NativeSpecifier;
-import compiler.language.conceptual.misc.Parameter;
+import compiler.language.conceptual.misc.ParameterList;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.statement.Statement;
 import compiler.language.conceptual.type.PointerType;
@@ -34,7 +34,7 @@ public class Method extends Resolvable
   private NativeSpecifier nativeSpecifier;
   private TypeParameter[] typeParameters;
   private String name;
-  private Parameter[] parameters;
+  private ParameterList parameters;
   private Type returnType;
   private PointerType[] thrownTypes;
   private Statement[] statements;
@@ -65,6 +65,21 @@ public class Method extends Resolvable
     this.sinceSpecifier = sinceSpecifier;
     this.nativeSpecifier = nativeSpecifier;
     this.name = name;
+  }
+
+  /**
+   * Sets the header of this Method, which includes all information that is not populated by the constructor and is not part of the method body.
+   * @param typeParameters - the type parameters
+   * @param parameters - the parameters
+   * @param returnType - the return type
+   * @param thrownTypes - the thrown types
+   */
+  public void setHeader(TypeParameter[] typeParameters, ParameterList parameters, Type returnType, PointerType[] thrownTypes)
+  {
+    this.typeParameters = typeParameters;
+    this.parameters = parameters;
+    this.returnType = returnType;
+    this.thrownTypes = thrownTypes;
   }
 
   /**
@@ -150,7 +165,7 @@ public class Method extends Resolvable
   /**
    * @return the parameters
    */
-  public Parameter[] getParameters()
+  public ParameterList getParameters()
   {
     return parameters;
   }

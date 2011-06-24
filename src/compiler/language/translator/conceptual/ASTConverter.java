@@ -17,8 +17,13 @@ import compiler.language.ast.member.MethodAST;
 import compiler.language.ast.member.PropertyAST;
 import compiler.language.ast.member.StaticInitializerAST;
 import compiler.language.ast.misc.DeclarationAssigneeAST;
+import compiler.language.ast.misc.DefaultParameterAST;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.misc.NativeSpecifierAST;
+import compiler.language.ast.misc.ParameterAST;
+import compiler.language.ast.misc.ParameterListAST;
+import compiler.language.ast.misc.SingleParameterAST;
+import compiler.language.ast.misc.VariadicParameterAST;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
@@ -59,8 +64,13 @@ import compiler.language.conceptual.member.Property;
 import compiler.language.conceptual.member.StaticInitializer;
 import compiler.language.conceptual.member.VariableInitializers;
 import compiler.language.conceptual.misc.AccessSpecifier;
+import compiler.language.conceptual.misc.DefaultParameter;
 import compiler.language.conceptual.misc.NativeSpecifier;
+import compiler.language.conceptual.misc.Parameter;
+import compiler.language.conceptual.misc.ParameterList;
 import compiler.language.conceptual.misc.SinceSpecifier;
+import compiler.language.conceptual.misc.SingleParameter;
+import compiler.language.conceptual.misc.VariadicParameter;
 import compiler.language.conceptual.topLevel.ConceptualFile;
 import compiler.language.conceptual.topLevel.ConceptualPackage;
 import compiler.language.conceptual.topLevel.Import;
@@ -1328,6 +1338,139 @@ public class ASTConverter
       return PrimitiveType.VOID;
     }
     throw new IllegalArgumentException();
+  }
+
+  /**
+   * Converts the specified list of PointerTypeASTs into a list of PointerTypes
+   * @param pointerTypeASTs - the PointerTypeASTs to convert
+   * @param typeResolver - the TypeResolver to use to resolve the type names
+   * @param startScope - the starting scope to lookup names in
+   * @return the converted PointerTypes
+   * @throws NameConflictException - if a name conflict is detected while looking up any names
+   * @throws ConceptualException - if a conceptual problem occurs while converting these PointerTypes
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
+   */
+  public static PointerType[] convert(PointerTypeAST[] pointerTypeASTs, TypeResolver typeResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
+  {
+    PointerType[] pointerTypes = new PointerType[pointerTypeASTs.length];
+    for (int i = 0; i < pointerTypeASTs.length; i++)
+    {
+      pointerTypes[i] = typeResolver.resolvePointerType(pointerTypeASTs[i], startScope);
+    }
+    return pointerTypes;
+  }
+
+  /**
+   * Converts the specified ParameterListAST into a ParameterList
+   * @param listAST - the ParameterListAST to convert
+   * @param typeResolver - the TypeResolver to use to resolve any types (e.g. in PointerTypeASTs)
+   * @param startScope - the starting scope to lookup names in
+   * @return the converted ParameterList
+   * @throws ConceptualException - if a conceptual problem occurs while converting this ParameterListAST
+   * @throws NameConflictException - if a name conflict is detected while looking up any names
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
+   */
+  public static ParameterList convert(ParameterListAST listAST, TypeResolver typeResolver, Resolvable startScope) throws ConceptualException, NameConflictException, UnresolvableException
+  {
+    ParameterAST[] parameterASTs = listAST.getParameters();
+    Parameter[] parameters = new Parameter[parameterASTs.length];
+    for (int i = 0; i < parameterASTs.length; i++)
+    {
+      parameters[i] = convert(parameterASTs[i], typeResolver, startScope);
+    }
+    return new ParameterList(parameters);
+  }
+
+  /**
+   * Converts the specified ParameterAST into a Parameter.
+   * @param parameterAST - the ParameterAST to convert
+   * @param typeResolver - the TypeResolver to use to resolve any types (e.g. in PointerTypeASTs)
+   * @param startScope - the starting scope to lookup names in
+   * @return the converted Parameter
+   * @throws ConceptualException - if a conceptual problem occurs while converting this ParameterAST
+   * @throws NameConflictException - if a name conflict is detected while looking up any names
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
+   */
+  public static Parameter convert(ParameterAST parameterAST, TypeResolver typeResolver, Resolvable startScope) throws ConceptualException, NameConflictException, UnresolvableException
+  {
+    if (parameterAST instanceof ParameterListAST)
+    {
+      return convert((ParameterListAST) parameterAST, typeResolver, startScope);
+    }
+
+    // it must be an instance of SingleParameterAST (or a subclass thereof), so find the modifiers
+    SingleParameterAST singleParameterAST = (SingleParameterAST) parameterAST;
+
+    boolean isFinal = false;
+    boolean isVolatile = false;
+    for (ModifierAST modifier : singleParameterAST.getModifiers())
+    {
+      switch (modifier.getType())
+      {
+      case FINAL:
+        isFinal = true;
+        break;
+      case VOLATILE:
+        isVolatile = true;
+        break;
+      default:
+        throw new ConceptualException("Illegal Modifier for a parameter", modifier.getParseInfo());
+      }
+    }
+
+    Type type = ASTConverter.convert(singleParameterAST.getType(), typeResolver, startScope);
+    String name = singleParameterAST.getName().getName();
+
+    if (parameterAST instanceof DefaultParameterAST)
+    {
+      return new DefaultParameter(isFinal, isVolatile, type, name);
+    }
+    if (parameterAST instanceof VariadicParameterAST)
+    {
+      return new VariadicParameter(isFinal, isVolatile, type, name);
+    }
+    return new SingleParameter(isFinal, isVolatile, type, name);
+  }
+
+  /**
+   * Converts a list of TypeParameterASTs into a list of TypeParameters.
+   * This method creates TypeParameter objects by resolving the super and sub types from the TypeParameterASTs.
+   * @param typeParameterASTs - the TypeParameterASTs to convert
+   * @param typeResolver - the TypeResolver to use to resolve any type bounds
+   * @param startScope - the starting scope to lookup names in
+   * @return the converted TypeParameter[]
+   * @throws ConceptualException - if a conceptual problem occurs while converting this list of TypeParameterASTs
+   * @throws NameConflictException - if a name conflict is detected while looking up any names
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved
+   */
+  public static TypeParameter[] convert(TypeParameterAST[] typeParameterASTs, TypeResolver typeResolver, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
+  {
+    TypeParameter[] typeParameters = new TypeParameter[typeParameterASTs.length];
+    for (int i = 0; i < typeParameterASTs.length; i++)
+    {
+      typeParameters[i] = new TypeParameter(typeParameterASTs[i].getName().getName());
+      PointerTypeAST[] superTypeASTs = typeParameterASTs[i].getSuperTypes();
+      if (superTypeASTs != null)
+      {
+        PointerType[] superTypes = new PointerType[superTypeASTs.length];
+        for (int j = 0; j < superTypeASTs.length; j++)
+        {
+          superTypes[j] = typeResolver.resolvePointerType(superTypeASTs[j], startScope);
+        }
+        typeParameters[i].setSuperTypes(superTypes);
+      }
+      PointerTypeAST[] subTypeASTs = typeParameterASTs[i].getSubTypes();
+      if (subTypeASTs != null)
+      {
+        PointerType[] subTypes = new PointerType[subTypeASTs.length];
+        for (int j = 0; j < subTypeASTs.length; j++)
+        {
+          subTypes[j] = typeResolver.resolvePointerType(subTypeASTs[j], startScope);
+        }
+        typeParameters[i].setSubTypes(subTypes);
+      }
+    }
+    return typeParameters;
   }
 
   /**

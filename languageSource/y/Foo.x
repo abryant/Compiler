@@ -11,6 +11,13 @@ class Foo<A extends x.String super Foo<A>.Bar> // extends Foo<A>.Bar
   }
 }
 
+interface Asdf
+{
+  void foo(x.String asdf, Foo<SubEnum.B>... vararg, int @i = 17);
+
+  static property Asdf instance private setter;
+}
+
 class Super
 {
   class A

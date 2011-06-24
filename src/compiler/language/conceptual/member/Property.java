@@ -71,6 +71,15 @@ public class Property extends Resolvable
   }
 
   /**
+   * Sets the type of this property
+   * @param type - the new type for this property
+   */
+  public void setPropertyType(Type type)
+  {
+    this.type = type;
+  }
+
+  /**
    * @return the isSealed
    */
   public boolean isSealed()

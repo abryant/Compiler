@@ -72,7 +72,7 @@ public final class NameResolver
     if (!typeResolver.finishedProcessing())
     {
       // something could not be resolved, so throw an exception with the correct ParseInfo
-      throw new ConceptualException("Unresolvable parent type(s)", unresolvedParseInfo.toArray(new ParseInfo[unresolvedParseInfo.size()]));
+      throw new ConceptualException("Unresolvable type(s)", unresolvedParseInfo.toArray(new ParseInfo[unresolvedParseInfo.size()]));
     }
   }
 
@@ -106,6 +106,10 @@ public final class NameResolver
     if (typeResolver.hasUnresolvedClassTypeBounds())
     {
       return typeResolver.resolveClassTypeParameterBounds(unresolvedParseInfo);
+    }
+    if (typeResolver.hasUnresolvedInterfaceMembers())
+    {
+      return typeResolver.resolveInterfaceMembers(unresolvedParseInfo);
     }
     return false;
   }

@@ -59,9 +59,9 @@ public class MemberVariable extends Resolvable
 
   /**
    * Sets the type of this member variable.
-   * @param type
+   * @param type - the new type for this member variable
    */
-  public void setType(Type type)
+  public void setVariableType(Type type)
   {
     this.type = type;
   }
