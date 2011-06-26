@@ -111,6 +111,14 @@ public final class NameResolver
     {
       return typeResolver.resolveInterfaceMembers(unresolvedParseInfo);
     }
+    if (typeResolver.hasUnresolvedClassMembers())
+    {
+      return typeResolver.resolveClassMembers(unresolvedParseInfo);
+    }
+    if (typeResolver.hasUnresolvedEnumMembers())
+    {
+      return typeResolver.resolveEnumMembers(unresolvedParseInfo);
+    }
     return false;
   }
 }

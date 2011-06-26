@@ -4,7 +4,7 @@ import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.misc.AccessSpecifier;
-import compiler.language.conceptual.misc.Parameter;
+import compiler.language.conceptual.misc.ParameterList;
 import compiler.language.conceptual.misc.SinceSpecifier;
 import compiler.language.conceptual.statement.Statement;
 import compiler.language.conceptual.type.PointerType;
@@ -24,7 +24,7 @@ public class Constructor extends Resolvable
   private AccessSpecifier accessSpecifier;
   private SinceSpecifier sinceSpecifier;
   private String name;
-  private Parameter[] parameters;
+  private ParameterList parameterList;
   private PointerType[] thrownTypes;
   private Statement[] statements;
 
@@ -41,6 +41,17 @@ public class Constructor extends Resolvable
     this.accessSpecifier = accessSpecifier;
     this.sinceSpecifier = sinceSpecifier;
     this.name = name;
+  }
+
+  /**
+   * Sets the header of this Constructor, which includes all information that is not populated in the constructor and is not part of the Constructor body.
+   * @param parameterList - the parameters
+   * @param thrownTypes - the thrown types
+   */
+  public void setHeader(ParameterList parameterList, PointerType[] thrownTypes)
+  {
+    this.parameterList = parameterList;
+    this.thrownTypes = thrownTypes;
   }
 
   /**
@@ -65,11 +76,11 @@ public class Constructor extends Resolvable
     return name;
   }
   /**
-   * @return the parameters
+   * @return the list of parameters
    */
-  public Parameter[] getParameters()
+  public ParameterList getParameters()
   {
-    return parameters;
+    return parameterList;
   }
   /**
    * @return the thrownTypes

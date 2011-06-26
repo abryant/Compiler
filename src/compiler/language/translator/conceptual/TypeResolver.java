@@ -8,6 +8,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.member.ConstructorAST;
 import compiler.language.ast.member.MethodAST;
 import compiler.language.ast.member.PropertyAST;
 import compiler.language.ast.misc.DeclarationAssigneeAST;
@@ -23,6 +24,7 @@ import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
+import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
@@ -402,7 +404,7 @@ public class TypeResolver
   {
     return interfacesToResolveParents.isEmpty()    && classesToResolveParents.isEmpty()    && enumsToResolveParents.isEmpty() &&
            interfacesToResolveTypeBounds.isEmpty() && classesToResolveTypeBounds.isEmpty() &&
-           interfacesToResolveMembers.isEmpty();
+           interfacesToResolveMembers.isEmpty()    && classesToResolveMembers.isEmpty()    && enumsToResolveMembers.isEmpty();
   }
 
   /**
@@ -451,6 +453,22 @@ public class TypeResolver
   public boolean hasUnresolvedInterfaceMembers()
   {
     return !interfacesToResolveMembers.isEmpty();
+  }
+
+  /**
+   * @return true if this resolver has more classes to resolve the members of, false otherwise
+   */
+  public boolean hasUnresolvedClassMembers()
+  {
+    return !classesToResolveMembers.isEmpty();
+  }
+
+  /**
+   * @return true if this resolver has more enums to resolve the members of, false otherwise
+   */
+  public boolean hasUnresolvedEnumMembers()
+  {
+    return !enumsToResolveMembers.isEmpty();
   }
 
   /**
@@ -1245,6 +1263,8 @@ public class TypeResolver
         changed = true;
         notFullyResolved.clear();
         unresolvedParseInfo.clear();
+        // add this class to the next queue, to resolve its member variables' types
+        classesToResolveMembers.add(toResolve);
       }
       else
       {
@@ -1341,6 +1361,188 @@ public class TypeResolver
   }
 
   /**
+   * Resolves the types of the members of each of the classes in the queue.
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
+   * @return true if any successful processing was done, false otherwise
+   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem occurs while resolving one of the members' types
+   */
+  public boolean resolveClassMembers(Set<ParseInfo> unresolvedParseInfo) throws ConceptualException, NameConflictException
+  {
+    boolean changed = false;
+    Set<ConceptualClass> notFullyResolved = new HashSet<ConceptualClass>();
+
+    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty() &&
+           interfacesToResolveTypeBounds.isEmpty() && classesToResolveTypeBounds.isEmpty() &&
+           interfacesToResolveMembers.isEmpty() && !classesToResolveMembers.isEmpty())
+    {
+      ConceptualClass toResolve = classesToResolveMembers.poll();
+      if (notFullyResolved.contains(toResolve))
+      {
+        // all of the classes in the queue have been processed since a change has been made
+        // (this depends on classesToResolveMembers being a queue)
+        return changed;
+      }
+      QueueState queueState = new QueueState();
+      try
+      {
+        for (Method method : toResolve.getMethods())
+        {
+          if (resolveMethodType(method, (MethodAST) conceptualASTNodes.get(method)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        for (Property property : toResolve.getProperties())
+        {
+          if (resolvePropertyType(property, (PropertyAST) conceptualASTNodes.get(property)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        for (MemberVariable variable : toResolve.getVariables())
+        {
+          if (resolveVariableType(variable, (DeclarationAssigneeAST) conceptualASTNodes.get(variable)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        for (Constructor constructor : toResolve.getConstructors())
+        {
+          if (resolveConstructorType(constructor, (ConstructorAST) conceptualASTNodes.get(constructor)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        // if we get here then everything has been processed
+        // we have removed something from the queue, so a change has occurred
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
+      catch (UnresolvableException e)
+      {
+        notFullyResolved.add(toResolve);
+        unresolvedParseInfo.add(e.getParseInfo());
+
+        // some members still need filling in, so add this to the end of the queue again
+        classesToResolveMembers.add(toResolve);
+
+        if (queueState.hasChanged())
+        {
+          // one of the queues was modified during a call to resolvePointerType(),
+          // because a new file was loaded and addFile() was called.
+          // this must count as a change, for reasons described above
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+    }
+
+    return changed;
+  }
+
+  /**
+   * Resolves the types of the members of each of the enums in the queue.
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
+   * @return true if any successful processing was done, false otherwise
+   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem occurs while resolving one of the members' types
+   */
+  public boolean resolveEnumMembers(Set<ParseInfo> unresolvedParseInfo) throws ConceptualException, NameConflictException
+  {
+    boolean changed = false;
+    Set<ConceptualEnum> notFullyResolved = new HashSet<ConceptualEnum>();
+
+    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty() &&
+           interfacesToResolveTypeBounds.isEmpty() && classesToResolveTypeBounds.isEmpty() &&
+           interfacesToResolveMembers.isEmpty() && classesToResolveMembers.isEmpty() && !enumsToResolveMembers.isEmpty())
+    {
+      ConceptualEnum toResolve = enumsToResolveMembers.poll();
+      if (notFullyResolved.contains(toResolve))
+      {
+        // all of the enums in the queue have been processed since a change has been made
+        // (this depends on enumsToResolveMembers being a queue)
+        return changed;
+      }
+      QueueState queueState = new QueueState();
+      try
+      {
+        for (Method method : toResolve.getMethods())
+        {
+          if (resolveMethodType(method, (MethodAST) conceptualASTNodes.get(method)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        for (Property property : toResolve.getProperties())
+        {
+          if (resolvePropertyType(property, (PropertyAST) conceptualASTNodes.get(property)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        for (MemberVariable variable : toResolve.getVariables())
+        {
+          if (resolveVariableType(variable, (DeclarationAssigneeAST) conceptualASTNodes.get(variable)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        for (Constructor constructor : toResolve.getConstructors())
+        {
+          if (resolveConstructorType(constructor, (ConstructorAST) conceptualASTNodes.get(constructor)))
+          {
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
+        // if we get here then everything has been processed
+        // we have removed something from the queue, so a change has occurred
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
+      catch (UnresolvableException e)
+      {
+        notFullyResolved.add(toResolve);
+        unresolvedParseInfo.add(e.getParseInfo());
+
+        // some members still need filling in, so add this to the end of the queue again
+        enumsToResolveMembers.add(toResolve);
+
+        if (queueState.hasChanged())
+        {
+          // one of the queues was modified during a call to resolvePointerType(),
+          // because a new file was loaded and addFile() was called.
+          // this must count as a change, for reasons described above
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+    }
+
+    return changed;
+  }
+
+  /**
    * Resolves the type of the specified MemberVariable.
    * @param variable - the variable to resolve the type of
    * @param astNode - the AST node to get the names to resolve from
@@ -1373,6 +1575,27 @@ public class TypeResolver
     if (property.getPropertyType() == null)
     {
       property.setPropertyType(ASTConverter.convert(astNode.getType(), this, property));
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Resolves the type of the specified Constructor, including type parameters and thrown types
+   * @param constructor - the Constructor to resolve the type of
+   * @param astNode - the AST node to get the names to resolve from
+   * @return true if a change was made, false otherwise
+   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem occurs while resolving the constructor's type
+   * @throws UnresolvableException - if further initialisation must be done before one of the names can be resolved
+   */
+  private boolean resolveConstructorType(Constructor constructor, ConstructorAST astNode) throws ConceptualException, NameConflictException, UnresolvableException
+  {
+    if (constructor.getParameters() == null || constructor.getThrownTypes() == null)
+    {
+      ParameterList parameterList = ASTConverter.convert(astNode.getParameters(),  this, constructor);
+      PointerType[] thrownTypes   = ASTConverter.convert(astNode.getThrownTypes(), this, constructor);
+      constructor.setHeader(parameterList, thrownTypes);
       return true;
     }
     return false;
