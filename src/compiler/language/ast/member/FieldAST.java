@@ -36,6 +36,10 @@ public class FieldAST extends MemberAST
     this.modifiers = modifiers;
     this.type = type;
     this.assignees = assignees;
+    for (DeclarationAssigneeAST assignee : assignees)
+    {
+      assignee.setEnclosingField(this);
+    }
   }
 
   /**
@@ -49,11 +53,7 @@ public class FieldAST extends MemberAST
    */
   public FieldAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, TypeAST type, DeclarationAssigneeAST[] assignees, ExpressionAST expression, ParseInfo parseInfo)
   {
-    super(parseInfo);
-    this.accessSpecifier = accessSpecifier;
-    this.modifiers = modifiers;
-    this.type = type;
-    this.assignees = assignees;
+    this(accessSpecifier, modifiers, type, assignees, parseInfo);
     this.expression = expression;
   }
 

@@ -1,6 +1,7 @@
 package compiler.language.ast.misc;
 
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.member.FieldAST;
 import compiler.language.ast.terminal.NameAST;
 
 /*
@@ -17,6 +18,8 @@ public class DeclarationAssigneeAST
   private ParseInfo parseInfo;
 
   private NameAST name;
+
+  private FieldAST enclosingField;
 
   /**
    * Creates a new DeclarationAssigneeAST with the specified name
@@ -43,6 +46,22 @@ public class DeclarationAssigneeAST
   public NameAST getName()
   {
     return name;
+  }
+
+  /**
+   * @return the enclosingField
+   */
+  public FieldAST getEnclosingField()
+  {
+    return enclosingField;
+  }
+
+  /**
+   * @param enclosingField - the enclosingField to set
+   */
+  public void setEnclosingField(FieldAST enclosingField)
+  {
+    this.enclosingField = enclosingField;
   }
 
   /**

@@ -8,9 +8,9 @@ import java.util.Queue;
 import java.util.Set;
 
 import compiler.language.ast.ParseInfo;
-import compiler.language.ast.member.FieldAST;
 import compiler.language.ast.member.MethodAST;
 import compiler.language.ast.member.PropertyAST;
+import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.ast.type.TypeParameterAST;
@@ -1304,7 +1304,7 @@ public class TypeResolver
         }
         for (MemberVariable variable : toResolve.getStaticVariables())
         {
-          if (resolveVariableType(variable, (FieldAST) conceptualASTNodes.get(variable)))
+          if (resolveVariableType(variable, (DeclarationAssigneeAST) conceptualASTNodes.get(variable)))
           {
             changed = true;
             notFullyResolved.clear();
@@ -1349,11 +1349,11 @@ public class TypeResolver
    * @throws ConceptualException - if a conceptual problem occurs while resolving the variable's type
    * @throws UnresolvableException - if further initialisation must be done before one of the names can be resolved
    */
-  private boolean resolveVariableType(MemberVariable variable, FieldAST astNode) throws NameConflictException, ConceptualException, UnresolvableException
+  private boolean resolveVariableType(MemberVariable variable, DeclarationAssigneeAST astNode) throws NameConflictException, ConceptualException, UnresolvableException
   {
     if (variable.getVariableType() == null)
     {
-      variable.setVariableType(ASTConverter.convert(astNode.getType(), this, variable));
+      variable.setVariableType(ASTConverter.convert(astNode.getEnclosingField().getType(), this, variable));
       return true;
     }
     return false;
