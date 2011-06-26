@@ -163,12 +163,12 @@ public class ASTConverter
         packageResult = rootPackage.resolve(packageName, false);
         if (packageResult == null)
         {
-          throw new ConceptualException("Package name cannot be resolved!", packageDeclaration.getPackageName().getParseInfo());
+          throw new ConceptualException("Package name cannot be resolved", packageDeclaration.getPackageName().getParseInfo());
         }
       }
       catch (UnresolvableException e)
       {
-        throw new ConceptualException("Package name cannot be resolved!", e, packageDeclaration.getPackageName().getParseInfo());
+        throw new ConceptualException("Package name cannot be resolved", e, packageDeclaration.getPackageName().getParseInfo());
       }
       if (packageResult.getType() != ScopeType.PACKAGE)
       {
@@ -219,7 +219,7 @@ public class ASTConverter
       }
       else
       {
-        throw new UnsupportedOperationException("Cannot translate a type definition that does not represent a class, interface or enum.");
+        throw new UnsupportedOperationException("Cannot translate a type definition that does not represent a class, interface or enum");
       }
     }
     conceptualFile.setTypes(classes, interfaces, enums);
@@ -244,7 +244,7 @@ public class ASTConverter
     if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
     {
       // the getParseInfo() call here will not throw a NullPointerException because if classDefinition.getAccess() was null then access would be PUBLIC
-      throw new ConceptualException("Invalid access specifier for a class.", classDefinition.getAccess().getParseInfo());
+      throw new ConceptualException("Invalid access specifier for a class", classDefinition.getAccess().getParseInfo());
     }
     ModifierAST[] modifiers = classDefinition.getModifiers();
     boolean isAbstract = false;
@@ -391,7 +391,7 @@ public class ASTConverter
       }
       else
       {
-        throw new UnsupportedOperationException("Cannot translate a class member that is not a field, property, static initializer, constructor, method, or type definition.");
+        throw new UnsupportedOperationException("Cannot translate a class member that is not a field, property, static initializer, constructor, method, or type definition");
       }
     }
 
@@ -493,7 +493,7 @@ public class ASTConverter
         {
           if (!variable.isStatic())
           {
-            throw new ConceptualException("An interface cannot contain non-static member variables.", memberAST.getParseInfo());
+            throw new ConceptualException("An interface cannot contain non-static member variables", memberAST.getParseInfo());
           }
           Boolean usedInMethod = usedNames.put(variable.getName(), false);
           if (usedInMethod != null)
@@ -556,7 +556,7 @@ public class ASTConverter
       }
       else
       {
-        throw new UnsupportedOperationException("Cannot translate an interface member that is not a static field, property, static initializer, method, or type definition.");
+        throw new UnsupportedOperationException("Cannot translate an interface member that is not a static field, property, static initializer, method, or type definition");
       }
     }
 
@@ -583,7 +583,7 @@ public class ASTConverter
     if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
     {
       // the getParseInfo() call here will not throw a NullPointerException because if enumDefinition.getAccessSpecifier() was null then access would be PUBLIC
-      throw new ConceptualException("Invalid access specifier for an enum.", enumDefinition.getAccessSpecifier().getParseInfo());
+      throw new ConceptualException("Invalid access specifier for an enum", enumDefinition.getAccessSpecifier().getParseInfo());
     }
     ModifierAST[] modifiers = enumDefinition.getModifiers();
     SinceSpecifier sinceSpecifier = null;
@@ -718,7 +718,7 @@ public class ASTConverter
       }
       else
       {
-        throw new UnsupportedOperationException("Cannot translate a class member that is not a field, property, static initializer, constructor, method, or type definition.");
+        throw new UnsupportedOperationException("Cannot translate a class member that is not a field, property, static initializer, constructor, method, or type definition");
       }
     }
 
@@ -1057,7 +1057,7 @@ public class ASTConverter
     if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
     {
       // the getParseInfo() call here will not throw a NullPointerException because if enumDefinition.getAccessSpecifier() was null then access would be PUBLIC
-      throw new ConceptualException("Invalid access specifier for an enum.", enumDefinition.getAccessSpecifier().getParseInfo());
+      throw new ConceptualException("Invalid access specifier for an enum", enumDefinition.getAccessSpecifier().getParseInfo());
     }
     ModifierAST[] modifiers = enumDefinition.getModifiers();
     SinceSpecifier sinceSpecifier = null;
