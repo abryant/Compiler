@@ -44,7 +44,7 @@ public final class InnerInterface extends ConceptualInterface
    * {@inheritDoc}
    */
   @Override
-  protected Resolvable getParent()
+  public Resolvable getParent()
   {
     return enclosingTypeDefinition;
   }

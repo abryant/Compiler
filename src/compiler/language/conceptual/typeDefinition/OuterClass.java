@@ -47,7 +47,7 @@ public final class OuterClass extends ConceptualClass
    * {@inheritDoc}
    */
   @Override
-  protected Resolvable getParent()
+  public Resolvable getParent()
   {
     return enclosingFile;
   }

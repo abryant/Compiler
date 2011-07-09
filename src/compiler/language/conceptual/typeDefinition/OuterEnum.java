@@ -44,7 +44,7 @@ public final class OuterEnum extends ConceptualEnum
    * {@inheritDoc}
    */
   @Override
-  protected Resolvable getParent()
+  public Resolvable getParent()
   {
     return enclosingFile;
   }

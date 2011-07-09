@@ -45,7 +45,7 @@ public final class OuterInterface extends ConceptualInterface
    * {@inheritDoc}
    */
   @Override
-  protected Resolvable getParent()
+  public Resolvable getParent()
   {
     return enclosingFile;
   }

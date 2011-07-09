@@ -87,6 +87,8 @@ public final class NameResolver
    */
   private boolean resolveNames(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
   {
+    // TODO: fix the bug that occurs if an inner class of an enum extends something from the enum's superclass
+    // this means allowing resolution of classes, interfaces and enums in any order
     if (typeResolver.hasUnresolvedInterfaces())
     {
       return typeResolver.resolveInterfaceParents(unresolvedParseInfo);

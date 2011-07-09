@@ -91,7 +91,7 @@ public class TypeParameter extends Resolvable
    * {@inheritDoc}
    */
   @Override
-  protected Resolvable getParent()
+  public Resolvable getParent()
   {
     // TODO: implement (should it just return null?)
     return null;

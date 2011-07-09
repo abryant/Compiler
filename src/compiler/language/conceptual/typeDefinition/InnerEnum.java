@@ -43,7 +43,7 @@ public final class InnerEnum extends ConceptualEnum
    * {@inheritDoc}
    */
   @Override
-  protected Resolvable getParent()
+  public Resolvable getParent()
   {
     return enclosingTypeDefinition;
   }

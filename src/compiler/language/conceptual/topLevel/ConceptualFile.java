@@ -189,6 +189,7 @@ public final class ConceptualFile extends Resolvable
       QName importedQName = imported.getImportedQName();
       if (imported.isAddChildren())
       {
+        // TODO: check access specifiers for imports here
         Resolvable baseResult = rootPackage.resolve(importedQName, false);
         if (baseResult == null)
         {
@@ -203,6 +204,7 @@ public final class ConceptualFile extends Resolvable
       }
       else if (importedQName.getLastName().equals(name))
       {
+        // TODO: check access specifiers for imports here
         Resolvable result = rootPackage.resolve(importedQName, false);
         if (result == null)
         {
@@ -229,7 +231,7 @@ public final class ConceptualFile extends Resolvable
    * {@inheritDoc}
    */
   @Override
-  protected Resolvable getParent()
+  public Resolvable getParent()
   {
     return enclosingPackage;
   }

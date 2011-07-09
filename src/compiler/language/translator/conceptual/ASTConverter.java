@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import compiler.language.ast.ParseInfo;
 import compiler.language.ast.member.AccessSpecifierAST;
 import compiler.language.ast.member.ConstructorAST;
 import compiler.language.ast.member.FieldAST;
@@ -1486,6 +1487,21 @@ public class ASTConverter
       nameStrings[i] = names[i].getName();
     }
     return new QName(nameStrings);
+  }
+
+  /**
+   * Extracts the ParseInfo from the specified array of NameASTs.
+   * @param names - the NameAST[] to extract the ParseInfo from
+   * @return the ParseInfo[] created
+   */
+  public static ParseInfo[] extractParseInfo(NameAST[] names)
+  {
+    ParseInfo[] parseInfo = new ParseInfo[names.length];
+    for (int i = 0; i < names.length; i++)
+    {
+      parseInfo[i] = names[i].getParseInfo();
+    }
+    return parseInfo;
   }
 
 }

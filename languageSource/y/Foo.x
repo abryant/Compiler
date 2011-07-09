@@ -21,6 +21,19 @@ class Super
   class A
   {
   }
+
+  private class B {}
+  protected class C {}
+  package interface D {}
+  package protected class E {}
+
+}
+
+class Sub extends Super
+{
+  class Y extends Super.C {}
+  interface X extends Super.D {}
+  class W extends Super.E {}
 }
 
 enum SubEnum extends Super
@@ -30,4 +43,5 @@ enum SubEnum extends Super
   class B extends Super.A
   {
   }
+
 }

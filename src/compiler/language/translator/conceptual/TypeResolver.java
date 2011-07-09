@@ -28,6 +28,7 @@ import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
 import compiler.language.conceptual.member.Method;
 import compiler.language.conceptual.member.Property;
+import compiler.language.conceptual.misc.AccessSpecifier;
 import compiler.language.conceptual.misc.ParameterList;
 import compiler.language.conceptual.topLevel.ConceptualFile;
 import compiler.language.conceptual.topLevel.ConceptualPackage;
@@ -44,6 +45,11 @@ import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
 import compiler.language.conceptual.typeDefinition.InnerClass;
+import compiler.language.conceptual.typeDefinition.InnerEnum;
+import compiler.language.conceptual.typeDefinition.InnerInterface;
+import compiler.language.conceptual.typeDefinition.OuterClass;
+import compiler.language.conceptual.typeDefinition.OuterEnum;
+import compiler.language.conceptual.typeDefinition.OuterInterface;
 import compiler.language.conceptual.typeDefinition.TypeDefinition;
 
 /*
@@ -73,6 +79,7 @@ public class TypeResolver
   private static final QName UNIVERSAL_BASE_CLASS_QNAME = new QName("x", "Object");
   private OuterClassPointerType universalBaseClass;
 
+  private AccessSpecifierChecker accessSpecifierChecker;
 
   /**
    * Creates a new TypeResolver to resolve qualified names into types.
@@ -205,6 +212,7 @@ public class TypeResolver
       throw new IllegalStateException("Universal base class " + UNIVERSAL_BASE_CLASS_QNAME + " does not resolve to an outer class!");
     }
     universalBaseClass = new OuterClassPointerType((ConceptualClass) baseClass, null, false);
+    accessSpecifierChecker = new AccessSpecifierChecker(universalBaseClass.getClassType());
   }
 
   /**
@@ -258,7 +266,8 @@ public class TypeResolver
   {
     // resolve the QName without taking the type argument lists into account
     QName qname = ASTConverter.convert(pointerTypeAST.getNames());
-    Resolvable resolved = startScope.resolve(qname, true);
+    ParseInfo[] qnameParseInfo = ASTConverter.extractParseInfo(pointerTypeAST.getNames());
+    Resolvable resolved = resolve(qname, qnameParseInfo, startScope);
 
     if (resolved == null)
     {
@@ -396,6 +405,102 @@ public class TypeResolver
                                 typeArguments.toArray(new TypeArgument[typeArguments.size()][]),
                                 pointerTypeAST.isImmutable());
   }
+
+
+  /**
+   * Resolves the specified QName, while checking that all of the names along the way are accessible according to their access specifiers.
+   * @param name - the QName to resolve
+   * @param nameParseInfo - the ParseInfo objects corresponding to each of the names in the QName being resolved
+   * @param startScope - the scope to start the resolution from
+   * @return the Resolvable resolved
+   * @throws NameConflictException - if a name conflict is detected while resolving this pointer type
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved and is accessible from this startScope
+   * @throws ConceptualException - if an access specifier is invalid
+   */
+  private Resolvable resolve(QName name, ParseInfo[] nameParseInfo, Resolvable startScope) throws NameConflictException, UnresolvableException, ConceptualException
+  {
+    String[] names = name.getNames();
+
+    Resolvable current = startScope;
+    while (current != null)
+    {
+      // try starting with current
+      for (int i = 0; i < names.length; i++)
+      {
+        Resolvable next = current.resolve(names[i]);
+        if (next == null)
+        {
+          if (i == 0)
+          {
+            // try starting with the parent of current
+            break;
+          }
+          return null;
+        }
+
+        // check that the access specifier is valid before going onto the next name
+        checkAccess(next, startScope, nameParseInfo[i]);
+
+        if (i == names.length - 1)
+        {
+          // the whole name has been resolved, so return the result
+          return next;
+        }
+        current = next;
+      }
+
+      // try again, this time starting with current's parent
+      current = current.getParent();
+    }
+    return null;
+  }
+
+  /**
+   * Checks that accessing the specified Resolvable is valid from the specified usage scope. If it is not valid, then a ConceptualException is thrown.
+   * If accessed does not represent a type definition, then this method does not check anything.
+   * @param accessed - the Resolvable being accessed
+   * @param usageScope - the Resolvable representing the scope that the access is coming from
+   * @param usageParseInfo - the ParseInfo of the name that has been resolved to point to accessed
+   * @throws ConceptualException - if the access is invalid
+   * @throws UnresolvableException - if it is impossible to determine whether the access is valid due to another unresolved name
+   */
+  private void checkAccess(Resolvable accessed, Resolvable usageScope, ParseInfo usageParseInfo) throws ConceptualException, UnresolvableException
+  {
+    AccessSpecifier accessSpecifier;
+    String memberName;
+    switch (accessed.getType())
+    {
+    case INNER_CLASS:
+      accessSpecifier = ((InnerClass) accessed).getAccessSpecifier();
+      memberName      = ((InnerClass) accessed).getName();
+      break;
+    case INNER_ENUM:
+      accessSpecifier = ((InnerEnum) accessed).getAccessSpecifier();
+      memberName      = ((InnerEnum) accessed).getName();
+      break;
+    case INNER_INTERFACE:
+      accessSpecifier = ((InnerInterface) accessed).getAccessSpecifier();
+      memberName      = ((InnerInterface) accessed).getName();
+      break;
+    case OUTER_CLASS:
+      accessSpecifier = ((OuterClass) accessed).getAccessSpecifier();
+      memberName      = ((OuterClass) accessed).getName();
+      break;
+    case OUTER_ENUM:
+      accessSpecifier = ((OuterEnum) accessed).getAccessSpecifier();
+      memberName      = ((OuterEnum) accessed).getName();
+      break;
+    case OUTER_INTERFACE:
+      accessSpecifier = ((OuterInterface) accessed).getAccessSpecifier();
+      memberName      = ((OuterInterface) accessed).getName();
+      break;
+    default:
+      return;
+    }
+
+    accessSpecifierChecker.checkAccess(accessed.getParent(), usageScope, accessSpecifier, usageParseInfo, memberName);
+  }
+
 
   /**
    * @return true if this resolver has no more data to resolve from any interfaces, classes or enums; false otherwise

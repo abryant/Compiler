@@ -24,13 +24,14 @@ public abstract class Resolvable
    * @return the Resolvable object found, or null if the name could not be resolved
    * @throws NameConflictException - if a name conflict is detected while trying to resolve this name
    * @throws UnresolvableException - if it is unknown whether the name can be resolved
+   * @throws ConceptualException - if a conceptual error is detected while resolving the name
    */
   public abstract Resolvable resolve(String name) throws NameConflictException, UnresolvableException;
 
   /**
    * @return the parent resolvable object that should be consulted about resolving names that this cannot resolve
    */
-  protected abstract Resolvable getParent();
+  public abstract Resolvable getParent();
 
   /**
    * Resolves the specified QName from this Resolvable object.
@@ -39,8 +40,24 @@ public abstract class Resolvable
    * @return the result of resolving the QName, as a Resolvable, or null if the name could not be resolved
    * @throws NameConflictException - if a name conflict is detected while trying to resolve the name
    * @throws UnresolvableException - if it is unknown whether the name can be resolved
+   * @throws ConceptualException - if a conceptual error is detected while resolving the name
    */
   public final Resolvable resolve(QName name, boolean recurseUpwards) throws NameConflictException, UnresolvableException
+  {
+    return resolve(name, this, recurseUpwards);
+  }
+
+  /**
+   * Resolves the specified QName from this Resolvable object.
+   * @param name - the QName to resolve
+   * @param startScope - the scope that the name is being resolved from, can be used for checking access specifiers
+   * @param recurseUpwards - true to recurse back to the parent conceptual node if there are no results in this one, false to just return null in this scenario
+   * @return the result of resolving the QName, as a Resolvable, or null if the name could not be resolved
+   * @throws NameConflictException - if a name conflict is detected while trying to resolve the name
+   * @throws UnresolvableException - if it is unknown whether the name can be resolved
+   * @throws ConceptualException - if a conceptual error is detected while resolving the name
+   */
+  private final Resolvable resolve(QName name, Resolvable startScope, boolean recurseUpwards) throws NameConflictException, UnresolvableException
   {
     Resolvable resolvable = this;
     boolean resolvedOne = false;
@@ -67,7 +84,7 @@ public abstract class Resolvable
       Resolvable parent = getParent();
       if (parent != null)
       {
-        return parent.resolve(name, true);
+        return parent.resolve(name, startScope, true);
       }
     }
     return null;

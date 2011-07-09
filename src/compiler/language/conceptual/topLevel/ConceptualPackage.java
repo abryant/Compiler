@@ -264,7 +264,7 @@ public final class ConceptualPackage extends Resolvable
    * {@inheritDoc}
    */
   @Override
-  protected Resolvable getParent()
+  public Resolvable getParent()
   {
     return parentPackage;
   }

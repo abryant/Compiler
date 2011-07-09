@@ -161,7 +161,7 @@ public class MemberVariable extends Resolvable
    * {@inheritDoc}
    */
   @Override
-  protected Resolvable getParent()
+  public Resolvable getParent()
   {
     return enclosingTypeDefinition;
   }
