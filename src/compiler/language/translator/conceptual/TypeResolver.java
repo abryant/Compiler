@@ -64,17 +64,9 @@ public class TypeResolver
 
   private Map<Object, Object> conceptualASTNodes;
 
-  private Queue<ConceptualInterface> interfacesToResolveParents = new LinkedList<ConceptualInterface>();
-  private Queue<ConceptualClass> classesToResolveParents = new LinkedList<ConceptualClass>();
-  private Queue<ConceptualEnum> enumsToResolveParents = new LinkedList<ConceptualEnum>();
-
-  // TODO: implement methods to resolve things from these queues:
-  private Queue<ConceptualInterface> interfacesToResolveTypeBounds = new LinkedList<ConceptualInterface>();
-  private Queue<ConceptualClass> classesToResolveTypeBounds = new LinkedList<ConceptualClass>();
-
-  private Queue<ConceptualInterface> interfacesToResolveMembers = new LinkedList<ConceptualInterface>();
-  private Queue<ConceptualClass> classesToResolveMembers = new LinkedList<ConceptualClass>();
-  private Queue<ConceptualEnum> enumsToResolveMembers = new LinkedList<ConceptualEnum>();
+  private Queue<TypeDefinition> parentsToResolve = new LinkedList<TypeDefinition>();
+  private Queue<TypeDefinition> typeBoundsToResolve = new LinkedList<TypeDefinition>();
+  private Queue<TypeDefinition> membersToResolve = new LinkedList<TypeDefinition>();
 
   private static final QName UNIVERSAL_BASE_CLASS_QNAME = new QName("x", "Object");
   private OuterClassPointerType universalBaseClass;
@@ -97,37 +89,22 @@ public class TypeResolver
    */
   private class QueueState
   {
-    private int interfaceParentsLength;
-    private int classParentsLength;
-    private int enumParentsLength;
-    private int interfaceTypeBoundsLength;
-    private int classTypeBoundsLength;
-    private int interfaceMembersLength;
-    private int classMembersLength;
-    private int enumMembersLength;
+    private int parentsLength;
+    private int typeBoundsLength;
+    private int membersLength;
 
     private QueueState()
     {
-      interfaceParentsLength    = interfacesToResolveParents.size();
-      classParentsLength        = classesToResolveParents.size();
-      enumParentsLength         = enumsToResolveParents.size();
-      interfaceTypeBoundsLength = interfacesToResolveTypeBounds.size();
-      classTypeBoundsLength     = classesToResolveTypeBounds.size();
-      interfaceMembersLength    = interfacesToResolveMembers.size();
-      classMembersLength        = classesToResolveMembers.size();
-      enumMembersLength         = enumsToResolveMembers.size();
+      parentsLength    = parentsToResolve.size();
+      typeBoundsLength = typeBoundsToResolve.size();
+      membersLength    = membersToResolve.size();
     }
 
     private boolean hasChanged()
     {
-      return interfaceParentsLength    != interfacesToResolveParents.size()    ||
-             classParentsLength        != classesToResolveParents.size()       ||
-             enumParentsLength         != enumsToResolveParents.size()         ||
-             interfaceTypeBoundsLength != interfacesToResolveTypeBounds.size() ||
-             classTypeBoundsLength     != classesToResolveTypeBounds.size()    ||
-             interfaceMembersLength    != interfacesToResolveMembers.size()    ||
-             classMembersLength        != classesToResolveMembers.size()       ||
-             enumMembersLength         != enumsToResolveMembers.size();
+      return parentsLength    != parentsToResolve.size()    ||
+             typeBoundsLength != typeBoundsToResolve.size() ||
+             membersLength    != membersToResolve.size();
     }
   }
 
@@ -139,17 +116,17 @@ public class TypeResolver
   {
     for (ConceptualClass conceptualClass : file.getClasses())
     {
-      classesToResolveParents.add(conceptualClass);
+      parentsToResolve.add(conceptualClass);
       addInnerTypes(conceptualClass.getInnerClasses(), conceptualClass.getInnerInterfaces(), conceptualClass.getInnerEnums());
     }
     for (ConceptualInterface conceptualInterface : file.getInterfaces())
     {
-      interfacesToResolveParents.add(conceptualInterface);
+      parentsToResolve.add(conceptualInterface);
       addInnerTypes(conceptualInterface.getInnerClasses(), conceptualInterface.getInnerInterfaces(), conceptualInterface.getInnerEnums());
     }
     for (ConceptualEnum conceptualEnum : file.getEnums())
     {
-      enumsToResolveParents.add(conceptualEnum);
+      parentsToResolve.add(conceptualEnum);
       addInnerTypes(conceptualEnum.getInnerClasses(), conceptualEnum.getInnerInterfaces(), conceptualEnum.getInnerEnums());
     }
   }
@@ -166,7 +143,7 @@ public class TypeResolver
     {
       for (ConceptualClass innerClass : innerClasses)
       {
-        classesToResolveParents.add(innerClass);
+        parentsToResolve.add(innerClass);
         addInnerTypes(innerClass.getInnerClasses(), innerClass.getInnerInterfaces(), innerClass.getInnerEnums());
       }
     }
@@ -174,7 +151,7 @@ public class TypeResolver
     {
       for (ConceptualInterface innerInterface : innerInterfaces)
       {
-        interfacesToResolveParents.add(innerInterface);
+        parentsToResolve.add(innerInterface);
         addInnerTypes(innerInterface.getInnerClasses(), innerInterface.getInnerInterfaces(), innerInterface.getInnerEnums());
       }
     }
@@ -182,7 +159,7 @@ public class TypeResolver
     {
       for (ConceptualEnum innerEnum : innerEnums)
       {
-        enumsToResolveParents.add(innerEnum);
+        parentsToResolve.add(innerEnum);
         addInnerTypes(innerEnum.getInnerClasses(), innerEnum.getInnerInterfaces(), innerEnum.getInnerEnums());
       }
     }
@@ -507,169 +484,411 @@ public class TypeResolver
    */
   public boolean finishedProcessing()
   {
-    return interfacesToResolveParents.isEmpty()    && classesToResolveParents.isEmpty()    && enumsToResolveParents.isEmpty() &&
-           interfacesToResolveTypeBounds.isEmpty() && classesToResolveTypeBounds.isEmpty() &&
-           interfacesToResolveMembers.isEmpty()    && classesToResolveMembers.isEmpty()    && enumsToResolveMembers.isEmpty();
+    return parentsToResolve.isEmpty() && typeBoundsToResolve.isEmpty() && membersToResolve.isEmpty();
   }
 
   /**
-   * @return true if this resolver has more interfaces to resolve the parents of, false otherwise
+   * @return true if this resolver has more type definitions to resolve the parents of, false otherwise
    */
-  public boolean hasUnresolvedInterfaces()
+  public boolean hasUnresolvedTypeParents()
   {
-    return !interfacesToResolveParents.isEmpty();
+    return !parentsToResolve.isEmpty();
   }
 
   /**
-   * @return true if this resolver has more classes to resolve the parents of, false otherwise
+   * @return true if this resolver has more type definitions to resolve the type parameter bounds of, false otherwise
    */
-  public boolean hasUnresolvedClasses()
+  public boolean hasUnresolvedTypeParameterBounds()
   {
-    return !classesToResolveParents.isEmpty();
+    return !typeBoundsToResolve.isEmpty();
   }
 
   /**
-   * @return true if this resolver has more enums to resolve the parents of, false otherwise
+   * @return true if this resolver has more type definitions to resolve the members of, false otherwise
    */
-  public boolean hasUnresolvedEnums()
+  public boolean hasUnresolvedMembers()
   {
-    return !enumsToResolveParents.isEmpty();
+    return !membersToResolve.isEmpty();
   }
 
   /**
-   * @return true if this resolver has more interfaces to resolve the type parameter bounds of, false otherwise
-   */
-  public boolean hasUnresolvedInterfaceTypeBounds()
-  {
-    return !interfacesToResolveTypeBounds.isEmpty();
-  }
-
-  /**
-   * @return true if this resolver has more classes to resolve the type parameter bounds of, false otherwise
-   */
-  public boolean hasUnresolvedClassTypeBounds()
-  {
-    return !classesToResolveTypeBounds.isEmpty();
-  }
-
-  /**
-   * @return true if this resolver has more interfaces to resolve the members of, false otherwise
-   */
-  public boolean hasUnresolvedInterfaceMembers()
-  {
-    return !interfacesToResolveMembers.isEmpty();
-  }
-
-  /**
-   * @return true if this resolver has more classes to resolve the members of, false otherwise
-   */
-  public boolean hasUnresolvedClassMembers()
-  {
-    return !classesToResolveMembers.isEmpty();
-  }
-
-  /**
-   * @return true if this resolver has more enums to resolve the members of, false otherwise
-   */
-  public boolean hasUnresolvedEnumMembers()
-  {
-    return !enumsToResolveMembers.isEmpty();
-  }
-
-  /**
-   * Resolves the parent interfaces of all interfaces in the interfacesToResolve queue.
+   * Resolves the parent types of all type definitions in the parentsToResolve queue.
    * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
    * @return true if any successful processing was done, false otherwise
-   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
-   * @throws ConceptualException - if a conceptual problem occurs while resolving parent interfaces
+   * @throws ConceptualException - if a conceptual problem is detected while resolving parent types
+   * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  public boolean resolveInterfaceParents(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
+  public boolean resolveTypeParents(Set<ParseInfo> unresolvedParseInfo) throws ConceptualException, NameConflictException
   {
     boolean changed = false;
-    Set<ConceptualInterface> notFullyResolved = new HashSet<ConceptualInterface>();
+    Set<TypeDefinition> notFullyResolved = new HashSet<TypeDefinition>();
 
-    // try to resolve the parent interfaces of every interface
-    // this uses a queue instead of an iterator because new interfaces can be added to the list while we are working on it
-    // (e.g. if an interface extends an interface which has not been parsed yet)
-    while (!interfacesToResolveParents.isEmpty())
+    // try to resolve the parent interfaces of every type definition
+    // this uses a queue instead of an iterator because new type definitions can be added to the list while we are working on it
+    // (e.g. if a class extends a class which has not been parsed yet)
+    while (!parentsToResolve.isEmpty())
     {
-      ConceptualInterface toResolve = interfacesToResolveParents.poll();
+      TypeDefinition toResolve = parentsToResolve.poll();
       if (notFullyResolved.contains(toResolve))
       {
-        // all of the interfaces in the queue have been processed since a change has been made
-        // (this depends on interfacesToResolve being a queue)
+        // all of the types in the queue have been processed since a change has been made
+        // (this depends on typesToResolve being a queue)
         return changed;
       }
-      InterfaceDefinitionAST astNode = (InterfaceDefinitionAST) conceptualASTNodes.get(toResolve);
-      PointerTypeAST[] parentInterfaces = astNode.getInterfaces();
-      InterfacePointerType[] pointerTypes = toResolve.getSuperInterfaces();
-      if (pointerTypes == null)
+
+      ScopeType type = toResolve.getType();
+      if (type == ScopeType.OUTER_CLASS || type == ScopeType.INNER_CLASS)
       {
-        pointerTypes = new InterfacePointerType[parentInterfaces.length];
-        toResolve.setSuperInterfaces(pointerTypes);
+        changed |= resolveClassParents((ConceptualClass) toResolve, unresolvedParseInfo, notFullyResolved);
       }
-      if (pointerTypes.length != parentInterfaces.length)
+      else if (type == ScopeType.OUTER_INTERFACE || type == ScopeType.INNER_INTERFACE)
       {
-        throw new IllegalStateException("Invalid length of parent interfaces array");
+        changed |= resolveInterfaceParents((ConceptualInterface) toResolve, unresolvedParseInfo, notFullyResolved);
       }
-      boolean fullyResolved = true;
-      for (int i = 0; i < parentInterfaces.length; i++)
+      else if (type == ScopeType.OUTER_ENUM || type == ScopeType.INNER_ENUM)
       {
-        if (pointerTypes[i] != null)
-        {
-          continue;
-        }
+        changed |= resolveEnumParents((ConceptualEnum) toResolve, unresolvedParseInfo, notFullyResolved);
+      }
+      else
+      {
+        throw new IllegalStateException("Unrecognised type definition: " + type);
+      }
+    }
+
+    return changed;
+  }
+
+  /**
+   * Attempts to resolve the parent types of the specified ConceptualClass.
+   * If not all of the parents are resolved, then the specified class is added to notFullyResolved,
+   * and is put back on the end of the parentsToResolve queue.
+   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * @param toResolve - the ConceptualClass to resolve the parent types of
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param notFullyResolved - the set of types which have parent types which failed to resolve since the last change was made
+   * @return true if any changes were made, false otherwise
+   * @throws ConceptualException - if a conceptual problem is detected while resolving the parent types
+   * @throws NameConflictException - if a name conflict is detected while resolving the parent types
+   */
+  private boolean resolveClassParents(ConceptualClass toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
+  {
+    boolean changed = false;
+    ClassDefinitionAST astNode = (ClassDefinitionAST) conceptualASTNodes.get(toResolve);
+
+    boolean fullyResolved = true;
+    PointerTypeAST baseClassAST = astNode.getBaseClass();
+    ClassPointerType baseClass = toResolve.getBaseClass();
+    // skip the universal base class, as its base class is the only one that should be null
+    if (baseClass == null && !universalBaseClass.getClassType().equals(toResolve))
+    {
+      if (baseClassAST == null)
+      {
+        baseClass = universalBaseClass;
+        toResolve.setBaseClass(baseClass);
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
+      else
+      {
         QueueState queueState = new QueueState();
         try
         {
-          InterfacePointerType parentPointerType = resolveInterfacePointerType(parentInterfaces[i], toResolve);
-          checkParentInterface(parentPointerType, parentInterfaces[i], toResolve);
-          pointerTypes[i] = parentPointerType;
+          baseClass = resolveClassPointerType(baseClassAST, toResolve);
+          checkParentClass(baseClass, baseClassAST, toResolve);
+          toResolve.setBaseClass(baseClass);
           changed = true;
           notFullyResolved.clear();
           unresolvedParseInfo.clear();
         }
         catch (UnresolvableException e)
         {
-          // leave pointerTypes[i] as null
           fullyResolved = false;
-          unresolvedParseInfo.add(parentInterfaces[i].getParseInfo());
+          unresolvedParseInfo.add(baseClassAST.getParseInfo());
 
           if (queueState.hasChanged())
           {
-            // one of the queues was modified during the call to resolvePointerType()
-            // because a new file was loaded and addFile() was called
-
-            // this must count as a change being made or some nasty edge cases crop up
-            // for example (using classes for clarity):
-            //   W has an inner class A, which has an inner class B, X extends W, Y extends X.A, Z extends Y.B
-            //   initially, the queue contains only Z
-            //   when the parents of Z are being resolved, Y is lazily parsed, but we cannot resolve B until Y is also resolved, so Y is added to the queue before Z is re-added
-            //   when the parents of Y are being resolved, X is lazily parsed, but we cannot resolve A until X is also resolved, so X is added to the queue before Y is re-added
-            //   Z reaches the front of the queue again, and no changes have been made, despite some progress being made, which would cause an "Unresolvable parent" exception to be thrown
-            // to counter this, we count adding something to the queue as a change, and clear the unresolvedSinceLastChange set
+            // one of the queues was modified during the call to resolvePointerType(),
+            // because a new file was loaded and addFile() was called.
+            // this must count as a change, for reasons described above
             changed = true;
             notFullyResolved.clear();
             unresolvedParseInfo.clear();
           }
         }
       }
-      if (fullyResolved)
+    }
+
+    PointerTypeAST[] parentInterfaceASTs = astNode.getInterfaces();
+    InterfacePointerType[] parentInterfaces = toResolve.getInterfaces();
+    if (parentInterfaces == null)
+    {
+      parentInterfaces = new InterfacePointerType[parentInterfaceASTs.length];
+      toResolve.setInterfaces(parentInterfaces);
+    }
+    if (parentInterfaceASTs.length != parentInterfaces.length)
+    {
+      throw new IllegalStateException("Invalid length of parent interfaces array");
+    }
+    for (int i = 0; i < parentInterfaces.length; i++)
+    {
+      if (parentInterfaces[i] != null)
       {
-        // we have removed something from the queue, so a change has occurred
+        continue;
+      }
+      QueueState queueState = new QueueState();
+      try
+      {
+        InterfacePointerType parentInterface = resolveInterfacePointerType(parentInterfaceASTs[i], toResolve);
+        checkParentInterface(parentInterface, parentInterfaceASTs[i], null);
+        parentInterfaces[i] = parentInterface;
         changed = true;
         notFullyResolved.clear();
         unresolvedParseInfo.clear();
-        // add the interface to the next queue, to resolve its type parameters' bounds
-        interfacesToResolveTypeBounds.add(toResolve);
+      }
+      catch (UnresolvableException e)
+      {
+        // leave parentInterfaces[i] as null
+        fullyResolved = false;
+        unresolvedParseInfo.add(parentInterfaceASTs[i].getParseInfo());
+
+        if (queueState.hasChanged())
+        {
+          // one of the queues was modified during the call to resolvePointerType(),
+          // because a new file was loaded and addFile() was called.
+          // this must count as a change, for reasons described above
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+    }
+    if (fullyResolved)
+    {
+      // we have removed something from the queue, so a change has occurred
+      changed = true;
+      notFullyResolved.clear();
+      unresolvedParseInfo.clear();
+      // add the class to the next queue, to resolve its type parameters' bounds
+      typeBoundsToResolve.add(toResolve);
+    }
+    else
+    {
+      // some parent classes/interfaces still need filling in, so add this to the end of the queue again
+      notFullyResolved.add(toResolve);
+      parentsToResolve.add(toResolve);
+    }
+
+    return changed;
+  }
+
+  /**
+   * Attempts to resolve the parent types of the specified ConceptualInterface.
+   * If not all of the parents are resolved, then the specified interface is added to notFullyResolved,
+   * and is put back on the end of the parentsToResolve queue.
+   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * @param toResolve - the ConceptualInterface to resolve the parent types of
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param notFullyResolved - the set of types which have parent types which failed to resolve since the last change was made
+   * @return true if any changes were made, false otherwise
+   * @throws ConceptualException - if a conceptual problem is detected while resolving the parent types
+   * @throws NameConflictException - if a name conflict is detected while resolving the parent types
+   */
+  private boolean resolveInterfaceParents(ConceptualInterface toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws ConceptualException, NameConflictException
+  {
+    boolean changed = false;
+
+    InterfaceDefinitionAST astNode = (InterfaceDefinitionAST) conceptualASTNodes.get(toResolve);
+    PointerTypeAST[] parentInterfaces = astNode.getInterfaces();
+    InterfacePointerType[] pointerTypes = toResolve.getSuperInterfaces();
+    if (pointerTypes == null)
+    {
+      pointerTypes = new InterfacePointerType[parentInterfaces.length];
+      toResolve.setSuperInterfaces(pointerTypes);
+    }
+    if (pointerTypes.length != parentInterfaces.length)
+    {
+      throw new IllegalStateException("Invalid length of parent interfaces array");
+    }
+    boolean fullyResolved = true;
+    for (int i = 0; i < parentInterfaces.length; i++)
+    {
+      if (pointerTypes[i] != null)
+      {
+        continue;
+      }
+      QueueState queueState = new QueueState();
+      try
+      {
+        InterfacePointerType parentPointerType = resolveInterfacePointerType(parentInterfaces[i], toResolve);
+        checkParentInterface(parentPointerType, parentInterfaces[i], toResolve);
+        pointerTypes[i] = parentPointerType;
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
+      catch (UnresolvableException e)
+      {
+        // leave pointerTypes[i] as null
+        fullyResolved = false;
+        unresolvedParseInfo.add(parentInterfaces[i].getParseInfo());
+
+        if (queueState.hasChanged())
+        {
+          // one of the queues was modified during the call to resolvePointerType()
+          // because a new file was loaded and addFile() was called
+
+          // this must count as a change being made or some nasty edge cases crop up
+          // for example (using classes for clarity):
+          //   W has an inner class A, which has an inner class B, X extends W, Y extends X.A, Z extends Y.B
+          //   initially, the queue contains only Z
+          //   when the parents of Z are being resolved, Y is lazily parsed, but we cannot resolve B until Y is also resolved, so Y is added to the queue before Z is re-added
+          //   when the parents of Y are being resolved, X is lazily parsed, but we cannot resolve A until X is also resolved, so X is added to the queue before Y is re-added
+          //   Z reaches the front of the queue again, and no changes have been made, despite some progress being made, which would cause an "Unresolvable parent" exception to be thrown
+          // to counter this, we count adding something to the queue as a change, and clear the unresolvedSinceLastChange set
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+    }
+    if (fullyResolved)
+    {
+      // we have removed something from the queue, so a change has occurred
+      changed = true;
+      notFullyResolved.clear();
+      unresolvedParseInfo.clear();
+      // add the interface to the next queue, to resolve its type parameters' bounds
+      typeBoundsToResolve.add(toResolve);
+    }
+    else
+    {
+      // some parent interfaces still need filling in, so add this to the end of the queue again
+      parentsToResolve.add(toResolve);
+      notFullyResolved.add(toResolve);
+    }
+
+    return changed;
+  }
+
+  /**
+   * Attempts to resolve the parent types of the specified ConceptualEnum.
+   * If not all of the parents are resolved, then the specified enum is added to notFullyResolved,
+   * and is put back on the end of the parentsToResolve queue.
+   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * @param toResolve - the ConceptualEnum to resolve the parent types of
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param notFullyResolved - the set of types which have parent types which failed to resolve since the last change was made
+   * @return true if any changes were made, false otherwise
+   * @throws ConceptualException - if a conceptual problem is detected while resolving the parent types
+   * @throws NameConflictException - if a name conflict is detected while resolving the parent types
+   */
+  private boolean resolveEnumParents(ConceptualEnum toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
+  {
+    boolean changed = false;
+    boolean fullyResolved = true;
+    EnumDefinitionAST astNode = (EnumDefinitionAST) conceptualASTNodes.get(toResolve);
+    PointerTypeAST baseClassAST = astNode.getBaseClass();
+    ClassPointerType baseClass = toResolve.getBaseClass();
+    if (baseClass == null)
+    {
+      if (baseClassAST == null)
+      {
+        baseClass = universalBaseClass;
+        toResolve.setBaseClass(baseClass);
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
       }
       else
       {
-        // some parent interfaces still need filling in, so add this to the end of the queue again
-        interfacesToResolveParents.add(toResolve);
-        notFullyResolved.add(toResolve);
+        QueueState queueState = new QueueState();
+        try
+        {
+          baseClass = resolveClassPointerType(baseClassAST, toResolve);
+          toResolve.setBaseClass(baseClass);
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+        catch (UnresolvableException e)
+        {
+          fullyResolved = false;
+          unresolvedParseInfo.add(baseClassAST.getParseInfo());
+
+          if (queueState.hasChanged())
+          {
+            // one of the queues was modified during the call to resolvePointerType(),
+            // because a new file was loaded and addFile() was called.
+            // this must count as a change, for reasons described above
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+        }
       }
     }
+
+    PointerTypeAST[] parentInterfaceASTs = astNode.getInterfaces();
+    InterfacePointerType[] parentInterfaces = toResolve.getInterfaces();
+    if (parentInterfaces == null)
+    {
+      parentInterfaces = new InterfacePointerType[parentInterfaceASTs.length];
+      toResolve.setInterfaces(parentInterfaces);
+    }
+    if (parentInterfaceASTs.length != parentInterfaces.length)
+    {
+      throw new IllegalStateException("Invalid length of parent interfaces array");
+    }
+    for (int i = 0; i < parentInterfaces.length; i++)
+    {
+      if (parentInterfaces[i] != null)
+      {
+        continue;
+      }
+      QueueState queueState = new QueueState();
+      try
+      {
+        InterfacePointerType parentInterface = resolveInterfacePointerType(parentInterfaceASTs[i], toResolve);
+        checkParentInterface(parentInterface, parentInterfaceASTs[i], null);
+        parentInterfaces[i] = parentInterface;
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
+      catch (UnresolvableException e)
+      {
+        // leave parentInterfaces[i] as null
+        fullyResolved = false;
+        unresolvedParseInfo.add(parentInterfaceASTs[i].getParseInfo());
+
+        if (queueState.hasChanged())
+        {
+          // one of the queues was modified during the call to resolvePointerType(),
+          // because a new file was loaded and addFile() was called.
+          // this must count as a change, for reasons described above
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+    }
+    if (fullyResolved)
+    {
+      // we have removed something from the queue, so a change has occurred
+      changed = true;
+      notFullyResolved.clear();
+      unresolvedParseInfo.clear();
+      // add this enum to the next queue, to resolve its member variables' types
+      membersToResolve.add(toResolve);
+    }
+    else
+    {
+      // some parent classes/interfaces still need filling in, so add this to the end of the queue again
+      notFullyResolved.add(toResolve);
+      parentsToResolve.add(toResolve);
+    }
+
     return changed;
   }
 
@@ -713,139 +932,6 @@ public class TypeResolver
         queue.add(superType.getInterfaceType());
       }
     }
-  }
-
-  /**
-   * Resolves the parent classes and interfaces of all classes in the classesToResolve queue.
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
-   * @return true if any successful processing was done, false otherwise
-   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
-   * @throws ConceptualException - if a conceptual problem occurs while resolving parent classes/interfaces
-   */
-  public boolean resolveClassParents(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
-  {
-    boolean changed = false;
-    Set<ConceptualClass> notFullyResolved = new HashSet<ConceptualClass>();
-
-    // try to resolve the parent classes and interfaces of every class
-    // this uses a queue instead of an iterator because new classes can be added to the list while we are working on it
-    // (e.g. if a class extends another class which has not been parsed yet)
-    while (interfacesToResolveParents.isEmpty() && !classesToResolveParents.isEmpty())
-    {
-      ConceptualClass toResolve = classesToResolveParents.poll();
-      if (notFullyResolved.contains(toResolve))
-      {
-        // all of the classes in the queue have been processed since a change has been made
-        // (this depends on classesToResolve being a queue)
-        return changed;
-      }
-      ClassDefinitionAST astNode = (ClassDefinitionAST) conceptualASTNodes.get(toResolve);
-
-      boolean fullyResolved = true;
-      PointerTypeAST baseClassAST = astNode.getBaseClass();
-      ClassPointerType baseClass = toResolve.getBaseClass();
-      // skip the universal base class, as its base class is the only one that should be null
-      if (baseClass == null && !universalBaseClass.getClassType().equals(toResolve))
-      {
-        if (baseClassAST == null)
-        {
-          baseClass = universalBaseClass;
-          toResolve.setBaseClass(baseClass);
-          changed = true;
-          notFullyResolved.clear();
-          unresolvedParseInfo.clear();
-        }
-        else
-        {
-          QueueState queueState = new QueueState();
-          try
-          {
-            baseClass = resolveClassPointerType(baseClassAST, toResolve);
-            checkParentClass(baseClass, baseClassAST, toResolve);
-            toResolve.setBaseClass(baseClass);
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-          catch (UnresolvableException e)
-          {
-            fullyResolved = false;
-            unresolvedParseInfo.add(baseClassAST.getParseInfo());
-
-            if (queueState.hasChanged())
-            {
-              // one of the queues was modified during the call to resolvePointerType(),
-              // because a new file was loaded and addFile() was called.
-              // this must count as a change, for reasons described above
-              changed = true;
-              notFullyResolved.clear();
-              unresolvedParseInfo.clear();
-            }
-          }
-        }
-      }
-
-      PointerTypeAST[] parentInterfaceASTs = astNode.getInterfaces();
-      InterfacePointerType[] parentInterfaces = toResolve.getInterfaces();
-      if (parentInterfaces == null)
-      {
-        parentInterfaces = new InterfacePointerType[parentInterfaceASTs.length];
-        toResolve.setInterfaces(parentInterfaces);
-      }
-      if (parentInterfaceASTs.length != parentInterfaces.length)
-      {
-        throw new IllegalStateException("Invalid length of parent interfaces array");
-      }
-      for (int i = 0; i < parentInterfaces.length; i++)
-      {
-        if (parentInterfaces[i] != null)
-        {
-          continue;
-        }
-        QueueState queueState = new QueueState();
-        try
-        {
-          InterfacePointerType parentInterface = resolveInterfacePointerType(parentInterfaceASTs[i], toResolve);
-          checkParentInterface(parentInterface, parentInterfaceASTs[i], null);
-          parentInterfaces[i] = parentInterface;
-          changed = true;
-          notFullyResolved.clear();
-          unresolvedParseInfo.clear();
-        }
-        catch (UnresolvableException e)
-        {
-          // leave parentInterfaces[i] as null
-          fullyResolved = false;
-          unresolvedParseInfo.add(parentInterfaceASTs[i].getParseInfo());
-
-          if (queueState.hasChanged())
-          {
-            // one of the queues was modified during the call to resolvePointerType(),
-            // because a new file was loaded and addFile() was called.
-            // this must count as a change, for reasons described above
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-      }
-      if (fullyResolved)
-      {
-        // we have removed something from the queue, so a change has occurred
-        changed = true;
-        notFullyResolved.clear();
-        unresolvedParseInfo.clear();
-        // add the class to the next queue, to resolve its type parameters' bounds
-        classesToResolveTypeBounds.add(toResolve);
-      }
-      else
-      {
-        // some parent classes/interfaces still need filling in, so add this to the end of the queue again
-        notFullyResolved.add(toResolve);
-        classesToResolveParents.add(toResolve);
-      }
-    }
-    return changed;
   }
 
   /**
@@ -957,51 +1043,99 @@ public class TypeResolver
   }
 
   /**
-   * Resolves the parent classes and interfaces of all enums in the enumsToResolve queue.
+   * Resolves the type parameter bounds of all type definitions in the typeBoundsToResolve queue.
    * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
    * @return true if any successful processing was done, false otherwise
-   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
-   * @throws ConceptualException - if a conceptual problem occurs while resolving parent classes/interfaces
+   * @throws ConceptualException - if a conceptual problem is detected while resolving type parameter bounds
+   * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  public boolean resolveEnumParents(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
+  public boolean resolveTypeParameterBounds(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
-    Set<ConceptualEnum> notFullyResolved = new HashSet<ConceptualEnum>();
+    Set<TypeDefinition> notFullyResolved = new HashSet<TypeDefinition>();
 
-    // try to resolve the parent classes and interfaces of every class
-    // this uses a queue instead of an iterator because new classes can be added to the list while we are working on it
-    // (e.g. if a class extends another class which has not been parsed yet)
-    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && !enumsToResolveParents.isEmpty())
+    while (parentsToResolve.isEmpty() && !typeBoundsToResolve.isEmpty())
     {
-      ConceptualEnum toResolve = enumsToResolveParents.poll();
+      TypeDefinition toResolve = typeBoundsToResolve.poll();
       if (notFullyResolved.contains(toResolve))
       {
-        // all of the enums in the queue have been processed since a change has been made
-        // (this depends on enumsToResolveParents being a queue)
+        // all of the type definitions in the queue have been processed since a change has been made
+        // (this depends on typeBoundsToResolve being a queue)
         return changed;
       }
-      EnumDefinitionAST astNode = (EnumDefinitionAST) conceptualASTNodes.get(toResolve);
 
-      boolean fullyResolved = true;
-      PointerTypeAST baseClassAST = astNode.getBaseClass();
-      ClassPointerType baseClass = toResolve.getBaseClass();
-      if (baseClass == null)
+      ScopeType type = toResolve.getType();
+      if (type == ScopeType.OUTER_CLASS || type == ScopeType.INNER_CLASS)
       {
-        if (baseClassAST == null)
+        changed |= resolveClassTypeParameterBounds((ConceptualClass) toResolve, unresolvedParseInfo, notFullyResolved);
+      }
+      else if (type == ScopeType.OUTER_INTERFACE || type == ScopeType.INNER_INTERFACE)
+      {
+        changed |= resolveInterfaceTypeParameterBounds((ConceptualInterface) toResolve, unresolvedParseInfo, notFullyResolved);
+      }
+    }
+
+    return changed;
+  }
+
+  /**
+   * Attempts to resolve the type parameter bounds of the specified ConceptualClass. Both super-type and sub-type bounds are resolved.
+   * If not all of the bounds are resolved, then the specified class is added to notFullyResolved,
+   * and is put back on the end of the typeBoundsToResolve queue.
+   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * @param toResolve - the ConceptualClass to resolve the type parameter bounds of
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param notFullyResolved - the set of types which have bounds which failed to resolve since the last change was made
+   * @return true if any changes were made, false otherwise
+   * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem is detected while resolving the type parameter bounds
+   */
+  private boolean resolveClassTypeParameterBounds(ConceptualClass toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
+  {
+    boolean changed = false;
+    ClassDefinitionAST astNode = (ClassDefinitionAST) conceptualASTNodes.get(toResolve);
+    TypeParameterAST[] parameterASTs = astNode.getTypeParameters();
+    if (parameterASTs == null)
+    {
+      // the class has been removed from the queue, so this counts as a change
+      notFullyResolved.clear();
+      unresolvedParseInfo.clear();
+      return true;
+    }
+    TypeParameter[] parameters = toResolve.getTypeParameters();
+    if (parameters == null)
+    {
+      parameters = new TypeParameter[parameterASTs.length];
+      toResolve.setTypeParameters(parameters);
+    }
+    if (parameterASTs.length != parameters.length)
+    {
+      throw new IllegalStateException("Illegal length of type parameter array");
+    }
+    boolean fullyResolved = true;
+    for (int i = 0; i < parameterASTs.length; i++)
+    {
+      // resolve the super- and sub-types of this type parameter
+      PointerTypeAST[] superTypeASTs = parameterASTs[i].getSuperTypes();
+      PointerTypeAST[] subTypeASTs = parameterASTs[i].getSubTypes();
+      if (superTypeASTs != null)
+      {
+        PointerType[] superTypes = parameters[i].getSuperTypes();
+        if (superTypes == null)
         {
-          baseClass = universalBaseClass;
-          toResolve.setBaseClass(baseClass);
-          changed = true;
-          notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          superTypes = new PointerType[superTypeASTs.length];
+          parameters[i].setSuperTypes(superTypes);
         }
-        else
+        for (int j = 0; j < superTypeASTs.length; j++)
         {
+          if (superTypes[j] != null)
+          {
+            continue;
+          }
           QueueState queueState = new QueueState();
           try
           {
-            baseClass = resolveClassPointerType(baseClassAST, toResolve);
-            toResolve.setBaseClass(baseClass);
+            superTypes[j] = resolvePointerType(superTypeASTs[j], toResolve);
             changed = true;
             notFullyResolved.clear();
             unresolvedParseInfo.clear();
@@ -1009,7 +1143,7 @@ public class TypeResolver
           catch (UnresolvableException e)
           {
             fullyResolved = false;
-            unresolvedParseInfo.add(baseClassAST.getParseInfo());
+            unresolvedParseInfo.add(superTypeASTs[j].getParseInfo());
 
             if (queueState.hasChanged())
             {
@@ -1023,533 +1157,319 @@ public class TypeResolver
           }
         }
       }
-
-      PointerTypeAST[] parentInterfaceASTs = astNode.getInterfaces();
-      InterfacePointerType[] parentInterfaces = toResolve.getInterfaces();
-      if (parentInterfaces == null)
+      if (subTypeASTs != null)
       {
-        parentInterfaces = new InterfacePointerType[parentInterfaceASTs.length];
-        toResolve.setInterfaces(parentInterfaces);
-      }
-      if (parentInterfaceASTs.length != parentInterfaces.length)
-      {
-        throw new IllegalStateException("Invalid length of parent interfaces array");
-      }
-      for (int i = 0; i < parentInterfaces.length; i++)
-      {
-        if (parentInterfaces[i] != null)
+        PointerType[] subTypes = parameters[i].getSubTypes();
+        if (subTypes == null)
         {
-          continue;
+          subTypes = new PointerType[subTypeASTs.length];
+          parameters[i].setSubTypes(subTypes);
         }
-        QueueState queueState = new QueueState();
-        try
+        for (int j = 0; j < subTypeASTs.length; j++)
         {
-          InterfacePointerType parentInterface = resolveInterfacePointerType(parentInterfaceASTs[i], toResolve);
-          checkParentInterface(parentInterface, parentInterfaceASTs[i], null);
-          parentInterfaces[i] = parentInterface;
-          changed = true;
-          notFullyResolved.clear();
-          unresolvedParseInfo.clear();
-        }
-        catch (UnresolvableException e)
-        {
-          // leave parentInterfaces[i] as null
-          fullyResolved = false;
-          unresolvedParseInfo.add(parentInterfaceASTs[i].getParseInfo());
-
-          if (queueState.hasChanged())
+          if (subTypes[j] != null)
           {
-            // one of the queues was modified during the call to resolvePointerType(),
-            // because a new file was loaded and addFile() was called.
-            // this must count as a change, for reasons described above
+            continue;
+          }
+          QueueState queueState = new QueueState();
+          try
+          {
+            subTypes[j] = resolvePointerType(subTypeASTs[j], toResolve);
             changed = true;
             notFullyResolved.clear();
             unresolvedParseInfo.clear();
           }
+          catch (UnresolvableException e)
+          {
+            fullyResolved = false;
+            unresolvedParseInfo.add(subTypeASTs[j].getParseInfo());
+
+            if (queueState.hasChanged())
+            {
+              // one of the queues was modified during the call to resolvePointerType(),
+              // because a new file was loaded and addFile() was called.
+              // this must count as a change, for reasons described above
+              changed = true;
+              notFullyResolved.clear();
+              unresolvedParseInfo.clear();
+            }
+          }
         }
       }
-      if (fullyResolved)
-      {
-        // we have removed something from the queue, so a change has occurred
-        changed = true;
-        notFullyResolved.clear();
-        unresolvedParseInfo.clear();
-        // add this enum to the next queue, to resolve its member variables' types
-        enumsToResolveMembers.add(toResolve);
-      }
-      else
-      {
-        // some parent classes/interfaces still need filling in, so add this to the end of the queue again
-        notFullyResolved.add(toResolve);
-        enumsToResolveParents.add(toResolve);
-      }
+    }
+
+    if (fullyResolved)
+    {
+      // we have removed something from the queue, so a change has occurred
+      changed = true;
+      notFullyResolved.clear();
+      unresolvedParseInfo.clear();
+      // add this class to the next queue, to resolve its member variables' types
+      membersToResolve.add(toResolve);
+    }
+    else
+    {
+      // some type parameter bounds still need filling in, so add this to the end of the queue again
+      typeBoundsToResolve.add(toResolve);
+      notFullyResolved.add(toResolve);
     }
     return changed;
   }
 
   /**
-   * Resolves the bounds on each of the type parameters of the interfaces in the queue. Both super- and sub-type bounds are resolved.
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
-   * @return true if any successful processing was done, false otherwise
-   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
-   * @throws ConceptualException - if a conceptual problem occurs while resolving the type bounds
+   * Attempts to resolve the type parameter bounds of the specified ConceptualInterface. Both super-type and sub-type bounds are resolved.
+   * If not all of the bounds are resolved, then the specified interface is added to notFullyResolved,
+   * and is put back on the end of the typeBoundsToResolve queue.
+   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * @param toResolve - the ConceptualInterface to resolve the type parameter bounds of
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param notFullyResolved - the set of types which have bounds which failed to resolve since the last change was made
+   * @return true if any changes were made, false otherwise
+   * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
+   * @throws ConceptualException - if a conceptual problem is detected while resolving the type parameter bounds
    */
-  public boolean resolveInterfaceTypeParameterBounds(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
+  private boolean resolveInterfaceTypeParameterBounds(ConceptualInterface toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
-    Set<ConceptualInterface> notFullyResolved = new HashSet<ConceptualInterface>();
-
-    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty() &&
-           !interfacesToResolveTypeBounds.isEmpty())
+    InterfaceDefinitionAST astNode = (InterfaceDefinitionAST) conceptualASTNodes.get(toResolve);
+    TypeParameterAST[] parameterASTs = astNode.getTypeParameters();
+    if (parameterASTs == null)
     {
-      ConceptualInterface toResolve = interfacesToResolveTypeBounds.poll();
-      if (notFullyResolved.contains(toResolve))
+      // the interface has been removed from the queue, so this counts as a change
+      notFullyResolved.clear();
+      unresolvedParseInfo.clear();
+      return true;
+    }
+    TypeParameter[] parameters = toResolve.getTypeParameters();
+    if (parameters == null)
+    {
+      parameters = new TypeParameter[parameterASTs.length];
+      toResolve.setTypeParameters(parameters);
+    }
+    if (parameterASTs.length != parameters.length)
+    {
+      throw new IllegalStateException("Illegal length of type parameter array");
+    }
+    boolean fullyResolved = true;
+    for (int i = 0; i < parameterASTs.length; i++)
+    {
+      // resolve the super- and sub-types of this type parameter
+      PointerTypeAST[] superTypeASTs = parameterASTs[i].getSuperTypes();
+      PointerTypeAST[] subTypeASTs = parameterASTs[i].getSubTypes();
+      if (superTypeASTs != null)
       {
-        // all of the interfaces in the queue have been processed since a change has been made
-        // (this depends on interfacesToResolveTypeBounds being a queue)
-        return changed;
-      }
-      InterfaceDefinitionAST astNode = (InterfaceDefinitionAST) conceptualASTNodes.get(toResolve);
-      TypeParameterAST[] parameterASTs = astNode.getTypeParameters();
-      if (parameterASTs == null)
-      {
-        changed = true;
-        notFullyResolved.clear();
-        unresolvedParseInfo.clear();
-        continue;
-      }
-      TypeParameter[] parameters = toResolve.getTypeParameters();
-      if (parameters == null)
-      {
-        parameters = new TypeParameter[parameterASTs.length];
-        toResolve.setTypeParameters(parameters);
-      }
-      if (parameterASTs.length != parameters.length)
-      {
-        throw new IllegalStateException("Illegal length of type parameter array");
-      }
-      boolean fullyResolved = true;
-      for (int i = 0; i < parameterASTs.length; i++)
-      {
-        // resolve the super- and sub-types of this type parameter
-        PointerTypeAST[] superTypeASTs = parameterASTs[i].getSuperTypes();
-        PointerTypeAST[] subTypeASTs = parameterASTs[i].getSubTypes();
-        if (superTypeASTs != null)
+        PointerType[] superTypes = parameters[i].getSuperTypes();
+        if (superTypes == null)
         {
-          PointerType[] superTypes = parameters[i].getSuperTypes();
-          if (superTypes == null)
+          superTypes = new PointerType[superTypeASTs.length];
+          parameters[i].setSuperTypes(superTypes);
+        }
+        for (int j = 0; j < superTypeASTs.length; j++)
+        {
+          if (superTypes[j] != null)
           {
-            superTypes = new PointerType[superTypeASTs.length];
-            parameters[i].setSuperTypes(superTypes);
+            continue;
           }
-          for (int j = 0; j < superTypeASTs.length; j++)
+          QueueState queueState = new QueueState();
+          try
           {
-            if (superTypes[j] != null)
+            superTypes[j] = resolvePointerType(superTypeASTs[j], toResolve);
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+          catch (UnresolvableException e)
+          {
+            fullyResolved = false;
+            unresolvedParseInfo.add(superTypeASTs[j].getParseInfo());
+
+            if (queueState.hasChanged())
             {
-              continue;
-            }
-            QueueState queueState = new QueueState();
-            try
-            {
-              superTypes[j] = resolvePointerType(superTypeASTs[j], toResolve);
+              // one of the queues was modified during the call to resolvePointerType(),
+              // because a new file was loaded and addFile() was called.
+              // this must count as a change, for reasons described above
               changed = true;
               notFullyResolved.clear();
               unresolvedParseInfo.clear();
             }
-            catch (UnresolvableException e)
-            {
-              fullyResolved = false;
-              unresolvedParseInfo.add(superTypeASTs[j].getParseInfo());
-
-              if (queueState.hasChanged())
-              {
-                // one of the queues was modified during the call to resolvePointerType(),
-                // because a new file was loaded and addFile() was called.
-                // this must count as a change, for reasons described above
-                changed = true;
-                notFullyResolved.clear();
-                unresolvedParseInfo.clear();
-              }
-            }
           }
         }
-        if (subTypeASTs != null)
+      }
+      if (subTypeASTs != null)
+      {
+        PointerType[] subTypes = parameters[i].getSubTypes();
+        if (subTypes == null)
         {
-          PointerType[] subTypes = parameters[i].getSubTypes();
-          if (subTypes == null)
+          subTypes = new PointerType[subTypeASTs.length];
+          parameters[i].setSubTypes(subTypes);
+        }
+        for (int j = 0; j < subTypeASTs.length; j++)
+        {
+          if (subTypes[j] != null)
           {
-            subTypes = new PointerType[subTypeASTs.length];
-            parameters[i].setSubTypes(subTypes);
+            continue;
           }
-          for (int j = 0; j < subTypeASTs.length; j++)
+          QueueState queueState = new QueueState();
+          try
           {
-            if (subTypes[j] != null)
+            subTypes[j] = resolvePointerType(subTypeASTs[j], toResolve);
+            changed = true;
+            notFullyResolved.clear();
+            unresolvedParseInfo.clear();
+          }
+          catch (UnresolvableException e)
+          {
+            fullyResolved = false;
+            unresolvedParseInfo.add(subTypeASTs[j].getParseInfo());
+
+            if (queueState.hasChanged())
             {
-              continue;
-            }
-            QueueState queueState = new QueueState();
-            try
-            {
-              subTypes[j] = resolvePointerType(subTypeASTs[j], toResolve);
+              // one of the queues was modified during the call to resolvePointerType(),
+              // because a new file was loaded and addFile() was called.
+              // this must count as a change, for reasons described above
               changed = true;
               notFullyResolved.clear();
               unresolvedParseInfo.clear();
             }
-            catch (UnresolvableException e)
-            {
-              fullyResolved = false;
-              unresolvedParseInfo.add(subTypeASTs[j].getParseInfo());
-
-              if (queueState.hasChanged())
-              {
-                // one of the queues was modified during the call to resolvePointerType(),
-                // because a new file was loaded and addFile() was called.
-                // this must count as a change, for reasons described above
-                changed = true;
-                notFullyResolved.clear();
-                unresolvedParseInfo.clear();
-              }
-            }
           }
         }
       }
+    }
 
-      if (fullyResolved)
-      {
-        // we have removed something from the queue, so a change has occurred
-        changed = true;
-        notFullyResolved.clear();
-        unresolvedParseInfo.clear();
-        // add this interface to the next queue, to resolve its member variables' types
-        interfacesToResolveMembers.add(toResolve);
-      }
-      else
-      {
-        // some parent classes/interfaces still need filling in, so add this to the end of the queue again
-        interfacesToResolveTypeBounds.add(toResolve);
-        notFullyResolved.add(toResolve);
-      }
-
+    if (fullyResolved)
+    {
+      // we have removed something from the queue, so a change has occurred
+      changed = true;
+      notFullyResolved.clear();
+      unresolvedParseInfo.clear();
+      // add this interface to the next queue, to resolve its member variables' types
+      membersToResolve.add(toResolve);
+    }
+    else
+    {
+      // some type parameter bounds still need filling in, so add this to the end of the queue again
+      typeBoundsToResolve.add(toResolve);
+      notFullyResolved.add(toResolve);
     }
 
     return changed;
   }
 
   /**
-   * Resolves the bounds on each of the type parameters of the classes in the queue. Both super- and sub-type bounds are resolved.
+   * Resolves the members of all type definitions in the membersToResolve queue.
    * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
    * @return true if any successful processing was done, false otherwise
-   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
-   * @throws ConceptualException - if a conceptual problem occurs while resolving the type bounds
+   * @throws ConceptualException - if a conceptual problem is detected while resolving members
+   * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  public boolean resolveClassTypeParameterBounds(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
+  public boolean resolveTypeMembers(Set<ParseInfo> unresolvedParseInfo) throws ConceptualException, NameConflictException
   {
     boolean changed = false;
-    Set<ConceptualClass> notFullyResolved = new HashSet<ConceptualClass>();
+    Set<TypeDefinition> notFullyResolved = new HashSet<TypeDefinition>();
 
-    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty() &&
-           interfacesToResolveTypeBounds.isEmpty() && !classesToResolveTypeBounds.isEmpty())
+    while (parentsToResolve.isEmpty() && typeBoundsToResolve.isEmpty() && !membersToResolve.isEmpty())
     {
-      ConceptualClass toResolve = classesToResolveTypeBounds.poll();
+      TypeDefinition toResolve = membersToResolve.poll();
       if (notFullyResolved.contains(toResolve))
       {
-        // all of the classes in the queue have been processed since a change has been made
-        // (this depends on classesToResolveTypeBounds being a queue)
+        // all of the type definitions in the queue have been processed since a change has been made
+        // (this depends on membersToResolve being a queue)
         return changed;
       }
-      ClassDefinitionAST astNode = (ClassDefinitionAST) conceptualASTNodes.get(toResolve);
-      TypeParameterAST[] parameterASTs = astNode.getTypeParameters();
-      if (parameterASTs == null)
-      {
-        changed = true;
-        notFullyResolved.clear();
-        unresolvedParseInfo.clear();
-        continue;
-      }
-      TypeParameter[] parameters = toResolve.getTypeParameters();
-      if (parameters == null)
-      {
-        parameters = new TypeParameter[parameterASTs.length];
-        toResolve.setTypeParameters(parameters);
-      }
-      if (parameterASTs.length != parameters.length)
-      {
-        throw new IllegalStateException("Illegal length of type parameter array");
-      }
-      boolean fullyResolved = true;
-      for (int i = 0; i < parameterASTs.length; i++)
-      {
-        // resolve the super- and sub-types of this type parameter
-        PointerTypeAST[] superTypeASTs = parameterASTs[i].getSuperTypes();
-        PointerTypeAST[] subTypeASTs = parameterASTs[i].getSubTypes();
-        if (superTypeASTs != null)
-        {
-          PointerType[] superTypes = parameters[i].getSuperTypes();
-          if (superTypes == null)
-          {
-            superTypes = new PointerType[superTypeASTs.length];
-            parameters[i].setSuperTypes(superTypes);
-          }
-          for (int j = 0; j < superTypeASTs.length; j++)
-          {
-            if (superTypes[j] != null)
-            {
-              continue;
-            }
-            QueueState queueState = new QueueState();
-            try
-            {
-              superTypes[j] = resolvePointerType(superTypeASTs[j], toResolve);
-              changed = true;
-              notFullyResolved.clear();
-              unresolvedParseInfo.clear();
-            }
-            catch (UnresolvableException e)
-            {
-              fullyResolved = false;
-              unresolvedParseInfo.add(superTypeASTs[j].getParseInfo());
 
-              if (queueState.hasChanged())
-              {
-                // one of the queues was modified during the call to resolvePointerType(),
-                // because a new file was loaded and addFile() was called.
-                // this must count as a change, for reasons described above
-                changed = true;
-                notFullyResolved.clear();
-                unresolvedParseInfo.clear();
-              }
-            }
-          }
-        }
-        if (subTypeASTs != null)
-        {
-          PointerType[] subTypes = parameters[i].getSubTypes();
-          if (subTypes == null)
-          {
-            subTypes = new PointerType[subTypeASTs.length];
-            parameters[i].setSubTypes(subTypes);
-          }
-          for (int j = 0; j < subTypeASTs.length; j++)
-          {
-            if (subTypes[j] != null)
-            {
-              continue;
-            }
-            QueueState queueState = new QueueState();
-            try
-            {
-              subTypes[j] = resolvePointerType(subTypeASTs[j], toResolve);
-              changed = true;
-              notFullyResolved.clear();
-              unresolvedParseInfo.clear();
-            }
-            catch (UnresolvableException e)
-            {
-              fullyResolved = false;
-              unresolvedParseInfo.add(subTypeASTs[j].getParseInfo());
-
-              if (queueState.hasChanged())
-              {
-                // one of the queues was modified during the call to resolvePointerType(),
-                // because a new file was loaded and addFile() was called.
-                // this must count as a change, for reasons described above
-                changed = true;
-                notFullyResolved.clear();
-                unresolvedParseInfo.clear();
-              }
-            }
-          }
-        }
-      }
-
-      if (fullyResolved)
+      ScopeType type = toResolve.getType();
+      if (type == ScopeType.OUTER_CLASS || type == ScopeType.INNER_CLASS)
       {
-        // we have removed something from the queue, so a change has occurred
-        changed = true;
-        notFullyResolved.clear();
-        unresolvedParseInfo.clear();
-        // add this class to the next queue, to resolve its member variables' types
-        classesToResolveMembers.add(toResolve);
+        changed |= resolveClassMembers((ConceptualClass) toResolve, unresolvedParseInfo, notFullyResolved);
       }
-      else
+      else if (type == ScopeType.OUTER_INTERFACE || type == ScopeType.INNER_INTERFACE)
       {
-        // some parent classes/interfaces still need filling in, so add this to the end of the queue again
-        classesToResolveTypeBounds.add(toResolve);
-        notFullyResolved.add(toResolve);
+        changed |= resolveInterfaceMembers((ConceptualInterface) toResolve, unresolvedParseInfo, notFullyResolved);
       }
-
+      else if (type == ScopeType.OUTER_ENUM || type == ScopeType.INNER_ENUM)
+      {
+        changed |= resolveEnumMembers((ConceptualEnum) toResolve, unresolvedParseInfo, notFullyResolved);
+      }
     }
-
     return changed;
   }
 
   /**
-   * Resolves the types of the members of each of the interfaces in the queue.
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
-   * @return true if any successful processing was done, false otherwise
-   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
-   * @throws ConceptualException - if a conceptual problem occurs while resolving one of the members' types
+   * Attempts to resolve the members of the specified ConceptualClass.
+   * If not all member types are resolved, then the specified class is added to notFullyResolved,
+   * and is put back on the end of the membersToResolve queue.
+   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * @param toResolve - the ConceptualClass to resolve the member types of
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param notFullyResolved - the set of types which have bounds which failed to resolve since the last change was made
+   * @return true if any changes were made, false otherwise
+   * @throws ConceptualException - if a conceptual problem is detected while resolving the member types
+   * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  public boolean resolveInterfaceMembers(Set<ParseInfo> unresolvedParseInfo) throws ConceptualException, NameConflictException
+  private boolean resolveClassMembers(ConceptualClass toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws ConceptualException, NameConflictException
   {
     boolean changed = false;
-    Set<ConceptualInterface> notFullyResolved = new HashSet<ConceptualInterface>();
-
-    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty() &&
-           interfacesToResolveTypeBounds.isEmpty() && classesToResolveTypeBounds.isEmpty() &&
-           !interfacesToResolveMembers.isEmpty())
+    QueueState queueState = new QueueState();
+    try
     {
-      ConceptualInterface toResolve = interfacesToResolveMembers.poll();
-      if (notFullyResolved.contains(toResolve))
+      for (Method method : toResolve.getMethods())
       {
-        // all of the interfaces in the queue have been processed since a change has been made
-        // (this depends on interfacesToResolveMembers being a queue)
-        return changed;
-      }
-      QueueState queueState = new QueueState();
-      try
-      {
-        for (Method method : toResolve.getMethods())
+        if (resolveMethodType(method, (MethodAST) conceptualASTNodes.get(method)))
         {
-          if (resolveMethodType(method, (MethodAST) conceptualASTNodes.get(method)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        for (Property property : toResolve.getProperties())
-        {
-          if (resolvePropertyType(property, (PropertyAST) conceptualASTNodes.get(property)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        for (MemberVariable variable : toResolve.getStaticVariables())
-        {
-          if (resolveVariableType(variable, (DeclarationAssigneeAST) conceptualASTNodes.get(variable)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        // if we get here then everything has been processed
-        // we have removed something from the queue, so a change has occurred
-        changed = true;
-        notFullyResolved.clear();
-        unresolvedParseInfo.clear();
-      }
-      catch (UnresolvableException e)
-      {
-        notFullyResolved.add(toResolve);
-        unresolvedParseInfo.add(e.getParseInfo());
-
-        // some members still need filling in, so add this to the end of the queue again
-        interfacesToResolveMembers.add(toResolve);
-
-        if (queueState.hasChanged())
-        {
-          // one of the queues was modified during a call to resolvePointerType(),
-          // because a new file was loaded and addFile() was called.
-          // this must count as a change, for reasons described above
           changed = true;
           notFullyResolved.clear();
           unresolvedParseInfo.clear();
         }
       }
-    }
-
-    return changed;
-  }
-
-  /**
-   * Resolves the types of the members of each of the classes in the queue.
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
-   * @return true if any successful processing was done, false otherwise
-   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
-   * @throws ConceptualException - if a conceptual problem occurs while resolving one of the members' types
-   */
-  public boolean resolveClassMembers(Set<ParseInfo> unresolvedParseInfo) throws ConceptualException, NameConflictException
-  {
-    boolean changed = false;
-    Set<ConceptualClass> notFullyResolved = new HashSet<ConceptualClass>();
-
-    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty() &&
-           interfacesToResolveTypeBounds.isEmpty() && classesToResolveTypeBounds.isEmpty() &&
-           interfacesToResolveMembers.isEmpty() && !classesToResolveMembers.isEmpty())
-    {
-      ConceptualClass toResolve = classesToResolveMembers.poll();
-      if (notFullyResolved.contains(toResolve))
+      for (Property property : toResolve.getProperties())
       {
-        // all of the classes in the queue have been processed since a change has been made
-        // (this depends on classesToResolveMembers being a queue)
-        return changed;
-      }
-      QueueState queueState = new QueueState();
-      try
-      {
-        for (Method method : toResolve.getMethods())
+        if (resolvePropertyType(property, (PropertyAST) conceptualASTNodes.get(property)))
         {
-          if (resolveMethodType(method, (MethodAST) conceptualASTNodes.get(method)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        for (Property property : toResolve.getProperties())
-        {
-          if (resolvePropertyType(property, (PropertyAST) conceptualASTNodes.get(property)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        for (MemberVariable variable : toResolve.getVariables())
-        {
-          if (resolveVariableType(variable, (DeclarationAssigneeAST) conceptualASTNodes.get(variable)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        for (Constructor constructor : toResolve.getConstructors())
-        {
-          if (resolveConstructorType(constructor, (ConstructorAST) conceptualASTNodes.get(constructor)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        // if we get here then everything has been processed
-        // we have removed something from the queue, so a change has occurred
-        changed = true;
-        notFullyResolved.clear();
-        unresolvedParseInfo.clear();
-      }
-      catch (UnresolvableException e)
-      {
-        notFullyResolved.add(toResolve);
-        unresolvedParseInfo.add(e.getParseInfo());
-
-        // some members still need filling in, so add this to the end of the queue again
-        classesToResolveMembers.add(toResolve);
-
-        if (queueState.hasChanged())
-        {
-          // one of the queues was modified during a call to resolvePointerType(),
-          // because a new file was loaded and addFile() was called.
-          // this must count as a change, for reasons described above
           changed = true;
           notFullyResolved.clear();
           unresolvedParseInfo.clear();
         }
+      }
+      for (MemberVariable variable : toResolve.getVariables())
+      {
+        if (resolveVariableType(variable, (DeclarationAssigneeAST) conceptualASTNodes.get(variable)))
+        {
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+      for (Constructor constructor : toResolve.getConstructors())
+      {
+        if (resolveConstructorType(constructor, (ConstructorAST) conceptualASTNodes.get(constructor)))
+        {
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+      // if we get here then everything has been processed
+      // we have removed something from the queue, so a change has occurred
+      changed = true;
+      notFullyResolved.clear();
+      unresolvedParseInfo.clear();
+    }
+    catch (UnresolvableException e)
+    {
+      notFullyResolved.add(toResolve);
+      unresolvedParseInfo.add(e.getParseInfo());
+
+      // some members still need filling in, so add this to the end of the queue again
+      membersToResolve.add(toResolve);
+
+      if (queueState.hasChanged())
+      {
+        // one of the queues was modified during a call to resolvePointerType(),
+        // because a new file was loaded and addFile() was called.
+        // this must count as a change, for reasons described above
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
       }
     }
 
@@ -1557,93 +1477,156 @@ public class TypeResolver
   }
 
   /**
-   * Resolves the types of the members of each of the enums in the queue.
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
-   * @return true if any successful processing was done, false otherwise
-   * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
-   * @throws ConceptualException - if a conceptual problem occurs while resolving one of the members' types
+   * Attempts to resolve the members of the specified ConceptualInterface.
+   * If not all member types are resolved, then the specified interface is added to notFullyResolved,
+   * and is put back on the end of the membersToResolve queue.
+   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * @param toResolve - the ConceptualInterface to resolve the member types of
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param notFullyResolved - the set of types which have bounds which failed to resolve since the last change was made
+   * @return true if any changes were made, false otherwise
+   * @throws ConceptualException - if a conceptual problem is detected while resolving the member types
+   * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  public boolean resolveEnumMembers(Set<ParseInfo> unresolvedParseInfo) throws ConceptualException, NameConflictException
+  private boolean resolveInterfaceMembers(ConceptualInterface toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
-    Set<ConceptualEnum> notFullyResolved = new HashSet<ConceptualEnum>();
-
-    while (interfacesToResolveParents.isEmpty() && classesToResolveParents.isEmpty() && enumsToResolveParents.isEmpty() &&
-           interfacesToResolveTypeBounds.isEmpty() && classesToResolveTypeBounds.isEmpty() &&
-           interfacesToResolveMembers.isEmpty() && classesToResolveMembers.isEmpty() && !enumsToResolveMembers.isEmpty())
+    QueueState queueState = new QueueState();
+    try
     {
-      ConceptualEnum toResolve = enumsToResolveMembers.poll();
-      if (notFullyResolved.contains(toResolve))
+      for (Method method : toResolve.getMethods())
       {
-        // all of the enums in the queue have been processed since a change has been made
-        // (this depends on enumsToResolveMembers being a queue)
-        return changed;
-      }
-      QueueState queueState = new QueueState();
-      try
-      {
-        for (Method method : toResolve.getMethods())
+        if (resolveMethodType(method, (MethodAST) conceptualASTNodes.get(method)))
         {
-          if (resolveMethodType(method, (MethodAST) conceptualASTNodes.get(method)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        for (Property property : toResolve.getProperties())
-        {
-          if (resolvePropertyType(property, (PropertyAST) conceptualASTNodes.get(property)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        for (MemberVariable variable : toResolve.getVariables())
-        {
-          if (resolveVariableType(variable, (DeclarationAssigneeAST) conceptualASTNodes.get(variable)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        for (Constructor constructor : toResolve.getConstructors())
-        {
-          if (resolveConstructorType(constructor, (ConstructorAST) conceptualASTNodes.get(constructor)))
-          {
-            changed = true;
-            notFullyResolved.clear();
-            unresolvedParseInfo.clear();
-          }
-        }
-        // if we get here then everything has been processed
-        // we have removed something from the queue, so a change has occurred
-        changed = true;
-        notFullyResolved.clear();
-        unresolvedParseInfo.clear();
-      }
-      catch (UnresolvableException e)
-      {
-        notFullyResolved.add(toResolve);
-        unresolvedParseInfo.add(e.getParseInfo());
-
-        // some members still need filling in, so add this to the end of the queue again
-        enumsToResolveMembers.add(toResolve);
-
-        if (queueState.hasChanged())
-        {
-          // one of the queues was modified during a call to resolvePointerType(),
-          // because a new file was loaded and addFile() was called.
-          // this must count as a change, for reasons described above
           changed = true;
           notFullyResolved.clear();
           unresolvedParseInfo.clear();
         }
       }
+      for (Property property : toResolve.getProperties())
+      {
+        if (resolvePropertyType(property, (PropertyAST) conceptualASTNodes.get(property)))
+        {
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+      for (MemberVariable variable : toResolve.getStaticVariables())
+      {
+        if (resolveVariableType(variable, (DeclarationAssigneeAST) conceptualASTNodes.get(variable)))
+        {
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+      // if we get here then everything has been processed
+      // we have removed something from the queue, so a change has occurred
+      changed = true;
+      notFullyResolved.clear();
+      unresolvedParseInfo.clear();
+    }
+    catch (UnresolvableException e)
+    {
+      notFullyResolved.add(toResolve);
+      unresolvedParseInfo.add(e.getParseInfo());
+
+      // some members still need filling in, so add this to the end of the queue again
+      membersToResolve.add(toResolve);
+
+      if (queueState.hasChanged())
+      {
+        // one of the queues was modified during a call to resolvePointerType(),
+        // because a new file was loaded and addFile() was called.
+        // this must count as a change, for reasons described above
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
     }
 
+    return changed;
+  }
+
+  /**
+   * Attempts to resolve the members of the specified ConceptualEnum.
+   * If not all member types are resolved, then the specified enum is added to notFullyResolved,
+   * and is put back on the end of the membersToResolve queue.
+   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * @param toResolve - the ConceptualEnum to resolve the member types of
+   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param notFullyResolved - the set of types which have bounds which failed to resolve since the last change was made
+   * @return true if any changes were made, false otherwise
+   * @throws ConceptualException - if a conceptual problem is detected while resolving the member types
+   * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
+   */
+  private boolean resolveEnumMembers(ConceptualEnum toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws ConceptualException, NameConflictException
+  {
+    boolean changed = false;
+    QueueState queueState = new QueueState();
+    try
+    {
+      for (Method method : toResolve.getMethods())
+      {
+        if (resolveMethodType(method, (MethodAST) conceptualASTNodes.get(method)))
+        {
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+      for (Property property : toResolve.getProperties())
+      {
+        if (resolvePropertyType(property, (PropertyAST) conceptualASTNodes.get(property)))
+        {
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+      for (MemberVariable variable : toResolve.getVariables())
+      {
+        if (resolveVariableType(variable, (DeclarationAssigneeAST) conceptualASTNodes.get(variable)))
+        {
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+      for (Constructor constructor : toResolve.getConstructors())
+      {
+        if (resolveConstructorType(constructor, (ConstructorAST) conceptualASTNodes.get(constructor)))
+        {
+          changed = true;
+          notFullyResolved.clear();
+          unresolvedParseInfo.clear();
+        }
+      }
+      // if we get here then everything has been processed
+      // we have removed something from the queue, so a change has occurred
+      changed = true;
+      notFullyResolved.clear();
+      unresolvedParseInfo.clear();
+    }
+    catch (UnresolvableException e)
+    {
+      notFullyResolved.add(toResolve);
+      unresolvedParseInfo.add(e.getParseInfo());
+
+      // some members still need filling in, so add this to the end of the queue again
+      membersToResolve.add(toResolve);
+
+      if (queueState.hasChanged())
+      {
+        // one of the queues was modified during a call to resolvePointerType(),
+        // because a new file was loaded and addFile() was called.
+        // this must count as a change, for reasons described above
+        changed = true;
+        notFullyResolved.clear();
+        unresolvedParseInfo.clear();
+      }
+    }
     return changed;
   }
 

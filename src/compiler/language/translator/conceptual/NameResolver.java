@@ -78,8 +78,8 @@ public final class NameResolver
 
   /**
    * Resolves as many QNames as possible from a single queue.
-   * For example, if there are interfaces to resolve the parents of then this method resolves as many as possible, and then returns.
-   * The queues are checked in a fixed order, so that interface parents will always be resolved in preference to class parents.
+   * For example, if there are type definitions to resolve the parents of then this method resolves as many as possible, and then returns.
+   * The queues are checked in a fixed order, so that type parents will always be resolved in preference to type parameter bounds and members.
    * @param unresolvedParseInfo - the set of ParseInfo objects for names which could not be resolved since the last change was made
    * @return true if any successful processing was done, false otherwise
    * @throws NameConflictException - if a name conflict was detected while resolving a name
@@ -87,39 +87,17 @@ public final class NameResolver
    */
   private boolean resolveNames(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
   {
-    // TODO: fix the bug that occurs if an inner class of an enum extends something from the enum's superclass
-    // this means allowing resolution of classes, interfaces and enums in any order
-    if (typeResolver.hasUnresolvedInterfaces())
+    if (typeResolver.hasUnresolvedTypeParents())
     {
-      return typeResolver.resolveInterfaceParents(unresolvedParseInfo);
+      return typeResolver.resolveTypeParents(unresolvedParseInfo);
     }
-    if (typeResolver.hasUnresolvedClasses())
+    if (typeResolver.hasUnresolvedTypeParameterBounds())
     {
-      return typeResolver.resolveClassParents(unresolvedParseInfo);
+      return typeResolver.resolveTypeParameterBounds(unresolvedParseInfo);
     }
-    if (typeResolver.hasUnresolvedEnums())
+    if (typeResolver.hasUnresolvedMembers())
     {
-      return typeResolver.resolveEnumParents(unresolvedParseInfo);
-    }
-    if (typeResolver.hasUnresolvedInterfaceTypeBounds())
-    {
-      return typeResolver.resolveInterfaceTypeParameterBounds(unresolvedParseInfo);
-    }
-    if (typeResolver.hasUnresolvedClassTypeBounds())
-    {
-      return typeResolver.resolveClassTypeParameterBounds(unresolvedParseInfo);
-    }
-    if (typeResolver.hasUnresolvedInterfaceMembers())
-    {
-      return typeResolver.resolveInterfaceMembers(unresolvedParseInfo);
-    }
-    if (typeResolver.hasUnresolvedClassMembers())
-    {
-      return typeResolver.resolveClassMembers(unresolvedParseInfo);
-    }
-    if (typeResolver.hasUnresolvedEnumMembers())
-    {
-      return typeResolver.resolveEnumMembers(unresolvedParseInfo);
+      return typeResolver.resolveTypeMembers(unresolvedParseInfo);
     }
     return false;
   }

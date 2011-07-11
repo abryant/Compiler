@@ -29,13 +29,6 @@ class Super
 
 }
 
-class Sub extends Super
-{
-  class Y extends Super.C {}
-  interface X extends Super.D {}
-  class W extends Super.E {}
-}
-
 enum SubEnum extends Super
 {
   FOO, BAR;
@@ -44,4 +37,7 @@ enum SubEnum extends Super
   {
   }
 
+  class Z extends Super.C {}
+  interface Y extends Super.D {}
+  class X extends Super.E {}
 }
