@@ -378,6 +378,7 @@ public class LanguageRules
   /**
    * @return an LALRRuleSet containing all of the rules needed to parse this language
    */
+  @SuppressWarnings("unchecked")
   public static LALRRuleSet<ParseType> getRuleSet()
   {
     LALRRuleSet<ParseType> ruleSet = new LALRRuleSet<ParseType>();
