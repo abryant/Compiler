@@ -16,6 +16,12 @@ import compiler.language.conceptual.type.InterfacePointerType;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
+import compiler.language.conceptual.typeDefinition.InnerClass;
+import compiler.language.conceptual.typeDefinition.InnerEnum;
+import compiler.language.conceptual.typeDefinition.InnerInterface;
+import compiler.language.conceptual.typeDefinition.OuterClass;
+import compiler.language.conceptual.typeDefinition.OuterEnum;
+import compiler.language.conceptual.typeDefinition.OuterInterface;
 import compiler.language.conceptual.typeDefinition.TypeDefinition;
 
 /*
@@ -37,6 +43,52 @@ public class AccessSpecifierChecker
   public AccessSpecifierChecker(ConceptualClass universalBaseClass)
   {
     this.universalBaseClass = universalBaseClass;
+  }
+
+  /**
+   * Checks that accessing the specified Resolvable is valid from the specified usage scope. If it is not valid, then a ConceptualException is thrown.
+   * If accessed does not have an access specifier, then this method does not check anything.
+   * @param accessed - the Resolvable being accessed
+   * @param usageScope - the Resolvable representing the scope that the access is coming from
+   * @param usageParseInfo - the ParseInfo of the name that has been resolved to point to accessed
+   * @throws ConceptualException - if the access is invalid
+   * @throws UnresolvableException - if it is impossible to determine whether the access is valid due to another unresolved name
+   */
+  public void checkAccess(Resolvable accessed, Resolvable usageScope, ParseInfo usageParseInfo) throws ConceptualException, UnresolvableException
+  {
+    AccessSpecifier accessSpecifier;
+    String memberName;
+    switch (accessed.getType())
+    {
+    case INNER_CLASS:
+      accessSpecifier = ((InnerClass) accessed).getAccessSpecifier();
+      memberName      = ((InnerClass) accessed).getName();
+      break;
+    case INNER_ENUM:
+      accessSpecifier = ((InnerEnum) accessed).getAccessSpecifier();
+      memberName      = ((InnerEnum) accessed).getName();
+      break;
+    case INNER_INTERFACE:
+      accessSpecifier = ((InnerInterface) accessed).getAccessSpecifier();
+      memberName      = ((InnerInterface) accessed).getName();
+      break;
+    case OUTER_CLASS:
+      accessSpecifier = ((OuterClass) accessed).getAccessSpecifier();
+      memberName      = ((OuterClass) accessed).getName();
+      break;
+    case OUTER_ENUM:
+      accessSpecifier = ((OuterEnum) accessed).getAccessSpecifier();
+      memberName      = ((OuterEnum) accessed).getName();
+      break;
+    case OUTER_INTERFACE:
+      accessSpecifier = ((OuterInterface) accessed).getAccessSpecifier();
+      memberName      = ((OuterInterface) accessed).getName();
+      break;
+    default:
+      return;
+    }
+
+    checkAccess(accessed.getParent(), usageScope, accessSpecifier, usageParseInfo, memberName);
   }
 
   /**
