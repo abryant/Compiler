@@ -12,9 +12,9 @@ import parser.Rule;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.PointerTypeAST;
-import compiler.language.parser.LanguageParseException;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseType;
+import compiler.language.parser.ParseUtil;
 
 /*
  * Created on 20 Aug 2010
@@ -66,17 +66,7 @@ public final class PointerTypeDoubleRAngleRule extends Rule<ParseType>
     }
 
     ParseInfo doubleRAngleInfo = (ParseInfo) args[1];
-    int line = doubleRAngleInfo.getStartLine();
-    if (line != doubleRAngleInfo.getEndLine())
-    {
-      throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which does not start and finish on the same line", doubleRAngleInfo);
-    }
-    int startPos = doubleRAngleInfo.getStartPos();
-    if (doubleRAngleInfo.getEndPos() - startPos != 2)
-    {
-      throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which is not 2 characters long", doubleRAngleInfo);
-    }
-    ParseInfo firstAngleInfo = new ParseInfo(line, startPos, line, startPos + 1);
+    ParseInfo firstAngleInfo = ParseUtil.splitDoubleRAngle(doubleRAngleInfo);
     ParseContainer<PointerTypeAST> firstContainer = new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), firstAngleInfo));
     return new ParseContainer<ParseContainer<PointerTypeAST>>(firstContainer, ParseInfo.combine(type.getParseInfo(), doubleRAngleInfo));
   }

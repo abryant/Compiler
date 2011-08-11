@@ -12,9 +12,9 @@ import parser.Rule;
 import compiler.language.ast.ParseInfo;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.PointerTypeAST;
-import compiler.language.parser.LanguageParseException;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseType;
+import compiler.language.parser.ParseUtil;
 
 /*
  * Created on 20 Aug 2010
@@ -66,18 +66,8 @@ public final class PointerTypeTripleRAngleRule extends Rule<ParseType>
     }
 
     ParseInfo tripleRAngleInfo = (ParseInfo) args[1];
-    int line = tripleRAngleInfo.getStartLine();
-    if (line != tripleRAngleInfo.getEndLine())
-    {
-      throw new LanguageParseException("Found a TRIPLE_RANGLE \">>>\" token which does not start and finish on the same line", tripleRAngleInfo);
-    }
-    int startPos = tripleRAngleInfo.getStartPos();
-    if (tripleRAngleInfo.getEndPos() - startPos != 3)
-    {
-      throw new LanguageParseException("Found a TRIPLE_RANGLE \">>>\" token which is not 3 characters long", tripleRAngleInfo);
-    }
-    ParseInfo firstAngleInfo = new ParseInfo(line, startPos, line, startPos + 1);
-    ParseInfo firstTwoAnglesInfo = new ParseInfo(line, startPos, line, startPos + 2);
+    ParseInfo firstAngleInfo     = ParseUtil.splitTripleRAngleFirst(tripleRAngleInfo);
+    ParseInfo firstTwoAnglesInfo = ParseUtil.splitTripleRAngleFirstTwo(tripleRAngleInfo);
     ParseContainer<PointerTypeAST> firstContainer = new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), firstAngleInfo));
     ParseContainer<ParseContainer<PointerTypeAST>> secondContainer =
       new ParseContainer<ParseContainer<PointerTypeAST>>(firstContainer, ParseInfo.combine(type.getParseInfo(), firstTwoAnglesInfo));

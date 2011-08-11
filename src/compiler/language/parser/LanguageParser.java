@@ -112,39 +112,51 @@ public class LanguageParser
   }
 
   /**
-   * Prints a parse error with the specified message and representing the location that the ParseInfo stores.
+   * Prints a parse error with the specified message and representing the location(s) that the ParseInfos store.
    * @param message - the message to print
    * @param parseInfo - the ParseInfo representing the location in the input where the error occurred, or null if the location is the end of input
    */
-  private static void printParseError(String message, ParseInfo parseInfo)
+  private static void printParseError(String message, ParseInfo... parseInfos)
   {
-    if (parseInfo == null)
+    if (parseInfos == null || parseInfos.length < 1)
     {
       System.err.println(message);
       return;
     }
-    // make a String representation of the ParseInfo's character range
-    String characterRange;
-    int startLine = parseInfo.getStartLine();
-    int endLine = parseInfo.getEndLine();
-    if (startLine == endLine)
+    // make a String representation of the ParseInfos' character ranges
+    StringBuffer buffer = new StringBuffer();
+    for (int i = 0; i < parseInfos.length; i++)
     {
-      // line:start-end if it is all on one line
-      characterRange = startLine + ":";
-      int startPos = parseInfo.getStartPos();
-      int endPos = parseInfo.getEndPos();
-      characterRange += startPos;
-      if (startPos < endPos - 1)
+      // line:start-end
+      if (parseInfos[i] == null)
       {
-        characterRange += "-" + (endPos - 1);
+        buffer.append("<Unknown Location>");
+      }
+      else
+      {
+        buffer.append(parseInfos[i].getLocationText());
+      }
+      if (i != parseInfos.length - 1)
+      {
+        buffer.append(", ");
+      }
+    }
+    if (parseInfos.length == 1)
+    {
+      System.err.println(buffer + ": " + message);
+      if (parseInfos[0] != null)
+      {
+        System.err.println(parseInfos[0].getHighlightedLine());
       }
     }
     else
     {
-      // startLine-endLine if it spans multiple lines
-      characterRange = startLine + "-" + endLine;
+      System.err.println(buffer + ": " + message);
+      for (ParseInfo info : parseInfos)
+      {
+        System.err.println(info.getHighlightedLine());
+      }
     }
-    System.err.println(characterRange + ": " + message);
   }
 
 }

@@ -92,27 +92,8 @@ public class ConceptualTranslationTest
     StringBuffer buffer = new StringBuffer();
     for (int i = 0; i < parseInfos.length; i++)
     {
-      String characterRange;
-      int startLine = parseInfos[i].getStartLine();
-      int endLine = parseInfos[i].getEndLine();
-      if (startLine == endLine)
-      {
-        // line:start-end if it is all on one line
-        characterRange = startLine + ":";
-        int startPos = parseInfos[i].getStartPos();
-        int endPos = parseInfos[i].getEndPos();
-        characterRange += startPos;
-        if (startPos < endPos - 1)
-        {
-          characterRange += "-" + (endPos - 1);
-        }
-      }
-      else
-      {
-        // startLine-endLine if it spans multiple lines
-        characterRange = startLine + "-" + endLine;
-      }
-      buffer.append(characterRange);
+      // line:start-end
+      buffer.append(parseInfos[i].getLocationText());
       if (i != parseInfos.length - 1)
       {
         buffer.append(", ");
@@ -120,11 +101,16 @@ public class ConceptualTranslationTest
     }
     if (parseInfos.length == 1)
     {
-      System.err.println(message + ": " + buffer);
+      System.err.println(buffer + ": " + message);
+      System.err.println(parseInfos[0].getHighlightedLine());
     }
     else
     {
-      System.err.println(message + "\nAt: " + buffer);
+      System.err.println(buffer + ": " + message);
+      for (ParseInfo info : parseInfos)
+      {
+        System.err.println(info.getHighlightedLine());
+      }
     }
   }
 

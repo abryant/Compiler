@@ -29,17 +29,13 @@ public class ParseUtil
    */
   public static ParseInfo splitDoubleRAngle(ParseInfo doubleRAngleInfo) throws LanguageParseException
   {
-    int line = doubleRAngleInfo.getStartLine();
-    if (line != doubleRAngleInfo.getEndLine())
-    {
-      throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which does not start and finish on the same line", doubleRAngleInfo);
-    }
-    int startPos = doubleRAngleInfo.getStartPos();
-    if (doubleRAngleInfo.getEndPos() - startPos != 2)
+    int line = doubleRAngleInfo.getLine();
+    int startColumn = doubleRAngleInfo.getStartColumn();
+    if (doubleRAngleInfo.getEndColumn() - startColumn != 2)
     {
       throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which is not 2 characters long", doubleRAngleInfo);
     }
-    return new ParseInfo(line, startPos, line, startPos + 1);
+    return new ParseInfo(line, doubleRAngleInfo.getLineText(), startColumn, startColumn + 1);
   }
 
   /**
@@ -50,17 +46,13 @@ public class ParseUtil
    */
   public static ParseInfo splitTripleRAngleFirst(ParseInfo tripleRAngleInfo) throws LanguageParseException
   {
-    int line = tripleRAngleInfo.getStartLine();
-    if (line != tripleRAngleInfo.getEndLine())
-    {
-      throw new LanguageParseException("Found a TRIPLE_RANGLE \">>>\" token which does not start and finish on the same line", tripleRAngleInfo);
-    }
-    int startPos = tripleRAngleInfo.getStartPos();
-    if (tripleRAngleInfo.getEndPos() - startPos != 3)
+    int line = tripleRAngleInfo.getLine();
+    int startColumn = tripleRAngleInfo.getStartColumn();
+    if (tripleRAngleInfo.getEndColumn() - startColumn != 3)
     {
       throw new LanguageParseException("Found a TRIPLE_RANGLE \">>>\" token which is not 3 characters long", tripleRAngleInfo);
     }
-    return new ParseInfo(line, startPos, line, startPos + 1);
+    return new ParseInfo(line, tripleRAngleInfo.getLineText(), startColumn, startColumn + 1);
   }
 
   /**
@@ -71,17 +63,13 @@ public class ParseUtil
    */
   public static ParseInfo splitTripleRAngleFirstTwo(ParseInfo tripleRAngleInfo) throws LanguageParseException
   {
-    int line = tripleRAngleInfo.getStartLine();
-    if (line != tripleRAngleInfo.getEndLine())
-    {
-      throw new LanguageParseException("Found a TRIPLE_RANGLE \">>>\" token which does not start and finish on the same line", tripleRAngleInfo);
-    }
-    int startPos = tripleRAngleInfo.getStartPos();
-    if (tripleRAngleInfo.getEndPos() - startPos != 3)
+    int line = tripleRAngleInfo.getLine();
+    int startColumn = tripleRAngleInfo.getStartColumn();
+    if (tripleRAngleInfo.getEndColumn() - startColumn != 3)
     {
       throw new LanguageParseException("Found a TRIPLE_RANGLE \">>>\" token which is not 3 characters long", tripleRAngleInfo);
     }
-    return new ParseInfo(line, startPos, line, startPos + 2);
+    return new ParseInfo(line, tripleRAngleInfo.getLineText(), startColumn, startColumn + 2);
   }
 
 }
