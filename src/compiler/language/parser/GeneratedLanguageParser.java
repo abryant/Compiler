@@ -2068,7 +2068,7 @@ public class GeneratedLanguageParser
 
   private final boolean action2(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -2121,7 +2121,7 @@ public class GeneratedLanguageParser
 
   private final boolean action3(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_1, 1);
@@ -2195,7 +2195,7 @@ public class GeneratedLanguageParser
 
   private final boolean action4(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -2216,7 +2216,7 @@ public class GeneratedLanguageParser
 
   private final boolean action5(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_1, 6);
@@ -2290,7 +2290,7 @@ public class GeneratedLanguageParser
 
   private final boolean action6(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(19);
@@ -2554,7 +2554,7 @@ public class GeneratedLanguageParser
 
   private final boolean action10(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 206:
       stateStack.addFirst(20);
@@ -2574,7 +2574,7 @@ public class GeneratedLanguageParser
 
   private final boolean action11(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -2900,7 +2900,7 @@ public class GeneratedLanguageParser
 
   private final boolean action15(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_5, 0);
@@ -3040,7 +3040,7 @@ public class GeneratedLanguageParser
 
   private final boolean action16(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_1, 3);
@@ -3114,7 +3114,7 @@ public class GeneratedLanguageParser
 
   private final boolean action17(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(38);
@@ -3130,7 +3130,7 @@ public class GeneratedLanguageParser
 
   private final boolean action18(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(40);
@@ -3146,7 +3146,7 @@ public class GeneratedLanguageParser
 
   private final boolean action19(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_1, 4);
@@ -3220,7 +3220,7 @@ public class GeneratedLanguageParser
 
   private final boolean action20(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(42);
@@ -3232,7 +3232,7 @@ public class GeneratedLanguageParser
 
   private final boolean action21(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(43);
@@ -3244,7 +3244,7 @@ public class GeneratedLanguageParser
 
   private final boolean action22(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(44);
@@ -3256,7 +3256,7 @@ public class GeneratedLanguageParser
 
   private final boolean action23(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_6, 5);
@@ -3326,7 +3326,7 @@ public class GeneratedLanguageParser
 
   private final boolean action24(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_6, 1);
@@ -3396,7 +3396,7 @@ public class GeneratedLanguageParser
 
   private final boolean action25(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_6, 2);
@@ -3466,7 +3466,7 @@ public class GeneratedLanguageParser
 
   private final boolean action26(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_6, 6);
@@ -3536,7 +3536,7 @@ public class GeneratedLanguageParser
 
   private final boolean action27(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(45);
@@ -3548,7 +3548,7 @@ public class GeneratedLanguageParser
 
   private final boolean action28(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_6, 4);
@@ -3618,7 +3618,7 @@ public class GeneratedLanguageParser
 
   private final boolean action29(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_6, 3);
@@ -3688,7 +3688,7 @@ public class GeneratedLanguageParser
 
   private final boolean action30(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_6, 0);
@@ -3758,7 +3758,7 @@ public class GeneratedLanguageParser
 
   private final boolean action31(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_6, 9);
@@ -3828,7 +3828,7 @@ public class GeneratedLanguageParser
 
   private final boolean action32(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_7, 1);
@@ -3898,7 +3898,7 @@ public class GeneratedLanguageParser
 
   private final boolean action33(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_6, 8);
@@ -3968,7 +3968,7 @@ public class GeneratedLanguageParser
 
   private final boolean action34(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_8, 0);
@@ -4038,7 +4038,7 @@ public class GeneratedLanguageParser
 
   private final boolean action35(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_6, 7);
@@ -4108,7 +4108,7 @@ public class GeneratedLanguageParser
 
   private final boolean action36(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -4211,7 +4211,7 @@ public class GeneratedLanguageParser
 
   private final boolean action37(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_7, 0);
@@ -4331,7 +4331,7 @@ public class GeneratedLanguageParser
 
   private final boolean action39(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(47);
@@ -4393,7 +4393,7 @@ public class GeneratedLanguageParser
 
   private final boolean action41(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(47);
@@ -4409,7 +4409,7 @@ public class GeneratedLanguageParser
 
   private final boolean action42(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 192:
       stateStack.addFirst(49);
@@ -4432,7 +4432,7 @@ public class GeneratedLanguageParser
 
   private final boolean action43(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 265:
       stateStack.addFirst(51);
@@ -4462,7 +4462,7 @@ public class GeneratedLanguageParser
 
   private final boolean action44(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 192:
       stateStack.addFirst(52);
@@ -4487,7 +4487,7 @@ public class GeneratedLanguageParser
 
   private final boolean action45(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 174:
       stateStack.addFirst(56);
@@ -4499,7 +4499,7 @@ public class GeneratedLanguageParser
 
   private final boolean action46(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_8, 1);
@@ -4569,7 +4569,7 @@ public class GeneratedLanguageParser
 
   private final boolean action47(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_5, 1);
@@ -4709,7 +4709,7 @@ public class GeneratedLanguageParser
 
   private final boolean action48(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(57);
@@ -4721,7 +4721,7 @@ public class GeneratedLanguageParser
 
   private final boolean action49(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -4751,7 +4751,7 @@ public class GeneratedLanguageParser
 
   private final boolean action50(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(65);
@@ -4763,7 +4763,7 @@ public class GeneratedLanguageParser
 
   private final boolean action51(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(66);
@@ -4787,7 +4787,7 @@ public class GeneratedLanguageParser
 
   private final boolean action52(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -4816,7 +4816,7 @@ public class GeneratedLanguageParser
 
   private final boolean action53(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 192:
       stateStack.addFirst(52);
@@ -4841,7 +4841,7 @@ public class GeneratedLanguageParser
 
   private final boolean action54(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 202:
       stateStack.addFirst(73);
@@ -4864,7 +4864,7 @@ public class GeneratedLanguageParser
 
   private final boolean action55(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 202:
       stateStack.addFirst(73);
@@ -4887,7 +4887,7 @@ public class GeneratedLanguageParser
 
   private final boolean action56(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 282:
       stateStack.addFirst(76);
@@ -4949,7 +4949,7 @@ public class GeneratedLanguageParser
 
   private final boolean action58(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -4970,7 +4970,7 @@ public class GeneratedLanguageParser
 
   private final boolean action59(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(78);
@@ -4984,7 +4984,7 @@ public class GeneratedLanguageParser
 
   private final boolean action60(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_14, 0);
@@ -5050,7 +5050,7 @@ public class GeneratedLanguageParser
 
   private final boolean action61(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_15, 1);
@@ -5080,7 +5080,7 @@ public class GeneratedLanguageParser
 
   private final boolean action62(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_16, 0);
@@ -5092,7 +5092,7 @@ public class GeneratedLanguageParser
 
   private final boolean action63(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(39);
@@ -5133,7 +5133,7 @@ public class GeneratedLanguageParser
 
   private final boolean action64(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(81);
@@ -5203,7 +5203,7 @@ public class GeneratedLanguageParser
 
   private final boolean action65(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_17, 0);
@@ -5292,7 +5292,7 @@ public class GeneratedLanguageParser
 
   private final boolean action66(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 223:
       stateStack.addFirst(83);
@@ -5314,7 +5314,7 @@ public class GeneratedLanguageParser
 
   private final boolean action67(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       return reduce(RULE_19, 0);
@@ -5356,7 +5356,7 @@ public class GeneratedLanguageParser
 
   private final boolean action68(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_20, 0);
@@ -5366,7 +5366,7 @@ public class GeneratedLanguageParser
 
   private final boolean action69(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(86);
@@ -5378,7 +5378,7 @@ public class GeneratedLanguageParser
 
   private final boolean action70(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       return reduce(RULE_21, 0);
@@ -5420,7 +5420,7 @@ public class GeneratedLanguageParser
 
   private final boolean action71(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 202:
       return reduce(RULE_12, 1);
@@ -5432,7 +5432,7 @@ public class GeneratedLanguageParser
 
   private final boolean action72(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 202:
       stateStack.addFirst(73);
@@ -5455,7 +5455,7 @@ public class GeneratedLanguageParser
 
   private final boolean action73(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -5485,7 +5485,7 @@ public class GeneratedLanguageParser
 
   private final boolean action74(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(89);
@@ -5497,7 +5497,7 @@ public class GeneratedLanguageParser
 
   private final boolean action75(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(90);
@@ -5509,7 +5509,7 @@ public class GeneratedLanguageParser
 
   private final boolean action76(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_22, 0);
@@ -5579,7 +5579,7 @@ public class GeneratedLanguageParser
 
   private final boolean action77(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(39);
@@ -5662,7 +5662,7 @@ public class GeneratedLanguageParser
 
   private final boolean action78(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -5691,7 +5691,7 @@ public class GeneratedLanguageParser
 
   private final boolean action79(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -5795,7 +5795,7 @@ public class GeneratedLanguageParser
 
   private final boolean action80(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_24, 0);
@@ -5875,7 +5875,7 @@ public class GeneratedLanguageParser
 
   private final boolean action81(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -5896,7 +5896,7 @@ public class GeneratedLanguageParser
 
   private final boolean action82(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -6006,7 +6006,7 @@ public class GeneratedLanguageParser
 
   private final boolean action83(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -6039,7 +6039,7 @@ public class GeneratedLanguageParser
 
   private final boolean action84(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       return reduce(RULE_25, 0);
@@ -6081,7 +6081,7 @@ public class GeneratedLanguageParser
 
   private final boolean action85(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -6114,7 +6114,7 @@ public class GeneratedLanguageParser
 
   private final boolean action86(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(66);
@@ -6136,7 +6136,7 @@ public class GeneratedLanguageParser
 
   private final boolean action87(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(152);
@@ -6148,7 +6148,7 @@ public class GeneratedLanguageParser
 
   private final boolean action88(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(78);
@@ -6162,7 +6162,7 @@ public class GeneratedLanguageParser
 
   private final boolean action89(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_17, 0);
@@ -6251,7 +6251,7 @@ public class GeneratedLanguageParser
 
   private final boolean action90(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(154);
@@ -6278,7 +6278,7 @@ public class GeneratedLanguageParser
 
   private final boolean action91(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_24, 1);
@@ -6358,7 +6358,7 @@ public class GeneratedLanguageParser
 
   private final boolean action92(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_16, 1);
@@ -6370,7 +6370,7 @@ public class GeneratedLanguageParser
 
   private final boolean action93(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_27, 1);
@@ -6438,7 +6438,7 @@ public class GeneratedLanguageParser
 
   private final boolean action94(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 205:
       stateStack.addFirst(158);
@@ -6462,7 +6462,7 @@ public class GeneratedLanguageParser
 
   private final boolean action95(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_28, 0);
@@ -6530,7 +6530,7 @@ public class GeneratedLanguageParser
 
   private final boolean action96(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_27, 0);
@@ -6598,7 +6598,7 @@ public class GeneratedLanguageParser
 
   private final boolean action97(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -6619,7 +6619,7 @@ public class GeneratedLanguageParser
 
   private final boolean action98(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 0);
@@ -6687,7 +6687,7 @@ public class GeneratedLanguageParser
 
   private final boolean action99(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 6);
@@ -6755,7 +6755,7 @@ public class GeneratedLanguageParser
 
   private final boolean action100(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_30, 0);
@@ -6823,7 +6823,7 @@ public class GeneratedLanguageParser
 
   private final boolean action101(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 3);
@@ -6891,7 +6891,7 @@ public class GeneratedLanguageParser
 
   private final boolean action102(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_31, 0);
@@ -6959,7 +6959,7 @@ public class GeneratedLanguageParser
 
   private final boolean action103(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -7052,7 +7052,7 @@ public class GeneratedLanguageParser
 
   private final boolean action104(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 9);
@@ -7120,7 +7120,7 @@ public class GeneratedLanguageParser
 
   private final boolean action105(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 223:
       stateStack.addFirst(173);
@@ -7142,7 +7142,7 @@ public class GeneratedLanguageParser
 
   private final boolean action106(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 205:
       stateStack.addFirst(176);
@@ -7166,7 +7166,7 @@ public class GeneratedLanguageParser
 
   private final boolean action107(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -7265,7 +7265,7 @@ public class GeneratedLanguageParser
 
   private final boolean action108(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_33, 5);
@@ -7285,7 +7285,7 @@ public class GeneratedLanguageParser
 
   private final boolean action109(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 279:
       stateStack.addFirst(184);
@@ -7297,7 +7297,7 @@ public class GeneratedLanguageParser
 
   private final boolean action110(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_33, 1);
@@ -7317,7 +7317,7 @@ public class GeneratedLanguageParser
 
   private final boolean action111(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 279:
       stateStack.addFirst(185);
@@ -7335,7 +7335,7 @@ public class GeneratedLanguageParser
 
   private final boolean action112(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(186);
@@ -7347,7 +7347,7 @@ public class GeneratedLanguageParser
 
   private final boolean action113(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_35, 1);
@@ -7427,7 +7427,7 @@ public class GeneratedLanguageParser
 
   private final boolean action114(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_33, 2);
@@ -7489,7 +7489,7 @@ public class GeneratedLanguageParser
 
   private final boolean action115(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(187);
@@ -7513,7 +7513,7 @@ public class GeneratedLanguageParser
 
   private final boolean action116(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_36, 0);
@@ -7581,7 +7581,7 @@ public class GeneratedLanguageParser
 
   private final boolean action117(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_37, 2);
@@ -7713,7 +7713,7 @@ public class GeneratedLanguageParser
 
   private final boolean action118(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_33, 0);
@@ -7733,7 +7733,7 @@ public class GeneratedLanguageParser
 
   private final boolean action119(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_38, 1);
@@ -7843,7 +7843,7 @@ public class GeneratedLanguageParser
 
   private final boolean action120(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_36, 1);
@@ -7911,7 +7911,7 @@ public class GeneratedLanguageParser
 
   private final boolean action121(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_35, 0);
@@ -7991,7 +7991,7 @@ public class GeneratedLanguageParser
 
   private final boolean action122(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_39, 1);
@@ -8001,7 +8001,7 @@ public class GeneratedLanguageParser
 
   private final boolean action123(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(191);
@@ -8042,7 +8042,7 @@ public class GeneratedLanguageParser
 
   private final boolean action124(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 279:
       stateStack.addFirst(196);
@@ -8066,7 +8066,7 @@ public class GeneratedLanguageParser
 
   private final boolean action125(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_36, 2);
@@ -8134,7 +8134,7 @@ public class GeneratedLanguageParser
 
   private final boolean action126(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_40, 0);
@@ -8214,7 +8214,7 @@ public class GeneratedLanguageParser
 
   private final boolean action127(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_36, 3);
@@ -8282,7 +8282,7 @@ public class GeneratedLanguageParser
 
   private final boolean action128(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_33, 3);
@@ -8302,7 +8302,7 @@ public class GeneratedLanguageParser
 
   private final boolean action129(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 264:
       stateStack.addFirst(197);
@@ -8320,7 +8320,7 @@ public class GeneratedLanguageParser
 
   private final boolean action130(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_41, 0);
@@ -8400,7 +8400,7 @@ public class GeneratedLanguageParser
 
   private final boolean action131(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(199);
@@ -8428,7 +8428,7 @@ public class GeneratedLanguageParser
 
   private final boolean action132(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(39);
@@ -8511,7 +8511,7 @@ public class GeneratedLanguageParser
 
   private final boolean action133(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 215:
       stateStack.addFirst(16);
@@ -8675,7 +8675,7 @@ public class GeneratedLanguageParser
 
   private final boolean action135(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_43, 5);
@@ -8755,7 +8755,7 @@ public class GeneratedLanguageParser
 
   private final boolean action136(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_43, 4);
@@ -8835,7 +8835,7 @@ public class GeneratedLanguageParser
 
   private final boolean action137(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_43, 2);
@@ -8915,7 +8915,7 @@ public class GeneratedLanguageParser
 
   private final boolean action138(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -9030,7 +9030,7 @@ public class GeneratedLanguageParser
 
   private final boolean action139(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_43, 1);
@@ -9110,7 +9110,7 @@ public class GeneratedLanguageParser
 
   private final boolean action140(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_43, 3);
@@ -9190,7 +9190,7 @@ public class GeneratedLanguageParser
 
   private final boolean action141(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_17, 1);
@@ -9270,7 +9270,7 @@ public class GeneratedLanguageParser
 
   private final boolean action142(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_43, 0);
@@ -9350,7 +9350,7 @@ public class GeneratedLanguageParser
 
   private final boolean action143(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(212);
@@ -9368,7 +9368,7 @@ public class GeneratedLanguageParser
 
   private final boolean action144(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_44, 0);
@@ -9470,7 +9470,7 @@ public class GeneratedLanguageParser
 
   private final boolean action145(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       return reduce(RULE_25, 2);
@@ -9512,7 +9512,7 @@ public class GeneratedLanguageParser
 
   private final boolean action146(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       return reduce(RULE_45, 0);
@@ -9528,7 +9528,7 @@ public class GeneratedLanguageParser
 
   private final boolean action147(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(39);
@@ -9565,7 +9565,7 @@ public class GeneratedLanguageParser
 
   private final boolean action148(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(212);
@@ -9583,7 +9583,7 @@ public class GeneratedLanguageParser
 
   private final boolean action149(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       return reduce(RULE_25, 1);
@@ -9625,7 +9625,7 @@ public class GeneratedLanguageParser
 
   private final boolean action150(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       return reduce(RULE_19, 1);
@@ -9667,7 +9667,7 @@ public class GeneratedLanguageParser
 
   private final boolean action151(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_20, 1);
@@ -9677,7 +9677,7 @@ public class GeneratedLanguageParser
 
   private final boolean action152(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_17, 0);
@@ -9766,7 +9766,7 @@ public class GeneratedLanguageParser
 
   private final boolean action153(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -9876,7 +9876,7 @@ public class GeneratedLanguageParser
 
   private final boolean action154(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -9907,7 +9907,7 @@ public class GeneratedLanguageParser
 
   private final boolean action155(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(220);
@@ -9923,7 +9923,7 @@ public class GeneratedLanguageParser
 
   private final boolean action156(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(221);
@@ -9939,7 +9939,7 @@ public class GeneratedLanguageParser
 
   private final boolean action157(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_47, 0);
@@ -9953,7 +9953,7 @@ public class GeneratedLanguageParser
 
   private final boolean action158(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 8);
@@ -10021,7 +10021,7 @@ public class GeneratedLanguageParser
 
   private final boolean action159(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 5);
@@ -10089,7 +10089,7 @@ public class GeneratedLanguageParser
 
   private final boolean action160(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 11);
@@ -10157,7 +10157,7 @@ public class GeneratedLanguageParser
 
   private final boolean action161(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 2);
@@ -10225,7 +10225,7 @@ public class GeneratedLanguageParser
 
   private final boolean action162(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(39);
@@ -10264,7 +10264,7 @@ public class GeneratedLanguageParser
 
   private final boolean action163(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_33, 5);
@@ -10326,7 +10326,7 @@ public class GeneratedLanguageParser
 
   private final boolean action164(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_33, 1);
@@ -10388,7 +10388,7 @@ public class GeneratedLanguageParser
 
   private final boolean action165(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_33, 4);
@@ -10450,7 +10450,7 @@ public class GeneratedLanguageParser
 
   private final boolean action166(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(224);
@@ -10478,7 +10478,7 @@ public class GeneratedLanguageParser
 
   private final boolean action167(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_33, 0);
@@ -10540,7 +10540,7 @@ public class GeneratedLanguageParser
 
   private final boolean action168(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(225);
@@ -10585,7 +10585,7 @@ public class GeneratedLanguageParser
 
   private final boolean action169(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 282:
       stateStack.addFirst(226);
@@ -10597,7 +10597,7 @@ public class GeneratedLanguageParser
 
   private final boolean action170(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 282:
       stateStack.addFirst(227);
@@ -10609,7 +10609,7 @@ public class GeneratedLanguageParser
 
   private final boolean action171(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_33, 3);
@@ -10671,7 +10671,7 @@ public class GeneratedLanguageParser
 
   private final boolean action172(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(228);
@@ -10699,7 +10699,7 @@ public class GeneratedLanguageParser
 
   private final boolean action173(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -10732,7 +10732,7 @@ public class GeneratedLanguageParser
 
   private final boolean action174(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_50, 0);
@@ -10812,7 +10812,7 @@ public class GeneratedLanguageParser
 
   private final boolean action175(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -10845,7 +10845,7 @@ public class GeneratedLanguageParser
 
   private final boolean action176(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 7);
@@ -10913,7 +10913,7 @@ public class GeneratedLanguageParser
 
   private final boolean action177(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 4);
@@ -10981,7 +10981,7 @@ public class GeneratedLanguageParser
 
   private final boolean action178(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 10);
@@ -11049,7 +11049,7 @@ public class GeneratedLanguageParser
 
   private final boolean action179(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_29, 1);
@@ -11117,7 +11117,7 @@ public class GeneratedLanguageParser
 
   private final boolean action180(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 238:
       stateStack.addFirst(233);
@@ -11129,7 +11129,7 @@ public class GeneratedLanguageParser
 
   private final boolean action181(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -11223,7 +11223,7 @@ public class GeneratedLanguageParser
 
   private final boolean action182(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 238:
       return reduce(RULE_51, 1);
@@ -11239,7 +11239,7 @@ public class GeneratedLanguageParser
 
   private final boolean action183(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 238:
       return reduce(RULE_51, 0);
@@ -11255,7 +11255,7 @@ public class GeneratedLanguageParser
 
   private final boolean action184(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_38, 0);
@@ -11365,7 +11365,7 @@ public class GeneratedLanguageParser
 
   private final boolean action185(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_38, 2);
@@ -11475,7 +11475,7 @@ public class GeneratedLanguageParser
 
   private final boolean action186(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -11579,7 +11579,7 @@ public class GeneratedLanguageParser
 
   private final boolean action187(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -11683,7 +11683,7 @@ public class GeneratedLanguageParser
 
   private final boolean action188(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_38, 3);
@@ -11793,7 +11793,7 @@ public class GeneratedLanguageParser
 
   private final boolean action189(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 283:
       stateStack.addFirst(237);
@@ -11805,7 +11805,7 @@ public class GeneratedLanguageParser
 
   private final boolean action190(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(238);
@@ -11817,7 +11817,7 @@ public class GeneratedLanguageParser
 
   private final boolean action191(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -11921,7 +11921,7 @@ public class GeneratedLanguageParser
 
   private final boolean action192(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -12031,7 +12031,7 @@ public class GeneratedLanguageParser
 
   private final boolean action193(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_37, 0);
@@ -12163,7 +12163,7 @@ public class GeneratedLanguageParser
 
   private final boolean action194(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 283:
       stateStack.addFirst(255);
@@ -12175,7 +12175,7 @@ public class GeneratedLanguageParser
 
   private final boolean action195(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(256);
@@ -12187,7 +12187,7 @@ public class GeneratedLanguageParser
 
   private final boolean action196(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_37, 1);
@@ -12319,7 +12319,7 @@ public class GeneratedLanguageParser
 
   private final boolean action197(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(257);
@@ -12331,7 +12331,7 @@ public class GeneratedLanguageParser
 
   private final boolean action198(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 283:
       stateStack.addFirst(258);
@@ -12343,7 +12343,7 @@ public class GeneratedLanguageParser
 
   private final boolean action199(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -12364,7 +12364,7 @@ public class GeneratedLanguageParser
 
   private final boolean action200(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_52, 3);
@@ -12496,7 +12496,7 @@ public class GeneratedLanguageParser
 
   private final boolean action201(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_24, 2);
@@ -12576,7 +12576,7 @@ public class GeneratedLanguageParser
 
   private final boolean action202(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(260);
@@ -12609,7 +12609,7 @@ public class GeneratedLanguageParser
 
   private final boolean action203(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -12702,7 +12702,7 @@ public class GeneratedLanguageParser
 
   private final boolean action204(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -12996,7 +12996,7 @@ public class GeneratedLanguageParser
 
   private final boolean action205(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_53, 0);
@@ -13052,7 +13052,7 @@ public class GeneratedLanguageParser
 
   private final boolean action206(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -13145,7 +13145,7 @@ public class GeneratedLanguageParser
 
   private final boolean action207(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(189);
@@ -13209,7 +13209,7 @@ public class GeneratedLanguageParser
 
   private final boolean action208(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(39);
@@ -13290,7 +13290,7 @@ public class GeneratedLanguageParser
 
   private final boolean action209(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(337);
@@ -13316,7 +13316,7 @@ public class GeneratedLanguageParser
 
   private final boolean action210(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 264:
       stateStack.addFirst(197);
@@ -13380,7 +13380,7 @@ public class GeneratedLanguageParser
 
   private final boolean action211(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_55, 0);
@@ -13460,7 +13460,7 @@ public class GeneratedLanguageParser
 
   private final boolean action212(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -13491,7 +13491,7 @@ public class GeneratedLanguageParser
 
   private final boolean action213(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -13524,7 +13524,7 @@ public class GeneratedLanguageParser
 
   private final boolean action214(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -13557,7 +13557,7 @@ public class GeneratedLanguageParser
 
   private final boolean action215(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -13753,7 +13753,7 @@ public class GeneratedLanguageParser
 
   private final boolean action217(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -13886,7 +13886,7 @@ public class GeneratedLanguageParser
 
   private final boolean action218(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_17, 0);
@@ -13975,7 +13975,7 @@ public class GeneratedLanguageParser
 
   private final boolean action219(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(384);
@@ -13993,7 +13993,7 @@ public class GeneratedLanguageParser
 
   private final boolean action220(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(154);
@@ -14018,7 +14018,7 @@ public class GeneratedLanguageParser
 
   private final boolean action221(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_17, 0);
@@ -14193,7 +14193,7 @@ public class GeneratedLanguageParser
 
   private final boolean action223(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -14303,7 +14303,7 @@ public class GeneratedLanguageParser
 
   private final boolean action224(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -14396,7 +14396,7 @@ public class GeneratedLanguageParser
 
   private final boolean action225(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -14489,7 +14489,7 @@ public class GeneratedLanguageParser
 
   private final boolean action226(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_58, 0);
@@ -14587,7 +14587,7 @@ public class GeneratedLanguageParser
 
   private final boolean action227(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_59, 0);
@@ -14655,7 +14655,7 @@ public class GeneratedLanguageParser
 
   private final boolean action228(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -14749,7 +14749,7 @@ public class GeneratedLanguageParser
 
   private final boolean action229(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(212);
@@ -14767,7 +14767,7 @@ public class GeneratedLanguageParser
 
   private final boolean action230(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_50, 2);
@@ -14847,7 +14847,7 @@ public class GeneratedLanguageParser
 
   private final boolean action231(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(212);
@@ -14865,7 +14865,7 @@ public class GeneratedLanguageParser
 
   private final boolean action232(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_50, 1);
@@ -14945,7 +14945,7 @@ public class GeneratedLanguageParser
 
   private final boolean action233(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -15039,7 +15039,7 @@ public class GeneratedLanguageParser
 
   private final boolean action234(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 238:
       stateStack.addFirst(396);
@@ -15051,7 +15051,7 @@ public class GeneratedLanguageParser
 
   private final boolean action235(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_41, 1);
@@ -15131,7 +15131,7 @@ public class GeneratedLanguageParser
 
   private final boolean action236(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_41, 3);
@@ -15211,7 +15211,7 @@ public class GeneratedLanguageParser
 
   private final boolean action237(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_60, 2);
@@ -15279,7 +15279,7 @@ public class GeneratedLanguageParser
 
   private final boolean action238(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 283:
       stateStack.addFirst(397);
@@ -15291,7 +15291,7 @@ public class GeneratedLanguageParser
 
   private final boolean action239(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_41, 2);
@@ -15371,7 +15371,7 @@ public class GeneratedLanguageParser
 
   private final boolean action240(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -15392,7 +15392,7 @@ public class GeneratedLanguageParser
 
   private final boolean action241(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(399);
@@ -15418,7 +15418,7 @@ public class GeneratedLanguageParser
 
   private final boolean action242(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(402);
@@ -15440,7 +15440,7 @@ public class GeneratedLanguageParser
 
   private final boolean action243(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(403);
@@ -15452,7 +15452,7 @@ public class GeneratedLanguageParser
 
   private final boolean action244(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(404);
@@ -15480,7 +15480,7 @@ public class GeneratedLanguageParser
 
   private final boolean action245(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_52, 0);
@@ -15612,7 +15612,7 @@ public class GeneratedLanguageParser
 
   private final boolean action246(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(406);
@@ -15657,7 +15657,7 @@ public class GeneratedLanguageParser
 
   private final boolean action247(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_61, 2);
@@ -15789,7 +15789,7 @@ public class GeneratedLanguageParser
 
   private final boolean action248(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_62, 0);
@@ -15921,7 +15921,7 @@ public class GeneratedLanguageParser
 
   private final boolean action249(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(409);
@@ -15937,7 +15937,7 @@ public class GeneratedLanguageParser
 
   private final boolean action250(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_63, 1);
@@ -16069,7 +16069,7 @@ public class GeneratedLanguageParser
 
   private final boolean action251(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_64, 1);
@@ -16201,7 +16201,7 @@ public class GeneratedLanguageParser
 
   private final boolean action252(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(410);
@@ -16229,7 +16229,7 @@ public class GeneratedLanguageParser
 
   private final boolean action253(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_64, 0);
@@ -16361,7 +16361,7 @@ public class GeneratedLanguageParser
 
   private final boolean action254(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(411);
@@ -16393,7 +16393,7 @@ public class GeneratedLanguageParser
 
   private final boolean action255(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_60, 1);
@@ -16461,7 +16461,7 @@ public class GeneratedLanguageParser
 
   private final boolean action256(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 283:
       stateStack.addFirst(413);
@@ -16473,7 +16473,7 @@ public class GeneratedLanguageParser
 
   private final boolean action257(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 283:
       stateStack.addFirst(414);
@@ -16485,7 +16485,7 @@ public class GeneratedLanguageParser
 
   private final boolean action258(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_60, 0);
@@ -16553,7 +16553,7 @@ public class GeneratedLanguageParser
 
   private final boolean action259(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(39);
@@ -16592,7 +16592,7 @@ public class GeneratedLanguageParser
 
   private final boolean action260(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -16740,7 +16740,7 @@ public class GeneratedLanguageParser
 
   private final boolean action261(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -16763,7 +16763,7 @@ public class GeneratedLanguageParser
 
   private final boolean action262(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(425);
@@ -16775,7 +16775,7 @@ public class GeneratedLanguageParser
 
   private final boolean action263(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_66, 0);
@@ -16863,7 +16863,7 @@ public class GeneratedLanguageParser
 
   private final boolean action264(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 195:
       return reduce(RULE_67, 0);
@@ -17067,7 +17067,7 @@ public class GeneratedLanguageParser
 
   private final boolean action265(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -17192,7 +17192,7 @@ public class GeneratedLanguageParser
 
   private final boolean action266(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -17321,7 +17321,7 @@ public class GeneratedLanguageParser
 
   private final boolean action267(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -17450,7 +17450,7 @@ public class GeneratedLanguageParser
 
   private final boolean action268(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(438);
@@ -17475,7 +17475,7 @@ public class GeneratedLanguageParser
 
   private final boolean action269(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 1);
@@ -17563,7 +17563,7 @@ public class GeneratedLanguageParser
 
   private final boolean action270(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -17655,7 +17655,7 @@ public class GeneratedLanguageParser
 
   private final boolean action271(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -17780,7 +17780,7 @@ public class GeneratedLanguageParser
 
   private final boolean action272(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -17910,7 +17910,7 @@ public class GeneratedLanguageParser
 
   private final boolean action273(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_69, 0);
@@ -17998,7 +17998,7 @@ public class GeneratedLanguageParser
 
   private final boolean action274(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -18204,7 +18204,7 @@ public class GeneratedLanguageParser
 
   private final boolean action275(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 4);
@@ -18292,7 +18292,7 @@ public class GeneratedLanguageParser
 
   private final boolean action276(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 3);
@@ -18380,7 +18380,7 @@ public class GeneratedLanguageParser
 
   private final boolean action277(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -18505,7 +18505,7 @@ public class GeneratedLanguageParser
 
   private final boolean action278(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 211:
       stateStack.addFirst(276);
@@ -18595,7 +18595,7 @@ public class GeneratedLanguageParser
 
   private final boolean action279(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(464);
@@ -18611,7 +18611,7 @@ public class GeneratedLanguageParser
 
   private final boolean action280(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -18632,7 +18632,7 @@ public class GeneratedLanguageParser
 
   private final boolean action281(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -18822,7 +18822,7 @@ public class GeneratedLanguageParser
 
   private final boolean action282(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(470);
@@ -18838,7 +18838,7 @@ public class GeneratedLanguageParser
 
   private final boolean action283(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -18859,7 +18859,7 @@ public class GeneratedLanguageParser
 
   private final boolean action284(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 0);
@@ -18947,7 +18947,7 @@ public class GeneratedLanguageParser
 
   private final boolean action285(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_66, 1);
@@ -19035,7 +19035,7 @@ public class GeneratedLanguageParser
 
   private final boolean action286(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_71, 0);
@@ -19153,7 +19153,7 @@ public class GeneratedLanguageParser
 
   private final boolean action287(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 5);
@@ -19241,7 +19241,7 @@ public class GeneratedLanguageParser
 
   private final boolean action288(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 211:
       stateStack.addFirst(276);
@@ -19331,7 +19331,7 @@ public class GeneratedLanguageParser
 
   private final boolean action289(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(475);
@@ -19347,7 +19347,7 @@ public class GeneratedLanguageParser
 
   private final boolean action290(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_72, 0);
@@ -19395,7 +19395,7 @@ public class GeneratedLanguageParser
 
   private final boolean action291(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_73, 0);
@@ -19483,7 +19483,7 @@ public class GeneratedLanguageParser
 
   private final boolean action292(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 12);
@@ -19571,7 +19571,7 @@ public class GeneratedLanguageParser
 
   private final boolean action293(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 6);
@@ -19689,7 +19689,7 @@ public class GeneratedLanguageParser
 
   private final boolean action294(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 5);
@@ -19807,7 +19807,7 @@ public class GeneratedLanguageParser
 
   private final boolean action295(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_75, 0);
@@ -19925,7 +19925,7 @@ public class GeneratedLanguageParser
 
   private final boolean action296(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -19946,7 +19946,7 @@ public class GeneratedLanguageParser
 
   private final boolean action297(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(224);
@@ -19983,7 +19983,7 @@ public class GeneratedLanguageParser
 
   private final boolean action298(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -20118,7 +20118,7 @@ public class GeneratedLanguageParser
 
   private final boolean action299(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(482);
@@ -20136,7 +20136,7 @@ public class GeneratedLanguageParser
 
   private final boolean action300(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_77, 0);
@@ -20224,7 +20224,7 @@ public class GeneratedLanguageParser
 
   private final boolean action301(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 0);
@@ -20342,7 +20342,7 @@ public class GeneratedLanguageParser
 
   private final boolean action302(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(228);
@@ -20374,7 +20374,7 @@ public class GeneratedLanguageParser
 
   private final boolean action303(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(483);
@@ -20386,7 +20386,7 @@ public class GeneratedLanguageParser
 
   private final boolean action304(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_78, 2);
@@ -20472,7 +20472,7 @@ public class GeneratedLanguageParser
 
   private final boolean action305(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 11);
@@ -20590,7 +20590,7 @@ public class GeneratedLanguageParser
 
   private final boolean action306(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 15);
@@ -20708,7 +20708,7 @@ public class GeneratedLanguageParser
 
   private final boolean action307(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(484);
@@ -20733,7 +20733,7 @@ public class GeneratedLanguageParser
 
   private final boolean action308(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 7);
@@ -20851,7 +20851,7 @@ public class GeneratedLanguageParser
 
   private final boolean action309(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_79, 0);
@@ -20909,7 +20909,7 @@ public class GeneratedLanguageParser
 
   private final boolean action310(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_72, 2);
@@ -20963,7 +20963,7 @@ public class GeneratedLanguageParser
 
   private final boolean action311(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_77, 1);
@@ -21051,7 +21051,7 @@ public class GeneratedLanguageParser
 
   private final boolean action312(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(486);
@@ -21077,7 +21077,7 @@ public class GeneratedLanguageParser
 
   private final boolean action313(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(488);
@@ -21089,7 +21089,7 @@ public class GeneratedLanguageParser
 
   private final boolean action314(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 4);
@@ -21207,7 +21207,7 @@ public class GeneratedLanguageParser
 
   private final boolean action315(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(489);
@@ -21228,7 +21228,7 @@ public class GeneratedLanguageParser
 
   private final boolean action316(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 11);
@@ -21316,7 +21316,7 @@ public class GeneratedLanguageParser
 
   private final boolean action317(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 14);
@@ -21434,7 +21434,7 @@ public class GeneratedLanguageParser
 
   private final boolean action318(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 8);
@@ -21552,7 +21552,7 @@ public class GeneratedLanguageParser
 
   private final boolean action319(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 10);
@@ -21670,7 +21670,7 @@ public class GeneratedLanguageParser
 
   private final boolean action320(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 8);
@@ -21758,7 +21758,7 @@ public class GeneratedLanguageParser
 
   private final boolean action321(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(491);
@@ -21842,7 +21842,7 @@ public class GeneratedLanguageParser
 
   private final boolean action322(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_72, 1);
@@ -21896,7 +21896,7 @@ public class GeneratedLanguageParser
 
   private final boolean action323(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 9);
@@ -21984,7 +21984,7 @@ public class GeneratedLanguageParser
 
   private final boolean action324(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 13);
@@ -22102,7 +22102,7 @@ public class GeneratedLanguageParser
 
   private final boolean action325(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 1);
@@ -22220,7 +22220,7 @@ public class GeneratedLanguageParser
 
   private final boolean action326(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 2);
@@ -22308,7 +22308,7 @@ public class GeneratedLanguageParser
 
   private final boolean action327(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 257:
       stateStack.addFirst(497);
@@ -22385,7 +22385,7 @@ public class GeneratedLanguageParser
 
   private final boolean action328(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(513);
@@ -22435,7 +22435,7 @@ public class GeneratedLanguageParser
 
   private final boolean action329(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(516);
@@ -22447,7 +22447,7 @@ public class GeneratedLanguageParser
 
   private final boolean action330(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 16);
@@ -22565,7 +22565,7 @@ public class GeneratedLanguageParser
 
   private final boolean action331(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_78, 0);
@@ -22653,7 +22653,7 @@ public class GeneratedLanguageParser
 
   private final boolean action332(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 9);
@@ -22771,7 +22771,7 @@ public class GeneratedLanguageParser
 
   private final boolean action333(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 12);
@@ -22889,7 +22889,7 @@ public class GeneratedLanguageParser
 
   private final boolean action334(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -23174,7 +23174,7 @@ public class GeneratedLanguageParser
 
   private final boolean action335(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(520);
@@ -23186,7 +23186,7 @@ public class GeneratedLanguageParser
 
   private final boolean action336(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(521);
@@ -23198,7 +23198,7 @@ public class GeneratedLanguageParser
 
   private final boolean action337(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(260);
@@ -23225,7 +23225,7 @@ public class GeneratedLanguageParser
 
   private final boolean action338(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_82, 1);
@@ -23239,7 +23239,7 @@ public class GeneratedLanguageParser
 
   private final boolean action339(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(523);
@@ -23259,7 +23259,7 @@ public class GeneratedLanguageParser
 
   private final boolean action340(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_83, 0);
@@ -23273,7 +23273,7 @@ public class GeneratedLanguageParser
 
   private final boolean action341(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_44, 1);
@@ -23375,7 +23375,7 @@ public class GeneratedLanguageParser
 
   private final boolean action342(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       return reduce(RULE_45, 1);
@@ -23391,7 +23391,7 @@ public class GeneratedLanguageParser
 
   private final boolean action343(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(212);
@@ -23405,7 +23405,7 @@ public class GeneratedLanguageParser
 
   private final boolean action344(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       return reduce(RULE_25, 4);
@@ -23447,7 +23447,7 @@ public class GeneratedLanguageParser
 
   private final boolean action345(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(212);
@@ -23461,7 +23461,7 @@ public class GeneratedLanguageParser
 
   private final boolean action346(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       return reduce(RULE_25, 3);
@@ -23589,7 +23589,7 @@ public class GeneratedLanguageParser
 
   private final boolean action348(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -23696,7 +23696,7 @@ public class GeneratedLanguageParser
 
   private final boolean action349(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 265:
       stateStack.addFirst(529);
@@ -23708,7 +23708,7 @@ public class GeneratedLanguageParser
 
   private final boolean action350(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_84, 0);
@@ -23798,7 +23798,7 @@ public class GeneratedLanguageParser
 
   private final boolean action351(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -23905,7 +23905,7 @@ public class GeneratedLanguageParser
 
   private final boolean action352(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -24029,7 +24029,7 @@ public class GeneratedLanguageParser
 
   private final boolean action353(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -24136,7 +24136,7 @@ public class GeneratedLanguageParser
 
   private final boolean action354(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(534);
@@ -24148,7 +24148,7 @@ public class GeneratedLanguageParser
 
   private final boolean action355(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -24255,7 +24255,7 @@ public class GeneratedLanguageParser
 
   private final boolean action356(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 247:
       stateStack.addFirst(537);
@@ -24299,7 +24299,7 @@ public class GeneratedLanguageParser
 
   private final boolean action357(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(538);
@@ -24375,7 +24375,7 @@ public class GeneratedLanguageParser
 
   private final boolean action358(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(541);
@@ -24488,7 +24488,7 @@ public class GeneratedLanguageParser
 
   private final boolean action359(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 276:
       stateStack.addFirst(554);
@@ -24566,7 +24566,7 @@ public class GeneratedLanguageParser
 
   private final boolean action360(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(556);
@@ -24671,7 +24671,7 @@ public class GeneratedLanguageParser
 
   private final boolean action361(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_89, 0);
@@ -24753,7 +24753,7 @@ public class GeneratedLanguageParser
 
   private final boolean action362(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -24825,7 +24825,7 @@ public class GeneratedLanguageParser
 
   private final boolean action363(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 247:
       stateStack.addFirst(566);
@@ -24865,7 +24865,7 @@ public class GeneratedLanguageParser
 
   private final boolean action364(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(572);
@@ -24974,7 +24974,7 @@ public class GeneratedLanguageParser
 
   private final boolean action365(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_91, 0);
@@ -24990,7 +24990,7 @@ public class GeneratedLanguageParser
 
   private final boolean action366(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 6);
@@ -25078,7 +25078,7 @@ public class GeneratedLanguageParser
 
   private final boolean action367(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 7);
@@ -25166,7 +25166,7 @@ public class GeneratedLanguageParser
 
   private final boolean action368(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 245:
       stateStack.addFirst(576);
@@ -25212,7 +25212,7 @@ public class GeneratedLanguageParser
 
   private final boolean action369(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 249:
       stateStack.addFirst(577);
@@ -25264,7 +25264,7 @@ public class GeneratedLanguageParser
 
   private final boolean action370(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 240:
       stateStack.addFirst(579);
@@ -25328,7 +25328,7 @@ public class GeneratedLanguageParser
 
   private final boolean action371(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(580);
@@ -25394,7 +25394,7 @@ public class GeneratedLanguageParser
 
   private final boolean action372(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(484);
@@ -25493,7 +25493,7 @@ public class GeneratedLanguageParser
 
   private final boolean action373(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_97, 0);
@@ -25505,7 +25505,7 @@ public class GeneratedLanguageParser
 
   private final boolean action374(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 260:
       stateStack.addFirst(581);
@@ -25589,7 +25589,7 @@ public class GeneratedLanguageParser
 
   private final boolean action375(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_68, 10);
@@ -25677,7 +25677,7 @@ public class GeneratedLanguageParser
 
   private final boolean action376(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(582);
@@ -25693,7 +25693,7 @@ public class GeneratedLanguageParser
 
   private final boolean action377(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_99, 0);
@@ -25705,7 +25705,7 @@ public class GeneratedLanguageParser
 
   private final boolean action378(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_100, 0);
@@ -25753,7 +25753,7 @@ public class GeneratedLanguageParser
 
   private final boolean action379(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 262:
       stateStack.addFirst(584);
@@ -25839,7 +25839,7 @@ public class GeneratedLanguageParser
 
   private final boolean action380(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 278:
       stateStack.addFirst(587);
@@ -25883,7 +25883,7 @@ public class GeneratedLanguageParser
 
   private final boolean action381(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_96, 1);
@@ -25965,7 +25965,7 @@ public class GeneratedLanguageParser
 
   private final boolean action382(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_87, 1);
@@ -26013,7 +26013,7 @@ public class GeneratedLanguageParser
 
   private final boolean action383(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -26123,7 +26123,7 @@ public class GeneratedLanguageParser
 
   private final boolean action384(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_17, 0);
@@ -26212,7 +26212,7 @@ public class GeneratedLanguageParser
 
   private final boolean action385(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_47, 1);
@@ -26226,7 +26226,7 @@ public class GeneratedLanguageParser
 
   private final boolean action386(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -26336,7 +26336,7 @@ public class GeneratedLanguageParser
 
   private final boolean action387(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_52, 1);
@@ -26468,7 +26468,7 @@ public class GeneratedLanguageParser
 
   private final boolean action388(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_48, 3);
@@ -26504,7 +26504,7 @@ public class GeneratedLanguageParser
 
   private final boolean action389(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 238:
       return reduce(RULE_49, 1);
@@ -26520,7 +26520,7 @@ public class GeneratedLanguageParser
 
   private final boolean action390(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_48, 2);
@@ -26556,7 +26556,7 @@ public class GeneratedLanguageParser
 
   private final boolean action391(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 238:
       return reduce(RULE_49, 0);
@@ -26572,7 +26572,7 @@ public class GeneratedLanguageParser
 
   private final boolean action392(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 238:
       return reduce(RULE_49, 2);
@@ -26588,7 +26588,7 @@ public class GeneratedLanguageParser
 
   private final boolean action393(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -26621,7 +26621,7 @@ public class GeneratedLanguageParser
 
   private final boolean action394(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -26654,7 +26654,7 @@ public class GeneratedLanguageParser
 
   private final boolean action395(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -26677,7 +26677,7 @@ public class GeneratedLanguageParser
 
   private final boolean action396(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -26771,7 +26771,7 @@ public class GeneratedLanguageParser
 
   private final boolean action397(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_60, 5);
@@ -26839,7 +26839,7 @@ public class GeneratedLanguageParser
 
   private final boolean action398(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(39);
@@ -26882,7 +26882,7 @@ public class GeneratedLanguageParser
 
   private final boolean action399(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_103, 0);
@@ -27014,7 +27014,7 @@ public class GeneratedLanguageParser
 
   private final boolean action400(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -27050,7 +27050,7 @@ public class GeneratedLanguageParser
 
   private final boolean action401(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -27086,7 +27086,7 @@ public class GeneratedLanguageParser
 
   private final boolean action402(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_63, 2);
@@ -27218,7 +27218,7 @@ public class GeneratedLanguageParser
 
   private final boolean action403(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -27328,7 +27328,7 @@ public class GeneratedLanguageParser
 
   private final boolean action404(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -27438,7 +27438,7 @@ public class GeneratedLanguageParser
 
   private final boolean action405(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_63, 3);
@@ -27570,7 +27570,7 @@ public class GeneratedLanguageParser
 
   private final boolean action406(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -27680,7 +27680,7 @@ public class GeneratedLanguageParser
 
   private final boolean action407(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_61, 0);
@@ -27812,7 +27812,7 @@ public class GeneratedLanguageParser
 
   private final boolean action408(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -27928,7 +27928,7 @@ public class GeneratedLanguageParser
 
   private final boolean action409(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_63, 0);
@@ -28060,7 +28060,7 @@ public class GeneratedLanguageParser
 
   private final boolean action410(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_61, 1);
@@ -28192,7 +28192,7 @@ public class GeneratedLanguageParser
 
   private final boolean action411(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_104, 3);
@@ -28324,7 +28324,7 @@ public class GeneratedLanguageParser
 
   private final boolean action412(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -28345,7 +28345,7 @@ public class GeneratedLanguageParser
 
   private final boolean action413(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_60, 4);
@@ -28413,7 +28413,7 @@ public class GeneratedLanguageParser
 
   private final boolean action414(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_60, 3);
@@ -28481,7 +28481,7 @@ public class GeneratedLanguageParser
 
   private final boolean action415(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -28591,7 +28591,7 @@ public class GeneratedLanguageParser
 
   private final boolean action416(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_105, 0);
@@ -28611,7 +28611,7 @@ public class GeneratedLanguageParser
 
   private final boolean action417(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -28761,7 +28761,7 @@ public class GeneratedLanguageParser
 
   private final boolean action418(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_106, 0);
@@ -28775,7 +28775,7 @@ public class GeneratedLanguageParser
 
   private final boolean action419(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_107, 6);
@@ -28789,7 +28789,7 @@ public class GeneratedLanguageParser
 
   private final boolean action420(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -28929,7 +28929,7 @@ public class GeneratedLanguageParser
 
   private final boolean action421(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 258:
       stateStack.addFirst(627);
@@ -28949,7 +28949,7 @@ public class GeneratedLanguageParser
 
   private final boolean action422(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(630);
@@ -28965,7 +28965,7 @@ public class GeneratedLanguageParser
 
   private final boolean action423(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -28995,7 +28995,7 @@ public class GeneratedLanguageParser
 
   private final boolean action424(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -29016,7 +29016,7 @@ public class GeneratedLanguageParser
 
   private final boolean action425(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -29061,7 +29061,7 @@ public class GeneratedLanguageParser
 
   private final boolean action426(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(638);
@@ -29164,7 +29164,7 @@ public class GeneratedLanguageParser
 
   private final boolean action427(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 247:
       stateStack.addFirst(566);
@@ -29196,7 +29196,7 @@ public class GeneratedLanguageParser
 
   private final boolean action428(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(640);
@@ -29303,7 +29303,7 @@ public class GeneratedLanguageParser
 
   private final boolean action429(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_108, 0);
@@ -29331,7 +29331,7 @@ public class GeneratedLanguageParser
 
   private final boolean action430(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(642);
@@ -29365,7 +29365,7 @@ public class GeneratedLanguageParser
 
   private final boolean action431(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_108, 1);
@@ -29393,7 +29393,7 @@ public class GeneratedLanguageParser
 
   private final boolean action432(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -29414,7 +29414,7 @@ public class GeneratedLanguageParser
 
   private final boolean action433(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_109, 9);
@@ -29456,7 +29456,7 @@ public class GeneratedLanguageParser
 
   private final boolean action434(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_110, 0);
@@ -29574,7 +29574,7 @@ public class GeneratedLanguageParser
 
   private final boolean action435(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(644);
@@ -29586,7 +29586,7 @@ public class GeneratedLanguageParser
 
   private final boolean action436(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 281:
       return reduce(RULE_111, 0);
@@ -29609,7 +29609,7 @@ public class GeneratedLanguageParser
 
   private final boolean action437(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(646);
@@ -29621,7 +29621,7 @@ public class GeneratedLanguageParser
 
   private final boolean action438(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -29769,7 +29769,7 @@ public class GeneratedLanguageParser
 
   private final boolean action439(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(650);
@@ -29781,7 +29781,7 @@ public class GeneratedLanguageParser
 
   private final boolean action440(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       return reduce(RULE_112, 4);
@@ -29791,7 +29791,7 @@ public class GeneratedLanguageParser
 
   private final boolean action441(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       return reduce(RULE_112, 0);
@@ -29801,7 +29801,7 @@ public class GeneratedLanguageParser
 
   private final boolean action442(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       return reduce(RULE_113, 0);
@@ -29811,7 +29811,7 @@ public class GeneratedLanguageParser
 
   private final boolean action443(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       return reduce(RULE_113, 1);
@@ -29821,7 +29821,7 @@ public class GeneratedLanguageParser
 
   private final boolean action444(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(651);
@@ -29844,7 +29844,7 @@ public class GeneratedLanguageParser
 
   private final boolean action445(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       return reduce(RULE_112, 2);
@@ -29854,7 +29854,7 @@ public class GeneratedLanguageParser
 
   private final boolean action446(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       return reduce(RULE_112, 3);
@@ -29864,7 +29864,7 @@ public class GeneratedLanguageParser
 
   private final boolean action447(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -29887,7 +29887,7 @@ public class GeneratedLanguageParser
 
   private final boolean action448(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(656);
@@ -29899,7 +29899,7 @@ public class GeneratedLanguageParser
 
   private final boolean action449(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -30185,7 +30185,7 @@ public class GeneratedLanguageParser
 
   private final boolean action450(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_114, 1);
@@ -30303,7 +30303,7 @@ public class GeneratedLanguageParser
 
   private final boolean action451(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -30324,7 +30324,7 @@ public class GeneratedLanguageParser
 
   private final boolean action452(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(478);
@@ -30355,7 +30355,7 @@ public class GeneratedLanguageParser
 
   private final boolean action453(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(658);
@@ -30429,7 +30429,7 @@ public class GeneratedLanguageParser
 
   private final boolean action454(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_70, 2);
@@ -30445,7 +30445,7 @@ public class GeneratedLanguageParser
 
   private final boolean action455(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(513);
@@ -30487,7 +30487,7 @@ public class GeneratedLanguageParser
 
   private final boolean action456(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_70, 1);
@@ -30497,7 +30497,7 @@ public class GeneratedLanguageParser
 
   private final boolean action457(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(659);
@@ -30523,7 +30523,7 @@ public class GeneratedLanguageParser
 
   private final boolean action458(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(660);
@@ -30535,7 +30535,7 @@ public class GeneratedLanguageParser
 
   private final boolean action459(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_70, 3);
@@ -30545,7 +30545,7 @@ public class GeneratedLanguageParser
 
   private final boolean action460(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -30566,7 +30566,7 @@ public class GeneratedLanguageParser
 
   private final boolean action461(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_115, 0);
@@ -30578,7 +30578,7 @@ public class GeneratedLanguageParser
 
   private final boolean action462(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(489);
@@ -30675,7 +30675,7 @@ public class GeneratedLanguageParser
 
   private final boolean action463(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(492);
@@ -30706,7 +30706,7 @@ public class GeneratedLanguageParser
 
   private final boolean action464(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_116, 0);
@@ -30824,7 +30824,7 @@ public class GeneratedLanguageParser
 
   private final boolean action465(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(662);
@@ -30836,7 +30836,7 @@ public class GeneratedLanguageParser
 
   private final boolean action466(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_117, 0);
@@ -30967,7 +30967,7 @@ public class GeneratedLanguageParser
 
   private final boolean action467(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(664);
@@ -31054,7 +31054,7 @@ public class GeneratedLanguageParser
 
   private final boolean action468(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(665);
@@ -31146,7 +31146,7 @@ public class GeneratedLanguageParser
 
   private final boolean action469(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 282:
       stateStack.addFirst(667);
@@ -31158,7 +31158,7 @@ public class GeneratedLanguageParser
 
   private final boolean action470(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_118, 0);
@@ -31276,7 +31276,7 @@ public class GeneratedLanguageParser
 
   private final boolean action471(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(668);
@@ -31288,7 +31288,7 @@ public class GeneratedLanguageParser
 
   private final boolean action472(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 235:
       stateStack.addFirst(669);
@@ -31300,7 +31300,7 @@ public class GeneratedLanguageParser
 
   private final boolean action473(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_119, 0);
@@ -31312,7 +31312,7 @@ public class GeneratedLanguageParser
 
   private final boolean action474(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(492);
@@ -31343,7 +31343,7 @@ public class GeneratedLanguageParser
 
   private final boolean action475(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_120, 0);
@@ -31461,7 +31461,7 @@ public class GeneratedLanguageParser
 
   private final boolean action476(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(670);
@@ -31473,7 +31473,7 @@ public class GeneratedLanguageParser
 
   private final boolean action477(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_121, 1);
@@ -31561,7 +31561,7 @@ public class GeneratedLanguageParser
 
   private final boolean action478(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -31690,7 +31690,7 @@ public class GeneratedLanguageParser
 
   private final boolean action479(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_122, 2);
@@ -31812,7 +31812,7 @@ public class GeneratedLanguageParser
 
   private final boolean action480(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_79, 1);
@@ -31870,7 +31870,7 @@ public class GeneratedLanguageParser
 
   private final boolean action481(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(486);
@@ -31896,7 +31896,7 @@ public class GeneratedLanguageParser
 
   private final boolean action482(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 19);
@@ -32014,7 +32014,7 @@ public class GeneratedLanguageParser
 
   private final boolean action483(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 17);
@@ -32132,7 +32132,7 @@ public class GeneratedLanguageParser
 
   private final boolean action484(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(673);
@@ -32144,7 +32144,7 @@ public class GeneratedLanguageParser
 
   private final boolean action485(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_121, 0);
@@ -32232,7 +32232,7 @@ public class GeneratedLanguageParser
 
   private final boolean action486(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_82, 0);
@@ -32246,7 +32246,7 @@ public class GeneratedLanguageParser
 
   private final boolean action487(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(523);
@@ -32264,7 +32264,7 @@ public class GeneratedLanguageParser
 
   private final boolean action488(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 18);
@@ -32382,7 +32382,7 @@ public class GeneratedLanguageParser
 
   private final boolean action489(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -32507,7 +32507,7 @@ public class GeneratedLanguageParser
 
   private final boolean action490(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_122, 0);
@@ -32629,7 +32629,7 @@ public class GeneratedLanguageParser
 
   private final boolean action491(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 232:
       stateStack.addFirst(94);
@@ -32787,7 +32787,7 @@ public class GeneratedLanguageParser
 
   private final boolean action492(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 223:
       stateStack.addFirst(678);
@@ -32807,7 +32807,7 @@ public class GeneratedLanguageParser
 
   private final boolean action493(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_115, 3);
@@ -32819,7 +32819,7 @@ public class GeneratedLanguageParser
 
   private final boolean action494(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -32948,7 +32948,7 @@ public class GeneratedLanguageParser
 
   private final boolean action495(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_119, 3);
@@ -32960,7 +32960,7 @@ public class GeneratedLanguageParser
 
   private final boolean action496(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_122, 1);
@@ -33082,7 +33082,7 @@ public class GeneratedLanguageParser
 
   private final boolean action497(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 13);
@@ -33126,7 +33126,7 @@ public class GeneratedLanguageParser
 
   private final boolean action498(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 7);
@@ -33170,7 +33170,7 @@ public class GeneratedLanguageParser
 
   private final boolean action499(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 9);
@@ -33214,7 +33214,7 @@ public class GeneratedLanguageParser
 
   private final boolean action500(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 6);
@@ -33258,7 +33258,7 @@ public class GeneratedLanguageParser
 
   private final boolean action501(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 12);
@@ -33302,7 +33302,7 @@ public class GeneratedLanguageParser
 
   private final boolean action502(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 1);
@@ -33346,7 +33346,7 @@ public class GeneratedLanguageParser
 
   private final boolean action503(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 2);
@@ -33390,7 +33390,7 @@ public class GeneratedLanguageParser
 
   private final boolean action504(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 14);
@@ -33434,7 +33434,7 @@ public class GeneratedLanguageParser
 
   private final boolean action505(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 11);
@@ -33478,7 +33478,7 @@ public class GeneratedLanguageParser
 
   private final boolean action506(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 8);
@@ -33522,7 +33522,7 @@ public class GeneratedLanguageParser
 
   private final boolean action507(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 5);
@@ -33566,7 +33566,7 @@ public class GeneratedLanguageParser
 
   private final boolean action508(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 3);
@@ -33610,7 +33610,7 @@ public class GeneratedLanguageParser
 
   private final boolean action509(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 10);
@@ -33654,7 +33654,7 @@ public class GeneratedLanguageParser
 
   private final boolean action510(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 4);
@@ -33698,7 +33698,7 @@ public class GeneratedLanguageParser
 
   private final boolean action511(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_124, 0);
@@ -33742,7 +33742,7 @@ public class GeneratedLanguageParser
 
   private final boolean action512(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -33867,7 +33867,7 @@ public class GeneratedLanguageParser
 
   private final boolean action513(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 211:
       stateStack.addFirst(276);
@@ -33958,7 +33958,7 @@ public class GeneratedLanguageParser
 
   private final boolean action514(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_115, 2);
@@ -33970,7 +33970,7 @@ public class GeneratedLanguageParser
 
   private final boolean action515(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_119, 2);
@@ -33982,7 +33982,7 @@ public class GeneratedLanguageParser
 
   private final boolean action516(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 2);
@@ -34100,7 +34100,7 @@ public class GeneratedLanguageParser
 
   private final boolean action517(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 195:
       return reduce(RULE_67, 1);
@@ -34304,7 +34304,7 @@ public class GeneratedLanguageParser
 
   private final boolean action518(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_75, 1);
@@ -34422,7 +34422,7 @@ public class GeneratedLanguageParser
 
   private final boolean action519(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(658);
@@ -34504,7 +34504,7 @@ public class GeneratedLanguageParser
 
   private final boolean action520(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_74, 3);
@@ -34622,7 +34622,7 @@ public class GeneratedLanguageParser
 
   private final boolean action521(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(260);
@@ -34643,7 +34643,7 @@ public class GeneratedLanguageParser
 
   private final boolean action522(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -34668,7 +34668,7 @@ public class GeneratedLanguageParser
 
   private final boolean action523(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(486);
@@ -34693,7 +34693,7 @@ public class GeneratedLanguageParser
 
   private final boolean action524(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_125, 0);
@@ -34773,7 +34773,7 @@ public class GeneratedLanguageParser
 
   private final boolean action525(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -34898,7 +34898,7 @@ public class GeneratedLanguageParser
 
   private final boolean action526(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -34993,7 +34993,7 @@ public class GeneratedLanguageParser
 
   private final boolean action527(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_96, 8);
@@ -35075,7 +35075,7 @@ public class GeneratedLanguageParser
 
   private final boolean action528(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(492);
@@ -35176,7 +35176,7 @@ public class GeneratedLanguageParser
 
   private final boolean action529(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -35271,7 +35271,7 @@ public class GeneratedLanguageParser
 
   private final boolean action530(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -35366,7 +35366,7 @@ public class GeneratedLanguageParser
 
   private final boolean action531(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_96, 6);
@@ -35448,7 +35448,7 @@ public class GeneratedLanguageParser
 
   private final boolean action532(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -35543,7 +35543,7 @@ public class GeneratedLanguageParser
 
   private final boolean action533(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_96, 2);
@@ -35625,7 +35625,7 @@ public class GeneratedLanguageParser
 
   private final boolean action534(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 259:
       stateStack.addFirst(691);
@@ -35637,7 +35637,7 @@ public class GeneratedLanguageParser
 
   private final boolean action535(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -35732,7 +35732,7 @@ public class GeneratedLanguageParser
 
   private final boolean action536(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_96, 4);
@@ -35814,7 +35814,7 @@ public class GeneratedLanguageParser
 
   private final boolean action537(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -35933,7 +35933,7 @@ public class GeneratedLanguageParser
 
   private final boolean action538(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -36043,7 +36043,7 @@ public class GeneratedLanguageParser
 
   private final boolean action539(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -36153,7 +36153,7 @@ public class GeneratedLanguageParser
 
   private final boolean action540(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -36263,7 +36263,7 @@ public class GeneratedLanguageParser
 
   private final boolean action541(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -36376,7 +36376,7 @@ public class GeneratedLanguageParser
 
   private final boolean action542(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -36488,7 +36488,7 @@ public class GeneratedLanguageParser
 
   private final boolean action543(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -36596,7 +36596,7 @@ public class GeneratedLanguageParser
 
   private final boolean action544(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -36704,7 +36704,7 @@ public class GeneratedLanguageParser
 
   private final boolean action545(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 171:
       stateStack.addFirst(710);
@@ -36716,7 +36716,7 @@ public class GeneratedLanguageParser
 
   private final boolean action546(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -36827,7 +36827,7 @@ public class GeneratedLanguageParser
 
   private final boolean action547(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -36936,7 +36936,7 @@ public class GeneratedLanguageParser
 
   private final boolean action548(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -37050,7 +37050,7 @@ public class GeneratedLanguageParser
 
   private final boolean action549(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -37164,7 +37164,7 @@ public class GeneratedLanguageParser
 
   private final boolean action550(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -37257,7 +37257,7 @@ public class GeneratedLanguageParser
 
   private final boolean action551(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -37366,7 +37366,7 @@ public class GeneratedLanguageParser
 
   private final boolean action552(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -37476,7 +37476,7 @@ public class GeneratedLanguageParser
 
   private final boolean action553(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -37584,7 +37584,7 @@ public class GeneratedLanguageParser
 
   private final boolean action554(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -37693,7 +37693,7 @@ public class GeneratedLanguageParser
 
   private final boolean action555(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -37802,7 +37802,7 @@ public class GeneratedLanguageParser
 
   private final boolean action556(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -37912,7 +37912,7 @@ public class GeneratedLanguageParser
 
   private final boolean action557(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -38026,7 +38026,7 @@ public class GeneratedLanguageParser
 
   private final boolean action558(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -38140,7 +38140,7 @@ public class GeneratedLanguageParser
 
   private final boolean action559(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -38250,7 +38250,7 @@ public class GeneratedLanguageParser
 
   private final boolean action560(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -38363,7 +38363,7 @@ public class GeneratedLanguageParser
 
   private final boolean action561(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -38477,7 +38477,7 @@ public class GeneratedLanguageParser
 
   private final boolean action562(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -38591,7 +38591,7 @@ public class GeneratedLanguageParser
 
   private final boolean action563(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -38705,7 +38705,7 @@ public class GeneratedLanguageParser
 
   private final boolean action564(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -38819,7 +38819,7 @@ public class GeneratedLanguageParser
 
   private final boolean action565(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -38912,7 +38912,7 @@ public class GeneratedLanguageParser
 
   private final boolean action566(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -39031,7 +39031,7 @@ public class GeneratedLanguageParser
 
   private final boolean action567(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -39156,7 +39156,7 @@ public class GeneratedLanguageParser
 
   private final boolean action568(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -39273,7 +39273,7 @@ public class GeneratedLanguageParser
 
   private final boolean action569(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -39390,7 +39390,7 @@ public class GeneratedLanguageParser
 
   private final boolean action570(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -39508,7 +39508,7 @@ public class GeneratedLanguageParser
 
   private final boolean action571(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -39628,7 +39628,7 @@ public class GeneratedLanguageParser
 
   private final boolean action572(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -39738,7 +39738,7 @@ public class GeneratedLanguageParser
 
   private final boolean action573(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -39852,7 +39852,7 @@ public class GeneratedLanguageParser
 
   private final boolean action574(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -39966,7 +39966,7 @@ public class GeneratedLanguageParser
 
   private final boolean action575(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -40076,7 +40076,7 @@ public class GeneratedLanguageParser
 
   private final boolean action576(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -40194,7 +40194,7 @@ public class GeneratedLanguageParser
 
   private final boolean action577(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -40311,7 +40311,7 @@ public class GeneratedLanguageParser
 
   private final boolean action578(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -40428,7 +40428,7 @@ public class GeneratedLanguageParser
 
   private final boolean action579(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -40540,7 +40540,7 @@ public class GeneratedLanguageParser
 
   private final boolean action580(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -40651,7 +40651,7 @@ public class GeneratedLanguageParser
 
   private final boolean action581(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 171:
       stateStack.addFirst(781);
@@ -40663,7 +40663,7 @@ public class GeneratedLanguageParser
 
   private final boolean action582(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -40791,7 +40791,7 @@ public class GeneratedLanguageParser
 
   private final boolean action583(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_84, 1);
@@ -40881,7 +40881,7 @@ public class GeneratedLanguageParser
 
   private final boolean action584(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -40989,7 +40989,7 @@ public class GeneratedLanguageParser
 
   private final boolean action585(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -41097,7 +41097,7 @@ public class GeneratedLanguageParser
 
   private final boolean action586(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -41205,7 +41205,7 @@ public class GeneratedLanguageParser
 
   private final boolean action587(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -41330,7 +41330,7 @@ public class GeneratedLanguageParser
 
   private final boolean action588(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -41450,7 +41450,7 @@ public class GeneratedLanguageParser
 
   private final boolean action589(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_46, 2);
@@ -41464,7 +41464,7 @@ public class GeneratedLanguageParser
 
   private final boolean action590(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -41660,7 +41660,7 @@ public class GeneratedLanguageParser
 
   private final boolean action592(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(212);
@@ -41674,7 +41674,7 @@ public class GeneratedLanguageParser
 
   private final boolean action593(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_50, 4);
@@ -41754,7 +41754,7 @@ public class GeneratedLanguageParser
 
   private final boolean action594(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(212);
@@ -41768,7 +41768,7 @@ public class GeneratedLanguageParser
 
   private final boolean action595(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_50, 3);
@@ -41848,7 +41848,7 @@ public class GeneratedLanguageParser
 
   private final boolean action596(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 281:
       stateStack.addFirst(793);
@@ -41860,7 +41860,7 @@ public class GeneratedLanguageParser
 
   private final boolean action597(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -41883,7 +41883,7 @@ public class GeneratedLanguageParser
 
   private final boolean action598(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -41999,7 +41999,7 @@ public class GeneratedLanguageParser
 
   private final boolean action599(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_126, 0);
@@ -42131,7 +42131,7 @@ public class GeneratedLanguageParser
 
   private final boolean action600(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_103, 2);
@@ -42263,7 +42263,7 @@ public class GeneratedLanguageParser
 
   private final boolean action601(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(796);
@@ -42281,7 +42281,7 @@ public class GeneratedLanguageParser
 
   private final boolean action602(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(407);
@@ -42322,7 +42322,7 @@ public class GeneratedLanguageParser
 
   private final boolean action603(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_103, 1);
@@ -42454,7 +42454,7 @@ public class GeneratedLanguageParser
 
   private final boolean action604(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(796);
@@ -42472,7 +42472,7 @@ public class GeneratedLanguageParser
 
   private final boolean action605(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_62, 1);
@@ -42604,7 +42604,7 @@ public class GeneratedLanguageParser
 
   private final boolean action606(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_62, 3);
@@ -42736,7 +42736,7 @@ public class GeneratedLanguageParser
 
   private final boolean action607(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_62, 2);
@@ -42868,7 +42868,7 @@ public class GeneratedLanguageParser
 
   private final boolean action608(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(399);
@@ -42898,7 +42898,7 @@ public class GeneratedLanguageParser
 
   private final boolean action609(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(402);
@@ -42924,7 +42924,7 @@ public class GeneratedLanguageParser
 
   private final boolean action610(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(803);
@@ -42936,7 +42936,7 @@ public class GeneratedLanguageParser
 
   private final boolean action611(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(804);
@@ -42968,7 +42968,7 @@ public class GeneratedLanguageParser
 
   private final boolean action612(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(806);
@@ -43017,7 +43017,7 @@ public class GeneratedLanguageParser
 
   private final boolean action613(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_127, 0);
@@ -43149,7 +43149,7 @@ public class GeneratedLanguageParser
 
   private final boolean action614(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_127, 1);
@@ -43281,7 +43281,7 @@ public class GeneratedLanguageParser
 
   private final boolean action615(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(409);
@@ -43301,7 +43301,7 @@ public class GeneratedLanguageParser
 
   private final boolean action616(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_128, 0);
@@ -43433,7 +43433,7 @@ public class GeneratedLanguageParser
 
   private final boolean action617(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(410);
@@ -43465,7 +43465,7 @@ public class GeneratedLanguageParser
 
   private final boolean action618(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_129, 1);
@@ -43597,7 +43597,7 @@ public class GeneratedLanguageParser
 
   private final boolean action619(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_130, 2);
@@ -43729,7 +43729,7 @@ public class GeneratedLanguageParser
 
   private final boolean action620(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_104, 0);
@@ -43861,7 +43861,7 @@ public class GeneratedLanguageParser
 
   private final boolean action621(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(411);
@@ -43897,7 +43897,7 @@ public class GeneratedLanguageParser
 
   private final boolean action622(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(39);
@@ -43940,7 +43940,7 @@ public class GeneratedLanguageParser
 
   private final boolean action623(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_52, 2);
@@ -44072,7 +44072,7 @@ public class GeneratedLanguageParser
 
   private final boolean action624(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(224);
@@ -44100,7 +44100,7 @@ public class GeneratedLanguageParser
 
   private final boolean action625(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(225);
@@ -44145,7 +44145,7 @@ public class GeneratedLanguageParser
 
   private final boolean action626(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 258:
       stateStack.addFirst(812);
@@ -44165,7 +44165,7 @@ public class GeneratedLanguageParser
 
   private final boolean action627(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(815);
@@ -44177,7 +44177,7 @@ public class GeneratedLanguageParser
 
   private final boolean action628(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_107, 3);
@@ -44191,7 +44191,7 @@ public class GeneratedLanguageParser
 
   private final boolean action629(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(816);
@@ -44203,7 +44203,7 @@ public class GeneratedLanguageParser
 
   private final boolean action630(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -44346,7 +44346,7 @@ public class GeneratedLanguageParser
 
   private final boolean action631(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_105, 1);
@@ -44366,7 +44366,7 @@ public class GeneratedLanguageParser
 
   private final boolean action632(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(818);
@@ -44384,7 +44384,7 @@ public class GeneratedLanguageParser
 
   private final boolean action633(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_131, 0);
@@ -44400,7 +44400,7 @@ public class GeneratedLanguageParser
 
   private final boolean action634(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_132, 0);
@@ -44480,7 +44480,7 @@ public class GeneratedLanguageParser
 
   private final boolean action635(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_133, 0);
@@ -44560,7 +44560,7 @@ public class GeneratedLanguageParser
 
   private final boolean action636(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -44685,7 +44685,7 @@ public class GeneratedLanguageParser
 
   private final boolean action637(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       stateStack.addFirst(820);
@@ -44701,7 +44701,7 @@ public class GeneratedLanguageParser
 
   private final boolean action638(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -44825,7 +44825,7 @@ public class GeneratedLanguageParser
 
   private final boolean action639(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -44939,7 +44939,7 @@ public class GeneratedLanguageParser
 
   private final boolean action640(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -45063,7 +45063,7 @@ public class GeneratedLanguageParser
 
   private final boolean action641(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -45177,7 +45177,7 @@ public class GeneratedLanguageParser
 
   private final boolean action642(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -45301,7 +45301,7 @@ public class GeneratedLanguageParser
 
   private final boolean action643(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_134, 0);
@@ -45419,7 +45419,7 @@ public class GeneratedLanguageParser
 
   private final boolean action644(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_110, 1);
@@ -45537,7 +45537,7 @@ public class GeneratedLanguageParser
 
   private final boolean action645(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 187:
       stateStack.addFirst(830);
@@ -45566,7 +45566,7 @@ public class GeneratedLanguageParser
 
   private final boolean action646(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 281:
       return reduce(RULE_111, 0);
@@ -45589,7 +45589,7 @@ public class GeneratedLanguageParser
 
   private final boolean action647(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -45612,7 +45612,7 @@ public class GeneratedLanguageParser
 
   private final boolean action648(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 238:
       stateStack.addFirst(836);
@@ -45634,7 +45634,7 @@ public class GeneratedLanguageParser
 
   private final boolean action649(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(630);
@@ -45654,7 +45654,7 @@ public class GeneratedLanguageParser
 
   private final boolean action650(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -45802,7 +45802,7 @@ public class GeneratedLanguageParser
 
   private final boolean action651(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -45931,7 +45931,7 @@ public class GeneratedLanguageParser
 
   private final boolean action652(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(843);
@@ -45956,7 +45956,7 @@ public class GeneratedLanguageParser
 
   private final boolean action653(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(651);
@@ -46056,7 +46056,7 @@ public class GeneratedLanguageParser
 
   private final boolean action654(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_136, 0);
@@ -46144,7 +46144,7 @@ public class GeneratedLanguageParser
 
   private final boolean action655(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 184:
       stateStack.addFirst(848);
@@ -46236,7 +46236,7 @@ public class GeneratedLanguageParser
 
   private final boolean action656(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_138, 0);
@@ -46354,7 +46354,7 @@ public class GeneratedLanguageParser
 
   private final boolean action657(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_114, 0);
@@ -46472,7 +46472,7 @@ public class GeneratedLanguageParser
 
   private final boolean action658(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 211:
       stateStack.addFirst(276);
@@ -46563,7 +46563,7 @@ public class GeneratedLanguageParser
 
   private final boolean action659(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 242:
       stateStack.addFirst(849);
@@ -46581,7 +46581,7 @@ public class GeneratedLanguageParser
 
   private final boolean action660(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -46710,7 +46710,7 @@ public class GeneratedLanguageParser
 
   private final boolean action661(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_139, 0);
@@ -46839,7 +46839,7 @@ public class GeneratedLanguageParser
 
   private final boolean action662(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_116, 1);
@@ -46957,7 +46957,7 @@ public class GeneratedLanguageParser
 
   private final boolean action663(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 196:
       stateStack.addFirst(853);
@@ -47093,7 +47093,7 @@ public class GeneratedLanguageParser
 
   private final boolean action664(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -47283,7 +47283,7 @@ public class GeneratedLanguageParser
 
   private final boolean action665(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -47473,7 +47473,7 @@ public class GeneratedLanguageParser
 
   private final boolean action666(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -47665,7 +47665,7 @@ public class GeneratedLanguageParser
 
   private final boolean action667(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_78, 1);
@@ -47753,7 +47753,7 @@ public class GeneratedLanguageParser
 
   private final boolean action668(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_118, 1);
@@ -47871,7 +47871,7 @@ public class GeneratedLanguageParser
 
   private final boolean action669(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -47996,7 +47996,7 @@ public class GeneratedLanguageParser
 
   private final boolean action670(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_120, 1);
@@ -48114,7 +48114,7 @@ public class GeneratedLanguageParser
 
   private final boolean action671(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 283:
       stateStack.addFirst(860);
@@ -48126,7 +48126,7 @@ public class GeneratedLanguageParser
 
   private final boolean action672(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(523);
@@ -48144,7 +48144,7 @@ public class GeneratedLanguageParser
 
   private final boolean action673(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_141, 0);
@@ -48266,7 +48266,7 @@ public class GeneratedLanguageParser
 
   private final boolean action674(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -48391,7 +48391,7 @@ public class GeneratedLanguageParser
 
   private final boolean action675(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(224);
@@ -48424,7 +48424,7 @@ public class GeneratedLanguageParser
 
   private final boolean action676(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(491);
@@ -48496,7 +48496,7 @@ public class GeneratedLanguageParser
 
   private final boolean action677(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 257:
       return reduce(RULE_80, 3);
@@ -48534,7 +48534,7 @@ public class GeneratedLanguageParser
 
   private final boolean action678(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_69, 1);
@@ -48622,7 +48622,7 @@ public class GeneratedLanguageParser
 
   private final boolean action679(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_73, 1);
@@ -48710,7 +48710,7 @@ public class GeneratedLanguageParser
 
   private final boolean action680(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_142, 0);
@@ -48722,7 +48722,7 @@ public class GeneratedLanguageParser
 
   private final boolean action681(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(658);
@@ -48783,7 +48783,7 @@ public class GeneratedLanguageParser
 
   private final boolean action682(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 257:
       return reduce(RULE_80, 2);
@@ -48821,7 +48821,7 @@ public class GeneratedLanguageParser
 
   private final boolean action683(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -48846,7 +48846,7 @@ public class GeneratedLanguageParser
 
   private final boolean action684(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(864);
@@ -48871,7 +48871,7 @@ public class GeneratedLanguageParser
 
   private final boolean action685(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_83, 1);
@@ -48885,7 +48885,7 @@ public class GeneratedLanguageParser
 
   private final boolean action686(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(866);
@@ -48897,7 +48897,7 @@ public class GeneratedLanguageParser
 
   private final boolean action687(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 279:
       stateStack.addFirst(188);
@@ -48917,7 +48917,7 @@ public class GeneratedLanguageParser
 
   private final boolean action688(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -49024,7 +49024,7 @@ public class GeneratedLanguageParser
 
   private final boolean action689(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       stateStack.addFirst(39);
@@ -49061,7 +49061,7 @@ public class GeneratedLanguageParser
 
   private final boolean action690(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 264:
       stateStack.addFirst(197);
@@ -49077,7 +49077,7 @@ public class GeneratedLanguageParser
 
   private final boolean action691(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -49200,7 +49200,7 @@ public class GeneratedLanguageParser
 
   private final boolean action692(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 249:
       stateStack.addFirst(568);
@@ -49254,7 +49254,7 @@ public class GeneratedLanguageParser
 
   private final boolean action693(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 245:
       stateStack.addFirst(576);
@@ -49300,7 +49300,7 @@ public class GeneratedLanguageParser
 
   private final boolean action694(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -49407,7 +49407,7 @@ public class GeneratedLanguageParser
 
   private final boolean action695(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 276:
       stateStack.addFirst(554);
@@ -49485,7 +49485,7 @@ public class GeneratedLanguageParser
 
   private final boolean action696(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -49592,7 +49592,7 @@ public class GeneratedLanguageParser
 
   private final boolean action697(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 276:
       stateStack.addFirst(554);
@@ -49670,7 +49670,7 @@ public class GeneratedLanguageParser
 
   private final boolean action698(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -49777,7 +49777,7 @@ public class GeneratedLanguageParser
 
   private final boolean action699(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 276:
       stateStack.addFirst(554);
@@ -49855,7 +49855,7 @@ public class GeneratedLanguageParser
 
   private final boolean action700(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -49964,7 +49964,7 @@ public class GeneratedLanguageParser
 
   private final boolean action701(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(556);
@@ -50065,7 +50065,7 @@ public class GeneratedLanguageParser
 
   private final boolean action702(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(572);
@@ -50170,7 +50170,7 @@ public class GeneratedLanguageParser
 
   private final boolean action703(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 240:
       stateStack.addFirst(579);
@@ -50234,7 +50234,7 @@ public class GeneratedLanguageParser
 
   private final boolean action704(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(580);
@@ -50300,7 +50300,7 @@ public class GeneratedLanguageParser
 
   private final boolean action705(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -50407,7 +50407,7 @@ public class GeneratedLanguageParser
 
   private final boolean action706(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -50504,7 +50504,7 @@ public class GeneratedLanguageParser
 
   private final boolean action707(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 260:
       stateStack.addFirst(581);
@@ -50588,7 +50588,7 @@ public class GeneratedLanguageParser
 
   private final boolean action708(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -50685,7 +50685,7 @@ public class GeneratedLanguageParser
 
   private final boolean action709(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 260:
       stateStack.addFirst(581);
@@ -50769,7 +50769,7 @@ public class GeneratedLanguageParser
 
   private final boolean action710(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_89, 2);
@@ -50851,7 +50851,7 @@ public class GeneratedLanguageParser
 
   private final boolean action711(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(538);
@@ -50927,7 +50927,7 @@ public class GeneratedLanguageParser
 
   private final boolean action712(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -51032,7 +51032,7 @@ public class GeneratedLanguageParser
 
   private final boolean action713(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -51135,7 +51135,7 @@ public class GeneratedLanguageParser
 
   private final boolean action714(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 262:
       stateStack.addFirst(584);
@@ -51221,7 +51221,7 @@ public class GeneratedLanguageParser
 
   private final boolean action715(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -51322,7 +51322,7 @@ public class GeneratedLanguageParser
 
   private final boolean action716(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -51374,7 +51374,7 @@ public class GeneratedLanguageParser
 
   private final boolean action717(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -51475,7 +51475,7 @@ public class GeneratedLanguageParser
 
   private final boolean action718(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -51527,7 +51527,7 @@ public class GeneratedLanguageParser
 
   private final boolean action719(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_90, 20);
@@ -51575,7 +51575,7 @@ public class GeneratedLanguageParser
 
   private final boolean action720(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -51678,7 +51678,7 @@ public class GeneratedLanguageParser
 
   private final boolean action721(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 262:
       stateStack.addFirst(584);
@@ -51764,7 +51764,7 @@ public class GeneratedLanguageParser
 
   private final boolean action722(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 276:
       stateStack.addFirst(554);
@@ -51842,7 +51842,7 @@ public class GeneratedLanguageParser
 
   private final boolean action723(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -51949,7 +51949,7 @@ public class GeneratedLanguageParser
 
   private final boolean action724(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -52046,7 +52046,7 @@ public class GeneratedLanguageParser
 
   private final boolean action725(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 260:
       stateStack.addFirst(581);
@@ -52130,7 +52130,7 @@ public class GeneratedLanguageParser
 
   private final boolean action726(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -52233,7 +52233,7 @@ public class GeneratedLanguageParser
 
   private final boolean action727(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 262:
       stateStack.addFirst(584);
@@ -52319,7 +52319,7 @@ public class GeneratedLanguageParser
 
   private final boolean action728(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -52422,7 +52422,7 @@ public class GeneratedLanguageParser
 
   private final boolean action729(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 262:
       stateStack.addFirst(584);
@@ -52508,7 +52508,7 @@ public class GeneratedLanguageParser
 
   private final boolean action730(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -52615,7 +52615,7 @@ public class GeneratedLanguageParser
 
   private final boolean action731(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 276:
       stateStack.addFirst(554);
@@ -52693,7 +52693,7 @@ public class GeneratedLanguageParser
 
   private final boolean action732(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -52754,7 +52754,7 @@ public class GeneratedLanguageParser
 
   private final boolean action733(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(556);
@@ -52845,7 +52845,7 @@ public class GeneratedLanguageParser
 
   private final boolean action734(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -52897,7 +52897,7 @@ public class GeneratedLanguageParser
 
   private final boolean action735(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(572);
@@ -52992,7 +52992,7 @@ public class GeneratedLanguageParser
 
   private final boolean action736(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -53093,7 +53093,7 @@ public class GeneratedLanguageParser
 
   private final boolean action737(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -53145,7 +53145,7 @@ public class GeneratedLanguageParser
 
   private final boolean action738(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -53252,7 +53252,7 @@ public class GeneratedLanguageParser
 
   private final boolean action739(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 276:
       stateStack.addFirst(554);
@@ -53330,7 +53330,7 @@ public class GeneratedLanguageParser
 
   private final boolean action740(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -53439,7 +53439,7 @@ public class GeneratedLanguageParser
 
   private final boolean action741(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 240:
       stateStack.addFirst(579);
@@ -53503,7 +53503,7 @@ public class GeneratedLanguageParser
 
   private final boolean action742(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -53604,7 +53604,7 @@ public class GeneratedLanguageParser
 
   private final boolean action743(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -53656,7 +53656,7 @@ public class GeneratedLanguageParser
 
   private final boolean action744(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -53757,7 +53757,7 @@ public class GeneratedLanguageParser
 
   private final boolean action745(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -53809,7 +53809,7 @@ public class GeneratedLanguageParser
 
   private final boolean action746(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -53910,7 +53910,7 @@ public class GeneratedLanguageParser
 
   private final boolean action747(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -53962,7 +53962,7 @@ public class GeneratedLanguageParser
 
   private final boolean action748(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -54063,7 +54063,7 @@ public class GeneratedLanguageParser
 
   private final boolean action749(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -54115,7 +54115,7 @@ public class GeneratedLanguageParser
 
   private final boolean action750(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_90, 19);
@@ -54163,7 +54163,7 @@ public class GeneratedLanguageParser
 
   private final boolean action751(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 249:
       stateStack.addFirst(568);
@@ -54217,7 +54217,7 @@ public class GeneratedLanguageParser
 
   private final boolean action752(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 245:
       stateStack.addFirst(576);
@@ -54263,7 +54263,7 @@ public class GeneratedLanguageParser
 
   private final boolean action753(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 242:
       stateStack.addFirst(870);
@@ -54275,7 +54275,7 @@ public class GeneratedLanguageParser
 
   private final boolean action754(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_100, 4);
@@ -54323,7 +54323,7 @@ public class GeneratedLanguageParser
 
   private final boolean action755(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_100, 3);
@@ -54371,7 +54371,7 @@ public class GeneratedLanguageParser
 
   private final boolean action756(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_100, 8);
@@ -54419,7 +54419,7 @@ public class GeneratedLanguageParser
 
   private final boolean action757(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_100, 7);
@@ -54467,7 +54467,7 @@ public class GeneratedLanguageParser
 
   private final boolean action758(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 249:
       stateStack.addFirst(568);
@@ -54519,7 +54519,7 @@ public class GeneratedLanguageParser
 
   private final boolean action759(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 249:
       stateStack.addFirst(577);
@@ -54571,7 +54571,7 @@ public class GeneratedLanguageParser
 
   private final boolean action760(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 247:
       stateStack.addFirst(537);
@@ -54615,7 +54615,7 @@ public class GeneratedLanguageParser
 
   private final boolean action761(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 247:
       stateStack.addFirst(566);
@@ -54671,7 +54671,7 @@ public class GeneratedLanguageParser
 
   private final boolean action762(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -54778,7 +54778,7 @@ public class GeneratedLanguageParser
 
   private final boolean action763(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 276:
       stateStack.addFirst(554);
@@ -54856,7 +54856,7 @@ public class GeneratedLanguageParser
 
   private final boolean action764(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(556);
@@ -54947,7 +54947,7 @@ public class GeneratedLanguageParser
 
   private final boolean action765(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -54999,7 +54999,7 @@ public class GeneratedLanguageParser
 
   private final boolean action766(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(572);
@@ -55094,7 +55094,7 @@ public class GeneratedLanguageParser
 
   private final boolean action767(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -55195,7 +55195,7 @@ public class GeneratedLanguageParser
 
   private final boolean action768(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 274:
       stateStack.addFirst(560);
@@ -55247,7 +55247,7 @@ public class GeneratedLanguageParser
 
   private final boolean action769(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -55354,7 +55354,7 @@ public class GeneratedLanguageParser
 
   private final boolean action770(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 276:
       stateStack.addFirst(554);
@@ -55432,7 +55432,7 @@ public class GeneratedLanguageParser
 
   private final boolean action771(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 249:
       stateStack.addFirst(568);
@@ -55484,7 +55484,7 @@ public class GeneratedLanguageParser
 
   private final boolean action772(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 249:
       stateStack.addFirst(577);
@@ -55536,7 +55536,7 @@ public class GeneratedLanguageParser
 
   private final boolean action773(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_100, 2);
@@ -55584,7 +55584,7 @@ public class GeneratedLanguageParser
 
   private final boolean action774(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_100, 1);
@@ -55632,7 +55632,7 @@ public class GeneratedLanguageParser
 
   private final boolean action775(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_100, 6);
@@ -55680,7 +55680,7 @@ public class GeneratedLanguageParser
 
   private final boolean action776(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_100, 5);
@@ -55728,7 +55728,7 @@ public class GeneratedLanguageParser
 
   private final boolean action777(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(580);
@@ -55794,7 +55794,7 @@ public class GeneratedLanguageParser
 
   private final boolean action778(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(546);
@@ -55901,7 +55901,7 @@ public class GeneratedLanguageParser
 
   private final boolean action779(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(538);
@@ -55977,7 +55977,7 @@ public class GeneratedLanguageParser
 
   private final boolean action780(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -56082,7 +56082,7 @@ public class GeneratedLanguageParser
 
   private final boolean action781(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_89, 1);
@@ -56164,7 +56164,7 @@ public class GeneratedLanguageParser
 
   private final boolean action782(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_99, 1);
@@ -56176,7 +56176,7 @@ public class GeneratedLanguageParser
 
   private final boolean action783(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -56273,7 +56273,7 @@ public class GeneratedLanguageParser
 
   private final boolean action784(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 260:
       stateStack.addFirst(581);
@@ -56357,7 +56357,7 @@ public class GeneratedLanguageParser
 
   private final boolean action785(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -56454,7 +56454,7 @@ public class GeneratedLanguageParser
 
   private final boolean action786(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 260:
       stateStack.addFirst(581);
@@ -56538,7 +56538,7 @@ public class GeneratedLanguageParser
 
   private final boolean action787(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -56635,7 +56635,7 @@ public class GeneratedLanguageParser
 
   private final boolean action788(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 260:
       stateStack.addFirst(581);
@@ -56719,7 +56719,7 @@ public class GeneratedLanguageParser
 
   private final boolean action789(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 242:
       stateStack.addFirst(871);
@@ -56731,7 +56731,7 @@ public class GeneratedLanguageParser
 
   private final boolean action790(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 247:
       stateStack.addFirst(537);
@@ -56775,7 +56775,7 @@ public class GeneratedLanguageParser
 
   private final boolean action791(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 247:
       stateStack.addFirst(566);
@@ -56831,7 +56831,7 @@ public class GeneratedLanguageParser
 
   private final boolean action792(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_46, 3);
@@ -56845,7 +56845,7 @@ public class GeneratedLanguageParser
 
   private final boolean action793(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_144, 0);
@@ -56913,7 +56913,7 @@ public class GeneratedLanguageParser
 
   private final boolean action794(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 281:
       stateStack.addFirst(872);
@@ -56925,7 +56925,7 @@ public class GeneratedLanguageParser
 
   private final boolean action795(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_104, 1);
@@ -57057,7 +57057,7 @@ public class GeneratedLanguageParser
 
   private final boolean action796(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -57090,7 +57090,7 @@ public class GeneratedLanguageParser
 
   private final boolean action797(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -57126,7 +57126,7 @@ public class GeneratedLanguageParser
 
   private final boolean action798(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -57162,7 +57162,7 @@ public class GeneratedLanguageParser
 
   private final boolean action799(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -57201,7 +57201,7 @@ public class GeneratedLanguageParser
 
   private final boolean action800(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_145, 0);
@@ -57333,7 +57333,7 @@ public class GeneratedLanguageParser
 
   private final boolean action801(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -57372,7 +57372,7 @@ public class GeneratedLanguageParser
 
   private final boolean action802(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_129, 2);
@@ -57504,7 +57504,7 @@ public class GeneratedLanguageParser
 
   private final boolean action803(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -57620,7 +57620,7 @@ public class GeneratedLanguageParser
 
   private final boolean action804(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -57736,7 +57736,7 @@ public class GeneratedLanguageParser
 
   private final boolean action805(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_129, 3);
@@ -57868,7 +57868,7 @@ public class GeneratedLanguageParser
 
   private final boolean action806(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -57984,7 +57984,7 @@ public class GeneratedLanguageParser
 
   private final boolean action807(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_130, 0);
@@ -58116,7 +58116,7 @@ public class GeneratedLanguageParser
 
   private final boolean action808(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_129, 0);
@@ -58248,7 +58248,7 @@ public class GeneratedLanguageParser
 
   private final boolean action809(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_130, 1);
@@ -58380,7 +58380,7 @@ public class GeneratedLanguageParser
 
   private final boolean action810(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_146, 0);
@@ -58512,7 +58512,7 @@ public class GeneratedLanguageParser
 
   private final boolean action811(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -58628,7 +58628,7 @@ public class GeneratedLanguageParser
 
   private final boolean action812(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(888);
@@ -58640,7 +58640,7 @@ public class GeneratedLanguageParser
 
   private final boolean action813(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_107, 0);
@@ -58654,7 +58654,7 @@ public class GeneratedLanguageParser
 
   private final boolean action814(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(889);
@@ -58666,7 +58666,7 @@ public class GeneratedLanguageParser
 
   private final boolean action815(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_107, 5);
@@ -58680,7 +58680,7 @@ public class GeneratedLanguageParser
 
   private final boolean action816(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 259:
       stateStack.addFirst(890);
@@ -58692,7 +58692,7 @@ public class GeneratedLanguageParser
 
   private final boolean action817(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_106, 1);
@@ -58706,7 +58706,7 @@ public class GeneratedLanguageParser
 
   private final boolean action818(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -58735,7 +58735,7 @@ public class GeneratedLanguageParser
 
   private final boolean action819(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(892);
@@ -58776,7 +58776,7 @@ public class GeneratedLanguageParser
 
   private final boolean action820(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -58810,7 +58810,7 @@ public class GeneratedLanguageParser
 
   private final boolean action821(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -58844,7 +58844,7 @@ public class GeneratedLanguageParser
 
   private final boolean action822(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_109, 1);
@@ -58874,7 +58874,7 @@ public class GeneratedLanguageParser
 
   private final boolean action823(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(897);
@@ -58963,7 +58963,7 @@ public class GeneratedLanguageParser
 
   private final boolean action824(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(898);
@@ -59056,7 +59056,7 @@ public class GeneratedLanguageParser
 
   private final boolean action825(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_109, 0);
@@ -59086,7 +59086,7 @@ public class GeneratedLanguageParser
 
   private final boolean action826(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(899);
@@ -59175,7 +59175,7 @@ public class GeneratedLanguageParser
 
   private final boolean action827(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(900);
@@ -59268,7 +59268,7 @@ public class GeneratedLanguageParser
 
   private final boolean action828(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_109, 6);
@@ -59298,7 +59298,7 @@ public class GeneratedLanguageParser
 
   private final boolean action829(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_109, 7);
@@ -59328,7 +59328,7 @@ public class GeneratedLanguageParser
 
   private final boolean action830(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 242:
       stateStack.addFirst(901);
@@ -59340,7 +59340,7 @@ public class GeneratedLanguageParser
 
   private final boolean action831(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -59465,7 +59465,7 @@ public class GeneratedLanguageParser
 
   private final boolean action832(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_148, 1);
@@ -59583,7 +59583,7 @@ public class GeneratedLanguageParser
 
   private final boolean action833(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 281:
       return reduce(RULE_111, 1);
@@ -59597,7 +59597,7 @@ public class GeneratedLanguageParser
 
   private final boolean action834(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 187:
       stateStack.addFirst(830);
@@ -59626,7 +59626,7 @@ public class GeneratedLanguageParser
 
   private final boolean action835(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -59647,7 +59647,7 @@ public class GeneratedLanguageParser
 
   private final boolean action836(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -59741,7 +59741,7 @@ public class GeneratedLanguageParser
 
   private final boolean action837(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -59835,7 +59835,7 @@ public class GeneratedLanguageParser
 
   private final boolean action838(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -59858,7 +59858,7 @@ public class GeneratedLanguageParser
 
   private final boolean action839(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -59881,7 +59881,7 @@ public class GeneratedLanguageParser
 
   private final boolean action840(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 238:
       stateStack.addFirst(909);
@@ -59903,7 +59903,7 @@ public class GeneratedLanguageParser
 
   private final boolean action841(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(630);
@@ -59923,7 +59923,7 @@ public class GeneratedLanguageParser
 
   private final boolean action842(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_149, 0);
@@ -60011,7 +60011,7 @@ public class GeneratedLanguageParser
 
   private final boolean action843(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 283:
       stateStack.addFirst(912);
@@ -60023,7 +60023,7 @@ public class GeneratedLanguageParser
 
   private final boolean action844(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -60151,7 +60151,7 @@ public class GeneratedLanguageParser
 
   private final boolean action845(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_150, 0);
@@ -60239,7 +60239,7 @@ public class GeneratedLanguageParser
 
   private final boolean action846(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 269:
       stateStack.addFirst(843);
@@ -60329,7 +60329,7 @@ public class GeneratedLanguageParser
 
   private final boolean action847(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_136, 1);
@@ -60417,7 +60417,7 @@ public class GeneratedLanguageParser
 
   private final boolean action848(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(916);
@@ -60429,7 +60429,7 @@ public class GeneratedLanguageParser
 
   private final boolean action849(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -60554,7 +60554,7 @@ public class GeneratedLanguageParser
 
   private final boolean action850(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 211:
       stateStack.addFirst(276);
@@ -60659,7 +60659,7 @@ public class GeneratedLanguageParser
 
   private final boolean action851(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(924);
@@ -60671,7 +60671,7 @@ public class GeneratedLanguageParser
 
   private final boolean action852(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 190:
       stateStack.addFirst(925);
@@ -60803,7 +60803,7 @@ public class GeneratedLanguageParser
 
   private final boolean action853(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -60824,7 +60824,7 @@ public class GeneratedLanguageParser
 
   private final boolean action854(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -60901,7 +60901,7 @@ public class GeneratedLanguageParser
 
   private final boolean action855(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_117, 1);
@@ -61023,7 +61023,7 @@ public class GeneratedLanguageParser
 
   private final boolean action856(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_153, 0);
@@ -61141,7 +61141,7 @@ public class GeneratedLanguageParser
 
   private final boolean action857(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(931);
@@ -61218,7 +61218,7 @@ public class GeneratedLanguageParser
 
   private final boolean action858(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(932);
@@ -61304,7 +61304,7 @@ public class GeneratedLanguageParser
 
   private final boolean action859(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(933);
@@ -61316,7 +61316,7 @@ public class GeneratedLanguageParser
 
   private final boolean action860(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_154, 0);
@@ -61438,7 +61438,7 @@ public class GeneratedLanguageParser
 
   private final boolean action861(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -61563,7 +61563,7 @@ public class GeneratedLanguageParser
 
   private final boolean action862(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_123, 1);
@@ -61573,7 +61573,7 @@ public class GeneratedLanguageParser
 
   private final boolean action863(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(935);
@@ -61598,7 +61598,7 @@ public class GeneratedLanguageParser
 
   private final boolean action864(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_155, 0);
@@ -61678,7 +61678,7 @@ public class GeneratedLanguageParser
 
   private final boolean action865(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_155, 1);
@@ -61758,7 +61758,7 @@ public class GeneratedLanguageParser
 
   private final boolean action866(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_125, 1);
@@ -61838,7 +61838,7 @@ public class GeneratedLanguageParser
 
   private final boolean action867(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 268:
       stateStack.addFirst(217);
@@ -61933,7 +61933,7 @@ public class GeneratedLanguageParser
 
   private final boolean action868(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_156, 0);
@@ -62015,7 +62015,7 @@ public class GeneratedLanguageParser
 
   private final boolean action869(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_97, 1);
@@ -62027,7 +62027,7 @@ public class GeneratedLanguageParser
 
   private final boolean action870(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -62149,7 +62149,7 @@ public class GeneratedLanguageParser
 
   private final boolean action871(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -62271,7 +62271,7 @@ public class GeneratedLanguageParser
 
   private final boolean action872(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_144, 1);
@@ -62339,7 +62339,7 @@ public class GeneratedLanguageParser
 
   private final boolean action873(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_126, 1);
@@ -62471,7 +62471,7 @@ public class GeneratedLanguageParser
 
   private final boolean action874(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_103, 4);
@@ -62603,7 +62603,7 @@ public class GeneratedLanguageParser
 
   private final boolean action875(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(796);
@@ -62617,7 +62617,7 @@ public class GeneratedLanguageParser
 
   private final boolean action876(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_103, 3);
@@ -62749,7 +62749,7 @@ public class GeneratedLanguageParser
 
   private final boolean action877(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(796);
@@ -62763,7 +62763,7 @@ public class GeneratedLanguageParser
 
   private final boolean action878(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 256:
       stateStack.addFirst(407);
@@ -62808,7 +62808,7 @@ public class GeneratedLanguageParser
 
   private final boolean action879(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_145, 2);
@@ -62940,7 +62940,7 @@ public class GeneratedLanguageParser
 
   private final boolean action880(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(941);
@@ -62958,7 +62958,7 @@ public class GeneratedLanguageParser
 
   private final boolean action881(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_157, 0);
@@ -63090,7 +63090,7 @@ public class GeneratedLanguageParser
 
   private final boolean action882(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_145, 1);
@@ -63222,7 +63222,7 @@ public class GeneratedLanguageParser
 
   private final boolean action883(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(941);
@@ -63240,7 +63240,7 @@ public class GeneratedLanguageParser
 
   private final boolean action884(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_128, 1);
@@ -63372,7 +63372,7 @@ public class GeneratedLanguageParser
 
   private final boolean action885(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_128, 3);
@@ -63504,7 +63504,7 @@ public class GeneratedLanguageParser
 
   private final boolean action886(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_128, 2);
@@ -63636,7 +63636,7 @@ public class GeneratedLanguageParser
 
   private final boolean action887(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_104, 2);
@@ -63768,7 +63768,7 @@ public class GeneratedLanguageParser
 
   private final boolean action888(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_107, 2);
@@ -63782,7 +63782,7 @@ public class GeneratedLanguageParser
 
   private final boolean action889(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 259:
       stateStack.addFirst(944);
@@ -63794,7 +63794,7 @@ public class GeneratedLanguageParser
 
   private final boolean action890(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -63917,7 +63917,7 @@ public class GeneratedLanguageParser
 
   private final boolean action891(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_131, 1);
@@ -63933,7 +63933,7 @@ public class GeneratedLanguageParser
 
   private final boolean action892(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_133, 5);
@@ -64013,7 +64013,7 @@ public class GeneratedLanguageParser
 
   private final boolean action893(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       stateStack.addFirst(946);
@@ -64029,7 +64029,7 @@ public class GeneratedLanguageParser
 
   private final boolean action894(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -64068,7 +64068,7 @@ public class GeneratedLanguageParser
 
   private final boolean action895(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_147, 1);
@@ -64090,7 +64090,7 @@ public class GeneratedLanguageParser
 
   private final boolean action896(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -64129,7 +64129,7 @@ public class GeneratedLanguageParser
 
   private final boolean action897(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -64252,7 +64252,7 @@ public class GeneratedLanguageParser
 
   private final boolean action898(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -64375,7 +64375,7 @@ public class GeneratedLanguageParser
 
   private final boolean action899(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -64498,7 +64498,7 @@ public class GeneratedLanguageParser
 
   private final boolean action900(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -64621,7 +64621,7 @@ public class GeneratedLanguageParser
 
   private final boolean action901(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -64909,7 +64909,7 @@ public class GeneratedLanguageParser
 
   private final boolean action902(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 242:
       stateStack.addFirst(959);
@@ -64921,7 +64921,7 @@ public class GeneratedLanguageParser
 
   private final boolean action903(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_148, 0);
@@ -65039,7 +65039,7 @@ public class GeneratedLanguageParser
 
   private final boolean action904(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_159, 6);
@@ -65127,7 +65127,7 @@ public class GeneratedLanguageParser
 
   private final boolean action905(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 282:
       stateStack.addFirst(960);
@@ -65139,7 +65139,7 @@ public class GeneratedLanguageParser
 
   private final boolean action906(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 282:
       stateStack.addFirst(961);
@@ -65151,7 +65151,7 @@ public class GeneratedLanguageParser
 
   private final boolean action907(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -65172,7 +65172,7 @@ public class GeneratedLanguageParser
 
   private final boolean action908(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -65193,7 +65193,7 @@ public class GeneratedLanguageParser
 
   private final boolean action909(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -65287,7 +65287,7 @@ public class GeneratedLanguageParser
 
   private final boolean action910(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 189:
       stateStack.addFirst(93);
@@ -65381,7 +65381,7 @@ public class GeneratedLanguageParser
 
   private final boolean action911(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -65404,7 +65404,7 @@ public class GeneratedLanguageParser
 
   private final boolean action912(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_149, 1);
@@ -65492,7 +65492,7 @@ public class GeneratedLanguageParser
 
   private final boolean action913(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_160, 2);
@@ -65580,7 +65580,7 @@ public class GeneratedLanguageParser
 
   private final boolean action914(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_161, 0);
@@ -65592,7 +65592,7 @@ public class GeneratedLanguageParser
 
   private final boolean action915(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(967);
@@ -65608,7 +65608,7 @@ public class GeneratedLanguageParser
 
   private final boolean action916(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_17, 0);
@@ -65697,7 +65697,7 @@ public class GeneratedLanguageParser
 
   private final boolean action917(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -65718,7 +65718,7 @@ public class GeneratedLanguageParser
 
   private final boolean action918(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       return reduce(RULE_151, 3);
@@ -65728,7 +65728,7 @@ public class GeneratedLanguageParser
 
   private final boolean action919(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(658);
@@ -65797,7 +65797,7 @@ public class GeneratedLanguageParser
 
   private final boolean action920(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 244:
       return reduce(RULE_68, 7);
@@ -65813,7 +65813,7 @@ public class GeneratedLanguageParser
 
   private final boolean action921(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -65834,7 +65834,7 @@ public class GeneratedLanguageParser
 
   private final boolean action922(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       return reduce(RULE_151, 4);
@@ -65844,7 +65844,7 @@ public class GeneratedLanguageParser
 
   private final boolean action923(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       return reduce(RULE_151, 2);
@@ -65854,7 +65854,7 @@ public class GeneratedLanguageParser
 
   private final boolean action924(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 211:
       stateStack.addFirst(276);
@@ -65959,7 +65959,7 @@ public class GeneratedLanguageParser
 
   private final boolean action925(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 200:
       stateStack.addFirst(973);
@@ -65984,7 +65984,7 @@ public class GeneratedLanguageParser
 
   private final boolean action926(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_162, 0);
@@ -66102,7 +66102,7 @@ public class GeneratedLanguageParser
 
   private final boolean action927(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_139, 1);
@@ -66222,7 +66222,7 @@ public class GeneratedLanguageParser
 
   private final boolean action928(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_140, 0);
@@ -66340,7 +66340,7 @@ public class GeneratedLanguageParser
 
   private final boolean action929(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -66416,7 +66416,7 @@ public class GeneratedLanguageParser
 
   private final boolean action930(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(976);
@@ -66428,7 +66428,7 @@ public class GeneratedLanguageParser
 
   private final boolean action931(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -66629,7 +66629,7 @@ public class GeneratedLanguageParser
 
   private final boolean action932(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -66830,7 +66830,7 @@ public class GeneratedLanguageParser
 
   private final boolean action933(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_163, 0);
@@ -66948,7 +66948,7 @@ public class GeneratedLanguageParser
 
   private final boolean action934(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       return reduce(RULE_123, 3);
@@ -66958,7 +66958,7 @@ public class GeneratedLanguageParser
 
   private final boolean action935(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_155, 2);
@@ -67038,7 +67038,7 @@ public class GeneratedLanguageParser
 
   private final boolean action936(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_155, 3);
@@ -67118,7 +67118,7 @@ public class GeneratedLanguageParser
 
   private final boolean action937(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 247:
       stateStack.addFirst(566);
@@ -67178,7 +67178,7 @@ public class GeneratedLanguageParser
 
   private final boolean action938(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_102, 3);
@@ -67214,7 +67214,7 @@ public class GeneratedLanguageParser
 
   private final boolean action939(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 247:
       stateStack.addFirst(566);
@@ -67274,7 +67274,7 @@ public class GeneratedLanguageParser
 
   private final boolean action940(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_102, 1);
@@ -67310,7 +67310,7 @@ public class GeneratedLanguageParser
 
   private final boolean action941(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -67345,7 +67345,7 @@ public class GeneratedLanguageParser
 
   private final boolean action942(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -67384,7 +67384,7 @@ public class GeneratedLanguageParser
 
   private final boolean action943(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(15);
@@ -67423,7 +67423,7 @@ public class GeneratedLanguageParser
 
   private final boolean action944(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -67546,7 +67546,7 @@ public class GeneratedLanguageParser
 
   private final boolean action945(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_107, 4);
@@ -67560,7 +67560,7 @@ public class GeneratedLanguageParser
 
   private final boolean action946(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -67594,7 +67594,7 @@ public class GeneratedLanguageParser
 
   private final boolean action947(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -67628,7 +67628,7 @@ public class GeneratedLanguageParser
 
   private final boolean action948(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_133, 2);
@@ -67708,7 +67708,7 @@ public class GeneratedLanguageParser
 
   private final boolean action949(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 199:
       stateStack.addFirst(987);
@@ -67720,7 +67720,7 @@ public class GeneratedLanguageParser
 
   private final boolean action950(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_133, 1);
@@ -67800,7 +67800,7 @@ public class GeneratedLanguageParser
 
   private final boolean action951(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       stateStack.addFirst(988);
@@ -67812,7 +67812,7 @@ public class GeneratedLanguageParser
 
   private final boolean action952(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(989);
@@ -67893,7 +67893,7 @@ public class GeneratedLanguageParser
 
   private final boolean action953(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(990);
@@ -67978,7 +67978,7 @@ public class GeneratedLanguageParser
 
   private final boolean action954(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_109, 5);
@@ -68008,7 +68008,7 @@ public class GeneratedLanguageParser
 
   private final boolean action955(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_109, 4);
@@ -68038,7 +68038,7 @@ public class GeneratedLanguageParser
 
   private final boolean action956(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_109, 3);
@@ -68068,7 +68068,7 @@ public class GeneratedLanguageParser
 
   private final boolean action957(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       return reduce(RULE_109, 2);
@@ -68098,7 +68098,7 @@ public class GeneratedLanguageParser
 
   private final boolean action958(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -68385,7 +68385,7 @@ public class GeneratedLanguageParser
 
   private final boolean action959(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -68673,7 +68673,7 @@ public class GeneratedLanguageParser
 
   private final boolean action960(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -68696,7 +68696,7 @@ public class GeneratedLanguageParser
 
   private final boolean action961(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -68719,7 +68719,7 @@ public class GeneratedLanguageParser
 
   private final boolean action962(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_159, 4);
@@ -68807,7 +68807,7 @@ public class GeneratedLanguageParser
 
   private final boolean action963(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_159, 7);
@@ -68895,7 +68895,7 @@ public class GeneratedLanguageParser
 
   private final boolean action964(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 282:
       stateStack.addFirst(994);
@@ -68907,7 +68907,7 @@ public class GeneratedLanguageParser
 
   private final boolean action965(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 282:
       stateStack.addFirst(995);
@@ -68919,7 +68919,7 @@ public class GeneratedLanguageParser
 
   private final boolean action966(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -68940,7 +68940,7 @@ public class GeneratedLanguageParser
 
   private final boolean action967(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -69067,7 +69067,7 @@ public class GeneratedLanguageParser
 
   private final boolean action968(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_160, 0);
@@ -69155,7 +69155,7 @@ public class GeneratedLanguageParser
 
   private final boolean action969(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -69265,7 +69265,7 @@ public class GeneratedLanguageParser
 
   private final boolean action970(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_164, 0);
@@ -69383,7 +69383,7 @@ public class GeneratedLanguageParser
 
   private final boolean action971(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_165, 1);
@@ -69501,7 +69501,7 @@ public class GeneratedLanguageParser
 
   private final boolean action972(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -69522,7 +69522,7 @@ public class GeneratedLanguageParser
 
   private final boolean action973(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -69647,7 +69647,7 @@ public class GeneratedLanguageParser
 
   private final boolean action974(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_152, 1);
@@ -69765,7 +69765,7 @@ public class GeneratedLanguageParser
 
   private final boolean action975(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 170:
       stateStack.addFirst(1002);
@@ -69777,7 +69777,7 @@ public class GeneratedLanguageParser
 
   private final boolean action976(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -69798,7 +69798,7 @@ public class GeneratedLanguageParser
 
   private final boolean action977(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(1004);
@@ -69883,7 +69883,7 @@ public class GeneratedLanguageParser
 
   private final boolean action978(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(1006);
@@ -69973,7 +69973,7 @@ public class GeneratedLanguageParser
 
   private final boolean action979(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_157, 1);
@@ -70105,7 +70105,7 @@ public class GeneratedLanguageParser
 
   private final boolean action980(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_145, 4);
@@ -70237,7 +70237,7 @@ public class GeneratedLanguageParser
 
   private final boolean action981(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(941);
@@ -70251,7 +70251,7 @@ public class GeneratedLanguageParser
 
   private final boolean action982(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       return reduce(RULE_145, 3);
@@ -70383,7 +70383,7 @@ public class GeneratedLanguageParser
 
   private final boolean action983(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 236:
       stateStack.addFirst(941);
@@ -70397,7 +70397,7 @@ public class GeneratedLanguageParser
 
   private final boolean action984(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_107, 1);
@@ -70411,7 +70411,7 @@ public class GeneratedLanguageParser
 
   private final boolean action985(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -70450,7 +70450,7 @@ public class GeneratedLanguageParser
 
   private final boolean action986(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 212:
       stateStack.addFirst(133);
@@ -70489,7 +70489,7 @@ public class GeneratedLanguageParser
 
   private final boolean action987(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -70513,7 +70513,7 @@ public class GeneratedLanguageParser
 
   private final boolean action988(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -70537,7 +70537,7 @@ public class GeneratedLanguageParser
 
   private final boolean action989(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -70660,7 +70660,7 @@ public class GeneratedLanguageParser
 
   private final boolean action990(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -70783,7 +70783,7 @@ public class GeneratedLanguageParser
 
   private final boolean action991(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       stateStack.addFirst(23);
@@ -71070,7 +71070,7 @@ public class GeneratedLanguageParser
 
   private final boolean action992(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -71091,7 +71091,7 @@ public class GeneratedLanguageParser
 
   private final boolean action993(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -71112,7 +71112,7 @@ public class GeneratedLanguageParser
 
   private final boolean action994(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -71135,7 +71135,7 @@ public class GeneratedLanguageParser
 
   private final boolean action995(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 228:
       stateStack.addFirst(423);
@@ -71158,7 +71158,7 @@ public class GeneratedLanguageParser
 
   private final boolean action996(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_159, 5);
@@ -71246,7 +71246,7 @@ public class GeneratedLanguageParser
 
   private final boolean action997(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_160, 1);
@@ -71334,7 +71334,7 @@ public class GeneratedLanguageParser
 
   private final boolean action998(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_161, 1);
@@ -71346,7 +71346,7 @@ public class GeneratedLanguageParser
 
   private final boolean action999(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_137, 1);
@@ -71434,7 +71434,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1000(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_165, 0);
@@ -71552,7 +71552,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1001(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -71573,7 +71573,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1002(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -71594,7 +71594,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1003(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_166, 0);
@@ -71716,7 +71716,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1004(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -71917,7 +71917,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1005(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -72047,7 +72047,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1006(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -72248,7 +72248,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1007(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -72446,7 +72446,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1008(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -72576,7 +72576,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1009(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_133, 7);
@@ -72656,7 +72656,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1010(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 199:
       stateStack.addFirst(1023);
@@ -72668,7 +72668,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1011(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_133, 6);
@@ -72748,7 +72748,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1012(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 219:
       stateStack.addFirst(1024);
@@ -72760,7 +72760,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1013(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(1025);
@@ -72772,7 +72772,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1014(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(1026);
@@ -72784,7 +72784,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1015(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_159, 2);
@@ -72872,7 +72872,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1016(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_159, 0);
@@ -72960,7 +72960,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1017(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -72981,7 +72981,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1018(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -73002,7 +73002,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1019(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_167, 0);
@@ -73122,7 +73122,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1020(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_166, 1);
@@ -73244,7 +73244,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1021(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(1029);
@@ -73321,7 +73321,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1022(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(1031);
@@ -73407,7 +73407,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1023(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -73431,7 +73431,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1024(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 267:
       stateStack.addFirst(449);
@@ -73455,7 +73455,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1025(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_133, 3);
@@ -73535,7 +73535,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1026(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_133, 4);
@@ -73615,7 +73615,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1027(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_159, 3);
@@ -73703,7 +73703,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1028(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       return reduce(RULE_159, 1);
@@ -73791,7 +73791,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1029(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -73998,7 +73998,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1030(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -74124,7 +74124,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1031(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -74331,7 +74331,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1032(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -74457,7 +74457,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1033(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(1037);
@@ -74469,7 +74469,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1034(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 284:
       stateStack.addFirst(1038);
@@ -74481,7 +74481,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1035(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(1039);
@@ -74566,7 +74566,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1036(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(1040);
@@ -74656,7 +74656,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1037(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_133, 8);
@@ -74736,7 +74736,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1038(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 229:
       return reduce(RULE_133, 9);
@@ -74816,7 +74816,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1039(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -75023,7 +75023,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1040(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -75230,7 +75230,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1041(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -75434,7 +75434,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1042(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(1044);
@@ -75511,7 +75511,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1043(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(1046);
@@ -75597,7 +75597,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1044(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -75810,7 +75810,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1045(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -75936,7 +75936,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1046(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -76149,7 +76149,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1047(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -76275,7 +76275,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1048(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(1050);
@@ -76360,7 +76360,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1049(Token<ParseType> token) throws ParseException, BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 243:
       stateStack.addFirst(1051);
@@ -76450,7 +76450,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1050(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);
@@ -76663,7 +76663,7 @@ public class GeneratedLanguageParser
 
   private final boolean action1051(Token<ParseType> token) throws BadTokenException
   {
-    switch (token != null ? token.getType().ordinal() : null)
+    switch (token != null ? token.getType().ordinal() : -1)
     {
     case 287:
       stateStack.addFirst(348);

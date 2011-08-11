@@ -297,7 +297,7 @@ public class LALRParserCodeGenerator<T extends Enum<T>>
       }
       else
       {
-        out.println("  switch (token != null ? token.getType().ordinal() : null)");
+        out.println("  switch (token != null ? token.getType().ordinal() : -1)");
       }
       out.println("  {");
       Set<T> possibleTokenTypes = new HashSet<T>();
