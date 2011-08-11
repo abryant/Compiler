@@ -5,8 +5,11 @@ import parser.ParseException;
 import parser.Token;
 
 import compiler.language.ast.ParseInfo;
+import compiler.language.ast.terminal.CharacterLiteralAST;
+import compiler.language.ast.terminal.FloatingLiteralAST;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.ast.terminal.NameAST;
+import compiler.language.ast.terminal.SinceSpecifierAST;
 import compiler.language.ast.terminal.StringLiteralAST;
 import compiler.language.ast.topLevel.CompilationUnitAST;
 
@@ -73,9 +76,21 @@ public class LanguageParser
         {
           parseInfo = ((IntegerLiteralAST) token.getValue()).getParseInfo();
         }
+        else if (token.getType() == ParseType.FLOATING_LITERAL)
+        {
+          parseInfo = ((FloatingLiteralAST) token.getValue()).getParseInfo();
+        }
+        else if (token.getType() == ParseType.CHARACTER_LITERAL)
+        {
+          parseInfo = ((CharacterLiteralAST) token.getValue()).getParseInfo();
+        }
         else if (token.getType() == ParseType.STRING_LITERAL)
         {
           parseInfo = ((StringLiteralAST) token.getValue()).getParseInfo();
+        }
+        else if (token.getType() == ParseType.SINCE_SPECIFIER)
+        {
+          parseInfo = ((SinceSpecifierAST) token.getValue()).getParseInfo();
         }
         else if (token.getValue() instanceof ParseInfo)
         {
