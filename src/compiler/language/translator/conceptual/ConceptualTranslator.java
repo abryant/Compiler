@@ -90,6 +90,11 @@ public class ConceptualTranslator
       return null;
     }
 
+    if (ast == null)
+    {
+      return null;
+    }
+
     try
     {
       ConceptualFile conceptualFile = astConverter.convert(file, ast, expectedPackage);
