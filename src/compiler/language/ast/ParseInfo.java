@@ -115,7 +115,7 @@ public class ParseInfo
     buffer.append(line);
     buffer.append(':');
     buffer.append(startColumn);
-    if (startColumn < endColumn)
+    if (startColumn < endColumn - 1)
     {
       buffer.append('-');
       buffer.append(endColumn);
