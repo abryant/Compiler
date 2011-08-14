@@ -1169,8 +1169,8 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
       int nextChar = reader.read(0);
       if (nextChar < 0)
       {
-        // a value of less than 0 means the end of input, so return null for the last token
-        return null;
+        // a value of less than 0 means the end of input, so return a token with type null
+        return new Token<ParseType>(null, new ParseInfo(currentLine, reader.getCurrentLine(), currentColumn));
       }
       throw new LanguageParseException("Unexpected character while parsing: '" + (char) nextChar + "'", new ParseInfo(currentLine, reader.getCurrentLine(), currentColumn));
     }

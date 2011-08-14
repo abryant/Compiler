@@ -268,7 +268,7 @@ public class LALRParserCodeGenerator<T extends Enum<T>>
       out.println("{");
       if (shiftRules != null && shiftRules.containsKey(null))
       {
-        out.println("  if (token == null)");
+        out.println("  if (token.getType() == null)");
         out.println("  {");
         out.println("    stateStack.addFirst(" + stateNumbers.get(shiftRules.get(null)) + ");");
         out.println("    tokenStack.addFirst(token);");
@@ -279,7 +279,7 @@ public class LALRParserCodeGenerator<T extends Enum<T>>
       else if (reduceActions != null && reduceActions.containsKey(null))
       {
         ReduceAction<T> action = reduceActions.get(null);
-        out.println("  if (token == null)");
+        out.println("  if (token.getType() == null)");
         out.println("  {");
         out.println("    return reduce(RULE_" + ruleNumbers.get(action.getRule()) + ", " + action.getProductionIndex() + ");");
         out.println("  }");
@@ -288,7 +288,7 @@ public class LALRParserCodeGenerator<T extends Enum<T>>
       else if (acceptActions != null && acceptActions.containsKey(null))
       {
         AcceptAction<T> action = acceptActions.get(null);
-        out.println("  if (token == null)");
+        out.println("  if (token.getType() == null)");
         out.println("  {");
         out.println("    accepted = true;");
         out.println("    return reduce(RULE_" + ruleNumbers.get(action.getRule()) + ", " + action.getProductionIndex() + ");");
@@ -297,7 +297,7 @@ public class LALRParserCodeGenerator<T extends Enum<T>>
       }
       else
       {
-        out.println("  switch (token != null ? token.getType().ordinal() : -1)");
+        out.println("  switch (token.getType() != null ? token.getType().ordinal() : -1)");
       }
       out.println("  {");
       Set<T> possibleTokenTypes = new HashSet<T>();

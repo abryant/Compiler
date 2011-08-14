@@ -58,10 +58,10 @@ public class LanguageParser
       Token<ParseType> token = e.getBadToken();
       String message;
       ParseInfo parseInfo;
-      if (token == null)
+      if (token.getType() == null)
       {
         message = "Unexpected end of input, expected one of: " + buildStringList(e.getExpectedTokenTypes());
-        parseInfo = null;
+        parseInfo = (ParseInfo) token.getValue();
       }
       else
       {

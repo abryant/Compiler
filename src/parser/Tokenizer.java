@@ -42,13 +42,13 @@ public abstract class Tokenizer<T extends Enum<T>>
   private final void readNextToken() throws ParseException
   {
     Token<T> generated = generateToken();
-    if (generated == null)
-    {
-      finished = true;
-    }
-    else
+    if (!finished)
     {
       tokens.add(generated);
+    }
+    if (generated.getType() == null)
+    {
+      finished = true;
     }
   }
 
@@ -66,7 +66,7 @@ public abstract class Tokenizer<T extends Enum<T>>
   }
 
   /**
-   * @return the next token to be parsed, or null if there are no more tokens.
+   * @return the next token to be parsed, or a token with a null type if there are no more tokens.
    * @throws ParseException - if an Exception occurs while reading the next token
    */
   public final Token<T> next() throws ParseException
@@ -75,7 +75,11 @@ public abstract class Tokenizer<T extends Enum<T>>
     {
       readNextToken();
     }
-    // if the queue is still empty (i.e. we have reached the end of input) poll will return null
+    // if we have reached the end of input, return the last token without discarding it
+    if (tokens.size() == 1 && tokens.getFirst().getType() == null)
+    {
+      return tokens.getFirst();
+    }
     return tokens.pollFirst();
   }
 
@@ -83,7 +87,7 @@ public abstract class Tokenizer<T extends Enum<T>>
    * Looks ahead in the tokens list to find the token offset positions after the current one.
    * This means that <code>lookahead(1)</code> will return the next token, and <code>lookahead(n)</code> where n &lt; 1 will result in an {@link IllegalArgumentException}
    * @param offset - the number of tokens to look ahead
-   * @return the nth token after the current one, or null if the end of input is reached before n tokens of lookahead have been reached
+   * @return the nth token after the current one, or the final token if the end of input is reached before n tokens of lookahead have been reached
    * @throws ParseException - if an Exception occurs while reading the next token
    */
   public final Token<T> lookahead(int offset) throws ParseException
@@ -100,7 +104,7 @@ public abstract class Tokenizer<T extends Enum<T>>
     }
     if (offset >= tokens.size())
     {
-      return null;
+      return tokens.getLast();
     }
     return tokens.get(offset);
   }
