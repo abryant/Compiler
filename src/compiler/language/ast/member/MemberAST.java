@@ -1,6 +1,6 @@
 package compiler.language.ast.member;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 1 Jul 2010
@@ -12,23 +12,23 @@ import compiler.language.ast.ParseInfo;
 public abstract class MemberAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   /**
-   * Creates a new MemberAST with the specified ParseInfo
-   * @param parseInfo - the parsing information
+   * Creates a new MemberAST with the specified LexicalPhrase
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public MemberAST(ParseInfo parseInfo)
+  public MemberAST(LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
 }

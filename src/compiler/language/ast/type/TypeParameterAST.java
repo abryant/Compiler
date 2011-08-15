@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.NameAST;
 
 /*
@@ -13,7 +13,7 @@ import compiler.language.ast.terminal.NameAST;
 public class TypeParameterAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private NameAST name;
   private PointerTypeAST[] superTypes; // the types that this type parameter extends
@@ -24,11 +24,11 @@ public class TypeParameterAST
    * @param name - the name of this type parameter
    * @param superTypes - the types that this parameter must extend
    * @param subTypes - the types that this parameter must be a superclass of
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public TypeParameterAST(NameAST name, PointerTypeAST[] superTypes, PointerTypeAST[] subTypes, ParseInfo parseInfo)
+  public TypeParameterAST(NameAST name, PointerTypeAST[] superTypes, PointerTypeAST[] subTypes, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.name = name;
     this.superTypes = superTypes;
     this.subTypes = subTypes;
@@ -59,11 +59,11 @@ public class TypeParameterAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

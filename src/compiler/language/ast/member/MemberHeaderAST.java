@@ -1,6 +1,6 @@
 package compiler.language.ast.member;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ModifierAST;
 
 
@@ -15,7 +15,7 @@ import compiler.language.ast.misc.ModifierAST;
 public class MemberHeaderAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private AccessSpecifierAST accessSpecifier;
   private ModifierAST[] modifiers;
@@ -24,11 +24,11 @@ public class MemberHeaderAST
    * Creates a new MemberHeaderAST with the specified access specifier and modifiers
    * @param accessSpecifier - the access specifier of this member header
    * @param modifiers - the modifiers of this member header
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public MemberHeaderAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, ParseInfo parseInfo)
+  public MemberHeaderAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
   }
@@ -50,11 +50,11 @@ public class MemberHeaderAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
 }

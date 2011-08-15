@@ -13,7 +13,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.MemberHeaderAST;
 import compiler.language.ast.member.MethodAST;
 import compiler.language.ast.misc.ParameterListAST;
@@ -69,7 +69,7 @@ public final class MethodRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> throwsClause = (ParseList<PointerTypeAST>) args[4];
       return new MethodAST(header.getAccessSpecifier(), header.getModifiers(), new TypeParameterAST[0], type, name, parameters, throwsClause.toArray(new PointerTypeAST[0]), null,
-                           ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), name.getParseInfo(), parameters.getParseInfo(), throwsClause.getParseInfo(), (ParseInfo) args[5]));
+                           LexicalPhrase.combine(header.getLexicalPhrase(), type.getLexicalPhrase(), name.getLexicalPhrase(), parameters.getLexicalPhrase(), throwsClause.getLexicalPhrase(), (LexicalPhrase) args[5]));
     }
     if (DEFINITION_PRODUCTION.equals(production))
     {
@@ -81,7 +81,7 @@ public final class MethodRule extends Rule<ParseType>
       ParseList<PointerTypeAST> throwsClause = (ParseList<PointerTypeAST>) args[4];
       BlockAST block = (BlockAST) args[5];
       return new MethodAST(header.getAccessSpecifier(), header.getModifiers(), new TypeParameterAST[0], type, name, parameters, throwsClause.toArray(new PointerTypeAST[0]), block,
-                           ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), name.getParseInfo(), parameters.getParseInfo(), throwsClause.getParseInfo(), block.getParseInfo()));
+                           LexicalPhrase.combine(header.getLexicalPhrase(), type.getLexicalPhrase(), name.getLexicalPhrase(), parameters.getLexicalPhrase(), throwsClause.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     if (TYPE_PARAMETERS_DECLARATION_PRODUCTION.equals(production))
     {
@@ -94,7 +94,7 @@ public final class MethodRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> throwsClause = (ParseList<PointerTypeAST>) args[5];
       return new MethodAST(header.getAccessSpecifier(), header.getModifiers(), typeParameters.toArray(new TypeParameterAST[0]), type, name, parameters, throwsClause.toArray(new PointerTypeAST[0]), null,
-                           ParseInfo.combine(header.getParseInfo(), typeParameters.getParseInfo(), type.getParseInfo(), name.getParseInfo(), parameters.getParseInfo(), throwsClause.getParseInfo(), (ParseInfo) args[6]));
+                           LexicalPhrase.combine(header.getLexicalPhrase(), typeParameters.getLexicalPhrase(), type.getLexicalPhrase(), name.getLexicalPhrase(), parameters.getLexicalPhrase(), throwsClause.getLexicalPhrase(), (LexicalPhrase) args[6]));
     }
     if (TYPE_PARAMETERS_DEFINITION_PRODUCTION.equals(production))
     {
@@ -108,7 +108,7 @@ public final class MethodRule extends Rule<ParseType>
       ParseList<PointerTypeAST> throwsClause = (ParseList<PointerTypeAST>) args[5];
       BlockAST block = (BlockAST) args[6];
       return new MethodAST(header.getAccessSpecifier(), header.getModifiers(), typeParameters.toArray(new TypeParameterAST[0]), type, name, parameters, throwsClause.toArray(new PointerTypeAST[0]), block,
-                        ParseInfo.combine(header.getParseInfo(), typeParameters.getParseInfo(), type.getParseInfo(), name.getParseInfo(), parameters.getParseInfo(), throwsClause.getParseInfo(), block.getParseInfo()));
+                        LexicalPhrase.combine(header.getLexicalPhrase(), typeParameters.getLexicalPhrase(), type.getLexicalPhrase(), name.getLexicalPhrase(), parameters.getLexicalPhrase(), throwsClause.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     throw badTypeList();
   }

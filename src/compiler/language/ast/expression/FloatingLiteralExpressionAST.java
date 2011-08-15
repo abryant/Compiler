@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.FloatingLiteralAST;
 
 /*
@@ -18,11 +18,11 @@ public class FloatingLiteralExpressionAST extends ExpressionAST
   /**
    * Creates a new FloatingLiteralExpressionAST with the specified literal value.
    * @param literal - the floating literal
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public FloatingLiteralExpressionAST(FloatingLiteralAST literal, ParseInfo parseInfo)
+  public FloatingLiteralExpressionAST(FloatingLiteralAST literal, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.literal = literal;
   }
 

@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 
 /*
@@ -20,11 +20,11 @@ public class TupleIndexExpressionAST extends ExpressionAST
    * Creates a new TupleIndexExpressionAST with the specified expression and index into the tuple that the expression returns
    * @param expression - the expression to index
    * @param indexLiteral - the index into the tuple, as an IntegerLiteralAST
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public TupleIndexExpressionAST(ExpressionAST expression, IntegerLiteralAST indexLiteral, ParseInfo parseInfo)
+  public TupleIndexExpressionAST(ExpressionAST expression, IntegerLiteralAST indexLiteral, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.expression = expression;
     this.indexLiteral = indexLiteral;
   }

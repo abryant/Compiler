@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ArrayInstanciationExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.DimensionsAST;
@@ -50,7 +50,7 @@ public final class ArrayInstanciationExpressionNoInitializerRule extends Rule<Pa
       @SuppressWarnings("unchecked")
       ParseList<ExpressionAST> dimensionExpressions = (ParseList<ExpressionAST>) args[2];
       return new ArrayInstanciationExpressionAST(type, dimensionExpressions.toArray(new ExpressionAST[0]), dimensionExpressions.size(), null,
-                                              ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), dimensionExpressions.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], type.getLexicalPhrase(), dimensionExpressions.getLexicalPhrase()));
     }
     if (DIMENSIONS_PRODUCTION.equals(production))
     {
@@ -60,7 +60,7 @@ public final class ArrayInstanciationExpressionNoInitializerRule extends Rule<Pa
       DimensionsAST dimensions = (DimensionsAST) args[3];
       int totalDimensions = dimensionExpressions.size() + dimensions.getDimensions();
       return new ArrayInstanciationExpressionAST(type, dimensionExpressions.toArray(new ExpressionAST[0]), totalDimensions, null,
-                                              ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), dimensionExpressions.getParseInfo(), dimensions.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], type.getLexicalPhrase(), dimensionExpressions.getLexicalPhrase(), dimensions.getLexicalPhrase()));
     }
     throw badTypeList();
   }

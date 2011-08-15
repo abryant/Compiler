@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -24,11 +24,11 @@ public class IfStatementAST extends StatementAST
    * @param block - the block to execute if the condition is true
    * @param elseIfClauses - the else if clauses to try before the else block
    * @param elseBlock - the else block to execute if none of the other blocks are executed
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public IfStatementAST(ExpressionAST condition, BlockAST block, ElseIfClauseAST[] elseIfClauses, BlockAST elseBlock, ParseInfo parseInfo)
+  public IfStatementAST(ExpressionAST condition, BlockAST block, ElseIfClauseAST[] elseIfClauses, BlockAST elseBlock, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.condition = condition;
     this.block = block;
     this.elseIfClauses = elseIfClauses;

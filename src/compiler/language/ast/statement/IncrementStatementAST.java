@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.AssigneeAST;
 
 /*
@@ -18,11 +18,11 @@ public class IncrementStatementAST extends StatementAST
   /**
    * Creates a new IncrementStatementAST to increment the specified AssigneeAST
    * @param assignee - the AssigneeAST to increment
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public IncrementStatementAST(AssigneeAST assignee, ParseInfo parseInfo)
+  public IncrementStatementAST(AssigneeAST assignee, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.assignee = assignee;
   }
 

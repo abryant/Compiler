@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 14 Aug 2010
@@ -21,11 +21,11 @@ public class TryStatementAST extends StatementAST
    * @param tryBlock - the try block
    * @param catchClauses - the list of catch clauses
    * @param finallyBlock - the finally block, or null if no finally block was specified
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public TryStatementAST(BlockAST tryBlock, CatchClauseAST[] catchClauses, BlockAST finallyBlock, ParseInfo parseInfo)
+  public TryStatementAST(BlockAST tryBlock, CatchClauseAST[] catchClauses, BlockAST finallyBlock, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.tryBlock = tryBlock;
     this.catchClauses = catchClauses;
     this.finallyBlock = finallyBlock;

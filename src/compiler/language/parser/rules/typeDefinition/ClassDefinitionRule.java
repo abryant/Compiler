@@ -14,7 +14,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.member.MemberHeaderAST;
 import compiler.language.ast.terminal.NameAST;
@@ -60,10 +60,10 @@ public final class ClassDefinitionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<MemberAST> members = (ParseList<MemberAST>) args[6];
       return new ClassDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, new TypeParameterAST[0], superType, interfaces.toArray(new PointerTypeAST[0]), members.toArray(new MemberAST[0]),
-                                 ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(),
-                                                   superType != null ? superType.getParseInfo() : null,
-                                                   interfaces.getParseInfo(),
-                                                   (ParseInfo) args[5], members.getParseInfo(), (ParseInfo) args[7]));
+                                 LexicalPhrase.combine(header.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase(),
+                                                   superType != null ? superType.getLexicalPhrase() : null,
+                                                   interfaces.getLexicalPhrase(),
+                                                   (LexicalPhrase) args[5], members.getLexicalPhrase(), (LexicalPhrase) args[7]));
     }
     if (TYPE_PARAMETERS_PRODUCTION.equals(production))
     {
@@ -77,10 +77,10 @@ public final class ClassDefinitionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<MemberAST> members = (ParseList<MemberAST>) args[7];
       return new ClassDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, typeParameters.toArray(new TypeParameterAST[0]), superType, interfaces.toArray(new PointerTypeAST[0]), members.toArray(new MemberAST[0]),
-                                 ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(), typeParameters.getParseInfo(),
-                                                   superType != null ? superType.getParseInfo() : null,
-                                                   interfaces.getParseInfo(),
-                                                   (ParseInfo) args[6], members.getParseInfo(), (ParseInfo) args[8]));
+                                 LexicalPhrase.combine(header.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase(), typeParameters.getLexicalPhrase(),
+                                                   superType != null ? superType.getLexicalPhrase() : null,
+                                                   interfaces.getLexicalPhrase(),
+                                                   (LexicalPhrase) args[6], members.getLexicalPhrase(), (LexicalPhrase) args[8]));
     }
     throw badTypeList();
   }

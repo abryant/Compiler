@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
@@ -48,7 +48,7 @@ public final class PointerTypeNoTrailingArgsNotQNameRule extends Rule<ParseType>
       QNameAST qname = (QNameAST) args[1];
       NameAST[] names = qname.getNames();
       TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
-      return new PointerTypeAST(true, names, typeArgumentLists, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo()));
+      return new PointerTypeAST(true, names, typeArgumentLists, LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase()));
     }
     if (TRAILING_PARAMS_QNAME_PRODUCTION.equals(production))
     {
@@ -57,7 +57,7 @@ public final class PointerTypeNoTrailingArgsNotQNameRule extends Rule<ParseType>
       NameAST[] names = qname.getNames();
       TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
       return new PointerTypeAST(oldType, oldType.isImmutable(), names, typeArgumentLists,
-                             ParseInfo.combine(oldType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo()));
+                             LexicalPhrase.combine(oldType.getLexicalPhrase(), (LexicalPhrase) args[1], qname.getLexicalPhrase()));
     }
     throw badTypeList();
   }

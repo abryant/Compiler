@@ -5,8 +5,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.conceptual.ConceptualException;
+import compiler.language.conceptual.NameConflictException;
+import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
@@ -46,15 +48,63 @@ public class AccessSpecifierChecker
   }
 
   /**
+   * Resolves the specified QName, while checking that all of the names along the way are accessible according to their access specifiers.
+   * @param name - the QName to resolve
+   * @param nameLexicalPhrases - the LexicalPhrase objects corresponding to each of the names in the QName being resolved
+   * @param startScope - the scope to start the resolution from
+   * @return the Resolvable resolved
+   * @throws NameConflictException - if a name conflict is detected while resolving this QName
+   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved and is accessible from this startScope
+   * @throws ConceptualException - if an access specifier is invalid
+   */
+  public Resolvable resolve(QName name, LexicalPhrase[] nameLexicalPhrases, Resolvable startScope) throws NameConflictException, UnresolvableException, ConceptualException
+  {
+    String[] names = name.getNames();
+
+    Resolvable current = startScope;
+    while (current != null)
+    {
+      // try starting with current
+      for (int i = 0; i < names.length; i++)
+      {
+        Resolvable next = current.resolve(names[i]);
+        if (next == null)
+        {
+          if (i == 0)
+          {
+            // try starting with the parent of current
+            break;
+          }
+          return null;
+        }
+
+        // check that the access specifier is valid before going onto the next name
+        checkAccess(next, startScope, nameLexicalPhrases[i]);
+
+        if (i == names.length - 1)
+        {
+          // the whole name has been resolved, so return the result
+          return next;
+        }
+        current = next;
+      }
+
+      // try again, this time starting with current's parent
+      current = current.getParent();
+    }
+    return null;
+  }
+
+  /**
    * Checks that accessing the specified Resolvable is valid from the specified usage scope. If it is not valid, then a ConceptualException is thrown.
    * If accessed does not have an access specifier, then this method does not check anything.
    * @param accessed - the Resolvable being accessed
    * @param usageScope - the Resolvable representing the scope that the access is coming from
-   * @param usageParseInfo - the ParseInfo of the name that has been resolved to point to accessed
+   * @param usageLexicalPhrase - the LexicalPhrase of the name that has been resolved to point to accessed
    * @throws ConceptualException - if the access is invalid
    * @throws UnresolvableException - if it is impossible to determine whether the access is valid due to another unresolved name
    */
-  public void checkAccess(Resolvable accessed, Resolvable usageScope, ParseInfo usageParseInfo) throws ConceptualException, UnresolvableException
+  public void checkAccess(Resolvable accessed, Resolvable usageScope, LexicalPhrase usageLexicalPhrase) throws ConceptualException, UnresolvableException
   {
     AccessSpecifier accessSpecifier;
     String memberName;
@@ -88,7 +138,7 @@ public class AccessSpecifierChecker
       return;
     }
 
-    checkAccess(accessed.getParent(), usageScope, accessSpecifier, usageParseInfo, memberName);
+    checkAccess(accessed.getParent(), usageScope, accessSpecifier, usageLexicalPhrase, memberName);
   }
 
   /**
@@ -96,16 +146,16 @@ public class AccessSpecifierChecker
    * @param containingScope - the scope containing the thing being accessed
    * @param usageScope - the scope containing the thing doing the accessing
    * @param accessSpecifier - the access specifier to check
-   * @param usageParseInfo - the ParseInfo to add to any Exceptions thrown
+   * @param usageLexicalPhrase - the LexicalPhrase to add to any Exceptions thrown
    * @param memberName - the name of the member, to include in error messages
    * @throws ConceptualException - if the member is not accessible
    * @throws UnresolvableException - if it is unknown whether the name can be resolved
    */
-  public void checkAccess(Resolvable containingScope, Resolvable usageScope, AccessSpecifier accessSpecifier, ParseInfo usageParseInfo, String memberName) throws ConceptualException, UnresolvableException
+  public void checkAccess(Resolvable containingScope, Resolvable usageScope, AccessSpecifier accessSpecifier, LexicalPhrase usageLexicalPhrase, String memberName) throws ConceptualException, UnresolvableException
   {
-    if (!checkAccess(containingScope, usageScope, accessSpecifier, usageParseInfo))
+    if (!checkAccess(containingScope, usageScope, accessSpecifier, usageLexicalPhrase))
     {
-      throw new ConceptualException(memberName + " is not accessible from this scope", usageParseInfo);
+      throw new ConceptualException(memberName + " is not accessible from this scope", usageLexicalPhrase);
     }
   }
 
@@ -114,11 +164,11 @@ public class AccessSpecifierChecker
    * @param containingScope - the scope containing the thing being accessed
    * @param usageScope - the scope containing the thing doing the accessing
    * @param accessSpecifier - the access specifier to check
-   * @param usageParseInfo - the ParseInfo to add to any Exceptions thrown
+   * @param usageLexicalPhrase - the LexicalPhrase to add to any Exceptions thrown
    * @return true if the access is valid, false if it is not valid
    * @throws UnresolvableException - if it is impossible to determine whether or not the access is allowed, due to a lack of information about parent types
    */
-  public boolean checkAccess(Resolvable containingScope, Resolvable usageScope, AccessSpecifier accessSpecifier, ParseInfo usageParseInfo) throws UnresolvableException
+  public boolean checkAccess(Resolvable containingScope, Resolvable usageScope, AccessSpecifier accessSpecifier, LexicalPhrase usageLexicalPhrase) throws UnresolvableException
   {
     if (accessSpecifier == AccessSpecifier.PUBLIC)
     {
@@ -299,7 +349,7 @@ public class AccessSpecifierChecker
       {
         // we could not find the containing type definition as an ancestor of any of the type definitions containing usageScope
         // so throw an UnresolveableException to indicate this
-        throw new UnresolvableException("Unable to determine whether this protected member is accessible in this context", usageParseInfo);
+        throw new UnresolvableException("Unable to determine whether this protected member is accessible in this context", usageLexicalPhrase);
       }
     }
     return false;

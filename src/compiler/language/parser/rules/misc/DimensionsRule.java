@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.DimensionsAST;
 import compiler.language.parser.ParseType;
 
@@ -40,12 +40,12 @@ public final class DimensionsRule extends Rule<ParseType>
   {
     if (START_PRODUCTION.equals(production))
     {
-      return new DimensionsAST(1, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new DimensionsAST(1, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       DimensionsAST oldDimensions = (DimensionsAST) args[0];
-      return new DimensionsAST(oldDimensions.getDimensions() + 1, ParseInfo.combine(oldDimensions.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      return new DimensionsAST(oldDimensions.getDimensions() + 1, LexicalPhrase.combine(oldDimensions.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2]));
     }
     throw badTypeList();
   }

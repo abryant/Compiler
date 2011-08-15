@@ -26,7 +26,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.StatementExpressionAST;
 import compiler.language.ast.statement.ExpressionStatementAST;
 import compiler.language.ast.statement.StatementAST;
@@ -108,16 +108,16 @@ public final class StatementRule extends Rule<ParseType>
     if (LOCAL_DECLARATION_PRODUCTION.equals(production) || ASSIGNMENT_PRODUCTION.equals(production) ||
         INCREMENT_PRODUCTION.equals(production)         || DECREMENT_PRODUCTION.equals(production))
     {
-      // add the semicolon's ParseInfo to the statement before returning it
+      // add the semicolon's LexicalPhrase to the statement before returning it
       StatementAST statement = (StatementAST) args[0];
-      statement.setParseInfo(ParseInfo.combine(statement.getParseInfo(), (ParseInfo) args[1]));
+      statement.setLexicalPhrase(LexicalPhrase.combine(statement.getLexicalPhrase(), (LexicalPhrase) args[1]));
       return statement;
     }
 
     if (STATEMENT_EXPRESSION_PRODUCTION.equals(production))
     {
       StatementExpressionAST expression = (StatementExpressionAST) args[0];
-      return new ExpressionStatementAST(expression, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1]));
+      return new ExpressionStatementAST(expression, LexicalPhrase.combine(expression.getLexicalPhrase(), (LexicalPhrase) args[1]));
     }
 
     throw badTypeList();

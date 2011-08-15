@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ArgumentAST;
 
 /*
@@ -20,11 +20,11 @@ public class MethodCallExpressionAST extends StatementExpressionAST
    * Creates a new MethodCallExpressionAST which calls the specified expression with the specified arguments
    * @param expression - the expression which produces a method/closure to call
    * @param arguments - the arguments to the method
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public MethodCallExpressionAST(ExpressionAST expression, ArgumentAST[] arguments, ParseInfo parseInfo)
+  public MethodCallExpressionAST(ExpressionAST expression, ArgumentAST[] arguments, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.expression = expression;
     this.arguments = arguments;
   }

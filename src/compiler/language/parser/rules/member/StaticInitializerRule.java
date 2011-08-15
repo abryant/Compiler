@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.MemberHeaderAST;
 import compiler.language.ast.member.StaticInitializerAST;
 import compiler.language.ast.misc.ModifierAST;
@@ -48,24 +48,24 @@ public final class StaticInitializerRule extends Rule<ParseType>
       MemberHeaderAST header = (MemberHeaderAST) args[0];
       if (header.getAccessSpecifier() != null)
       {
-        throw new LanguageParseException("A static initializer cannot have an access specifier.", header.getAccessSpecifier().getParseInfo());
+        throw new LanguageParseException("A static initializer cannot have an access specifier.", header.getAccessSpecifier().getLexicalPhrase());
       }
       ModifierAST[] modifiers = header.getModifiers();
       BlockAST block = (BlockAST) args[1];
       if (modifiers.length == 0)
       {
-        throw new LanguageParseException("A static initializer must have a \"static\" modifier", block.getParseInfo());
+        throw new LanguageParseException("A static initializer must have a \"static\" modifier", block.getLexicalPhrase());
       }
       if (modifiers.length > 1 || modifiers[0].getType() != ModifierTypeAST.STATIC)
       {
-        ParseInfo[] modifierInfo = new ParseInfo[modifiers.length];
+        LexicalPhrase[] modifierInfo = new LexicalPhrase[modifiers.length];
         for (int i = 0; i < modifiers.length; i++)
         {
-          modifierInfo[i] = modifiers[i].getParseInfo();
+          modifierInfo[i] = modifiers[i].getLexicalPhrase();
         }
-        throw new LanguageParseException("A static initializer can only have one modifier, and it must be \"static\"", ParseInfo.combine(modifierInfo));
+        throw new LanguageParseException("A static initializer can only have one modifier, and it must be \"static\"", LexicalPhrase.combine(modifierInfo));
       }
-      return new StaticInitializerAST(block, ParseInfo.combine(header.getParseInfo(), block.getParseInfo()));
+      return new StaticInitializerAST(block, LexicalPhrase.combine(header.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     throw badTypeList();
   }

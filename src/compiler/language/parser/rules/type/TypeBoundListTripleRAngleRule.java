@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseList;
@@ -45,13 +45,13 @@ public final class TypeBoundListTripleRAngleRule extends Rule<ParseType>
     {
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>> container = (ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>) args[0];
-      ParseList<PointerTypeAST> list = new ParseList<PointerTypeAST>(container.getItem().getItem().getItem(), container.getItem().getItem().getItem().getParseInfo());
+      ParseList<PointerTypeAST> list = new ParseList<PointerTypeAST>(container.getItem().getItem().getItem(), container.getItem().getItem().getItem().getLexicalPhrase());
 
       ParseContainer<ParseList<PointerTypeAST>> firstContainer =
-             new ParseContainer<ParseList<PointerTypeAST>>(list, container.getItem().getItem().getParseInfo());
+             new ParseContainer<ParseList<PointerTypeAST>>(list, container.getItem().getItem().getLexicalPhrase());
       ParseContainer<ParseContainer<ParseList<PointerTypeAST>>> secondContainer =
-             new ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>(firstContainer, container.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>>(secondContainer, container.getParseInfo());
+             new ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>(firstContainer, container.getItem().getLexicalPhrase());
+      return new ParseContainer<ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>>(secondContainer, container.getLexicalPhrase());
     }
     if (LIST_PRODUCTION.equals(production))
     {
@@ -59,16 +59,16 @@ public final class TypeBoundListTripleRAngleRule extends Rule<ParseType>
       ParseList<PointerTypeAST> list = (ParseList<PointerTypeAST>) args[0];
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>> container = (ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>) args[2];
-      ParseInfo listParseInfo = list.getParseInfo();
+      LexicalPhrase listLexicalPhrase = list.getLexicalPhrase();
 
-      list.addLast(container.getItem().getItem().getItem(), ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getItem().getItem().getItem().getParseInfo()));
+      list.addLast(container.getItem().getItem().getItem(), LexicalPhrase.combine(listLexicalPhrase, (LexicalPhrase) args[1], container.getItem().getItem().getItem().getLexicalPhrase()));
 
       ParseContainer<ParseList<PointerTypeAST>> firstContainer = new ParseContainer<ParseList<PointerTypeAST>>(list,
-                   ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getItem().getItem().getParseInfo()));
+                   LexicalPhrase.combine(listLexicalPhrase, (LexicalPhrase) args[1], container.getItem().getItem().getLexicalPhrase()));
       ParseContainer<ParseContainer<ParseList<PointerTypeAST>>> secondContainer = new ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>(firstContainer,
-                   ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getItem().getParseInfo()));
+                   LexicalPhrase.combine(listLexicalPhrase, (LexicalPhrase) args[1], container.getItem().getLexicalPhrase()));
       return new ParseContainer<ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>>(secondContainer,
-                   ParseInfo.combine(listParseInfo, (ParseInfo) args[1], container.getParseInfo()));
+                   LexicalPhrase.combine(listLexicalPhrase, (LexicalPhrase) args[1], container.getLexicalPhrase()));
     }
     throw badTypeList();
   }

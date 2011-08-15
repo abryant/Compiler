@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.terminal.NameAST;
@@ -44,7 +44,7 @@ public final class FieldAccessExpressionNotQNameRule extends Rule<ParseType>
     {
       ExpressionAST expression = (ExpressionAST) args[0];
       NameAST name = (NameAST) args[2];
-      return new FieldAccessExpressionAST(expression, name, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1], name.getParseInfo()));
+      return new FieldAccessExpressionAST(expression, name, LexicalPhrase.combine(expression.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase()));
     }
     throw badTypeList();
   }

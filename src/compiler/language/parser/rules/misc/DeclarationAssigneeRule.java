@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.parser.ParseType;
@@ -42,11 +42,11 @@ public final class DeclarationAssigneeRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       NameAST name = (NameAST) args[0];
-      return new DeclarationAssigneeAST(name, name.getParseInfo());
+      return new DeclarationAssigneeAST(name, name.getLexicalPhrase());
     }
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new DeclarationAssigneeAST(null, (ParseInfo) args[0]);
+      return new DeclarationAssigneeAST(null, (LexicalPhrase) args[0]);
     }
     throw badTypeList();
   }

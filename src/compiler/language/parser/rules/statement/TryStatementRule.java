@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.CatchClauseAST;
 import compiler.language.ast.statement.TryStatementAST;
@@ -51,7 +51,7 @@ public final class TryStatementRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseContainer<BlockAST> finallyClause = (ParseContainer<BlockAST>) args[3];
       return new TryStatementAST(block, catchClauses.toArray(new CatchClauseAST[0]), finallyClause.getItem(),
-                              ParseInfo.combine((ParseInfo) args[0], block.getParseInfo(), catchClauses.getParseInfo(), finallyClause.getParseInfo()));
+                              LexicalPhrase.combine((LexicalPhrase) args[0], block.getLexicalPhrase(), catchClauses.getLexicalPhrase(), finallyClause.getLexicalPhrase()));
     }
     throw badTypeList();
   }

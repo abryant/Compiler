@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.ElseIfClauseAST;
@@ -54,7 +54,7 @@ public final class IfStatementRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseContainer<BlockAST> elseClause = (ParseContainer<BlockAST>) args[4];
       return new IfStatementAST(condition, block, elseIfClauses.toArray(new ElseIfClauseAST[0]), elseClause.getItem(),
-                             ParseInfo.combine((ParseInfo) args[0], condition.getParseInfo(), block.getParseInfo(), elseIfClauses.getParseInfo(), elseClause.getParseInfo()));
+                             LexicalPhrase.combine((LexicalPhrase) args[0], condition.getLexicalPhrase(), block.getLexicalPhrase(), elseIfClauses.getLexicalPhrase(), elseClause.getLexicalPhrase()));
     }
     throw badTypeList();
   }

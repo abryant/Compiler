@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseType;
@@ -42,16 +42,16 @@ public final class PointerTypeTrailingArgsTripleRAngleRule extends Rule<ParseTyp
     if (TRAILING_ARGS_PRODUCTION.equals(production))
     {
       PointerTypeAST type = (PointerTypeAST) args[0];
-      ParseInfo tripleRAngleInfo = (ParseInfo) args[1];
-      ParseInfo firstRAngleInfo = ParseUtil.splitTripleRAngleFirst(tripleRAngleInfo);
-      ParseInfo firstTwoRAnglesInfo  = ParseUtil.splitTripleRAngleFirstTwo(tripleRAngleInfo);
+      LexicalPhrase tripleRAnglePhrase = (LexicalPhrase) args[1];
+      LexicalPhrase firstRAnglePhrase = ParseUtil.splitTripleRAngleFirst(tripleRAnglePhrase);
+      LexicalPhrase firstTwoRAnglesPhrase  = ParseUtil.splitTripleRAngleFirstTwo(tripleRAnglePhrase);
 
       ParseContainer<PointerTypeAST> firstContainer = new ParseContainer<PointerTypeAST>(type,
-          ParseInfo.combine(type.getParseInfo(), firstRAngleInfo));
+          LexicalPhrase.combine(type.getLexicalPhrase(), firstRAnglePhrase));
       ParseContainer<ParseContainer<PointerTypeAST>> secondContainer = new ParseContainer<ParseContainer<PointerTypeAST>>(firstContainer,
-          ParseInfo.combine(type.getParseInfo(), firstTwoRAnglesInfo));
+          LexicalPhrase.combine(type.getLexicalPhrase(), firstTwoRAnglesPhrase));
       return new ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>(secondContainer,
-          ParseInfo.combine(type.getParseInfo(), tripleRAngleInfo));
+          LexicalPhrase.combine(type.getLexicalPhrase(), tripleRAnglePhrase));
     }
     throw badTypeList();
   }

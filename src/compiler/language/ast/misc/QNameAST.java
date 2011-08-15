@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.NameAST;
 
 /*
@@ -14,18 +14,18 @@ import compiler.language.ast.terminal.NameAST;
 public class QNameAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private NameAST[] names;
 
   /**
    * Creates a new QNameAST containing only one name
    * @param startName - the name to start the QNameAST with
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public QNameAST(NameAST startName, ParseInfo parseInfo)
+  public QNameAST(NameAST startName, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     names = new NameAST[] {startName};
   }
 
@@ -33,11 +33,11 @@ public class QNameAST
    * Creates a new QNameAST based on an old QNameAST, but with an additional name
    * @param original - the QNameAST to base this QNameAST on
    * @param additional - the extra name to add
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public QNameAST(QNameAST original, NameAST additional, ParseInfo parseInfo)
+  public QNameAST(QNameAST original, NameAST additional, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     NameAST[] origNames = original.names;
     names = new NameAST[origNames.length + 1];
     System.arraycopy(origNames, 0, names, 0, origNames.length);
@@ -47,11 +47,11 @@ public class QNameAST
   /**
    * Creates a new QNameAST with the specified list of names.
    * @param names - the names to include in this QNameAST
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public QNameAST(NameAST[] names, ParseInfo parseInfo)
+  public QNameAST(NameAST[] names, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.names = names;
   }
 
@@ -77,11 +77,11 @@ public class QNameAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

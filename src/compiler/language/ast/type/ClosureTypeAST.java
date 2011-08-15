@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -24,11 +24,11 @@ public class ClosureTypeAST extends TypeAST
    * @param argumentTypes - the types of the arguments to this closure
    * @param resultTypes - the types of the results of this closure
    * @param exceptionTypes - the types of the exceptions thrown by this closure
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ClosureTypeAST(TypeParameterAST[] typeParameters, TypeAST[] argumentTypes, TypeAST[] resultTypes, PointerTypeAST[] exceptionTypes, ParseInfo parseInfo)
+  public ClosureTypeAST(TypeParameterAST[] typeParameters, TypeAST[] argumentTypes, TypeAST[] resultTypes, PointerTypeAST[] exceptionTypes, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.typeParameters = typeParameters;
     this.argumentTypes = argumentTypes;
     this.resultTypes = resultTypes;

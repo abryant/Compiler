@@ -3,7 +3,7 @@ package compiler.language.parser.rules.type;
 import parser.ParseException;
 import parser.Production;
 import parser.Rule;
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.IntegerTypeAST;
 import compiler.language.ast.type.IntegerTypeLengthAST;
 import compiler.language.parser.ParseType;
@@ -52,54 +52,54 @@ public final class IntegerTypeRule extends Rule<ParseType>
   {
     if (UNSPECIFIED_BYTE_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(null, IntegerTypeLengthAST.BYTE, (ParseInfo) args[0]);
+      return new IntegerTypeAST(null, IntegerTypeLengthAST.BYTE, (LexicalPhrase) args[0]);
     }
     if (SIGNED_BYTE_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(true, IntegerTypeLengthAST.BYTE, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(true, IntegerTypeLengthAST.BYTE, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     if (UNSIGNED_BYTE_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(false, IntegerTypeLengthAST.BYTE, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(false, IntegerTypeLengthAST.BYTE, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
 
     if (UNSPECIFIED_SHORT_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(null, IntegerTypeLengthAST.SHORT, (ParseInfo) args[0]);
+      return new IntegerTypeAST(null, IntegerTypeLengthAST.SHORT, (LexicalPhrase) args[0]);
     }
     if (SIGNED_SHORT_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(true, IntegerTypeLengthAST.SHORT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(true, IntegerTypeLengthAST.SHORT, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     if (UNSIGNED_SHORT_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(false, IntegerTypeLengthAST.SHORT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(false, IntegerTypeLengthAST.SHORT, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
 
     if (UNSPECIFIED_INT_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(null, IntegerTypeLengthAST.INT, (ParseInfo) args[0]);
+      return new IntegerTypeAST(null, IntegerTypeLengthAST.INT, (LexicalPhrase) args[0]);
     }
     if (SIGNED_INT_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(true, IntegerTypeLengthAST.INT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(true, IntegerTypeLengthAST.INT, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     if (UNSIGNED_INT_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(false, IntegerTypeLengthAST.INT, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(false, IntegerTypeLengthAST.INT, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
 
     if (UNSPECIFIED_LONG_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(null, IntegerTypeLengthAST.LONG, (ParseInfo) args[0]);
+      return new IntegerTypeAST(null, IntegerTypeLengthAST.LONG, (LexicalPhrase) args[0]);
     }
     if (SIGNED_LONG_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(true, IntegerTypeLengthAST.LONG, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(true, IntegerTypeLengthAST.LONG, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     if (UNSIGNED_LONG_PRODUCTION.equals(production))
     {
-      return new IntegerTypeAST(false, IntegerTypeLengthAST.LONG, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new IntegerTypeAST(false, IntegerTypeLengthAST.LONG, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     throw badTypeList();
   }

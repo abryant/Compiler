@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -19,11 +19,11 @@ public class DoStatementAST extends StatementAST
   /**
    * @param block - the block to execute in this do loop
    * @param condition - the condition of this do loop
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public DoStatementAST(BlockAST block, ExpressionAST condition, ParseInfo parseInfo)
+  public DoStatementAST(BlockAST block, ExpressionAST condition, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.block = block;
     this.condition = condition;
   }

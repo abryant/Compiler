@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.parser.ParseType;
@@ -41,13 +41,13 @@ public final class QNameRule extends Rule<ParseType>
     if (START_PRODUCTION.equals(production))
     {
       NameAST name = (NameAST) args[0];
-      return new QNameAST(name, name.getParseInfo());
+      return new QNameAST(name, name.getLexicalPhrase());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
       NameAST name = (NameAST) args[2];
-      return new QNameAST(qname, name, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], name.getParseInfo()));
+      return new QNameAST(qname, name, LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase()));
     }
     throw badTypeList();
   }

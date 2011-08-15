@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -41,14 +41,14 @@ public final class TypeParameterListRule extends Rule<ParseType>
     if (START_PRODUCTION.equals(production))
     {
       TypeParameterAST typeParameter = (TypeParameterAST) args[0];
-      return new ParseList<TypeParameterAST>(typeParameter, typeParameter.getParseInfo());
+      return new ParseList<TypeParameterAST>(typeParameter, typeParameter.getLexicalPhrase());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<TypeParameterAST> list = (ParseList<TypeParameterAST>) args[0];
       TypeParameterAST newTypeParameter = (TypeParameterAST) args[2];
-      list.addLast(newTypeParameter, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], newTypeParameter.getParseInfo()));
+      list.addLast(newTypeParameter, LexicalPhrase.combine(list.getLexicalPhrase(), (LexicalPhrase) args[1], newTypeParameter.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

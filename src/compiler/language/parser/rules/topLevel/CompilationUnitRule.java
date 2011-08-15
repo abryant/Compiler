@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.ast.topLevel.ImportDeclarationAST;
 import compiler.language.ast.topLevel.PackageDeclarationAST;
@@ -54,19 +54,19 @@ public final class CompilationUnitRule extends Rule<ParseType>
       PackageDeclarationAST packageDeclaration = (PackageDeclarationAST) args[1];
       if (oldUnit.getPackageDeclaration() != null)
       {
-        throw new LanguageParseException("Multiple package specifications", packageDeclaration.getParseInfo());
+        throw new LanguageParseException("Multiple package specifications", packageDeclaration.getLexicalPhrase());
       }
       ImportDeclarationAST[] imports = oldUnit.getImports();
       if (imports.length > 0)
       {
-        throw new LanguageParseException("Package must be declared before imports", packageDeclaration.getParseInfo());
+        throw new LanguageParseException("Package must be declared before imports", packageDeclaration.getLexicalPhrase());
       }
       TypeDefinitionAST[] typeDefinitions = oldUnit.getTypes();
       if (typeDefinitions.length > 0)
       {
-        throw new LanguageParseException("Package must be specified before types.", packageDeclaration.getParseInfo());
+        throw new LanguageParseException("Package must be specified before types.", packageDeclaration.getLexicalPhrase());
       }
-      return new CompilationUnitAST(packageDeclaration, imports, typeDefinitions, ParseInfo.combine(oldUnit.getParseInfo(), packageDeclaration.getParseInfo()));
+      return new CompilationUnitAST(packageDeclaration, imports, typeDefinitions, LexicalPhrase.combine(oldUnit.getLexicalPhrase(), packageDeclaration.getLexicalPhrase()));
     }
     if (IMPORT_PRODUCTION.equals(production))
     {
@@ -75,13 +75,13 @@ public final class CompilationUnitRule extends Rule<ParseType>
       TypeDefinitionAST[] typeDefinitions = oldUnit.getTypes();
       if (typeDefinitions.length > 0)
       {
-        throw new LanguageParseException("Imports must be specified before types", newImport.getParseInfo());
+        throw new LanguageParseException("Imports must be specified before types", newImport.getLexicalPhrase());
       }
       ImportDeclarationAST[] oldImports = oldUnit.getImports();
       ImportDeclarationAST[] newImports = new ImportDeclarationAST[oldImports.length + 1];
       System.arraycopy(oldImports, 0, newImports, 0, oldImports.length);
       newImports[oldImports.length] = newImport;
-      return new CompilationUnitAST(oldUnit.getPackageDeclaration(), newImports, typeDefinitions, ParseInfo.combine(oldUnit.getParseInfo(), newImport.getParseInfo()));
+      return new CompilationUnitAST(oldUnit.getPackageDeclaration(), newImports, typeDefinitions, LexicalPhrase.combine(oldUnit.getLexicalPhrase(), newImport.getLexicalPhrase()));
     }
     if (TYPE_DEFINITION_PRODUCTION.equals(production))
     {
@@ -91,7 +91,7 @@ public final class CompilationUnitRule extends Rule<ParseType>
       System.arraycopy(oldTypes, 0, newTypes, 0, oldTypes.length);
       TypeDefinitionAST newType = (TypeDefinitionAST) args[1];
       newTypes[oldTypes.length] = newType;
-      return new CompilationUnitAST(oldUnit.getPackageDeclaration(), oldUnit.getImports(), newTypes, ParseInfo.combine(oldUnit.getParseInfo(), newType.getParseInfo()));
+      return new CompilationUnitAST(oldUnit.getPackageDeclaration(), oldUnit.getImports(), newTypes, LexicalPhrase.combine(oldUnit.getLexicalPhrase(), newType.getLexicalPhrase()));
     }
     throw badTypeList();
   }

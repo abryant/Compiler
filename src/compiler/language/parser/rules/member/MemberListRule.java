@@ -6,7 +6,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -46,7 +46,7 @@ public final class MemberListRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<MemberAST> list = (ParseList<MemberAST>) args[0];
       MemberAST member = (MemberAST) args[1];
-      list.addLast(member, ParseInfo.combine(list.getParseInfo(), member.getParseInfo()));
+      list.addLast(member, LexicalPhrase.combine(list.getLexicalPhrase(), member.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

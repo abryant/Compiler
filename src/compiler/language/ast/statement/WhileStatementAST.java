@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -19,11 +19,11 @@ public class WhileStatementAST extends StatementAST
   /**
    * @param condition - the condition of this while loop
    * @param block - the block that this while loop executes
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public WhileStatementAST(ExpressionAST condition, BlockAST block, ParseInfo parseInfo)
+  public WhileStatementAST(ExpressionAST condition, BlockAST block, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.condition = condition;
     this.block = block;
   }

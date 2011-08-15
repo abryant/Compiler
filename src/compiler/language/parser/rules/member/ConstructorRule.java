@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.ConstructorAST;
 import compiler.language.ast.member.MemberHeaderAST;
 import compiler.language.ast.misc.ParameterListAST;
@@ -55,7 +55,7 @@ public final class ConstructorRule extends Rule<ParseType>
       BlockAST block = (BlockAST) args[4];
       return new ConstructorAST(header.getAccessSpecifier(), header.getModifiers(),
                                 name, parameters, throwsClause.toArray(new PointerTypeAST[0]), block,
-                                ParseInfo.combine(header.getParseInfo(), name.getParseInfo(), parameters.getParseInfo(), throwsClause.getParseInfo(), block.getParseInfo()));
+                                LexicalPhrase.combine(header.getLexicalPhrase(), name.getLexicalPhrase(), parameters.getLexicalPhrase(), throwsClause.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     throw badTypeList();
   }

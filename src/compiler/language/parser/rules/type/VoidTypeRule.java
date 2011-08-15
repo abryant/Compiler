@@ -6,7 +6,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.VoidTypeAST;
 import compiler.language.parser.ParseType;
 
@@ -37,7 +37,7 @@ public final class VoidTypeRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new VoidTypeAST((ParseInfo) args[0]);
+      return new VoidTypeAST((LexicalPhrase) args[0]);
     }
     throw badTypeList();
   }

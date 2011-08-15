@@ -1,6 +1,6 @@
 package compiler.language.parser;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 21 Aug 2010
@@ -22,54 +22,54 @@ public class ParseUtil
   }
 
   /**
-   * Splits the specified ParseInfo for a DOUBLE_RANGLE token in half and returns the ParseInfo for the first half of it.
-   * @param doubleRAngleInfo - the ParseInfo of the DOUBLE_RANGLE token
-   * @return the ParseInfo of the first angle bracket in the DOUBLE_RANGLE
+   * Splits the specified LexicalPhrase for a DOUBLE_RANGLE token in half and returns the LexicalPhrase for the first half of it.
+   * @param doubleRAnglePhrase - the LexicalPhrase of the DOUBLE_RANGLE token
+   * @return the LexicalPhrase of the first angle bracket in the DOUBLE_RANGLE
    * @throws LanguageParseException - if the DOUBLE_RANGLE token takes up multiple lines or is not 2 characters long
    */
-  public static ParseInfo splitDoubleRAngle(ParseInfo doubleRAngleInfo) throws LanguageParseException
+  public static LexicalPhrase splitDoubleRAngle(LexicalPhrase doubleRAnglePhrase) throws LanguageParseException
   {
-    int line = doubleRAngleInfo.getLine();
-    int startColumn = doubleRAngleInfo.getStartColumn();
-    if (doubleRAngleInfo.getEndColumn() - startColumn != 2)
+    int line = doubleRAnglePhrase.getLine();
+    int startColumn = doubleRAnglePhrase.getStartColumn();
+    if (doubleRAnglePhrase.getEndColumn() - startColumn != 2)
     {
-      throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which is not 2 characters long", doubleRAngleInfo);
+      throw new LanguageParseException("Found a DOUBLE_RANGLE \">>\" token which is not 2 characters long", doubleRAnglePhrase);
     }
-    return new ParseInfo(line, doubleRAngleInfo.getLineText(), startColumn, startColumn + 1);
+    return new LexicalPhrase(line, doubleRAnglePhrase.getLineText(), startColumn, startColumn + 1);
   }
 
   /**
-   * Splits the specified ParseInfo for a TRIPLE_RANGLE token and returns the ParseInfo for the first angle bracket in it.
-   * @param tripleRAngleInfo - the ParseInfo of the TRIPLE_RANGLE token
-   * @return the ParseInfo of the first angle bracket in the TRIPLE_RANGLE
+   * Splits the specified LexicalPhrase for a TRIPLE_RANGLE token and returns the LexicalPhrase for the first angle bracket in it.
+   * @param tripleRAnglePhrase - the LexicalPhrase of the TRIPLE_RANGLE token
+   * @return the LexicalPhrase of the first angle bracket in the TRIPLE_RANGLE
    * @throws LanguageParseException - if the TRIPLE_RANGLE token takes up multiple lines or is not 3 characters long
    */
-  public static ParseInfo splitTripleRAngleFirst(ParseInfo tripleRAngleInfo) throws LanguageParseException
+  public static LexicalPhrase splitTripleRAngleFirst(LexicalPhrase tripleRAnglePhrase) throws LanguageParseException
   {
-    int line = tripleRAngleInfo.getLine();
-    int startColumn = tripleRAngleInfo.getStartColumn();
-    if (tripleRAngleInfo.getEndColumn() - startColumn != 3)
+    int line = tripleRAnglePhrase.getLine();
+    int startColumn = tripleRAnglePhrase.getStartColumn();
+    if (tripleRAnglePhrase.getEndColumn() - startColumn != 3)
     {
-      throw new LanguageParseException("Found a TRIPLE_RANGLE \">>>\" token which is not 3 characters long", tripleRAngleInfo);
+      throw new LanguageParseException("Found a TRIPLE_RANGLE \">>>\" token which is not 3 characters long", tripleRAnglePhrase);
     }
-    return new ParseInfo(line, tripleRAngleInfo.getLineText(), startColumn, startColumn + 1);
+    return new LexicalPhrase(line, tripleRAnglePhrase.getLineText(), startColumn, startColumn + 1);
   }
 
   /**
-   * Splits the specified ParseInfo for a TRIPLE_RANGLE token and returns the ParseInfo for the first two angle brackets in it.
-   * @param tripleRAngleInfo - the ParseInfo of the TRIPLE_RANGLE token
-   * @return the ParseInfo of the first two angle brackets in the TRIPLE_RANGLE
+   * Splits the specified LexicalPhrase for a TRIPLE_RANGLE token and returns the LexicalPhrase for the first two angle brackets in it.
+   * @param tripleRAnglePhrase - the LexicalPhrase of the TRIPLE_RANGLE token
+   * @return the LexicalPhrase of the first two angle brackets in the TRIPLE_RANGLE
    * @throws LanguageParseException - if the TRIPLE_RANGLE token takes up multiple lines or is not 3 characters long
    */
-  public static ParseInfo splitTripleRAngleFirstTwo(ParseInfo tripleRAngleInfo) throws LanguageParseException
+  public static LexicalPhrase splitTripleRAngleFirstTwo(LexicalPhrase tripleRAnglePhrase) throws LanguageParseException
   {
-    int line = tripleRAngleInfo.getLine();
-    int startColumn = tripleRAngleInfo.getStartColumn();
-    if (tripleRAngleInfo.getEndColumn() - startColumn != 3)
+    int line = tripleRAnglePhrase.getLine();
+    int startColumn = tripleRAnglePhrase.getStartColumn();
+    if (tripleRAnglePhrase.getEndColumn() - startColumn != 3)
     {
-      throw new LanguageParseException("Found a TRIPLE_RANGLE \">>>\" token which is not 3 characters long", tripleRAngleInfo);
+      throw new LanguageParseException("Found a TRIPLE_RANGLE \">>>\" token which is not 3 characters long", tripleRAnglePhrase);
     }
-    return new ParseInfo(line, tripleRAngleInfo.getLineText(), startColumn, startColumn + 2);
+    return new LexicalPhrase(line, tripleRAnglePhrase.getLineText(), startColumn, startColumn + 2);
   }
 
 }

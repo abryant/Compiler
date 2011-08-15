@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.SynchronizedStatementAST;
@@ -46,13 +46,13 @@ public final class SynchronizedStatementRule extends Rule<ParseType>
       ExpressionAST expression = (ExpressionAST) args[1];
       BlockAST block = (BlockAST) args[2];
       return new SynchronizedStatementAST(expression, block,
-                                       ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), block.getParseInfo()));
+                                       LexicalPhrase.combine((LexicalPhrase) args[0], expression.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     if (NO_EXPRESSION_PRODUCTION.equals(production))
     {
       BlockAST block = (BlockAST) args[1];
       return new SynchronizedStatementAST(null, block,
-                                       ParseInfo.combine((ParseInfo) args[0], block.getParseInfo()));
+                                       LexicalPhrase.combine((LexicalPhrase) args[0], block.getLexicalPhrase()));
     }
     throw badTypeList();
   }

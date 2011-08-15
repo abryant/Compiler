@@ -11,7 +11,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.ast.type.WildcardTypeArgumentAST;
@@ -52,11 +52,11 @@ public final class WildcardTypeArgumentDoubleRAngleRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      TypeArgumentAST argument = new WildcardTypeArgumentAST(new PointerTypeAST[0], new PointerTypeAST[0], (ParseInfo) args[0]);
-      ParseInfo doubleRAngleInfo = (ParseInfo) args[1];
-      ParseInfo firstRAngleInfo = ParseUtil.splitDoubleRAngle(doubleRAngleInfo);
-      ParseContainer<TypeArgumentAST> firstContainer = new ParseContainer<TypeArgumentAST>(argument, ParseInfo.combine(argument.getParseInfo(), firstRAngleInfo));
-      return new ParseContainer<ParseContainer<TypeArgumentAST>>(firstContainer, ParseInfo.combine(argument.getParseInfo(), doubleRAngleInfo));
+      TypeArgumentAST argument = new WildcardTypeArgumentAST(new PointerTypeAST[0], new PointerTypeAST[0], (LexicalPhrase) args[0]);
+      LexicalPhrase doubleRAnglePhrase = (LexicalPhrase) args[1];
+      LexicalPhrase firstRAnglePhrase = ParseUtil.splitDoubleRAngle(doubleRAnglePhrase);
+      ParseContainer<TypeArgumentAST> firstContainer = new ParseContainer<TypeArgumentAST>(argument, LexicalPhrase.combine(argument.getLexicalPhrase(), firstRAnglePhrase));
+      return new ParseContainer<ParseContainer<TypeArgumentAST>>(firstContainer, LexicalPhrase.combine(argument.getLexicalPhrase(), doubleRAnglePhrase));
     }
     if (EXTENDS_PRODUCTION.equals(production))
     {
@@ -64,11 +64,11 @@ public final class WildcardTypeArgumentDoubleRAngleRule extends Rule<ParseType>
       ParseContainer<ParseContainer<ParseList<PointerTypeAST>>> oldContainer = (ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>) args[2];
       ParseList<PointerTypeAST> superTypes = oldContainer.getItem().getItem();
       TypeArgumentAST argument = new WildcardTypeArgumentAST(superTypes.toArray(new PointerTypeAST[0]), new PointerTypeAST[0],
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], superTypes.getLexicalPhrase()));
       ParseContainer<TypeArgumentAST> firstContainer = new ParseContainer<TypeArgumentAST>(argument,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], oldContainer.getItem().getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], oldContainer.getItem().getLexicalPhrase()));
       return new ParseContainer<ParseContainer<TypeArgumentAST>>(firstContainer,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], oldContainer.getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], oldContainer.getLexicalPhrase()));
     }
     if (SUPER_PRODUCTION.equals(production))
     {
@@ -76,11 +76,11 @@ public final class WildcardTypeArgumentDoubleRAngleRule extends Rule<ParseType>
       ParseContainer<ParseContainer<ParseList<PointerTypeAST>>> oldContainer = (ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>) args[2];
       ParseList<PointerTypeAST> subTypes = oldContainer.getItem().getItem();
       TypeArgumentAST argument = new WildcardTypeArgumentAST(new PointerTypeAST[0], subTypes.toArray(new PointerTypeAST[0]),
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], subTypes.getLexicalPhrase()));
       ParseContainer<TypeArgumentAST> firstContainer = new ParseContainer<TypeArgumentAST>(argument,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], oldContainer.getItem().getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], oldContainer.getItem().getLexicalPhrase()));
       return new ParseContainer<ParseContainer<TypeArgumentAST>>(firstContainer,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], oldContainer.getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], oldContainer.getLexicalPhrase()));
     }
     if (EXTENDS_SUPER_PRODUCTION.equals(production))
     {
@@ -90,11 +90,11 @@ public final class WildcardTypeArgumentDoubleRAngleRule extends Rule<ParseType>
       ParseContainer<ParseContainer<ParseList<PointerTypeAST>>> oldContainer = (ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>) args[4];
       ParseList<PointerTypeAST> subTypes = oldContainer.getItem().getItem();
       TypeArgumentAST argument = new WildcardTypeArgumentAST(superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], subTypes.getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], superTypes.getLexicalPhrase(), (LexicalPhrase) args[3], subTypes.getLexicalPhrase()));
       ParseContainer<TypeArgumentAST> firstContainer = new ParseContainer<TypeArgumentAST>(argument,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], oldContainer.getItem().getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], superTypes.getLexicalPhrase(), (LexicalPhrase) args[3], oldContainer.getItem().getLexicalPhrase()));
       return new ParseContainer<ParseContainer<TypeArgumentAST>>(firstContainer,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], oldContainer.getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], superTypes.getLexicalPhrase(), (LexicalPhrase) args[3], oldContainer.getLexicalPhrase()));
     }
     if (SUPER_EXTENDS_PRODUCTION.equals(production))
     {
@@ -104,11 +104,11 @@ public final class WildcardTypeArgumentDoubleRAngleRule extends Rule<ParseType>
       ParseContainer<ParseContainer<ParseList<PointerTypeAST>>> oldContainer = (ParseContainer<ParseContainer<ParseList<PointerTypeAST>>>) args[4];
       ParseList<PointerTypeAST> superTypes = oldContainer.getItem().getItem();
       TypeArgumentAST argument = new WildcardTypeArgumentAST(superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], superTypes.getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], subTypes.getLexicalPhrase(), (LexicalPhrase) args[3], superTypes.getLexicalPhrase()));
       ParseContainer<TypeArgumentAST> firstContainer = new ParseContainer<TypeArgumentAST>(argument,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], oldContainer.getItem().getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], subTypes.getLexicalPhrase(), (LexicalPhrase) args[3], oldContainer.getItem().getLexicalPhrase()));
       return new ParseContainer<ParseContainer<TypeArgumentAST>>(firstContainer,
-                   ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], oldContainer.getParseInfo()));
+                   LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], subTypes.getLexicalPhrase(), (LexicalPhrase) args[3], oldContainer.getLexicalPhrase()));
     }
     throw badTypeList();
   }

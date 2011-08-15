@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -17,11 +17,11 @@ public class UnaryMinusExpressionAST extends ExpressionAST
   /**
    * Creates a new UnaryMinusExpressionAST with the specified subExpression
    * @param subExpression - the subExpression of this UnaryMinusExpressionAST
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public UnaryMinusExpressionAST(ExpressionAST subExpression, ParseInfo parseInfo)
+  public UnaryMinusExpressionAST(ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.subExpression = subExpression;
   }
 

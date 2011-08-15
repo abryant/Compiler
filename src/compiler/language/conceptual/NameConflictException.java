@@ -1,6 +1,6 @@
 package compiler.language.conceptual;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 16 Feb 2011
@@ -16,34 +16,34 @@ public class NameConflictException extends Exception
 
   private static final long serialVersionUID = 1L;
 
-  private ParseInfo[] parseInfo;
+  private LexicalPhrase[] lexicalPhrases;
 
   /**
    * Creates a new blank NameConflictException.
-   * @param parseInfo - the parsing information associated with the name conflict
+   * @param lexicalPhrases - the LexicalPhrases associated with the name conflict
    */
-  public NameConflictException(ParseInfo... parseInfo)
+  public NameConflictException(LexicalPhrase... lexicalPhrases)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrases = lexicalPhrases;
   }
 
   /**
-   * Creates a new NameConflictException with the specified message and array of ParseInfo objects.
+   * Creates a new NameConflictException with the specified message and array of LexicalPhrase objects.
    * @param message - the message for this exception
-   * @param parseInfo - the parsing information associated with the name conflict
+   * @param lexicalPhrases - the LexicalPhrases associated with the name conflict
    */
-  public NameConflictException(String message, ParseInfo... parseInfo)
+  public NameConflictException(String message, LexicalPhrase... lexicalPhrases)
   {
     super(message);
-    this.parseInfo = parseInfo;
+    this.lexicalPhrases = lexicalPhrases;
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo[] getParseInfo()
+  public LexicalPhrase[] getLexicalPhrases()
   {
-    return parseInfo;
+    return lexicalPhrases;
   }
 
 }

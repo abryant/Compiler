@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseContainer;
@@ -54,7 +54,7 @@ public final class PointerTypeDoubleRAngleRule extends Rule<ParseType>
     if (QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      type = new PointerTypeAST(qname, qname.getParseInfo());
+      type = new PointerTypeAST(qname, qname.getLexicalPhrase());
     }
     else if (NO_TRAILING_PARAMS_PRODUCTION.equals(production))
     {
@@ -65,10 +65,10 @@ public final class PointerTypeDoubleRAngleRule extends Rule<ParseType>
       throw badTypeList();
     }
 
-    ParseInfo doubleRAngleInfo = (ParseInfo) args[1];
-    ParseInfo firstAngleInfo = ParseUtil.splitDoubleRAngle(doubleRAngleInfo);
-    ParseContainer<PointerTypeAST> firstContainer = new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), firstAngleInfo));
-    return new ParseContainer<ParseContainer<PointerTypeAST>>(firstContainer, ParseInfo.combine(type.getParseInfo(), doubleRAngleInfo));
+    LexicalPhrase doubleRAnglePhrase = (LexicalPhrase) args[1];
+    LexicalPhrase firstAnglePhrase = ParseUtil.splitDoubleRAngle(doubleRAnglePhrase);
+    ParseContainer<PointerTypeAST> firstContainer = new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine(type.getLexicalPhrase(), firstAnglePhrase));
+    return new ParseContainer<ParseContainer<PointerTypeAST>>(firstContainer, LexicalPhrase.combine(type.getLexicalPhrase(), doubleRAnglePhrase));
   }
 
 }

@@ -15,7 +15,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.misc.ModifierTypeAST;
 import compiler.language.parser.ParseType;
@@ -58,35 +58,35 @@ public final class ModifierNotSynchronizedRule extends Rule<ParseType>
   {
     if (STATIC_PRODUCTION.equals(production))
     {
-      return new ModifierAST(ModifierTypeAST.STATIC, (ParseInfo) args[0]);
+      return new ModifierAST(ModifierTypeAST.STATIC, (LexicalPhrase) args[0]);
     }
     if (ABSTRACT_PRODUCTION.equals(production))
     {
-      return new ModifierAST(ModifierTypeAST.ABSTRACT, (ParseInfo) args[0]);
+      return new ModifierAST(ModifierTypeAST.ABSTRACT, (LexicalPhrase) args[0]);
     }
     if (FINAL_PRODUCTION.equals(production))
     {
-      return new ModifierAST(ModifierTypeAST.FINAL, (ParseInfo) args[0]);
+      return new ModifierAST(ModifierTypeAST.FINAL, (LexicalPhrase) args[0]);
     }
     if (MUTABLE_PRODUCTION.equals(production))
     {
-      return new ModifierAST(ModifierTypeAST.MUTABLE, (ParseInfo) args[0]);
+      return new ModifierAST(ModifierTypeAST.MUTABLE, (LexicalPhrase) args[0]);
     }
     if (IMMUTABLE_PRODUCTION.equals(production))
     {
-      return new ModifierAST(ModifierTypeAST.IMMUTABLE, (ParseInfo) args[0]);
+      return new ModifierAST(ModifierTypeAST.IMMUTABLE, (LexicalPhrase) args[0]);
     }
     if (TRANSIENT_PRODUCTION.equals(production))
     {
-      return new ModifierAST(ModifierTypeAST.TRANSIENT, (ParseInfo) args[0]);
+      return new ModifierAST(ModifierTypeAST.TRANSIENT, (LexicalPhrase) args[0]);
     }
     if (VOLATILE_PRODUCTION.equals(production))
     {
-      return new ModifierAST(ModifierTypeAST.VOLATILE, (ParseInfo) args[0]);
+      return new ModifierAST(ModifierTypeAST.VOLATILE, (LexicalPhrase) args[0]);
     }
     if (SEALED_PRODUCTION.equals(production))
     {
-      return new ModifierAST(ModifierTypeAST.SEALED, (ParseInfo) args[0]);
+      return new ModifierAST(ModifierTypeAST.SEALED, (LexicalPhrase) args[0]);
     }
     if (NATIVE_SPECIFIER_PRODUCTION.equals(production) || SINCE_SPECIFIER_PRODUCTION.equals(production))
     {

@@ -51,7 +51,7 @@ public final class TypeListRule extends Rule<ParseType>
       {
         typeArray[i] = elems[i].toType();
       }
-      return new ParseList<TypeAST>(typeArray, elements.getParseInfo());
+      return new ParseList<TypeAST>(typeArray, elements.getLexicalPhrase());
     }
     throw badTypeList();
   }

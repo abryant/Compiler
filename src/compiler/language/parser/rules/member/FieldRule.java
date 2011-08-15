@@ -11,7 +11,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.member.FieldAST;
 import compiler.language.ast.member.MemberHeaderAST;
@@ -53,7 +53,7 @@ public final class FieldRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[2];
       return new FieldAST(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new DeclarationAssigneeAST[0]),
-                       ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[3]));
+                       LexicalPhrase.combine(header.getLexicalPhrase(), type.getLexicalPhrase(), assignees.getLexicalPhrase(), (LexicalPhrase) args[3]));
     }
     if (ASSIGN_PRODUCTION.equals(production))
     {
@@ -63,7 +63,7 @@ public final class FieldRule extends Rule<ParseType>
       ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[2];
       ExpressionAST expression = (ExpressionAST) args[4];
       return new FieldAST(header.getAccessSpecifier(), header.getModifiers(), type, assignees.toArray(new DeclarationAssigneeAST[0]), expression,
-                       ParseInfo.combine(header.getParseInfo(), type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[3], expression.getParseInfo(), (ParseInfo) args[5]));
+                       LexicalPhrase.combine(header.getLexicalPhrase(), type.getLexicalPhrase(), assignees.getLexicalPhrase(), (LexicalPhrase) args[3], expression.getLexicalPhrase(), (LexicalPhrase) args[5]));
     }
     throw badTypeList();
   }

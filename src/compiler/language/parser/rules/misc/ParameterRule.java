@@ -13,7 +13,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.DefaultParameterAST;
 import compiler.language.ast.misc.ModifierAST;
@@ -65,7 +65,7 @@ public final class ParameterRule extends Rule<ParseType>
       ParseList<ModifierAST> modifiers = (ParseList<ModifierAST>) args[0];
       TypeAST type = (TypeAST) args[1];
       NameAST name = (NameAST) args[2];
-      return new SingleParameterAST(modifiers.toArray(new ModifierAST[0]), type, name, ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), name.getParseInfo()));
+      return new SingleParameterAST(modifiers.toArray(new ModifierAST[0]), type, name, LexicalPhrase.combine(modifiers.getLexicalPhrase(), type.getLexicalPhrase(), name.getLexicalPhrase()));
     }
     if (DEFAULT_PRODUCTION.equals(production))
     {
@@ -75,7 +75,7 @@ public final class ParameterRule extends Rule<ParseType>
       NameAST name = (NameAST) args[3];
       ExpressionAST expression = (ExpressionAST) args[5];
       return new DefaultParameterAST(modifiers.toArray(new ModifierAST[0]), type, name, expression,
-                                 ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), (ParseInfo) args[2], name.getParseInfo(), (ParseInfo) args[4], expression.getParseInfo()));
+                                 LexicalPhrase.combine(modifiers.getLexicalPhrase(), type.getLexicalPhrase(), (LexicalPhrase) args[2], name.getLexicalPhrase(), (LexicalPhrase) args[4], expression.getLexicalPhrase()));
     }
     if (VARIADIC_PRODUCTION.equals(production))
     {
@@ -84,14 +84,14 @@ public final class ParameterRule extends Rule<ParseType>
       TypeAST type = (TypeAST) args[1];
       NameAST name = (NameAST) args[3];
       return new VariadicParameterAST(modifiers.toArray(new ModifierAST[0]), type, name,
-                                  ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), (ParseInfo) args[2], name.getParseInfo()));
+                                  LexicalPhrase.combine(modifiers.getLexicalPhrase(), type.getLexicalPhrase(), (LexicalPhrase) args[2], name.getLexicalPhrase()));
     }
     if (SINGLE_NO_MODIFIERS_PRODUCTION.equals(production))
     {
       TypeAST type = (TypeAST) args[0];
       NameAST name = (NameAST) args[1];
       return new SingleParameterAST(new ModifierAST[0], type, name,
-                                ParseInfo.combine(type.getParseInfo(), name.getParseInfo()));
+                                LexicalPhrase.combine(type.getLexicalPhrase(), name.getLexicalPhrase()));
     }
     if (DEFAULT_NO_MODIFIERS_PRODUCTION.equals(production))
     {
@@ -99,14 +99,14 @@ public final class ParameterRule extends Rule<ParseType>
       NameAST name = (NameAST) args[2];
       ExpressionAST expression = (ExpressionAST) args[4];
       return new DefaultParameterAST(new ModifierAST[0], type, name, expression,
-                                 ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(), (ParseInfo) args[3], expression.getParseInfo()));
+                                 LexicalPhrase.combine(type.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase(), (LexicalPhrase) args[3], expression.getLexicalPhrase()));
     }
     if (VARIADIC_NO_MODIFIERS_PRODUCTION.equals(production))
     {
       TypeAST type = (TypeAST) args[0];
       NameAST name = (NameAST) args[2];
       return new VariadicParameterAST(new ModifierAST[0], type, name,
-                                  ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], name.getParseInfo()));
+                                  LexicalPhrase.combine(type.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase()));
     }
     if (MULTIPLE_PRODUCTION.equals(production))
     {

@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseList;
@@ -45,8 +45,8 @@ public final class TypeBoundListRAngleRule extends Rule<ParseType>
     {
       @SuppressWarnings("unchecked")
       ParseContainer<PointerTypeAST> type = (ParseContainer<PointerTypeAST>) args[0];
-      ParseList<PointerTypeAST> list = new ParseList<PointerTypeAST>(type.getItem(), type.getItem().getParseInfo());
-      return new ParseContainer<ParseList<PointerTypeAST>>(list, type.getParseInfo());
+      ParseList<PointerTypeAST> list = new ParseList<PointerTypeAST>(type.getItem(), type.getItem().getLexicalPhrase());
+      return new ParseContainer<ParseList<PointerTypeAST>>(list, type.getLexicalPhrase());
     }
     if (LIST_PRODUCTION.equals(production))
     {
@@ -54,8 +54,8 @@ public final class TypeBoundListRAngleRule extends Rule<ParseType>
       ParseList<PointerTypeAST> list = (ParseList<PointerTypeAST>) args[0];
       @SuppressWarnings("unchecked")
       ParseContainer<PointerTypeAST> type = (ParseContainer<PointerTypeAST>) args[2];
-      list.addLast(type.getItem(), ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], type.getItem().getParseInfo()));
-      return new ParseContainer<ParseList<PointerTypeAST>>(list, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], type.getParseInfo()));
+      list.addLast(type.getItem(), LexicalPhrase.combine(list.getLexicalPhrase(), (LexicalPhrase) args[1], type.getItem().getLexicalPhrase()));
+      return new ParseContainer<ParseList<PointerTypeAST>>(list, LexicalPhrase.combine(list.getLexicalPhrase(), (LexicalPhrase) args[1], type.getLexicalPhrase()));
     }
     throw badTypeList();
   }

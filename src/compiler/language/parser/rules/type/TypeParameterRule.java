@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeParameterAST;
@@ -50,21 +50,21 @@ public final class TypeParameterRule extends Rule<ParseType>
     NameAST name = (NameAST) args[0];
     if (NAME_PRODUCTION.equals(production))
     {
-      return new TypeParameterAST(name, new PointerTypeAST[0], new PointerTypeAST[0], name.getParseInfo());
+      return new TypeParameterAST(name, new PointerTypeAST[0], new PointerTypeAST[0], name.getLexicalPhrase());
     }
     if (EXTENDS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> superTypes = (ParseList<PointerTypeAST>) args[2];
       return new TypeParameterAST(name, superTypes.toArray(new PointerTypeAST[0]), new PointerTypeAST[0],
-                              ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo()));
+                              LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], superTypes.getLexicalPhrase()));
     }
     if (SUPER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> subTypes = (ParseList<PointerTypeAST>) args[2];
       return new TypeParameterAST(name, new PointerTypeAST[0], subTypes.toArray(new PointerTypeAST[0]),
-                              ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo()));
+                              LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], subTypes.getLexicalPhrase()));
     }
     if (EXTENDS_SUPER_PRODUCTION.equals(production))
     {
@@ -73,7 +73,7 @@ public final class TypeParameterRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> subTypes = (ParseList<PointerTypeAST>) args[4];
       return new TypeParameterAST(name, superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
-                              ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], subTypes.getParseInfo()));
+                              LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], superTypes.getLexicalPhrase(), (LexicalPhrase) args[3], subTypes.getLexicalPhrase()));
     }
     if (SUPER_EXTENDS_PRODUCTION.equals(production))
     {
@@ -82,7 +82,7 @@ public final class TypeParameterRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> superTypes = (ParseList<PointerTypeAST>) args[4];
       return new TypeParameterAST(name, superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
-                              ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], superTypes.getParseInfo()));
+                              LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], subTypes.getLexicalPhrase(), (LexicalPhrase) args[3], superTypes.getLexicalPhrase()));
     }
     throw badTypeList();
   }

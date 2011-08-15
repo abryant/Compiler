@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.misc.ArgumentAST;
 import compiler.language.ast.terminal.NameAST;
@@ -49,14 +49,14 @@ public final class EnumConstantRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       NameAST name = (NameAST) args[0];
-      return new EnumConstantAST(name, new ArgumentAST[0], null, name.getParseInfo());
+      return new EnumConstantAST(name, new ArgumentAST[0], null, name.getLexicalPhrase());
     }
     if (ARGUMENTS_PRODUCTION.equals(production))
     {
       NameAST name = (NameAST) args[0];
       @SuppressWarnings("unchecked")
       ParseList<ArgumentAST> arguments = (ParseList<ArgumentAST>) args[1];
-      return new EnumConstantAST(name, arguments.toArray(new ArgumentAST[0]), null, ParseInfo.combine(name.getParseInfo(), arguments.getParseInfo()));
+      return new EnumConstantAST(name, arguments.toArray(new ArgumentAST[0]), null, LexicalPhrase.combine(name.getLexicalPhrase(), arguments.getLexicalPhrase()));
     }
     if (MEMBERS_PRODUCTION.equals(production))
     {
@@ -64,7 +64,7 @@ public final class EnumConstantRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<MemberAST> members = (ParseList<MemberAST>) args[2];
       return new EnumConstantAST(name, new ArgumentAST[0], members.toArray(new MemberAST[0]),
-                              ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], members.getParseInfo(), (ParseInfo) args[3]));
+                              LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], members.getLexicalPhrase(), (LexicalPhrase) args[3]));
     }
     if (ARGUMENTS_MEMBERS_PRODUCTION.equals(production))
     {
@@ -74,7 +74,7 @@ public final class EnumConstantRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<MemberAST> members = (ParseList<MemberAST>) args[3];
       return new EnumConstantAST(name, arguments.toArray(new ArgumentAST[0]), members.toArray(new MemberAST[0]),
-                              ParseInfo.combine(name.getParseInfo(), arguments.getParseInfo(), (ParseInfo) args[2], members.getParseInfo(), (ParseInfo) args[4]));
+                              LexicalPhrase.combine(name.getLexicalPhrase(), arguments.getLexicalPhrase(), (LexicalPhrase) args[2], members.getLexicalPhrase(), (LexicalPhrase) args[4]));
     }
     throw badTypeList();
   }

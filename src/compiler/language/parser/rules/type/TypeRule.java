@@ -46,7 +46,7 @@ public final class TypeRule extends Rule<ParseType>
     {
       // create a new PointerTypeAST from the QNameAST
       QNameAST qname = (QNameAST) args[0];
-      return new PointerTypeAST(qname, qname.getParseInfo());
+      return new PointerTypeAST(qname, qname.getLexicalPhrase());
     }
     throw badTypeList();
   }

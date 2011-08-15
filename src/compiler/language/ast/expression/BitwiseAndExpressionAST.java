@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -12,14 +12,14 @@ import compiler.language.ast.ParseInfo;
 public class BitwiseAndExpressionAST extends LeftRecursiveExpressionAST
 {
 
-  public BitwiseAndExpressionAST(ExpressionAST firstExpression, ExpressionAST secondExpression, ParseInfo parseInfo)
+  public BitwiseAndExpressionAST(ExpressionAST firstExpression, ExpressionAST secondExpression, LexicalPhrase lexicalPhrase)
   {
-    super(firstExpression, secondExpression, parseInfo);
+    super(firstExpression, secondExpression, lexicalPhrase);
   }
 
-  public BitwiseAndExpressionAST(BitwiseAndExpressionAST startExpression, ExpressionAST subExpression, ParseInfo parseInfo)
+  public BitwiseAndExpressionAST(BitwiseAndExpressionAST startExpression, ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(startExpression, subExpression, parseInfo);
+    super(startExpression, subExpression, lexicalPhrase);
   }
 
   /**

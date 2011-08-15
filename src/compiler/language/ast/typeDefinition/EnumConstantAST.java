@@ -1,6 +1,6 @@
 package compiler.language.ast.typeDefinition;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.misc.ArgumentAST;
 import compiler.language.ast.terminal.NameAST;
@@ -15,7 +15,7 @@ import compiler.language.ast.terminal.NameAST;
 public class EnumConstantAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private NameAST name;
   private ArgumentAST[] arguments;
@@ -26,11 +26,11 @@ public class EnumConstantAST
    * @param name - the name of the constant
    * @param arguments - the arguments to be passed into the enum's constructor
    * @param members - the list of members of this enum constant, or null if there is no body for it
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public EnumConstantAST(NameAST name, ArgumentAST[] arguments, MemberAST[] members, ParseInfo parseInfo)
+  public EnumConstantAST(NameAST name, ArgumentAST[] arguments, MemberAST[] members, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.name = name;
     this.arguments = arguments;
     this.members = members;
@@ -61,11 +61,11 @@ public class EnumConstantAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

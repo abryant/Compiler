@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -18,11 +18,11 @@ public class ReturnStatementAST extends StatementAST
   /**
    * Creates a new ReturnStatementAST to return the result of the specified expression.
    * @param expression - the expression to return
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ReturnStatementAST(ExpressionAST expression, ParseInfo parseInfo)
+  public ReturnStatementAST(ExpressionAST expression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.expression = expression;
   }
 

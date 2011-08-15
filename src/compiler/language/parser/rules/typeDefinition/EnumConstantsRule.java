@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.typeDefinition.EnumConstantAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -52,7 +52,7 @@ public final class EnumConstantsRule extends Rule<ParseType>
     {
       @SuppressWarnings("unchecked")
       ParseList<EnumConstantAST> list = (ParseList<EnumConstantAST>) args[0];
-      list.setParseInfo(ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[2]));
+      list.setLexicalPhrase(LexicalPhrase.combine(list.getLexicalPhrase(), (LexicalPhrase) args[2]));
       return list;
     }
     throw badTypeList();

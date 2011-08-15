@@ -2,7 +2,7 @@ package compiler.language.parser;
 
 import parser.ParseException;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 10 Aug 2010
@@ -17,37 +17,37 @@ public class LanguageParseException extends ParseException
 
   private static final long serialVersionUID = 1L;
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   /**
-   * Creates a new LanguageParseException with the specified message and ParseInfo
+   * Creates a new LanguageParseException with the specified message and LexicalPhrase
    * @param message - the message to indicate the cause of the parsing error
-   * @param parseInfo - the ParseInfo to indicate where the parsing error took place
+   * @param lexicalPhrase - the LexicalPhrase to indicate where the parsing error took place
    */
-  public LanguageParseException(String message, ParseInfo parseInfo)
+  public LanguageParseException(String message, LexicalPhrase lexicalPhrase)
   {
     super(message);
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
   }
 
   /**
-   * Creates a new LanguageParseException with the specified message, cause, and ParseInfo
+   * Creates a new LanguageParseException with the specified message, cause, and LexicalPhrase
    * @param message - the message to indicate the cause of the parsing error
    * @param cause - the original cause of this LanguageParseException
-   * @param parseInfo - the ParseInfo to indicate where the parsing error took place
+   * @param lexicalPhrase - the LexicalPhrase to indicate where the parsing error took place
    */
-  public LanguageParseException(String message, Throwable cause, ParseInfo parseInfo)
+  public LanguageParseException(String message, Throwable cause, LexicalPhrase lexicalPhrase)
   {
     super(message, cause);
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
 

@@ -12,7 +12,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.expression.ShiftExpressionAST;
@@ -93,7 +93,7 @@ public final class ShiftExpressionRule extends Rule<ParseType>
     else if (QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production)        || QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      firstExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       separator = ShiftExpressionTypeAST.ARITHMETIC_RIGHT_SHIFT;
     }
     else if (NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production) || NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
@@ -110,7 +110,7 @@ public final class ShiftExpressionRule extends Rule<ParseType>
     else if (QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)           || QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      firstExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       separator = ShiftExpressionTypeAST.LOGICAL_RIGHT_SHIFT;
     }
     else if (NESTED_QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)    || NESTED_QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
@@ -131,10 +131,10 @@ public final class ShiftExpressionRule extends Rule<ParseType>
       // continue the existing ShiftExpressionAST if we've already started one
       ShiftExpressionAST startExpression = (ShiftExpressionAST) args[0];
       return new ShiftExpressionAST(startExpression, separator, secondExpression,
-                                 ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+                                 LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     return new ShiftExpressionAST(firstExpression, separator, secondExpression,
-                               ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+                               LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
   }
 
 }

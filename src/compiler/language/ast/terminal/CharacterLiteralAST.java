@@ -1,6 +1,6 @@
 package compiler.language.ast.terminal;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 11 Aug 2010
@@ -12,7 +12,7 @@ import compiler.language.ast.ParseInfo;
 public class CharacterLiteralAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private char character;
   private String stringRepresentation;
@@ -21,21 +21,21 @@ public class CharacterLiteralAST
    * Creates a new character literal with the specified string representation.
    * @param character - the character that this literal represents
    * @param stringRepresentation - the string representation of this character literal, without quotes
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public CharacterLiteralAST(char character, String stringRepresentation, ParseInfo parseInfo)
+  public CharacterLiteralAST(char character, String stringRepresentation, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.character = character;
     this.stringRepresentation = stringRepresentation;
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

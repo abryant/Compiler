@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 
 /*
@@ -18,11 +18,11 @@ public class FallthroughStatementAST extends StatementAST
   /**
    * Creates a new FallthroughStatementAST to fall through the specified number of levels of switch statements.
    * @param fallthroughLevels - the number of levels of switch statements to fallthrough, or null if it was not specified
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public FallthroughStatementAST(IntegerLiteralAST fallthroughLevels, ParseInfo parseInfo)
+  public FallthroughStatementAST(IntegerLiteralAST fallthroughLevels, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.fallthroughLevels = fallthroughLevels;
   }
 

@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.statement.FallthroughStatementAST;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.parser.ParseType;
@@ -42,12 +42,12 @@ public final class FallthroughStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new FallthroughStatementAST(null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new FallthroughStatementAST(null, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     if (NUMBER_PRODUCTION.equals(production))
     {
       IntegerLiteralAST fallthroughLevels = (IntegerLiteralAST) args[1];
-      return new FallthroughStatementAST(fallthroughLevels, ParseInfo.combine((ParseInfo) args[0], fallthroughLevels.getParseInfo(), (ParseInfo) args[2]));
+      return new FallthroughStatementAST(fallthroughLevels, LexicalPhrase.combine((LexicalPhrase) args[0], fallthroughLevels.getLexicalPhrase(), (LexicalPhrase) args[2]));
     }
     throw badTypeList();
   }

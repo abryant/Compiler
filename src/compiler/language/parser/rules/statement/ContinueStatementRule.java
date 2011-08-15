@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.statement.ContinueStatementAST;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.parser.ParseType;
@@ -41,12 +41,12 @@ public final class ContinueStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new ContinueStatementAST(null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new ContinueStatementAST(null, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     if (NUMBER_PRODUCTION.equals(production))
     {
       IntegerLiteralAST continueLevels = (IntegerLiteralAST) args[1];
-      return new ContinueStatementAST(continueLevels, ParseInfo.combine((ParseInfo) args[0], continueLevels.getParseInfo(), (ParseInfo) args[2]));
+      return new ContinueStatementAST(continueLevels, LexicalPhrase.combine((LexicalPhrase) args[0], continueLevels.getLexicalPhrase(), (LexicalPhrase) args[2]));
     }
     throw badTypeList();
   }

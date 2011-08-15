@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.TypeAST;
 
@@ -23,11 +23,11 @@ public class SingleParameterAST extends ParameterAST
    * @param modifiers - the modifiers of this parameter
    * @param type - the type of this parameter
    * @param name - the name of this parameter
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public SingleParameterAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ParseInfo parseInfo)
+  public SingleParameterAST(ModifierAST[] modifiers, TypeAST type, NameAST name, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.modifiers = modifiers;
     this.type = type;
     this.name = name;

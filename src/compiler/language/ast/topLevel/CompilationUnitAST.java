@@ -1,6 +1,6 @@
 package compiler.language.ast.topLevel;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -14,7 +14,7 @@ import compiler.language.ast.ParseInfo;
 public class CompilationUnitAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private PackageDeclarationAST packageDeclaration;
   private ImportDeclarationAST[] imports;
@@ -25,11 +25,11 @@ public class CompilationUnitAST
    * @param packageDeclaration - the package declaration of the compilation unit
    * @param imports - the list of imports of the compilation unit
    * @param types - the list of types declared by the compilation unit
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public CompilationUnitAST(PackageDeclarationAST packageDeclaration, ImportDeclarationAST[] imports, TypeDefinitionAST[] types, ParseInfo parseInfo)
+  public CompilationUnitAST(PackageDeclarationAST packageDeclaration, ImportDeclarationAST[] imports, TypeDefinitionAST[] types, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.packageDeclaration = packageDeclaration;
     this.imports = imports;
     this.types = types;
@@ -60,11 +60,11 @@ public class CompilationUnitAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

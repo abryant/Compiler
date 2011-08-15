@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.misc.ModifierTypeAST;
 import compiler.language.parser.ParseType;
@@ -44,7 +44,7 @@ public final class ModifierRule extends Rule<ParseType>
     }
     if (SYNCHRONIZED_PRODUCTION.equals(production))
     {
-      return new ModifierAST(ModifierTypeAST.SYNCHRONIZED, (ParseInfo) args[0]);
+      return new ModifierAST(ModifierTypeAST.SYNCHRONIZED, (LexicalPhrase) args[0]);
     }
     throw badTypeList();
   }

@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -18,11 +18,11 @@ public class ThrowStatementAST extends StatementAST
   /**
    * Creates a new ThrowStatementAST to throw the specified ExpressionAST.
    * @param expression - the expression to throw
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ThrowStatementAST(ExpressionAST expression, ParseInfo parseInfo)
+  public ThrowStatementAST(ExpressionAST expression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.expression = expression;
   }
 

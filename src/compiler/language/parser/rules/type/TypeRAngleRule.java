@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseContainer;
@@ -49,20 +49,20 @@ public final class TypeRAngleRule extends Rule<ParseType>
     if (PRODUCTION.equals(production) || TUPLE_TYPE_PRODUCTION.equals(production))
     {
       TypeAST type = (TypeAST) args[0];
-      return new ParseContainer<TypeAST>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
+      return new ParseContainer<TypeAST>(type, LexicalPhrase.combine(type.getLexicalPhrase(), (LexicalPhrase) args[1]));
     }
     if (POINTER_TYPE_PRODUCTION.equals(production))
     {
       // change the ParseContainer<PointerTypeAST> for a ParseContainer<TypeAST>
       @SuppressWarnings("unchecked")
       ParseContainer<PointerTypeAST> oldContainer = (ParseContainer<PointerTypeAST>) args[0];
-      return new ParseContainer<TypeAST>(oldContainer.getItem(), oldContainer.getParseInfo());
+      return new ParseContainer<TypeAST>(oldContainer.getItem(), oldContainer.getLexicalPhrase());
     }
     if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
       TypeAST type = element.toType();
-      return new ParseContainer<TypeAST>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
+      return new ParseContainer<TypeAST>(type, LexicalPhrase.combine(type.getLexicalPhrase(), (LexicalPhrase) args[1]));
     }
     throw badTypeList();
   }

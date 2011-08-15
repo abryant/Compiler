@@ -1,6 +1,6 @@
 package compiler.language.ast.member;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.misc.ParameterListAST;
 import compiler.language.ast.statement.BlockAST;
@@ -34,11 +34,11 @@ public class ConstructorAST extends MemberAST
    * @param parameters - the constructor's parameters
    * @param thrownTypes - the list of types that the constructor is declared to throw
    * @param block - the block that will be executed when calling the constructor
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ConstructorAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, NameAST name, ParameterListAST parameters, PointerTypeAST[] thrownTypes, BlockAST block, ParseInfo parseInfo)
+  public ConstructorAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, NameAST name, ParameterListAST parameters, PointerTypeAST[] thrownTypes, BlockAST block, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
     this.name = name;

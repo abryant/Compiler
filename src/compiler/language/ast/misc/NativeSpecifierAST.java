@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.StringLiteralAST;
 
 
@@ -20,11 +20,11 @@ public class NativeSpecifierAST extends ModifierAST
   /**
    * Creates a new native specification with the specified native name.
    * @param nativeName - the native name associated with this NativeSpecifierAST
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public NativeSpecifierAST(StringLiteralAST nativeName, ParseInfo parseInfo)
+  public NativeSpecifierAST(StringLiteralAST nativeName, LexicalPhrase lexicalPhrase)
   {
-    super(ModifierTypeAST.NATIVE_SPECIFIER, parseInfo);
+    super(ModifierTypeAST.NATIVE_SPECIFIER, lexicalPhrase);
     this.nativeName = nativeName;
   }
 

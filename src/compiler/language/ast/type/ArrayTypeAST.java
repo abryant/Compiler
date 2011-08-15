@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 8 Aug 2010
@@ -19,11 +19,11 @@ public class ArrayTypeAST extends TypeAST
    * Creates a new ArrayTypeAST with the specified base type
    * @param baseType - the base type of the array
    * @param isImmutable - true if this array type should be immutable, false otherwise
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ArrayTypeAST(TypeAST baseType, boolean isImmutable, ParseInfo parseInfo)
+  public ArrayTypeAST(TypeAST baseType, boolean isImmutable, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.baseType = baseType;
     this.isImmutable = isImmutable;
   }

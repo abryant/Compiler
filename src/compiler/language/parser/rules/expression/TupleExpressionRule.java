@@ -12,7 +12,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.expression.RelationalExpressionAST;
@@ -85,67 +85,67 @@ public final class TupleExpressionRule extends Rule<ParseType>
       {
         expressions[i + 1] = elements[i].toExpression();
       }
-      return new TupleExpressionAST(expressions, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], qnameList.getParseInfo()));
+      return new TupleExpressionAST(expressions, LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], qnameList.getLexicalPhrase()));
     }
 
     // the rest of the productions are in the form: X COMMA TUPLE_EXPRESSION,
-    // so find the expressions and ParseInfo based on the production, and share
+    // so find the expressions and LexicalPhrase based on the production, and share
     // code for combining it with the rest of the production
     ExpressionAST firstExpression;
     ExpressionAST secondExpression;
-    ParseInfo finalParseInfo;
+    LexicalPhrase finalLexicalPhrase;
     if (QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      firstExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       secondExpression = (ExpressionAST) args[2];
-      finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo());
+      finalLexicalPhrase = LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase());
     }
     else if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
       firstExpression = element.toExpression();
       secondExpression = (ExpressionAST) args[2];
-      finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo());
+      finalLexicalPhrase = LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase());
     }
     else if (INLINE_IF_TUPLE_PRODUCTION.equals(production))
     {
       firstExpression = (ExpressionAST) args[0];
       secondExpression = (ExpressionAST) args[2];
-      finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo());
+      finalLexicalPhrase = LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase());
     }
     else if (QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
       QNameAST firstQName = (QNameAST) args[0];
       QNameAST secondQName = (QNameAST) args[2];
-      ExpressionAST leftExpression = new FieldAccessExpressionAST(firstQName, firstQName.getParseInfo());
-      ExpressionAST rightExpression = new FieldAccessExpressionAST(secondQName, secondQName.getParseInfo());
+      ExpressionAST leftExpression = new FieldAccessExpressionAST(firstQName, firstQName.getLexicalPhrase());
+      ExpressionAST rightExpression = new FieldAccessExpressionAST(secondQName, secondQName.getLexicalPhrase());
       firstExpression = new RelationalExpressionAST(leftExpression, RelationalExpressionTypeAST.LESS_THAN, rightExpression,
-                              ParseInfo.combine(leftExpression.getParseInfo(), (ParseInfo) args[1], rightExpression.getParseInfo()));
+                              LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
       secondExpression = (ExpressionAST) args[4];
-      finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[3], secondExpression.getParseInfo());
+      finalLexicalPhrase = LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[3], secondExpression.getLexicalPhrase());
     }
     else if (QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
       QNameElementAST element = (QNameElementAST) args[2];
-      ExpressionAST leftExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      ExpressionAST leftExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       ExpressionAST rightExpression = element.toExpression();
       firstExpression = new RelationalExpressionAST(leftExpression, RelationalExpressionTypeAST.LESS_THAN, rightExpression,
-                              ParseInfo.combine(leftExpression.getParseInfo(), (ParseInfo) args[1], rightExpression.getParseInfo()));
+                              LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
       secondExpression = (ExpressionAST) args[4];
-      finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[3], secondExpression.getParseInfo());
+      finalLexicalPhrase = LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[3], secondExpression.getLexicalPhrase());
     }
     else if (NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
       QNameAST qname = (QNameAST) args[2];
       ExpressionAST leftExpression = element.toExpression();
-      ExpressionAST rightExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      ExpressionAST rightExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       firstExpression = new RelationalExpressionAST(leftExpression, RelationalExpressionTypeAST.LESS_THAN, rightExpression,
-                              ParseInfo.combine(leftExpression.getParseInfo(), (ParseInfo) args[1], rightExpression.getParseInfo()));
+                              LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
       secondExpression = (ExpressionAST) args[4];
-      finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[3], secondExpression.getParseInfo());
+      finalLexicalPhrase = LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[3], secondExpression.getLexicalPhrase());
     }
     else if (NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
@@ -154,9 +154,9 @@ public final class TupleExpressionRule extends Rule<ParseType>
       ExpressionAST leftExpression = firstElement.toExpression();
       ExpressionAST rightExpression = secondElement.toExpression();
       firstExpression = new RelationalExpressionAST(leftExpression, RelationalExpressionTypeAST.LESS_THAN, rightExpression,
-                              ParseInfo.combine(leftExpression.getParseInfo(), (ParseInfo) args[1], rightExpression.getParseInfo()));
+                              LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
       secondExpression = (ExpressionAST) args[4];
-      finalParseInfo = ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[3], secondExpression.getParseInfo());
+      finalLexicalPhrase = LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[3], secondExpression.getLexicalPhrase());
     }
     else
     {
@@ -170,10 +170,10 @@ public final class TupleExpressionRule extends Rule<ParseType>
       ExpressionAST[] newExpressions = new ExpressionAST[oldExpressions.length + 1];
       System.arraycopy(oldExpressions, 0, newExpressions, 1, oldExpressions.length);
       newExpressions[0] = firstExpression;
-      return new TupleExpressionAST(newExpressions, finalParseInfo);
+      return new TupleExpressionAST(newExpressions, finalLexicalPhrase);
     }
     ExpressionAST[] expressions = new ExpressionAST[] {firstExpression, secondExpression};
-    return new TupleExpressionAST(expressions, finalParseInfo);
+    return new TupleExpressionAST(expressions, finalLexicalPhrase);
   }
 
 }

@@ -16,7 +16,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.member.AccessSpecifierAST;
 import compiler.language.ast.member.MemberHeaderAST;
@@ -77,7 +77,7 @@ public final class PropertyRule extends Rule<ParseType>
     MemberHeaderAST header = (MemberHeaderAST) args[0];
     if (header.getAccessSpecifier() != null)
     {
-      throw new LanguageParseException("Access Specifiers are not allowed at the start of a property", header.getAccessSpecifier().getParseInfo());
+      throw new LanguageParseException("Access Specifiers are not allowed at the start of a property", header.getAccessSpecifier().getLexicalPhrase());
     }
     ModifierAST[] modifiers = header.getModifiers();
     if (PRODUCTION.equals(production))
@@ -85,7 +85,7 @@ public final class PropertyRule extends Rule<ParseType>
       TypeAST type = (TypeAST) args[2];
       NameAST name = (NameAST) args[3];
       return new PropertyAST(modifiers, type, name, null, null, null, null, null,
-                             ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(), (ParseInfo) args[4]));
+                             LexicalPhrase.combine(header.getLexicalPhrase(), (LexicalPhrase) args[1], type.getLexicalPhrase(), name.getLexicalPhrase(), (LexicalPhrase) args[4]));
     }
     if (RETRIEVE_PRODUCTION.equals(production))
     {
@@ -93,13 +93,13 @@ public final class PropertyRule extends Rule<ParseType>
       NameAST name = (NameAST) args[3];
       AccessSpecifierAST retrieveAccess = (AccessSpecifierAST) args[4];
       BlockAST retrieveBlock = (BlockAST) args[6];
-      ParseInfo info = ParseInfo.combine(header.getParseInfo(),
-                                         (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(),
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
-                                         (ParseInfo) args[5],
-                                         retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
-                                         (ParseInfo) args[7]);
-      return new PropertyAST(modifiers, type, name, null, null, null, retrieveAccess, retrieveBlock, info);
+      LexicalPhrase phrase = LexicalPhrase.combine(header.getLexicalPhrase(),
+                                         (LexicalPhrase) args[1], type.getLexicalPhrase(), name.getLexicalPhrase(),
+                                         retrieveAccess != null ? retrieveAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[5],
+                                         retrieveBlock != null ? retrieveBlock.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[7]);
+      return new PropertyAST(modifiers, type, name, null, null, null, retrieveAccess, retrieveBlock, phrase);
     }
     if (ASSIGN_PRODUCTION.equals(production))
     {
@@ -107,13 +107,13 @@ public final class PropertyRule extends Rule<ParseType>
       NameAST name = (NameAST) args[3];
       AccessSpecifierAST assignAccess = (AccessSpecifierAST) args[4];
       BlockAST assignBlock = (BlockAST) args[6];
-      ParseInfo info = ParseInfo.combine(header.getParseInfo(),
-                                         (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(),
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
-                                         (ParseInfo) args[5],
-                                         assignBlock != null ? assignBlock.getParseInfo() : null,
-                                         (ParseInfo) args[7]);
-      return new PropertyAST(modifiers, type, name, null, assignAccess, assignBlock, null, null, info);
+      LexicalPhrase phrase = LexicalPhrase.combine(header.getLexicalPhrase(),
+                                         (LexicalPhrase) args[1], type.getLexicalPhrase(), name.getLexicalPhrase(),
+                                         assignAccess != null ? assignAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[5],
+                                         assignBlock != null ? assignBlock.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[7]);
+      return new PropertyAST(modifiers, type, name, null, assignAccess, assignBlock, null, null, phrase);
     }
     if (ASSIGN_RETRIEVE_PRODUCTION.equals(production))
     {
@@ -123,16 +123,16 @@ public final class PropertyRule extends Rule<ParseType>
       BlockAST assignBlock = (BlockAST) args[6];
       AccessSpecifierAST retrieveAccess = (AccessSpecifierAST) args[7];
       BlockAST retrieveBlock = (BlockAST) args[9];
-      ParseInfo info = ParseInfo.combine(header.getParseInfo(),
-                                         (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(),
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
-                                         (ParseInfo) args[5],
-                                         assignBlock != null ? assignBlock.getParseInfo() : null,
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
-                                         (ParseInfo) args[8],
-                                         retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
-                                         (ParseInfo) args[10]);
-      return new PropertyAST(modifiers, type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      LexicalPhrase phrase = LexicalPhrase.combine(header.getLexicalPhrase(),
+                                         (LexicalPhrase) args[1], type.getLexicalPhrase(), name.getLexicalPhrase(),
+                                         assignAccess != null ? assignAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[5],
+                                         assignBlock != null ? assignBlock.getLexicalPhrase() : null,
+                                         retrieveAccess != null ? retrieveAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[8],
+                                         retrieveBlock != null ? retrieveBlock.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[10]);
+      return new PropertyAST(modifiers, type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, phrase);
     }
     if (RETRIEVE_ASSIGN_PRODUCTION.equals(production))
     {
@@ -142,28 +142,28 @@ public final class PropertyRule extends Rule<ParseType>
       BlockAST retrieveBlock = (BlockAST) args[6];
       AccessSpecifierAST assignAccess = (AccessSpecifierAST) args[7];
       BlockAST assignBlock = (BlockAST) args[9];
-      ParseInfo info = ParseInfo.combine(header.getParseInfo(),
-                                         (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(),
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
-                                         (ParseInfo) args[5],
-                                         retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
-                                         (ParseInfo) args[8],
-                                         assignBlock != null ? assignBlock.getParseInfo() : null,
-                                         (ParseInfo) args[10]);
-      return new PropertyAST(modifiers, type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      LexicalPhrase phrase = LexicalPhrase.combine(header.getLexicalPhrase(),
+                                         (LexicalPhrase) args[1], type.getLexicalPhrase(), name.getLexicalPhrase(),
+                                         retrieveAccess != null ? retrieveAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[5],
+                                         retrieveBlock != null ? retrieveBlock.getLexicalPhrase() : null,
+                                         assignAccess != null ? assignAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[8],
+                                         assignBlock != null ? assignBlock.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[10]);
+      return new PropertyAST(modifiers, type, name, null, assignAccess, assignBlock, retrieveAccess, retrieveBlock, phrase);
     }
     if (EQUALS_PRODUCTION.equals(production))
     {
       TypeAST type = (TypeAST) args[2];
       NameAST name = (NameAST) args[3];
       ExpressionAST expression = (ExpressionAST) args[5];
-      ParseInfo info = ParseInfo.combine(header.getParseInfo(),
-                                         (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(),
-                                         (ParseInfo) args[4],
-                                         expression.getParseInfo(),
-                                         (ParseInfo) args[6]);
-      return new PropertyAST(modifiers, type, name, expression, null, null, null, null, info);
+      LexicalPhrase phrase = LexicalPhrase.combine(header.getLexicalPhrase(),
+                                         (LexicalPhrase) args[1], type.getLexicalPhrase(), name.getLexicalPhrase(),
+                                         (LexicalPhrase) args[4],
+                                         expression.getLexicalPhrase(),
+                                         (LexicalPhrase) args[6]);
+      return new PropertyAST(modifiers, type, name, expression, null, null, null, null, phrase);
     }
     if (EQUALS_RETRIEVE_PRODUCTION.equals(production))
     {
@@ -172,15 +172,15 @@ public final class PropertyRule extends Rule<ParseType>
       ExpressionAST expression = (ExpressionAST) args[5];
       AccessSpecifierAST retrieveAccess = (AccessSpecifierAST) args[6];
       BlockAST retrieveBlock = (BlockAST) args[8];
-      ParseInfo info = ParseInfo.combine(header.getParseInfo(),
-                                         (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(),
-                                         (ParseInfo) args[4],
-                                         expression.getParseInfo(),
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
-                                         (ParseInfo) args[7],
-                                         retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
-                                         (ParseInfo) args[9]);
-      return new PropertyAST(modifiers, type, name, expression, null, null, retrieveAccess, retrieveBlock, info);
+      LexicalPhrase phrase = LexicalPhrase.combine(header.getLexicalPhrase(),
+                                         (LexicalPhrase) args[1], type.getLexicalPhrase(), name.getLexicalPhrase(),
+                                         (LexicalPhrase) args[4],
+                                         expression.getLexicalPhrase(),
+                                         retrieveAccess != null ? retrieveAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[7],
+                                         retrieveBlock != null ? retrieveBlock.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[9]);
+      return new PropertyAST(modifiers, type, name, expression, null, null, retrieveAccess, retrieveBlock, phrase);
     }
     if (EQUALS_ASSIGN_PRODUCTION.equals(production))
     {
@@ -189,15 +189,15 @@ public final class PropertyRule extends Rule<ParseType>
       ExpressionAST expression = (ExpressionAST) args[5];
       AccessSpecifierAST assignAccess = (AccessSpecifierAST) args[6];
       BlockAST assignBlock = (BlockAST) args[8];
-      ParseInfo info = ParseInfo.combine(header.getParseInfo(),
-                                         (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(),
-                                         (ParseInfo) args[4],
-                                         expression.getParseInfo(),
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
-                                         (ParseInfo) args[7],
-                                         assignBlock != null ? assignBlock.getParseInfo() : null,
-                                         (ParseInfo) args[9]);
-      return new PropertyAST(modifiers, type, name, expression, assignAccess, assignBlock, null, null, info);
+      LexicalPhrase phrase = LexicalPhrase.combine(header.getLexicalPhrase(),
+                                         (LexicalPhrase) args[1], type.getLexicalPhrase(), name.getLexicalPhrase(),
+                                         (LexicalPhrase) args[4],
+                                         expression.getLexicalPhrase(),
+                                         assignAccess != null ? assignAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[7],
+                                         assignBlock != null ? assignBlock.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[9]);
+      return new PropertyAST(modifiers, type, name, expression, assignAccess, assignBlock, null, null, phrase);
     }
     if (EQUALS_ASSIGN_RETRIEVE_PRODUCTION.equals(production))
     {
@@ -208,18 +208,18 @@ public final class PropertyRule extends Rule<ParseType>
       BlockAST assignBlock = (BlockAST) args[8];
       AccessSpecifierAST retrieveAccess = (AccessSpecifierAST) args[9];
       BlockAST retrieveBlock = (BlockAST) args[11];
-      ParseInfo info = ParseInfo.combine(header.getParseInfo(),
-                                         (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(),
-                                         (ParseInfo) args[4],
-                                         expression.getParseInfo(),
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
-                                         (ParseInfo) args[7],
-                                         assignBlock != null ? assignBlock.getParseInfo() : null,
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
-                                         (ParseInfo) args[10],
-                                         retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
-                                         (ParseInfo) args[12]);
-      return new PropertyAST(modifiers, type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      LexicalPhrase phrase = LexicalPhrase.combine(header.getLexicalPhrase(),
+                                         (LexicalPhrase) args[1], type.getLexicalPhrase(), name.getLexicalPhrase(),
+                                         (LexicalPhrase) args[4],
+                                         expression.getLexicalPhrase(),
+                                         assignAccess != null ? assignAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[7],
+                                         assignBlock != null ? assignBlock.getLexicalPhrase() : null,
+                                         retrieveAccess != null ? retrieveAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[10],
+                                         retrieveBlock != null ? retrieveBlock.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[12]);
+      return new PropertyAST(modifiers, type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, phrase);
     }
     if (EQUALS_RETRIEVE_ASSIGN_PRODUCTION.equals(production))
     {
@@ -230,18 +230,18 @@ public final class PropertyRule extends Rule<ParseType>
       BlockAST retrieveBlock = (BlockAST) args[8];
       AccessSpecifierAST assignAccess = (AccessSpecifierAST) args[9];
       BlockAST assignBlock = (BlockAST) args[11];
-      ParseInfo info = ParseInfo.combine(header.getParseInfo(),
-                                         (ParseInfo) args[1], type.getParseInfo(), name.getParseInfo(),
-                                         (ParseInfo) args[4],
-                                         expression.getParseInfo(),
-                                         retrieveAccess != null ? retrieveAccess.getParseInfo() : null,
-                                         (ParseInfo) args[7],
-                                         retrieveBlock != null ? retrieveBlock.getParseInfo() : null,
-                                         assignAccess != null ? assignAccess.getParseInfo() : null,
-                                         (ParseInfo) args[10],
-                                         assignBlock != null ? assignBlock.getParseInfo() : null,
-                                         (ParseInfo) args[12]);
-      return new PropertyAST(modifiers, type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, info);
+      LexicalPhrase phrase = LexicalPhrase.combine(header.getLexicalPhrase(),
+                                         (LexicalPhrase) args[1], type.getLexicalPhrase(), name.getLexicalPhrase(),
+                                         (LexicalPhrase) args[4],
+                                         expression.getLexicalPhrase(),
+                                         retrieveAccess != null ? retrieveAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[7],
+                                         retrieveBlock != null ? retrieveBlock.getLexicalPhrase() : null,
+                                         assignAccess != null ? assignAccess.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[10],
+                                         assignBlock != null ? assignBlock.getLexicalPhrase() : null,
+                                         (LexicalPhrase) args[12]);
+      return new PropertyAST(modifiers, type, name, expression, assignAccess, assignBlock, retrieveAccess, retrieveBlock, phrase);
     }
     throw badTypeList();
   }

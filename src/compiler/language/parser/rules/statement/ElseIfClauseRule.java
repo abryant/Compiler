@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.ElseIfClauseAST;
@@ -46,7 +46,7 @@ public final class ElseIfClauseRule extends Rule<ParseType>
       ExpressionAST condition = (ExpressionAST) args[2];
       BlockAST block = (BlockAST) args[3];
       return new ElseIfClauseAST(condition, block,
-                              ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], condition.getParseInfo(), block.getParseInfo()));
+                              LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], condition.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     throw badTypeList();
   }

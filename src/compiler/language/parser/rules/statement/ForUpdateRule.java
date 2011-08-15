@@ -50,7 +50,7 @@ public final class ForUpdateRule extends Rule<ParseType>
     if (EXPRESSION_PRODUCTION.equals(production))
     {
       StatementExpressionAST expression = (StatementExpressionAST) args[0];
-      return new ExpressionStatementAST(expression, expression.getParseInfo());
+      return new ExpressionStatementAST(expression, expression.getLexicalPhrase());
     }
     if (ASSIGNMENT_PRODUCTION.equals(production) || INCREMENT_PRODUCTION.equals(production) || DECREMENT_PRODUCTION.equals(production))
     {

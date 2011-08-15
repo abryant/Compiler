@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.ThrowStatementAST;
 import compiler.language.parser.ParseType;
@@ -42,7 +42,7 @@ public final class ThrowStatementRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       ExpressionAST expression = (ExpressionAST) args[1];
-      return new ThrowStatementAST(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), (ParseInfo) args[2]));
+      return new ThrowStatementAST(expression, LexicalPhrase.combine((LexicalPhrase) args[0], expression.getLexicalPhrase(), (LexicalPhrase) args[2]));
     }
     throw badTypeList();
   }

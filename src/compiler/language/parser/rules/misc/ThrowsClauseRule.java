@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -46,7 +46,7 @@ public final class ThrowsClauseRule extends Rule<ParseType>
     {
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> list = (ParseList<PointerTypeAST>) args[1];
-      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo()));
+      list.setLexicalPhrase(LexicalPhrase.combine((LexicalPhrase) args[0], list.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

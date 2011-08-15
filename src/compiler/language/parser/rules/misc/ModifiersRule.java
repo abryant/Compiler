@@ -6,7 +6,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -40,14 +40,14 @@ public final class ModifiersRule extends Rule<ParseType>
     if (START_PRODUCTION.equals(production))
     {
       ModifierAST modifier = (ModifierAST) args[0];
-      return new ParseList<ModifierAST>(modifier, modifier.getParseInfo());
+      return new ParseList<ModifierAST>(modifier, modifier.getLexicalPhrase());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<ModifierAST> list = (ParseList<ModifierAST>) args[0];
       ModifierAST modifier = (ModifierAST) args[1];
-      list.addLast(modifier, ParseInfo.combine(list.getParseInfo(), modifier.getParseInfo()));
+      list.addLast(modifier, LexicalPhrase.combine(list.getLexicalPhrase(), modifier.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

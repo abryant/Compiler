@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseContainer;
@@ -46,13 +46,13 @@ public final class PointerTypeRAngleRule extends Rule<ParseType>
     if (QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      PointerTypeAST type = new PointerTypeAST(qname, qname.getParseInfo());
-      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
+      PointerTypeAST type = new PointerTypeAST(qname, qname.getLexicalPhrase());
+      return new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine(type.getLexicalPhrase(), (LexicalPhrase) args[1]));
     }
     if (NO_TRAILING_PARAMS_PRODUCTION.equals(production))
     {
       PointerTypeAST type = (PointerTypeAST) args[0];
-      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
+      return new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine(type.getLexicalPhrase(), (LexicalPhrase) args[1]));
     }
     if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {

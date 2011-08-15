@@ -6,7 +6,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.statement.StatementAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -40,14 +40,14 @@ public final class StatementsRule extends Rule<ParseType>
     if (START_PRODUCTION.equals(production))
     {
       StatementAST statement = (StatementAST) args[0];
-      return new ParseList<StatementAST>(statement, statement.getParseInfo());
+      return new ParseList<StatementAST>(statement, statement.getLexicalPhrase());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<StatementAST> list = (ParseList<StatementAST>) args[0];
       StatementAST statement = (StatementAST) args[1];
-      list.addLast(statement, ParseInfo.combine(list.getParseInfo(), statement.getParseInfo()));
+      list.addLast(statement, LexicalPhrase.combine(list.getLexicalPhrase(), statement.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

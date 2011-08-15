@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ParameterAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.type.PointerTypeAST;
@@ -30,11 +30,11 @@ public class ClosureCreationExpressionAST extends ExpressionAST
    * @param returnTypes - the return types of the closure
    * @param exceptionTypes - the types of exceptions that this closure can throw
    * @param block - the block containing the closure's statements
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ClosureCreationExpressionAST(TypeParameterAST[] typeParameters, ParameterAST[] parameters, TypeAST[] returnTypes, PointerTypeAST[] exceptionTypes, BlockAST block, ParseInfo parseInfo)
+  public ClosureCreationExpressionAST(TypeParameterAST[] typeParameters, ParameterAST[] parameters, TypeAST[] returnTypes, PointerTypeAST[] exceptionTypes, BlockAST block, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.typeParameters = typeParameters;
     this.parameters = parameters;
     this.returnTypes = returnTypes;

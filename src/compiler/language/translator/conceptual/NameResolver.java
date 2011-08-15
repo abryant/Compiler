@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.topLevel.ConceptualFile;
@@ -59,20 +59,20 @@ public final class NameResolver
   {
     // resolve base types
     boolean changed = true;
-    Set<ParseInfo> unresolvedParseInfo = new HashSet<ParseInfo>();
+    Set<LexicalPhrase> unresolvedLexicalPhrases = new HashSet<LexicalPhrase>();
 
     while (changed)
     {
-      // clear the unresolvedParseInfo set, as it will be repopulated during the loop, and should only contain the unresolved ParseInfo since the last change
-      unresolvedParseInfo.clear();
+      // clear the unresolvedLexicalPhrases set, as it will be repopulated during the loop, and should only contain the unresolved LexicalPhrase since the last change
+      unresolvedLexicalPhrases.clear();
 
-      changed = resolveNames(unresolvedParseInfo);
+      changed = resolveNames(unresolvedLexicalPhrases);
     }
 
     if (!typeResolver.finishedProcessing())
     {
-      // something could not be resolved, so throw an exception with the correct ParseInfo
-      throw new ConceptualException("Unresolvable type(s)", unresolvedParseInfo.toArray(new ParseInfo[unresolvedParseInfo.size()]));
+      // something could not be resolved, so throw an exception with the correct LexicalPhrase
+      throw new ConceptualException("Unresolvable type(s)", unresolvedLexicalPhrases.toArray(new LexicalPhrase[unresolvedLexicalPhrases.size()]));
     }
   }
 
@@ -80,24 +80,24 @@ public final class NameResolver
    * Resolves as many QNames as possible from a single queue.
    * For example, if there are type definitions to resolve the parents of then this method resolves as many as possible, and then returns.
    * The queues are checked in a fixed order, so that type parents will always be resolved in preference to type parameter bounds and members.
-   * @param unresolvedParseInfo - the set of ParseInfo objects for names which could not be resolved since the last change was made
+   * @param unresolvedLexicalPhrases - the set of LexicalPhrase objects for names which could not be resolved since the last change was made
    * @return true if any successful processing was done, false otherwise
    * @throws NameConflictException - if a name conflict was detected while resolving a name
    * @throws ConceptualException - if a conceptual problem occurs while resolving a name
    */
-  private boolean resolveNames(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
+  private boolean resolveNames(Set<LexicalPhrase> unresolvedLexicalPhrases) throws NameConflictException, ConceptualException
   {
     if (typeResolver.hasUnresolvedTypeParents())
     {
-      return typeResolver.resolveTypeParents(unresolvedParseInfo);
+      return typeResolver.resolveTypeParents(unresolvedLexicalPhrases);
     }
     if (typeResolver.hasUnresolvedTypeParameterBounds())
     {
-      return typeResolver.resolveTypeParameterBounds(unresolvedParseInfo);
+      return typeResolver.resolveTypeParameterBounds(unresolvedLexicalPhrases);
     }
     if (typeResolver.hasUnresolvedMembers())
     {
-      return typeResolver.resolveTypeMembers(unresolvedParseInfo);
+      return typeResolver.resolveTypeMembers(unresolvedLexicalPhrases);
     }
     return false;
   }

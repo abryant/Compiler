@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
@@ -20,7 +20,7 @@ public class CatchClauseAST
   private NameAST caughtName;
   private BlockAST block;
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   /**
    * Creates a new CatchClauseAST with the specified caught type and name, and the specified block to execute when that type is caught
@@ -28,12 +28,12 @@ public class CatchClauseAST
    * @param caughtType - the caught type
    * @param caughtName - the name of the variable holding the caught object
    * @param block - the block to be executed when this type is caught
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public CatchClauseAST(ModifierAST[] modifiers, PointerTypeAST caughtType, NameAST caughtName, BlockAST block, ParseInfo parseInfo)
+  public CatchClauseAST(ModifierAST[] modifiers, PointerTypeAST caughtType, NameAST caughtName, BlockAST block, LexicalPhrase lexicalPhrase)
   {
     this.modifiers = modifiers;
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.caughtType = caughtType;
     this.caughtName = caughtName;
     this.block = block;
@@ -72,11 +72,11 @@ public class CatchClauseAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

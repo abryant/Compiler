@@ -15,7 +15,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ClosureCreationExpressionAST;
 import compiler.language.ast.misc.ParameterAST;
 import compiler.language.ast.statement.BlockAST;
@@ -82,9 +82,9 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
       BlockAST block = (BlockAST) args[7];
       return new ClosureCreationExpressionAST(new TypeParameterAST[0], parameters.toArray(new ParameterAST[0]), returnTypes.toArray(new TypeAST[0]),
                                               thrownTypes.toArray(new PointerTypeAST[0]), block,
-                                              ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], parameters.getParseInfo(),
-                                                                (ParseInfo) args[3], returnTypes.getParseInfo(), (ParseInfo) args[5],
-                                                                thrownTypes.getParseInfo(), block.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], parameters.getLexicalPhrase(),
+                                                                (LexicalPhrase) args[3], returnTypes.getLexicalPhrase(), (LexicalPhrase) args[5],
+                                                                thrownTypes.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     if (TYPE_ARGUMENTS_PRODUCTION.equals(production))
     {
@@ -99,9 +99,9 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
       BlockAST block = (BlockAST) args[8];
       return new ClosureCreationExpressionAST(typeParameters.toArray(new TypeParameterAST[0]), parameters.toArray(new ParameterAST[0]), returnTypes.toArray(new TypeAST[0]),
                                               thrownTypes.toArray(new PointerTypeAST[0]), block,
-                                              ParseInfo.combine((ParseInfo) args[0], typeParameters.getParseInfo(), (ParseInfo) args[2], parameters.getParseInfo(),
-                                                                (ParseInfo) args[4], returnTypes.getParseInfo(), (ParseInfo) args[6],
-                                                                thrownTypes.getParseInfo(), block.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], typeParameters.getLexicalPhrase(), (LexicalPhrase) args[2], parameters.getLexicalPhrase(),
+                                                                (LexicalPhrase) args[4], returnTypes.getLexicalPhrase(), (LexicalPhrase) args[6],
+                                                                thrownTypes.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     if (VOID_PRODUCTION.equals(production))
     {
@@ -113,9 +113,9 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
       BlockAST block = (BlockAST) args[7];
       return new ClosureCreationExpressionAST(new TypeParameterAST[0], new ParameterAST[0], returnTypes.toArray(new TypeAST[0]),
                                               thrownTypes.toArray(new PointerTypeAST[0]), block,
-                                              ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], voidType.getParseInfo(),
-                                                                (ParseInfo) args[3], returnTypes.getParseInfo(), (ParseInfo) args[5],
-                                                                thrownTypes.getParseInfo(), block.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], voidType.getLexicalPhrase(),
+                                                                (LexicalPhrase) args[3], returnTypes.getLexicalPhrase(), (LexicalPhrase) args[5],
+                                                                thrownTypes.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     if (TYPE_ARGUMENTS_VOID_PRODUCTION.equals(production))
     {
@@ -129,9 +129,9 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
       BlockAST block = (BlockAST) args[8];
       return new ClosureCreationExpressionAST(typeParameters.toArray(new TypeParameterAST[0]), new ParameterAST[0], returnTypes.toArray(new TypeAST[0]),
                                               thrownTypes.toArray(new PointerTypeAST[0]), block,
-                                              ParseInfo.combine((ParseInfo) args[0], typeParameters.getParseInfo(), (ParseInfo) args[2], voidType.getParseInfo(),
-                                                                (ParseInfo) args[4], returnTypes.getParseInfo(), (ParseInfo) args[6],
-                                                                thrownTypes.getParseInfo(), block.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], typeParameters.getLexicalPhrase(), (LexicalPhrase) args[2], voidType.getLexicalPhrase(),
+                                                                (LexicalPhrase) args[4], returnTypes.getLexicalPhrase(), (LexicalPhrase) args[6],
+                                                                thrownTypes.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     if (PRODUCTION_NO_ARROW.equals(production))
     {
@@ -142,8 +142,8 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
       BlockAST block = (BlockAST) args[5];
       return new ClosureCreationExpressionAST(new TypeParameterAST[0], parameters.toArray(new ParameterAST[0]), new TypeAST[0],
                                               thrownTypes.toArray(new PointerTypeAST[0]), block,
-                                              ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], parameters.getParseInfo(),
-                                                                (ParseInfo) args[3], thrownTypes.getParseInfo(), block.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], parameters.getLexicalPhrase(),
+                                                                (LexicalPhrase) args[3], thrownTypes.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     if (TYPE_ARGUMENTS_PRODUCTION_NO_ARROW.equals(production))
     {
@@ -156,9 +156,9 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
       BlockAST block = (BlockAST) args[6];
       return new ClosureCreationExpressionAST(typeParameters.toArray(new TypeParameterAST[0]), parameters.toArray(new ParameterAST[0]), new TypeAST[0],
                                               thrownTypes.toArray(new PointerTypeAST[0]), block,
-                                              ParseInfo.combine((ParseInfo) args[0], typeParameters.getParseInfo(), (ParseInfo) args[2],
-                                                                parameters.getParseInfo(), (ParseInfo) args[4],
-                                                                thrownTypes.getParseInfo(), block.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], typeParameters.getLexicalPhrase(), (LexicalPhrase) args[2],
+                                                                parameters.getLexicalPhrase(), (LexicalPhrase) args[4],
+                                                                thrownTypes.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     if (VOID_PRODUCTION_NO_ARROW.equals(production))
     {
@@ -167,8 +167,8 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
       BlockAST block = (BlockAST) args[4];
       return new ClosureCreationExpressionAST(new TypeParameterAST[0], new ParameterAST[0], new TypeAST[0],
                                               thrownTypes.toArray(new PointerTypeAST[0]), block,
-                                              ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], (ParseInfo) args[2],
-                                                                thrownTypes.getParseInfo(), block.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], (LexicalPhrase) args[2],
+                                                                thrownTypes.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     if (TYPE_ARGUMENTS_VOID_PRODUCTION_NO_ARROW.equals(production))
     {
@@ -179,8 +179,8 @@ public final class ClosureCreationExpressionRule extends Rule<ParseType>
       BlockAST block = (BlockAST) args[5];
       return new ClosureCreationExpressionAST(typeParameters.toArray(new TypeParameterAST[0]), new ParameterAST[0], new TypeAST[0],
                                               thrownTypes.toArray(new PointerTypeAST[0]), block,
-                                              ParseInfo.combine((ParseInfo) args[0], typeParameters.getParseInfo(), (ParseInfo) args[2],
-                                                                (ParseInfo) args[3], thrownTypes.getParseInfo(), block.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], typeParameters.getLexicalPhrase(), (LexicalPhrase) args[2],
+                                                                (LexicalPhrase) args[3], thrownTypes.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     throw badTypeList();
   }

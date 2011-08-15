@@ -1,6 +1,6 @@
 package compiler.language.ast.member;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.misc.ParameterListAST;
 import compiler.language.ast.statement.BlockAST;
@@ -39,11 +39,11 @@ public class MethodAST extends MemberAST
    * @param parameters - the parameters that the method takes
    * @param thrownTypes - the list of types that the method throws
    * @param body - the body of the method
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public MethodAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, TypeParameterAST[] typeParameters, TypeAST returnType, NameAST name, ParameterListAST parameters, PointerTypeAST[] thrownTypes, BlockAST body, ParseInfo parseInfo)
+  public MethodAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, TypeParameterAST[] typeParameters, TypeAST returnType, NameAST name, ParameterListAST parameters, PointerTypeAST[] thrownTypes, BlockAST body, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
     this.typeParameters = typeParameters;

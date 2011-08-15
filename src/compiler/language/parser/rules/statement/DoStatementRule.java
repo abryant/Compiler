@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.DoStatementAST;
@@ -48,7 +48,7 @@ public final class DoStatementRule extends Rule<ParseType>
       BlockAST block = (BlockAST) args[1];
       ExpressionAST condition = (ExpressionAST) args[3];
       return new DoStatementAST(block, condition,
-                             ParseInfo.combine((ParseInfo) args[0], block.getParseInfo(), (ParseInfo) args[2], condition.getParseInfo(), (ParseInfo) args[4]));
+                             LexicalPhrase.combine((LexicalPhrase) args[0], block.getLexicalPhrase(), (LexicalPhrase) args[2], condition.getLexicalPhrase(), (LexicalPhrase) args[4]));
     }
     throw badTypeList();
   }

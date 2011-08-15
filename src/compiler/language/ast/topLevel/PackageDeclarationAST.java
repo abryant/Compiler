@@ -1,6 +1,6 @@
 package compiler.language.ast.topLevel;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 
 /*
@@ -14,18 +14,18 @@ import compiler.language.ast.misc.QNameAST;
 public class PackageDeclarationAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private QNameAST packageName;
 
   /**
    * Creates a new Package Declaration with the specified package name
    * @param packageName - the qualified name of the package
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public PackageDeclarationAST(QNameAST packageName, ParseInfo parseInfo)
+  public PackageDeclarationAST(QNameAST packageName, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.packageName = packageName;
   }
 
@@ -38,11 +38,11 @@ public class PackageDeclarationAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

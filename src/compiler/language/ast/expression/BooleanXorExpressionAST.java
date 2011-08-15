@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -12,14 +12,14 @@ import compiler.language.ast.ParseInfo;
 public class BooleanXorExpressionAST extends LeftRecursiveExpressionAST
 {
 
-  public BooleanXorExpressionAST(ExpressionAST firstExpression, ExpressionAST secondExpression, ParseInfo parseInfo)
+  public BooleanXorExpressionAST(ExpressionAST firstExpression, ExpressionAST secondExpression, LexicalPhrase lexicalPhrase)
   {
-    super(firstExpression, secondExpression, parseInfo);
+    super(firstExpression, secondExpression, lexicalPhrase);
   }
 
-  public BooleanXorExpressionAST(BooleanXorExpressionAST startExpression, ExpressionAST subExpression, ParseInfo parseInfo)
+  public BooleanXorExpressionAST(BooleanXorExpressionAST startExpression, ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(startExpression, subExpression, parseInfo);
+    super(startExpression, subExpression, lexicalPhrase);
   }
 
   /**

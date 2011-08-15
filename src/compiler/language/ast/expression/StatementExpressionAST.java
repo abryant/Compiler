@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -14,12 +14,12 @@ public abstract class StatementExpressionAST extends ExpressionAST
 {
 
   /**
-   * Creates a new StatementExpressionAST with the specified ParseInfo
-   * @param parseInfo - the parsing information
+   * Creates a new StatementExpressionAST with the specified LexicalPhrase
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public StatementExpressionAST(ParseInfo parseInfo)
+  public StatementExpressionAST(LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
   }
 
 }

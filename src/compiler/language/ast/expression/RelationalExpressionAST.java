@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -21,11 +21,11 @@ public class RelationalExpressionAST extends ExpressionAST
    * @param firstExpression - the first expression to compare
    * @param type - the relational expression type
    * @param secondExpression - the second expression to compare
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public RelationalExpressionAST(ExpressionAST firstExpression, RelationalExpressionTypeAST type, ExpressionAST secondExpression, ParseInfo parseInfo)
+  public RelationalExpressionAST(ExpressionAST firstExpression, RelationalExpressionTypeAST type, ExpressionAST secondExpression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.firstExpression = firstExpression;
     this.secondExpression = secondExpression;
     this.type = type;

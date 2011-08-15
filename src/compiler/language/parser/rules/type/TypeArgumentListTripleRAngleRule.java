@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.NormalTypeArgumentAST;
 import compiler.language.ast.type.PointerTypeAST;
@@ -54,11 +54,11 @@ public final class TypeArgumentListTripleRAngleRule extends Rule<ParseType>
     {
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<ParseContainer<TypeArgumentAST>>> argument = (ParseContainer<ParseContainer<ParseContainer<TypeArgumentAST>>>) args[0];
-      ParseList<TypeArgumentAST> list = new ParseList<TypeArgumentAST>(argument.getItem().getItem().getItem(), argument.getItem().getItem().getItem().getParseInfo());
-      ParseContainer<ParseList<TypeArgumentAST>> firstContainer = new ParseContainer<ParseList<TypeArgumentAST>>(list, argument.getItem().getItem().getParseInfo());
+      ParseList<TypeArgumentAST> list = new ParseList<TypeArgumentAST>(argument.getItem().getItem().getItem(), argument.getItem().getItem().getItem().getLexicalPhrase());
+      ParseContainer<ParseList<TypeArgumentAST>> firstContainer = new ParseContainer<ParseList<TypeArgumentAST>>(list, argument.getItem().getItem().getLexicalPhrase());
       ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>> secondContainer =
-        new ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>(firstContainer, argument.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>>(secondContainer, argument.getParseInfo());
+        new ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>(firstContainer, argument.getItem().getLexicalPhrase());
+      return new ParseContainer<ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>>(secondContainer, argument.getLexicalPhrase());
     }
 
     TypeArgumentAST argument;
@@ -69,14 +69,14 @@ public final class TypeArgumentListTripleRAngleRule extends Rule<ParseType>
     else if (QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      TypeAST type = new PointerTypeAST(qname, qname.getParseInfo());
-      argument = new NormalTypeArgumentAST(type, type.getParseInfo());
+      TypeAST type = new PointerTypeAST(qname, qname.getLexicalPhrase());
+      argument = new NormalTypeArgumentAST(type, type.getLexicalPhrase());
     }
     else if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
       TypeAST type = element.toType();
-      argument = new NormalTypeArgumentAST(type, type.getParseInfo());
+      argument = new NormalTypeArgumentAST(type, type.getLexicalPhrase());
     }
     else
     {
@@ -86,15 +86,15 @@ public final class TypeArgumentListTripleRAngleRule extends Rule<ParseType>
     @SuppressWarnings("unchecked")
     ParseContainer<ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>>) args[2];
     ParseList<TypeArgumentAST> list = oldContainer.getItem().getItem().getItem();
-    list.addFirst(argument, ParseInfo.combine(argument.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+    list.addFirst(argument, LexicalPhrase.combine(argument.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
     ParseContainer<ParseList<TypeArgumentAST>> firstContainer =
            new ParseContainer<ParseList<TypeArgumentAST>>(list,
-                 ParseInfo.combine(argument.getParseInfo(), (ParseInfo) args[1], oldContainer.getItem().getItem().getParseInfo()));
+                 LexicalPhrase.combine(argument.getLexicalPhrase(), (LexicalPhrase) args[1], oldContainer.getItem().getItem().getLexicalPhrase()));
     ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>> secondContainer =
            new ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>(firstContainer,
-                 ParseInfo.combine(argument.getParseInfo(), (ParseInfo) args[1], oldContainer.getItem().getParseInfo()));
+                 LexicalPhrase.combine(argument.getLexicalPhrase(), (LexicalPhrase) args[1], oldContainer.getItem().getLexicalPhrase()));
     return new ParseContainer<ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>>(secondContainer,
-                 ParseInfo.combine(argument.getParseInfo(), (ParseInfo) args[1], oldContainer.getParseInfo()));
+                 LexicalPhrase.combine(argument.getLexicalPhrase(), (LexicalPhrase) args[1], oldContainer.getLexicalPhrase()));
   }
 
 }

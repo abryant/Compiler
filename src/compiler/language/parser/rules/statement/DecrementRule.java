@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.misc.AssigneeAST;
 import compiler.language.ast.misc.FieldAssigneeAST;
@@ -48,26 +48,26 @@ public final class DecrementRule extends Rule<ParseType>
     if (PRE_PRODUCTION.equals(production))
     {
       AssigneeAST assignee = (AssigneeAST) args[1];
-      return new DecrementStatementAST(assignee, ParseInfo.combine((ParseInfo) args[0], assignee.getParseInfo()));
+      return new DecrementStatementAST(assignee, LexicalPhrase.combine((LexicalPhrase) args[0], assignee.getLexicalPhrase()));
     }
     if (PRE_QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[1];
-      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getParseInfo());
-      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getParseInfo());
-      return new DecrementStatementAST(assignee, ParseInfo.combine((ParseInfo) args[0], assignee.getParseInfo()));
+      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
+      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getLexicalPhrase());
+      return new DecrementStatementAST(assignee, LexicalPhrase.combine((LexicalPhrase) args[0], assignee.getLexicalPhrase()));
     }
     if (POST_PRODUCTION.equals(production))
     {
       AssigneeAST assignee = (AssigneeAST) args[0];
-      return new DecrementStatementAST(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1]));
+      return new DecrementStatementAST(assignee, LexicalPhrase.combine(assignee.getLexicalPhrase(), (LexicalPhrase) args[1]));
     }
     if (POST_QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getParseInfo());
-      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getParseInfo());
-      return new DecrementStatementAST(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1]));
+      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
+      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getLexicalPhrase());
+      return new DecrementStatementAST(assignee, LexicalPhrase.combine(assignee.getLexicalPhrase(), (LexicalPhrase) args[1]));
     }
     throw badTypeList();
   }

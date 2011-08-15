@@ -40,7 +40,7 @@ public final class TypeArgumentNotQNameListRule extends Rule<ParseType>
     if (NORMAL_PRODUCTION.equals(production))
     {
       TypeAST type = (TypeAST) args[0];
-      return new NormalTypeArgumentAST(type, type.getParseInfo());
+      return new NormalTypeArgumentAST(type, type.getLexicalPhrase());
     }
     if (WILDCARD_PRODUCTION.equals(production))
     {

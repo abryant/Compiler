@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseContainer;
@@ -52,9 +52,9 @@ public final class TypeTripleRAngleRule extends Rule<ParseType>
       // repackage the ParseContainers here to contain a TypeAST and not a PointerTypeAST
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>) args[0];
-      ParseContainer<TypeAST> firstContainer = new ParseContainer<TypeAST>(oldContainer.getItem().getItem().getItem(), oldContainer.getItem().getItem().getParseInfo());
-      ParseContainer<ParseContainer<TypeAST>> secondContainer = new ParseContainer<ParseContainer<TypeAST>>(firstContainer, oldContainer.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<ParseContainer<TypeAST>>>(secondContainer, oldContainer.getParseInfo());
+      ParseContainer<TypeAST> firstContainer = new ParseContainer<TypeAST>(oldContainer.getItem().getItem().getItem(), oldContainer.getItem().getItem().getLexicalPhrase());
+      ParseContainer<ParseContainer<TypeAST>> secondContainer = new ParseContainer<ParseContainer<TypeAST>>(firstContainer, oldContainer.getItem().getLexicalPhrase());
+      return new ParseContainer<ParseContainer<ParseContainer<TypeAST>>>(secondContainer, oldContainer.getLexicalPhrase());
     }
 
     TypeAST type;
@@ -72,12 +72,12 @@ public final class TypeTripleRAngleRule extends Rule<ParseType>
       throw badTypeList();
     }
 
-    ParseInfo tripleRAngleInfo = (ParseInfo) args[1];
-    ParseInfo firstRAngleInfo = ParseUtil.splitTripleRAngleFirst(tripleRAngleInfo);
-    ParseInfo firstTwoRAnglesInfo = ParseUtil.splitTripleRAngleFirstTwo(tripleRAngleInfo);
-    ParseContainer<TypeAST> firstContainer = new ParseContainer<TypeAST>(type, ParseInfo.combine(type.getParseInfo(), firstRAngleInfo));
-    ParseContainer<ParseContainer<TypeAST>> secondContainer = new ParseContainer<ParseContainer<TypeAST>>(firstContainer, ParseInfo.combine(type.getParseInfo(), firstTwoRAnglesInfo));
-    return new ParseContainer<ParseContainer<ParseContainer<TypeAST>>>(secondContainer, ParseInfo.combine(type.getParseInfo(), tripleRAngleInfo));
+    LexicalPhrase tripleRAnglePhrase = (LexicalPhrase) args[1];
+    LexicalPhrase firstRAnglePhrase = ParseUtil.splitTripleRAngleFirst(tripleRAnglePhrase);
+    LexicalPhrase firstTwoRAnglesPhrase = ParseUtil.splitTripleRAngleFirstTwo(tripleRAnglePhrase);
+    ParseContainer<TypeAST> firstContainer = new ParseContainer<TypeAST>(type, LexicalPhrase.combine(type.getLexicalPhrase(), firstRAnglePhrase));
+    ParseContainer<ParseContainer<TypeAST>> secondContainer = new ParseContainer<ParseContainer<TypeAST>>(firstContainer, LexicalPhrase.combine(type.getLexicalPhrase(), firstTwoRAnglesPhrase));
+    return new ParseContainer<ParseContainer<ParseContainer<TypeAST>>>(secondContainer, LexicalPhrase.combine(type.getLexicalPhrase(), tripleRAnglePhrase));
   }
 
 }

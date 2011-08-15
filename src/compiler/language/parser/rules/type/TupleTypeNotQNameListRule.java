@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.TupleTypeAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseList;
@@ -45,7 +45,7 @@ public final class TupleTypeNotQNameListRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<TypeAST> list = (ParseList<TypeAST>) args[1];
       return new TupleTypeAST(list.toArray(new TypeAST[0]),
-                           ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
+                           LexicalPhrase.combine((LexicalPhrase) args[0], list.getLexicalPhrase(), (LexicalPhrase) args[2]));
     }
     throw badTypeList();
   }

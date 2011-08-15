@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -18,11 +18,11 @@ public class ParameterListAST extends ParameterAST
   /**
    * Creates a new ParameterListAST with the specified parameters.
    * @param parameters - the parameters to store
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ParameterListAST(ParameterAST[] parameters, ParseInfo parseInfo)
+  public ParameterListAST(ParameterAST[] parameters, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.parameters = parameters;
   }
 

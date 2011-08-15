@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -14,15 +14,15 @@ public class MultiplicativeExpressionAST extends LeftRecursiveExpressionAST
 
   private MultiplicativeExpressionTypeAST[] separatorTypes;
 
-  public MultiplicativeExpressionAST(ExpressionAST firstExpression, MultiplicativeExpressionTypeAST separator, ExpressionAST secondExpression, ParseInfo parseInfo)
+  public MultiplicativeExpressionAST(ExpressionAST firstExpression, MultiplicativeExpressionTypeAST separator, ExpressionAST secondExpression, LexicalPhrase lexicalPhrase)
   {
-    super(firstExpression, secondExpression, parseInfo);
+    super(firstExpression, secondExpression, lexicalPhrase);
     separatorTypes = new MultiplicativeExpressionTypeAST[] {separator};
   }
 
-  public MultiplicativeExpressionAST(MultiplicativeExpressionAST startExpression, MultiplicativeExpressionTypeAST separator, ExpressionAST subExpression, ParseInfo parseInfo)
+  public MultiplicativeExpressionAST(MultiplicativeExpressionAST startExpression, MultiplicativeExpressionTypeAST separator, ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(startExpression, subExpression, parseInfo);
+    super(startExpression, subExpression, lexicalPhrase);
     MultiplicativeExpressionTypeAST[] oldList = startExpression.getSeparatorTypes();
     separatorTypes = new MultiplicativeExpressionTypeAST[oldList.length + 1];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);

@@ -55,7 +55,7 @@ public final class ExpressionRule extends Rule<ParseType>
       {
         expressions[i] = elements[i].toExpression();
       }
-      return new TupleExpressionAST(expressions, qnameElements.getParseInfo());
+      return new TupleExpressionAST(expressions, qnameElements.getLexicalPhrase());
     }
     throw badTypeList();
   }

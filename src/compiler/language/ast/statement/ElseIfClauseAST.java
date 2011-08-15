@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -16,27 +16,27 @@ public class ElseIfClauseAST
   private ExpressionAST condition;
   private BlockAST block;
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   /**
    * Creates a new ElseIfClauseAST with the specified condition and block
    * @param condition - the condition that must be satisfied for this else if clause to execute
    * @param block - the block that this else if clause executes
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ElseIfClauseAST(ExpressionAST condition, BlockAST block, ParseInfo parseInfo)
+  public ElseIfClauseAST(ExpressionAST condition, BlockAST block, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.condition = condition;
     this.block = block;
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

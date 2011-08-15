@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ArrayAccessExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.misc.ArrayElementAssigneeAST;
@@ -45,17 +45,17 @@ public final class AssigneeRule extends Rule<ParseType>
   {
     if (BLANK_PRODUCTION.equals(production))
     {
-      return new AssigneeAST((ParseInfo) args[0]);
+      return new AssigneeAST((LexicalPhrase) args[0]);
     }
     if (FIELD_PRODUCTION.equals(production))
     {
       FieldAccessExpressionAST field = (FieldAccessExpressionAST) args[0];
-      return new FieldAssigneeAST(field, field.getParseInfo());
+      return new FieldAssigneeAST(field, field.getLexicalPhrase());
     }
     if (ARRAY_ELEMENT_PRODUCTION.equals(production))
     {
       ArrayAccessExpressionAST arrayElement = (ArrayAccessExpressionAST) args[0];
-      return new ArrayElementAssigneeAST(arrayElement, arrayElement.getParseInfo());
+      return new ArrayElementAssigneeAST(arrayElement, arrayElement.getLexicalPhrase());
     }
     throw badTypeList();
   }

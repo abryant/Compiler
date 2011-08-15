@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.MultiplicativeExpressionAST;
 import compiler.language.ast.expression.MultiplicativeExpressionTypeAST;
@@ -87,11 +87,11 @@ public final class MultiplicativeExpressionRule extends Rule<ParseType>
       // continue the existing MultiplicativeExpressionAST if we've already started one
       MultiplicativeExpressionAST startExpression = (MultiplicativeExpressionAST) args[0];
       return new MultiplicativeExpressionAST(startExpression, type, secondExpression,
-                                          ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+                                          LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     ExpressionAST firstExpression = (ExpressionAST) args[0];
     return new MultiplicativeExpressionAST(firstExpression, type, secondExpression,
-                                        ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+                                        LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
   }
 
 }

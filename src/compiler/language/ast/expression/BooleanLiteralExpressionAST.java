@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 27 Aug 2010
@@ -17,11 +17,11 @@ public class BooleanLiteralExpressionAST extends ExpressionAST
   /**
    * Creates a new BooleanLiteralExpressionAST with the specified value
    * @param value - the boolean value that this literal stores
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public BooleanLiteralExpressionAST(boolean value, ParseInfo parseInfo)
+  public BooleanLiteralExpressionAST(boolean value, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.value = value;
   }
 

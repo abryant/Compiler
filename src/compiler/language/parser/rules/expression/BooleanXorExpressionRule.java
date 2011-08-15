@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.BooleanXorExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
@@ -55,10 +55,10 @@ public final class BooleanXorExpressionRule extends Rule<ParseType>
       {
         // continue the existing BooleanXorExpressionAST if we've already started one
         BooleanXorExpressionAST startExpression = (BooleanXorExpressionAST) args[0];
-        return new BooleanXorExpressionAST(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+        return new BooleanXorExpressionAST(startExpression, secondExpression, LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
       }
       ExpressionAST firstExpression = (ExpressionAST) args[0];
-      return new BooleanXorExpressionAST(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      return new BooleanXorExpressionAST(firstExpression, secondExpression, LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     throw badTypeList();
   }

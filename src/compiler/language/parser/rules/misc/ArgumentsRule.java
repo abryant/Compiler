@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ArgumentAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -41,13 +41,13 @@ public final class ArgumentsRule extends Rule<ParseType>
   {
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseList<ArgumentAST>(ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new ParseList<ArgumentAST>(LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     if (PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<ArgumentAST> list = (ParseList<ArgumentAST>) args[1];
-      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
+      list.setLexicalPhrase(LexicalPhrase.combine((LexicalPhrase) args[0], list.getLexicalPhrase(), (LexicalPhrase) args[2]));
       return list;
     }
     throw badTypeList();

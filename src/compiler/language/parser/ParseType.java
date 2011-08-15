@@ -214,7 +214,7 @@ public enum ParseType
   // =============
 
   // literals
-  // all literals must have a special case for extracting ParseInfo from them in LanguageParser
+  // all literals must have a special case for extracting LexicalPhrase from them in LanguageParser
   NAME,              // NameAST
   INTEGER_LITERAL,   // IntegerLiteralAST
   FLOATING_LITERAL,  // FloatingLiteralAST
@@ -222,7 +222,7 @@ public enum ParseType
   STRING_LITERAL,    // StringLiteralAST
   SINCE_SPECIFIER,   // SinceSpecifierAST
 
-  // keywords (values for these should all be ParseInfo)
+  // keywords (values for these should all be LexicalPhrase)
   ABSTRACT_KEYWORD,
   BOOLEAN_KEYWORD,
   BREAK_KEYWORD,
@@ -284,7 +284,7 @@ public enum ParseType
   VOLATILE_KEYWORD,
   WHILE_KEYWORD,
 
-  // symbols (values for these should all be ParseInfo)
+  // symbols (values for these should all be LexicalPhrase)
   AMPERSAND,
   AMPERSAND_EQUALS,
   ARROW, // "->", same as MINUS RANGLE, but without any whitespace between them

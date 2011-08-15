@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ArrayInstanciationExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.DimensionsAST;
@@ -50,8 +50,8 @@ public final class ArrayInstanciationExpressionWithInitializerRule extends Rule<
       @SuppressWarnings("unchecked")
       ParseList<ExpressionAST> arrayInitializer = (ParseList<ExpressionAST>) args[3];
       return new ArrayInstanciationExpressionAST(type, new ExpressionAST[0], dimensions.getDimensions(), arrayInitializer.toArray(new ExpressionAST[0]),
-                                              ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), dimensions.getParseInfo(),
-                                                                arrayInitializer.getParseInfo()));
+                                              LexicalPhrase.combine((LexicalPhrase) args[0], type.getLexicalPhrase(), dimensions.getLexicalPhrase(),
+                                                                arrayInitializer.getLexicalPhrase()));
     }
     throw badTypeList();
   }

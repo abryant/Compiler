@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 11 Aug 2010
@@ -14,11 +14,11 @@ public class NilLiteralExpressionAST extends ExpressionAST
 
   /**
    * Creates a new NilLiteralExpressionAST
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public NilLiteralExpressionAST(ParseInfo parseInfo)
+  public NilLiteralExpressionAST(LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
   }
 
   /**

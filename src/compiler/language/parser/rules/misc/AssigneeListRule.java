@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.misc.AssigneeAST;
 import compiler.language.ast.misc.FieldAssigneeAST;
@@ -49,31 +49,31 @@ public final class AssigneeListRule extends Rule<ParseType>
     if (ASSIGNEE_END_PRODUCTION.equals(production))
     {
       AssigneeAST assignee = (AssigneeAST) args[0];
-      return new ParseList<AssigneeAST>(assignee, assignee.getParseInfo());
+      return new ParseList<AssigneeAST>(assignee, assignee.getLexicalPhrase());
     }
     if (QNAME_END_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getParseInfo());
-      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getParseInfo());
-      return new ParseList<AssigneeAST>(assignee, assignee.getParseInfo());
+      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
+      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getLexicalPhrase());
+      return new ParseList<AssigneeAST>(assignee, assignee.getLexicalPhrase());
     }
     if (ASSIGNEE_LIST_PRODUCTION.equals(production))
     {
       AssigneeAST assignee = (AssigneeAST) args[0];
       @SuppressWarnings("unchecked")
       ParseList<AssigneeAST> list = (ParseList<AssigneeAST>) args[2];
-      list.addFirst(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      list.addFirst(assignee, LexicalPhrase.combine(assignee.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
       return list;
     }
     if (QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getParseInfo());
-      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getParseInfo());
+      FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
+      AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getLexicalPhrase());
       @SuppressWarnings("unchecked")
       ParseList<AssigneeAST> list = (ParseList<AssigneeAST>) args[2];
-      list.addFirst(assignee, ParseInfo.combine(assignee.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      list.addFirst(assignee, LexicalPhrase.combine(assignee.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

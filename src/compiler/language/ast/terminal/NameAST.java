@@ -1,6 +1,6 @@
 package compiler.language.ast.terminal;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 30 Jun 2010
@@ -12,18 +12,18 @@ import compiler.language.ast.ParseInfo;
 public class NameAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private String name;
 
   /**
    * Creates a NameAST with the specified text and position in the file
    * @param name - the text of the name
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public NameAST(String name, ParseInfo parseInfo)
+  public NameAST(String name, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.name = name;
   }
 
@@ -36,11 +36,11 @@ public class NameAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.AdditiveExpressionAST;
 import compiler.language.ast.expression.AdditiveExpressionTypeAST;
 import compiler.language.ast.expression.ExpressionAST;
@@ -77,11 +77,11 @@ public final class AdditiveExpressionRule extends Rule<ParseType>
       // continue the existing AdditiveExpressionAST if we've already started one
       AdditiveExpressionAST startExpression = (AdditiveExpressionAST) args[0];
       return new AdditiveExpressionAST(startExpression, type, secondExpression,
-                                    ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+                                    LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     ExpressionAST firstExpression = (ExpressionAST) args[0];
     return new AdditiveExpressionAST(firstExpression, type, secondExpression,
-                                  ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+                                  LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
   }
 
 }

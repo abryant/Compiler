@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.TypeAST;
@@ -26,11 +26,11 @@ public class ForEachStatementAST extends StatementAST
    * @param name - the name of the loop variable
    * @param expression - the expression to iterate over
    * @param block - the block to execute for each iteration of the loop
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ForEachStatementAST(TypeAST type, NameAST name, ExpressionAST expression, BlockAST block, ParseInfo parseInfo)
+  public ForEachStatementAST(TypeAST type, NameAST name, ExpressionAST expression, BlockAST block, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.type = type;
     this.name = name;
     this.expression = expression;

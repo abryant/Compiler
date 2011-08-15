@@ -1,6 +1,6 @@
 package compiler.language.ast.typeDefinition;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.AccessSpecifierAST;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.misc.ModifierAST;
@@ -34,11 +34,11 @@ public class ClassDefinitionAST extends TypeDefinitionAST
    * @param baseClass - the base class of this class
    * @param interfaces - the list of interfaces that this class implements
    * @param members - the list of members of this class
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ClassDefinitionAST(AccessSpecifierAST access, ModifierAST[] modifiers, NameAST name, TypeParameterAST[] typeParameters, PointerTypeAST baseClass, PointerTypeAST[] interfaces, MemberAST[] members, ParseInfo parseInfo)
+  public ClassDefinitionAST(AccessSpecifierAST access, ModifierAST[] modifiers, NameAST name, TypeParameterAST[] typeParameters, PointerTypeAST baseClass, PointerTypeAST[] interfaces, MemberAST[] members, LexicalPhrase lexicalPhrase)
   {
-    super(name, parseInfo);
+    super(name, lexicalPhrase);
     this.access = access;
     this.modifiers = modifiers;
     this.typeParameters = typeParameters;

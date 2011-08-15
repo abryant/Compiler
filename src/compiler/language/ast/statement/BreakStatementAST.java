@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 
 /*
@@ -18,11 +18,11 @@ public class BreakStatementAST extends StatementAST
   /**
    * Creates a new BreakStatementAST which breaks out of the specified number of levels of nested loops.
    * @param breakLevels - the integer literal representing the number of levels to break out of, or null if no number of levels was specified
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public BreakStatementAST(IntegerLiteralAST breakLevels, ParseInfo parseInfo)
+  public BreakStatementAST(IntegerLiteralAST breakLevels, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.breakLevels = breakLevels;
   }
 

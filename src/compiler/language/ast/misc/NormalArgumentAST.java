@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -18,11 +18,11 @@ public class NormalArgumentAST extends ArgumentAST
   /**
    * Creates a new normal argument with the specified expression
    * @param expression - the expression to create this normal argument with
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public NormalArgumentAST(ExpressionAST expression, ParseInfo parseInfo)
+  public NormalArgumentAST(ExpressionAST expression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.expression = expression;
   }
 

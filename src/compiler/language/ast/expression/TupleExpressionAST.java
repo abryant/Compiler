@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -17,11 +17,11 @@ public class TupleExpressionAST extends ExpressionAST
   /**
    * Creates a new TupleExpressionAST from the specified array of expressions
    * @param expressions - the expressions to store in this TupleExpressionAST
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public TupleExpressionAST(ExpressionAST[] expressions, ParseInfo parseInfo)
+  public TupleExpressionAST(ExpressionAST[] expressions, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.expressions = expressions;
   }
 

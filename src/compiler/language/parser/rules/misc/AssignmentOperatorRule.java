@@ -20,7 +20,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.AssignmentOperatorAST;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseType;
@@ -81,63 +81,63 @@ public final class AssignmentOperatorRule extends Rule<ParseType>
   {
     if (EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.EQUALS, (LexicalPhrase) args[0]);
     }
     if (PLUS_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.PLUS_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.PLUS_EQUALS, (LexicalPhrase) args[0]);
     }
     if (MINUS_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.MINUS_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.MINUS_EQUALS, (LexicalPhrase) args[0]);
     }
     if (STAR_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.TIMES_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.TIMES_EQUALS, (LexicalPhrase) args[0]);
     }
     if (FORWARD_SLASH_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.DIVIDE_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.DIVIDE_EQUALS, (LexicalPhrase) args[0]);
     }
     if (PERCENT_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.MODULUS_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.MODULUS_EQUALS, (LexicalPhrase) args[0]);
     }
     if (DOUBLE_AMPERSAND_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BOOLEAN_AND_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BOOLEAN_AND_EQUALS, (LexicalPhrase) args[0]);
     }
     if (DOUBLE_PIPE_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BOOLEAN_OR_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BOOLEAN_OR_EQUALS, (LexicalPhrase) args[0]);
     }
     if (DOUBLE_CARET_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BOOLEAN_XOR_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BOOLEAN_XOR_EQUALS, (LexicalPhrase) args[0]);
     }
     if (AMPERSAND_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BITWISE_AND_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BITWISE_AND_EQUALS, (LexicalPhrase) args[0]);
     }
     if (PIPE_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BITWISE_OR_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BITWISE_OR_EQUALS, (LexicalPhrase) args[0]);
     }
     if (CARET_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BITWISE_XOR_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.BITWISE_XOR_EQUALS, (LexicalPhrase) args[0]);
     }
     if (DOUBLE_LANGLE_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.LEFT_SHIFT_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.LEFT_SHIFT_EQUALS, (LexicalPhrase) args[0]);
     }
     if (DOUBLE_RANGLE_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.ARITHMETIC_RIGHT_SHIFT_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.ARITHMETIC_RIGHT_SHIFT_EQUALS, (LexicalPhrase) args[0]);
     }
     if (TRIPLE_RANGLE_EQUALS_PRODUCTION.equals(production))
     {
-      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.LOGICAL_RIGHT_SHIFT_EQUALS, (ParseInfo) args[0]);
+      return new ParseContainer<AssignmentOperatorAST>(AssignmentOperatorAST.LOGICAL_RIGHT_SHIFT_EQUALS, (LexicalPhrase) args[0]);
     }
     throw badTypeList();
   }

@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 11 Aug 2010
@@ -17,11 +17,11 @@ public class ParenthesisedExpressionAST extends ExpressionAST
   /**
    * Creates a new ParenthesisedExpressionAST with the specified expression.
    * @param expression - the expression that this ParenthesisedExpressionAST will encapsulate
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ParenthesisedExpressionAST(ExpressionAST expression, ParseInfo parseInfo)
+  public ParenthesisedExpressionAST(ExpressionAST expression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.expression = expression;
   }
 

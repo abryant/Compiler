@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
@@ -103,45 +103,45 @@ public class ConceptualTranslator
     }
     catch (ConceptualException e)
     {
-      printConceptualException(e.getMessage(), e.getParseInfo());
+      printConceptualException(e.getMessage(), e.getLexicalPhrases());
       return null;
     }
     catch (NameConflictException e)
     {
-      printConceptualException(e.getMessage() == null ? "Name conflict detected" : e.getMessage(), e.getParseInfo());
+      printConceptualException(e.getMessage() == null ? "Name conflict detected" : e.getMessage(), e.getLexicalPhrases());
       return null;
     }
   }
 
-  private static void printConceptualException(String message, ParseInfo... parseInfos)
+  private static void printConceptualException(String message, LexicalPhrase... lexicalPhrases)
   {
-    if (parseInfos == null || parseInfos.length < 1)
+    if (lexicalPhrases == null || lexicalPhrases.length < 1)
     {
       System.err.println(message);
       return;
     }
-    // make a String representation of the ParseInfos' character ranges
+    // make a String representation of the LexicalPhrases' character ranges
     StringBuffer buffer = new StringBuffer();
-    for (int i = 0; i < parseInfos.length; i++)
+    for (int i = 0; i < lexicalPhrases.length; i++)
     {
       // line:start-end
-      buffer.append(parseInfos[i].getLocationText());
-      if (i != parseInfos.length - 1)
+      buffer.append(lexicalPhrases[i].getLocationText());
+      if (i != lexicalPhrases.length - 1)
       {
         buffer.append(", ");
       }
     }
-    if (parseInfos.length == 1)
+    if (lexicalPhrases.length == 1)
     {
       System.err.println(buffer + ": " + message);
-      System.err.println(parseInfos[0].getHighlightedLine());
+      System.err.println(lexicalPhrases[0].getHighlightedLine());
     }
     else
     {
       System.err.println(buffer + ": " + message);
-      for (ParseInfo info : parseInfos)
+      for (LexicalPhrase phrase : lexicalPhrases)
       {
-        System.err.println(info.getHighlightedLine());
+        System.err.println(phrase.getHighlightedLine());
       }
     }
   }

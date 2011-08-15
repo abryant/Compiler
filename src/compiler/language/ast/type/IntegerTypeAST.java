@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -20,11 +20,11 @@ public class IntegerTypeAST extends PrimitiveTypeAST
    * Creates a new integer type with the specified signedness and type length
    * @param signed - whether or not the type was specified to be signed, or null if the signedness was not specified
    * @param typeLength - the length of this integer type
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public IntegerTypeAST(Boolean signed, IntegerTypeLengthAST typeLength, ParseInfo parseInfo)
+  public IntegerTypeAST(Boolean signed, IntegerTypeLengthAST typeLength, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.signed = signed;
     this.typeLength = typeLength;
   }

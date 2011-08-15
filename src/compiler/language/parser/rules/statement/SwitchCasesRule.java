@@ -6,7 +6,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.statement.SwitchCaseAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -47,7 +47,7 @@ public final class SwitchCasesRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<SwitchCaseAST> list = (ParseList<SwitchCaseAST>) args[0];
       SwitchCaseAST switchCase = (SwitchCaseAST) args[1];
-      list.addLast(switchCase, ParseInfo.combine(list.getParseInfo(), switchCase.getParseInfo()));
+      list.addLast(switchCase, LexicalPhrase.combine(list.getLexicalPhrase(), switchCase.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -18,11 +18,11 @@ public class NormalTypeArgumentAST extends TypeArgumentAST
   /**
    * Creates a new normal type argument with the specified type.
    * @param type - the type assigned to this type argument
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public NormalTypeArgumentAST(TypeAST type, ParseInfo parseInfo)
+  public NormalTypeArgumentAST(TypeAST type, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.type = type;
   }
 

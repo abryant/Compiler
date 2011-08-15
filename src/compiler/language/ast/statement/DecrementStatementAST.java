@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.AssigneeAST;
 
 /*
@@ -18,11 +18,11 @@ public class DecrementStatementAST extends StatementAST
   /**
    * Creates a new DecrementStatementAST to decrement the specified AssigneeAST
    * @param assignee - the AssigneeAST to decrement
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public DecrementStatementAST(AssigneeAST assignee, ParseInfo parseInfo)
+  public DecrementStatementAST(AssigneeAST assignee, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.assignee = assignee;
   }
 

@@ -1,6 +1,6 @@
 package compiler.language.ast.typeDefinition;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.AccessSpecifierAST;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.misc.ModifierAST;
@@ -34,11 +34,11 @@ public class EnumDefinitionAST extends TypeDefinitionAST
    * @param interfaces - the list of implemented interfaces
    * @param constants - the enum constants
    * @param members - the members
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public EnumDefinitionAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, NameAST name, PointerTypeAST baseClass, PointerTypeAST[] interfaces, EnumConstantAST[] constants, MemberAST[] members, ParseInfo parseInfo)
+  public EnumDefinitionAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, NameAST name, PointerTypeAST baseClass, PointerTypeAST[] interfaces, EnumConstantAST[] constants, MemberAST[] members, LexicalPhrase lexicalPhrase)
   {
-    super(name, parseInfo);
+    super(name, lexicalPhrase);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
     this.baseClass = baseClass;

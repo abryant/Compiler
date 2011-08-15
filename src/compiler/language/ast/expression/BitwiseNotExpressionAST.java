@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -17,11 +17,11 @@ public class BitwiseNotExpressionAST extends ExpressionAST
   /**
    * Creates a new BitwiseNotExpressionAST with the specified subExpression
    * @param subExpression - the expression that the bitwise not operation will be performed on
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public BitwiseNotExpressionAST(ExpressionAST subExpression, ParseInfo parseInfo)
+  public BitwiseNotExpressionAST(ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.subExpression = subExpression;
   }
 

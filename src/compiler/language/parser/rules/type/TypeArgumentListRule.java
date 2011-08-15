@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.NormalTypeArgumentAST;
 import compiler.language.ast.type.PointerTypeAST;
@@ -53,48 +53,48 @@ public final class TypeArgumentListRule extends Rule<ParseType>
     if (TYPE_ARGUMENT_PRODUCTION.equals(production))
     {
       TypeArgumentAST typeArgument = (TypeArgumentAST) args[0];
-      return new ParseList<TypeArgumentAST>(typeArgument, typeArgument.getParseInfo());
+      return new ParseList<TypeArgumentAST>(typeArgument, typeArgument.getLexicalPhrase());
     }
     if (QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      TypeAST type = new PointerTypeAST(qname, qname.getParseInfo());
-      TypeArgumentAST argument = new NormalTypeArgumentAST(type, type.getParseInfo());
-      return new ParseList<TypeArgumentAST>(argument, argument.getParseInfo());
+      TypeAST type = new PointerTypeAST(qname, qname.getLexicalPhrase());
+      TypeArgumentAST argument = new NormalTypeArgumentAST(type, type.getLexicalPhrase());
+      return new ParseList<TypeArgumentAST>(argument, argument.getLexicalPhrase());
     }
     if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
       TypeAST type = element.toType();
-      TypeArgumentAST argument = new NormalTypeArgumentAST(type, type.getParseInfo());
-      return new ParseList<TypeArgumentAST>(argument, argument.getParseInfo());
+      TypeArgumentAST argument = new NormalTypeArgumentAST(type, type.getLexicalPhrase());
+      return new ParseList<TypeArgumentAST>(argument, argument.getLexicalPhrase());
     }
     if (CONTINUATION_TYPE_ARGUMENT_PRODUCTION.equals(production))
     {
       TypeArgumentAST newTypeArgument = (TypeArgumentAST) args[0];
       @SuppressWarnings("unchecked")
       ParseList<TypeArgumentAST> list = (ParseList<TypeArgumentAST>) args[2];
-      list.addFirst(newTypeArgument, ParseInfo.combine(newTypeArgument.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      list.addFirst(newTypeArgument, LexicalPhrase.combine(newTypeArgument.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
       return list;
     }
     if (CONTINUATION_QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      PointerTypeAST type = new PointerTypeAST(qname, qname.getParseInfo());
-      TypeArgumentAST newTypeArgument = new NormalTypeArgumentAST(type, type.getParseInfo());
+      PointerTypeAST type = new PointerTypeAST(qname, qname.getLexicalPhrase());
+      TypeArgumentAST newTypeArgument = new NormalTypeArgumentAST(type, type.getLexicalPhrase());
       @SuppressWarnings("unchecked")
       ParseList<TypeArgumentAST> list = (ParseList<TypeArgumentAST>) args[2];
-      list.addFirst(newTypeArgument, ParseInfo.combine(newTypeArgument.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      list.addFirst(newTypeArgument, LexicalPhrase.combine(newTypeArgument.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
       return list;
     }
     if (CONTINUATION_NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
       TypeAST type = element.toType();
-      TypeArgumentAST newTypeArgument = new NormalTypeArgumentAST(type, type.getParseInfo());
+      TypeArgumentAST newTypeArgument = new NormalTypeArgumentAST(type, type.getLexicalPhrase());
       @SuppressWarnings("unchecked")
       ParseList<TypeArgumentAST> list = (ParseList<TypeArgumentAST>) args[2];
-      list.addFirst(newTypeArgument, ParseInfo.combine(newTypeArgument.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      list.addFirst(newTypeArgument, LexicalPhrase.combine(newTypeArgument.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

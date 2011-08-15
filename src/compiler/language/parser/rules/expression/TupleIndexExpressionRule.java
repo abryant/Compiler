@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.TupleIndexExpressionAST;
 import compiler.language.ast.terminal.IntegerLiteralAST;
@@ -52,7 +52,7 @@ public final class TupleIndexExpressionRule extends Rule<ParseType>
     {
       ExpressionAST expression = (ExpressionAST) args[0];
       IntegerLiteralAST index = (IntegerLiteralAST) args[2];
-      return new TupleIndexExpressionAST(expression, index, ParseInfo.combine(expression.getParseInfo(), (ParseInfo) args[1], index.getParseInfo()));
+      return new TupleIndexExpressionAST(expression, index, LexicalPhrase.combine(expression.getLexicalPhrase(), (LexicalPhrase) args[1], index.getLexicalPhrase()));
     }
     throw badTypeList();
   }

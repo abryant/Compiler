@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.TypeAST;
 
 /*
@@ -20,11 +20,11 @@ public class InstanceOfExpressionAST extends ExpressionAST
    * Creates a new InstanceOfExpressionAST to check the specified expression is of the specified type
    * @param expression - the expression to check
    * @param type - the type to check against
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public InstanceOfExpressionAST(ExpressionAST expression, TypeAST type, ParseInfo parseInfo)
+  public InstanceOfExpressionAST(ExpressionAST expression, TypeAST type, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.expression = expression;
     this.type = type;
   }

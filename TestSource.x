@@ -7,7 +7,11 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
-import compiler.language.ast.ParseInfo;
+import parser.ParseException;
+import parser.Token;
+import parser.Tokenizer;
+
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.CharacterLiteralAST;
 import compiler.language.ast.terminal.FloatingLiteralAST;
 import compiler.language.ast.terminal.IntegerLiteralAST;
@@ -15,9 +19,6 @@ import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.terminal.SinceSpecifierAST;
 import compiler.language.ast.terminal.StringLiteralAST;
 import compiler.language.ast.terminal.VersionNumberAST;
-import parser.ParseException;
-import parser.Token;
-import parser.Tokenizer;
 
 
 /**
@@ -98,25 +99,21 @@ immutable class String
 
 
 
-
-
-
-
 /*
  * Created on 30 Jun 2010
  */
 
 /**
+ * The tokenizer for the language. This contains everything necessary to parse and read tokens in order from a given Reader.
  * @author Anthony Bryant
  */
-public class LanguageTokenizer extends Tokenizer
+public class LanguageTokenizer extends Tokenizer<ParseType>
 {
 
   private static final Map<String, ParseType> KEYWORDS = new HashMap<String, ParseType>();
   static
   {
     KEYWORDS.put("abstract",     ParseType.ABSTRACT_KEYWORD);
-    KEYWORDS.put("assign",       ParseType.ASSIGN_KEYWORD);
     KEYWORDS.put("bool",         ParseType.BOOLEAN_KEYWORD);
     KEYWORDS.put("break",        ParseType.BREAK_KEYWORD);
     KEYWORDS.put("byte",         ParseType.BYTE_KEYWORD);
@@ -139,6 +136,7 @@ public class LanguageTokenizer extends Tokenizer
     KEYWORDS.put("finally",      ParseType.FINALLY_KEYWORD);
     KEYWORDS.put("float",        ParseType.FLOAT_KEYWORD);
     KEYWORDS.put("for",          ParseType.FOR_KEYWORD);
+    KEYWORDS.put("getter",       ParseType.GETTER_KEYWORD);
     KEYWORDS.put("if",           ParseType.IF_KEYWORD);
     KEYWORDS.put("immutable",    ParseType.IMMUTABLE_KEYWORD);
     KEYWORDS.put("implements",   ParseType.IMPLEMENTS_KEYWORD);
@@ -156,8 +154,9 @@ public class LanguageTokenizer extends Tokenizer
     KEYWORDS.put("property",     ParseType.PROPERTY_KEYWORD);
     KEYWORDS.put("protected",    ParseType.PROTECTED_KEYWORD);
     KEYWORDS.put("public",       ParseType.PUBLIC_KEYWORD);
-    KEYWORDS.put("retrieve",     ParseType.RETRIEVE_KEYWORD);
     KEYWORDS.put("return",       ParseType.RETURN_KEYWORD);
+    KEYWORDS.put("sealed",       ParseType.SEALED_KEYWORD);
+    KEYWORDS.put("setter",       ParseType.SETTER_KEYWORD);
     KEYWORDS.put("short",        ParseType.SHORT_KEYWORD);
     KEYWORDS.put("signed",       ParseType.SIGNED_KEYWORD);
     // "since" is handled differently (the whole "since(1.2.3)" is parsed by the tokenizer)
@@ -176,8 +175,6 @@ public class LanguageTokenizer extends Tokenizer
     KEYWORDS.put("volatile",     ParseType.VOLATILE_KEYWORD);
     KEYWORDS.put("while",        ParseType.WHILE_KEYWORD);
   }
-
-  private static final int TAB_WIDTH = 8;
 
   private RandomAccessReader reader;
   private int currentLine;
@@ -198,7 +195,7 @@ public class LanguageTokenizer extends Tokenizer
    * Skips all whitespace and comment characters at the start of the stream, while updating the current position in the file.
    * @throws IOException - if an error occurs while reading
    */
-  private void skipWhitespaceAndComments() throws IOException
+  private void skipWhitespaceAndComments() throws IOException, LanguageParseException
   {
     int index = 0;
     while (true)
@@ -231,9 +228,8 @@ public class LanguageTokenizer extends Tokenizer
       }
       else if (nextChar == '\t')
       {
-        currentColumn += TAB_WIDTH;
-        index++;
-        continue;
+        reader.discard(index); // discard so that getting the current line works
+        throw new LanguageParseException("Tabs are not permitted in this language.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn));
       }
       else if (Character.isWhitespace(nextChar))
       {
@@ -262,8 +258,7 @@ public class LanguageTokenizer extends Tokenizer
                 break;
               }
             }
-
-            if (commentChar == '\r')
+            else if (commentChar == '\r')
             {
               currentLine++;
               currentColumn = 1;
@@ -283,8 +278,8 @@ public class LanguageTokenizer extends Tokenizer
             }
             else if (commentChar == '\t')
             {
-              currentColumn += TAB_WIDTH;
-              index++;
+              reader.discard(index); // discard so that getting the current line works correctly
+              throw new LanguageParseException("Tabs are not permitted in this language.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn));
             }
             else
             {
@@ -324,8 +319,8 @@ public class LanguageTokenizer extends Tokenizer
             }
             else if (commentChar == '\t')
             {
-              currentColumn += TAB_WIDTH;
-              index++;
+              reader.discard(index); // discard so that getting the current line works correctly
+              throw new LanguageParseException("Tabs are not permitted in this language.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn));
             }
             else
             {
@@ -358,7 +353,7 @@ public class LanguageTokenizer extends Tokenizer
    * @throws IOException - if an error occurs while reading from the stream
    * @throws LanguageParseException - if an invalid character sequence is detected
    */
-  private Token readNameOrKeyword() throws IOException, LanguageParseException
+  private Token<ParseType> readNameOrKeyword() throws IOException, LanguageParseException
   {
     int nextChar = reader.read(0);
     if (nextChar < 0 || (!Character.isLetter(nextChar) && nextChar != '_'))
@@ -369,13 +364,13 @@ public class LanguageTokenizer extends Tokenizer
 
     // we have the start of a name or keyword, so allocate a buffer for it
     StringBuffer buffer = new StringBuffer();
-    buffer.append(cast<char> nextChar);
+    buffer.append((char) nextChar);
 
     int index = 1;
     nextChar = reader.read(index);
     while (Character.isLetterOrDigit(nextChar) || nextChar == '_')
     {
-      buffer.append(cast<char> nextChar);
+      buffer.append((char) nextChar);
       index++;
       nextChar = reader.read(index);
     }
@@ -390,34 +385,34 @@ public class LanguageTokenizer extends Tokenizer
     ParseType keyword = KEYWORDS.get(name);
     if (keyword != null)
     {
-      return new Token(keyword, new ParseInfo(currentLine, currentColumn - index, currentColumn));
+      return new Token<ParseType>(keyword, new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - index, currentColumn));
     }
 
     // check if the name is the start of a since specifier, and if it is then read the rest of it
     if (name.equals("since"))
     {
-      return readSinceSpecifier(new ParseInfo(currentLine, currentColumn - index, currentColumn));
+      return readSinceSpecifier(new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - index, currentColumn));
     }
 
     // check if the name is an underscore, and if it is then return it
     if (name.equals("_"))
     {
-      return new Token(ParseType.UNDERSCORE, new ParseInfo(currentLine, currentColumn - index, currentColumn));
+      return new Token<ParseType>(ParseType.UNDERSCORE, new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - index, currentColumn));
     }
 
     // we have a name, so return it
-    return new Token(ParseType.NAME, new Name(name, new ParseInfo(currentLine, currentColumn - index, currentColumn)));
+    return new Token<ParseType>(ParseType.NAME, new NameAST(name, new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - index, currentColumn)));
   }
 
   /**
    * Reads a since specifier from the stream.
    * This method assumes that a "since" keyword has just been parsed, and will throw exceptions if invalid tokens are detected after it.
-   * @param sinceKeywordInfo - the ParseInfo of the "since" keyword which has already been parsed
+   * @param sinceKeywordPhrase - the LexicalPhrase of the "since" keyword which has already been parsed
    * @return a since specified Token
    * @throws IOException - if an error occurs while reading from the stream
    * @throws LanguageParseException - if an invalid token is detected in the since specifier
    */
-  private Token readSinceSpecifier(ParseInfo sinceKeywordInfo) throws IOException, LanguageParseException
+  private Token<ParseType> readSinceSpecifier(LexicalPhrase sinceKeywordPhrase) throws IOException, LanguageParseException
   {
     // skip whitespace between "since" and "("
     skipWhitespaceAndComments();
@@ -426,69 +421,69 @@ public class LanguageTokenizer extends Tokenizer
     int nextChar = reader.read(0);
     if (nextChar != '(')
     {
-      throw new LanguageParseException("Expected '(' after 'since'.", new ParseInfo(currentLine, currentColumn));
+      throw new LanguageParseException("Expected '(' after 'since'.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn));
     }
-    ParseInfo lparenInfo = new ParseInfo(currentLine, currentColumn, currentColumn + 1);
+    LexicalPhrase lparenPhrase = new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn, currentColumn + 1);
     currentColumn++;
     reader.discard(1);
 
     skipWhitespaceAndComments();
 
     // read the first number
-    Token firstLiteralToken = readIntegerLiteral();
+    Token<ParseType> firstLiteralToken = readIntegerLiteral();
     if (firstLiteralToken == null)
     {
-      throw new LanguageParseException("Expected integer literal in since specifier.", new ParseInfo(currentLine, currentColumn));
+      throw new LanguageParseException("Expected integer literal in since specifier.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn));
     }
-    IntegerLiteral firstLiteral = cast<IntegerLiteral> firstLiteralToken.getValue();
-    VersionNumber version = new VersionNumber(new IntegerLiteral[] {firstLiteral}, firstLiteral.getParseInfo());
+    IntegerLiteralAST firstLiteral = (IntegerLiteralAST) firstLiteralToken.getValue();
+    VersionNumberAST version = new VersionNumberAST(new IntegerLiteralAST[] {firstLiteral}, firstLiteral.getLexicalPhrase());
 
     skipWhitespaceAndComments();
 
-    ParseInfo rparenInfo;
+    LexicalPhrase rparenPhrase;
     while (true)
     {
       nextChar = reader.read(0);
       if (nextChar == '.')
       {
         // read the dot
-        ParseInfo dotInfo = new ParseInfo(currentLine, currentColumn, currentColumn + 1);
         currentColumn++;
         reader.discard(1);
+        LexicalPhrase dotPhrase = new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - 1, currentColumn);
 
         skipWhitespaceAndComments();
 
         // read the next version number part
-        Token literalToken = readIntegerLiteral();
+        Token<ParseType> literalToken = readIntegerLiteral();
         if (literalToken == null)
         {
-          throw new LanguageParseException("Expected integer literal in since specifier.", new ParseInfo(currentLine, currentColumn));
+          throw new LanguageParseException("Expected integer literal in since specifier.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn));
         }
-        IntegerLiteral literal = cast<IntegerLiteral> literalToken.getValue();
-        IntegerLiteral[] oldList = version.getVersionParts();
-        IntegerLiteral[] newList = new IntegerLiteral[oldList.length + 1];
+        IntegerLiteralAST literal = (IntegerLiteralAST) literalToken.getValue();
+        IntegerLiteralAST[] oldList = version.getVersionParts();
+        IntegerLiteralAST[] newList = new IntegerLiteralAST[oldList.length + 1];
         System.arraycopy(oldList, 0, newList, 0, oldList.length);
         newList[oldList.length] = literal;
-        version = new VersionNumber(newList, ParseInfo.combine(version.getParseInfo(), dotInfo, literal.getParseInfo()));
+        version = new VersionNumberAST(newList, LexicalPhrase.combine(version.getLexicalPhrase(), dotPhrase, literal.getLexicalPhrase()));
 
         skipWhitespaceAndComments();
       }
       else if (nextChar == ')')
       {
         // read the RParen
-        rparenInfo = new ParseInfo(currentLine, currentColumn, currentColumn + 1);
         currentColumn++;
         reader.discard(1);
+        rparenPhrase = new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - 1, currentColumn);
         break;
       }
       else
       {
-        throw new LanguageParseException("Expected '.' or ')' after integer literal in since specifier.", new ParseInfo(currentLine, currentColumn));
+        throw new LanguageParseException("Expected '.' or ')' after integer literal in since specifier.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn));
       }
     }
 
-    SinceSpecifier sinceSpecifier = new SinceSpecifier(version, ParseInfo.combine(sinceKeywordInfo, lparenInfo, version.getParseInfo(), rparenInfo));
-    return new Token(ParseType.SINCE_SPECIFIER, sinceSpecifier);
+    SinceSpecifierAST sinceSpecifier = new SinceSpecifierAST(version, LexicalPhrase.combine(sinceKeywordPhrase, lparenPhrase, version.getLexicalPhrase(), rparenPhrase));
+    return new Token<ParseType>(ParseType.SINCE_SPECIFIER, sinceSpecifier);
   }
 
   /**
@@ -498,7 +493,7 @@ public class LanguageTokenizer extends Tokenizer
    * @return a Token read from the input stream, or null if no Token could be read
    * @throws IOException - if an error occurs while reading from the stream
    */
-  private Token readFloatingLiteral() throws IOException
+  private Token<ParseType> readFloatingLiteral() throws IOException
   {
     int nextChar;
     int index = 0;
@@ -514,7 +509,7 @@ public class LanguageTokenizer extends Tokenizer
         break;
       }
       hasInitialNumber = true;
-      buffer.append(cast<char> nextChar);
+      buffer.append((char) nextChar);
       index++;
     }
     boolean hasFractionalPart = false;
@@ -538,7 +533,7 @@ public class LanguageTokenizer extends Tokenizer
           break;
         }
         hasFractionalPart = true;
-        buffer.append(cast<char> nextChar);
+        buffer.append((char) nextChar);
         index++;
       }
     }
@@ -549,13 +544,13 @@ public class LanguageTokenizer extends Tokenizer
       int indexBeforeExponent = index;
 
       StringBuffer exponentialBuffer = new StringBuffer();
-      exponentialBuffer.append(cast<char> nextChar);
+      exponentialBuffer.append((char) nextChar);
       index++;
 
       nextChar = reader.read(index);
       if (nextChar == '+' || nextChar == '-')
       {
-        exponentialBuffer.append(cast<char> nextChar);
+        exponentialBuffer.append((char) nextChar);
         index++;
       }
 
@@ -569,7 +564,7 @@ public class LanguageTokenizer extends Tokenizer
           break;
         }
         hasExponent = true;
-        exponentialBuffer.append(cast<char> nextChar);
+        exponentialBuffer.append((char) nextChar);
         index++;
       }
       // only add the exponent if it all exists
@@ -586,10 +581,10 @@ public class LanguageTokenizer extends Tokenizer
     if (hasFractionalPart || (hasInitialNumber && hasExponent))
     {
       String floatingPointText = buffer.toString();
-      FloatingLiteral literal = new FloatingLiteral(floatingPointText, new ParseInfo(currentLine, currentColumn, currentColumn + index));
       reader.discard(index);
       currentColumn += index;
-      return new Token(ParseType.FLOATING_LITERAL, literal);
+      FloatingLiteralAST literal = new FloatingLiteralAST(floatingPointText, new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - index, currentColumn));
+      return new Token<ParseType>(ParseType.FLOATING_LITERAL, literal);
     }
 
     // there was no valid floating literal, so do not return a Token
@@ -604,14 +599,14 @@ public class LanguageTokenizer extends Tokenizer
    * @throws IOException - if an error occurs while reading from the stream
    * @throws LanguageParseException - if an unexpected character sequence is detected inside the integer literal
    */
-  private Token readIntegerLiteral() throws IOException, LanguageParseException
+  private Token<ParseType> readIntegerLiteral() throws IOException, LanguageParseException
   {
     int nextChar = reader.read(0);
     int index = 1;
     if (nextChar == '0')
     {
       StringBuffer buffer = new StringBuffer();
-      buffer.append(cast<char> nextChar);
+      buffer.append((char) nextChar);
       int secondChar = reader.read(index);
       index++;
       int base;
@@ -631,8 +626,10 @@ public class LanguageTokenizer extends Tokenizer
       }
       if (base != 10)
       {
-        buffer.append(cast<char> secondChar);
+        buffer.append((char) secondChar);
         BigInteger value = readInteger(buffer, index, base);
+        reader.discard(buffer.length());
+        currentColumn += buffer.length();
         if (value == null)
         {
           // there was no value after the 0b, 0o, or 0x, so we have a parse error
@@ -640,12 +637,10 @@ public class LanguageTokenizer extends Tokenizer
           if      (base == 2)  { baseString = "binary"; }
           else if (base == 8)  { baseString = "octal"; }
           else if (base == 16) { baseString = "hex"; }
-          throw new LanguageParseException("Unexpected end of " + baseString + " literal.", new ParseInfo(currentLine, currentColumn + buffer.length()));
+          throw new LanguageParseException("Unexpected end of " + baseString + " literal.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn));
         }
-        IntegerLiteral literal = new IntegerLiteral(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
-        reader.discard(buffer.length());
-        currentColumn += buffer.length();
-        return new Token(ParseType.INTEGER_LITERAL, literal);
+        IntegerLiteralAST literal = new IntegerLiteralAST(value, buffer.toString(), new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - buffer.length(), currentColumn));
+        return new Token<ParseType>(ParseType.INTEGER_LITERAL, literal);
       }
       // backtrack an index, as we do not have b, o, or x as the second character in the literal
       // this makes it easier to parse the decimal literal without ignoring the character after the 0
@@ -656,10 +651,10 @@ public class LanguageTokenizer extends Tokenizer
         // there was no value after the initial 0, so set the value to 0
         value = BigInteger.valueOf(0);
       }
-      IntegerLiteral literal = new IntegerLiteral(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
       reader.discard(buffer.length());
       currentColumn += buffer.length();
-      return new Token(ParseType.INTEGER_LITERAL, literal);
+      IntegerLiteralAST literal = new IntegerLiteralAST(value, buffer.toString(), new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - buffer.length(), currentColumn));
+      return new Token<ParseType>(ParseType.INTEGER_LITERAL, literal);
     }
 
     // backtrack an index, as we do not have 0 as the first character in the literal
@@ -672,10 +667,10 @@ public class LanguageTokenizer extends Tokenizer
       // this is not an integer literal
       return null;
     }
-    IntegerLiteral literal = new IntegerLiteral(value, buffer.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + buffer.length()));
     reader.discard(buffer.length());
     currentColumn += buffer.length();
-    return new Token(ParseType.INTEGER_LITERAL, literal);
+    IntegerLiteralAST literal = new IntegerLiteralAST(value, buffer.toString(), new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - buffer.length(), currentColumn));
+    return new Token<ParseType>(ParseType.INTEGER_LITERAL, literal);
   }
 
   /**
@@ -701,7 +696,7 @@ public class LanguageTokenizer extends Tokenizer
         break;
       }
       hasNumeral = true;
-      buffer.append(cast<char> nextChar);
+      buffer.append((char) nextChar);
       value = value.multiply(BigInteger.valueOf(radix)).add(BigInteger.valueOf(digit));
       index++;
     }
@@ -720,7 +715,7 @@ public class LanguageTokenizer extends Tokenizer
    * @throws IOException - if an error occurs while reading from the stream
    * @throws LanguageParseException - if an unexpected character is detected inside the character literal
    */
-  private Token readCharacterLiteral() throws IOException, LanguageParseException
+  private Token<ParseType> readCharacterLiteral() throws IOException, LanguageParseException
   {
     int nextChar = reader.read(0);
     if (nextChar != '\'')
@@ -734,30 +729,32 @@ public class LanguageTokenizer extends Tokenizer
     nextChar = reader.read(1);
     if (nextChar < 0)
     {
-      throw new LanguageParseException("Unexpected end of input inside character literal.", new ParseInfo(currentLine, currentColumn + 1));
+      throw new LanguageParseException("Unexpected end of input inside character literal.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn + 1));
     }
     if (nextChar == '\n')
     {
-      throw new LanguageParseException("Unexpected end of line inside character literal.", new ParseInfo(currentLine, currentColumn + 1));
+      reader.discard(1); // discard so that getting the current line works correctly
+      throw new LanguageParseException("Unexpected end of line inside character literal.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn + 1));
     }
     if (nextChar == '\'')
     {
-      throw new LanguageParseException("Empty character literal.", new ParseInfo(currentLine, currentColumn + 1));
+      reader.discard(1); // discard so that getting the current line works correctly
+      throw new LanguageParseException("Empty character literal.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn + 1));
     }
     char character;
     int index = 1;
     if (nextChar == '\\')
     {
       // process the escape sequence, and add all characters read from the stream to the stringRepresentation buffer
-      stringRepresentation.append(cast<char> nextChar);
+      stringRepresentation.append((char) nextChar);
       character = processEscapeSequence(index, stringRepresentation);
       index = stringRepresentation.length();
     }
     else
     {
       // we have a non-escaped character, so use it
-      stringRepresentation.append(cast<char> nextChar);
-      character = cast<char> nextChar;
+      stringRepresentation.append((char) nextChar);
+      character = (char) nextChar;
       index++;
     }
 
@@ -765,13 +762,14 @@ public class LanguageTokenizer extends Tokenizer
     index++;
     if (finalChar != '\'')
     {
-      throw new LanguageParseException("Character literals cannot contain more than one character.", new ParseInfo(currentLine, currentColumn + 1, currentColumn + index));
+      reader.discard(index); // discard so that getting the current line works correctly
+      throw new LanguageParseException("Character literals cannot contain more than one character.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn + 1, currentColumn + index));
     }
-    stringRepresentation.append(cast<char> finalChar);
-    CharacterLiteral literal = new CharacterLiteral(character, stringRepresentation.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + index));
+    stringRepresentation.append((char) finalChar);
     reader.discard(index);
     currentColumn += index;
-    return new Token(ParseType.CHARACTER_LITERAL, literal);
+    CharacterLiteralAST literal = new CharacterLiteralAST(character, stringRepresentation.toString(), new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - index, currentColumn));
+    return new Token<ParseType>(ParseType.CHARACTER_LITERAL, literal);
   }
 
   /**
@@ -782,7 +780,7 @@ public class LanguageTokenizer extends Tokenizer
    * @throws IOException - if an error occurs while reading from the stream
    * @throws LanguageParseException - if an unexpected character is detected inside the string literal
    */
-  private Token readStringLiteral() throws IOException, LanguageParseException
+  private Token<ParseType> readStringLiteral() throws IOException, LanguageParseException
   {
     int nextChar = reader.read(0);
     if (nextChar != '"')
@@ -800,23 +798,25 @@ public class LanguageTokenizer extends Tokenizer
       nextChar = reader.read(index);
       if (nextChar < 0)
       {
-        throw new LanguageParseException("Unexpected end of input inside string literal.", new ParseInfo(currentLine, currentColumn + index));
+        reader.discard(index - 1); // discard so that getting the current line works correctly
+        throw new LanguageParseException("Unexpected end of input inside string literal.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn + index));
       }
       if (nextChar == '\n')
       {
-        throw new LanguageParseException("Unexpected end of line inside string literal.", new ParseInfo(currentLine, currentColumn + index));
+        reader.discard(index); // discard so that getting the current line works correctly
+        throw new LanguageParseException("Unexpected end of line inside string literal.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn + index));
       }
 
       if (nextChar == '"')
       {
         index++;
-        stringRepresentation.append(cast<char> nextChar);
+        stringRepresentation.append((char) nextChar);
         break;
       }
 
       if (nextChar == '\\')
       {
-        stringRepresentation.append(cast<char> nextChar);
+        stringRepresentation.append((char) nextChar);
         // process the escape sequence, adding the read characters to the stringRepresentation buffer
         // and the escaped character to the literal value buffer
         char escapedChar = processEscapeSequence(index, stringRepresentation);
@@ -825,17 +825,17 @@ public class LanguageTokenizer extends Tokenizer
         continue;
       } // finished escape sequences
 
-      buffer.append(cast<char> nextChar);
-      stringRepresentation.append(cast<char> nextChar);
+      buffer.append((char) nextChar);
+      stringRepresentation.append((char) nextChar);
       index++;
     }
 
     // a whole string literal has been read, so create a token from it
     // (index is now the length of the entire literal, including quotes)
-    StringLiteral literal = new StringLiteral(buffer.toString(), stringRepresentation.toString(), new ParseInfo(currentLine, currentColumn, currentColumn + index));
     reader.discard(index);
     currentColumn += index;
-    return new Token(ParseType.STRING_LITERAL, literal);
+    StringLiteralAST literal = new StringLiteralAST(buffer.toString(), stringRepresentation.toString(), new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - index, currentColumn));
+    return new Token<ParseType>(ParseType.STRING_LITERAL, literal);
   }
 
   /**
@@ -852,7 +852,8 @@ public class LanguageTokenizer extends Tokenizer
     int secondChar = reader.read(index + 1);
     if (secondChar < 0)
     {
-      throw new LanguageParseException("Unexpected end of input inside escape sequence.", new ParseInfo(currentLine, currentColumn + index + 1));
+      reader.discard(index); // discard so that getting the current line works correctly
+      throw new LanguageParseException("Unexpected end of input inside escape sequence.", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn + index + 1));
     }
     Character escaped = null;
     // check all of the single character escape sequences (i.e. the ones that only have one character after the \)
@@ -871,7 +872,7 @@ public class LanguageTokenizer extends Tokenizer
     }
     if (escaped != null)
     {
-      buffer.append(cast<char> secondChar);
+      buffer.append((char) secondChar);
     }
 
     // check the multi-character escape sequences
@@ -880,47 +881,49 @@ public class LanguageTokenizer extends Tokenizer
     {
       // the character is a valid digit in base 4, so it begins an octal character escape
       int octal = firstOctalDigit;
-      buffer.append(cast<char> secondChar);
+      buffer.append((char) secondChar);
       int thirdChar = reader.read(index + 2);
       int secondOctalDigit = Character.digit(thirdChar, 8);
       if (secondOctalDigit >= 0)
       {
         octal = octal * 8 + secondOctalDigit;
-        buffer.append(cast<char> thirdChar);
+        buffer.append((char) thirdChar);
         int fourthChar = reader.read(index + 3);
         int thirdOctalDigit = Character.digit(fourthChar, 8);
         if (thirdOctalDigit >= 0)
         {
           octal = octal * 8 + thirdOctalDigit;
-          buffer.append(cast<char> fourthChar);
+          buffer.append((char) fourthChar);
         }
       }
-      escaped = cast<char> octal;
+      escaped = (char) octal;
     }
     if (escaped == null && secondChar == 'u')
     {
-      buffer.append(cast<char> secondChar);
+      buffer.append((char) secondChar);
       // read the next 4 characters as a hexadecimal unicode constant
       int hex = 0;
-      for int i = 0; i < 4; i++
+      for (int i = 0; i < 4; i++)
       {
         int ithChar = reader.read(index + 2 + i);
         int hexDigit = Character.digit(ithChar, 16);
         if (hexDigit < 0)
         {
-          throw new LanguageParseException("Invalid character in unicode escape sequence" + (ithChar >= 0 ? ": " + cast<char> ithChar : ""),
-                                           new ParseInfo(currentLine, currentColumn + index + 2 + i));
+          reader.discard(index + 2 + i - 1); // discard so that getting the current line works correctly
+          throw new LanguageParseException("Invalid character in unicode escape sequence" + (ithChar >= 0 ? ": " + (char) ithChar : ""),
+                                           new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn + index + 2 + i));
         }
         hex = hex * 8 + hexDigit;
-        buffer.append(cast<char> ithChar);
+        buffer.append((char) ithChar);
       }
-      escaped = cast<char> hex;
+      escaped = (char) hex;
     }
 
     if (escaped == null)
     {
-      throw new LanguageParseException("Invalid escape sequence" + (secondChar >= 0 ? ": \\" + cast<char> secondChar : ""),
-                                       new ParseInfo(currentLine, currentColumn + index + 1));
+      reader.discard(index + 1); // discard so that getting the current line works correctly
+      throw new LanguageParseException("Invalid escape sequence" + (secondChar >= 0 ? ": \\" + (char) secondChar : ""),
+                                       new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn + index + 1));
     }
     return escaped.charValue();
   }
@@ -932,7 +935,7 @@ public class LanguageTokenizer extends Tokenizer
    * @return a Token read from the input stream, or null if no Token could be read
    * @throws IOException - if an error occurs while reading from the stream
    */
-  private Token readSymbol() throws IOException
+  private Token<ParseType> readSymbol() throws IOException
   {
     int nextChar = reader.read(0);
     if (nextChar < 0)
@@ -1194,23 +1197,24 @@ public class LanguageTokenizer extends Tokenizer
    * @return the Token created
    * @throws IOException - if there is an error discarding the characters that were read in
    */
-  private Token makeSymbolToken(ParseType parseType, int length) throws IOException
+  private Token<ParseType> makeSymbolToken(ParseType parseType, int length) throws IOException
   {
     reader.discard(length);
     currentColumn += length;
-    return new Token(parseType, new ParseInfo(currentLine, currentColumn - length, currentColumn));
+    return new Token<ParseType>(parseType, new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn - length, currentColumn));
   }
 
   /**
    * @see parser.Tokenizer#generateToken()
    */
-  protected Token generateToken() throws ParseException
+  @Override
+  protected Token<ParseType> generateToken() throws ParseException
   {
     try
     {
       skipWhitespaceAndComments();
 
-      Token token = readNameOrKeyword();
+      Token<ParseType> token = readNameOrKeyword();
       if (token != null)
       {
         return token;
@@ -1244,14 +1248,14 @@ public class LanguageTokenizer extends Tokenizer
       int nextChar = reader.read(0);
       if (nextChar < 0)
       {
-        // a value of less than 0 means the end of input, so return null for the last token
-        return null;
+        // a value of less than 0 means the end of input, so return a token with type null
+        return new Token<ParseType>(null, new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn));
       }
-      throw new LanguageParseException("Unexpected character while parsing: '" + cast<char> nextChar + "'", new ParseInfo(currentLine, currentColumn));
+      throw new LanguageParseException("Unexpected character while parsing: '" + (char) nextChar + "'", new LexicalPhrase(currentLine, reader.getCurrentLine(), currentColumn));
     }
-    catch IOException e
+    catch (IOException e)
     {
-      throw new LanguageParseException("An IO Exception occured while reading the source code.", e, new ParseInfo(currentLine, currentColumn));
+      throw new LanguageParseException("An IO Exception occured while reading the source code.", e, new LexicalPhrase(currentLine, "", currentColumn));
     }
   }
 
@@ -1275,6 +1279,7 @@ public class LanguageTokenizer extends Tokenizer
 
     private Reader reader;
     private StringBuffer lookahead;
+    private String currentLine;
 
     /**
      * Creates a new RandomAccessReader to read from the specified Reader
@@ -1315,11 +1320,25 @@ public class LanguageTokenizer extends Tokenizer
       {
         throw new IndexOutOfBoundsException("Tried to discard past the end of a RandomAccessReader");
       }
+      updateCurrentLine(offset);
       lookahead.delete(0, offset);
     }
 
     /**
-     * Ensures that the lookahead contains the specified number of characters.
+     * @return the current line that is at offset 0 in this reader
+     * @throws IOException - if an error occurs while reading from the underlying reader
+     */
+    public String getCurrentLine() throws IOException
+    {
+      if (currentLine == null)
+      {
+        updateCurrentLine(0);
+      }
+      return currentLine;
+    }
+
+    /**
+     * Ensures that the lookahead contains at least the specified number of characters.
      * @param length - the number of characters to ensure are in the lookahead
      * @return the number of characters now in the lookahead buffer, or -1 if the end of the stream has been reached
      * @throws IOException - if an error occurs while reading from the underlying reader
@@ -1339,6 +1358,74 @@ public class LanguageTokenizer extends Tokenizer
       }
       lookahead.append(buffer, 0, readChars);
       return lookahead.length();
+    }
+
+    /**
+     * Updates the current line to be the line at the specified offset.
+     * @param offset - the offset to update currentLine from
+     * @throws IOException - if an error occurs while reading from the underlying reader
+     */
+    private void updateCurrentLine(int offset) throws IOException
+    {
+      ensureContains(offset);
+      ensureNewLineAfter(offset);
+      int start = -1;
+      // start at offset - 1 so that if we start on a \n we count backwards from there
+      for (int i = offset - 1; i >= 0; i--)
+      {
+        if (lookahead.charAt(i) == '\n')
+        {
+          start = i + 1;
+          break;
+        }
+      }
+      if (start < 0)
+      {
+        if (currentLine != null)
+        {
+          return;
+        }
+        start = 0;
+      }
+      int end = offset;
+      while (end < lookahead.length() && lookahead.charAt(end) != '\n')
+      {
+        end++;
+      }
+      currentLine = lookahead.substring(start, end);
+    }
+
+    /**
+     * Ensures that the lookahead buffer contains a newline after (or at) the specified index.
+     * @param offset - the offset to ensure there is a newline after.
+     * @throws IOException - if an error occurs while reading from the underlying reader
+     */
+    private void ensureNewLineAfter(int offset) throws IOException
+    {
+      // after this many characters in lookahead, we will stop trying to read another newline
+      final int MAX_LOOKAHEAD_LENGTH = 10000;
+
+      for (int i = offset; i < lookahead.length(); i++)
+      {
+        if (lookahead.charAt(i) == '\n')
+        {
+          return;
+        }
+      }
+      while (lookahead.length() < MAX_LOOKAHEAD_LENGTH)
+      {
+        int nextChar = reader.read();
+        if (nextChar < 0)
+        {
+          // end of stream, just leave lookahead as it was
+          return;
+        }
+        lookahead.append((char) nextChar);
+        if (nextChar == '\n' && lookahead.length() >= offset)
+        {
+          return;
+        }
+      }
     }
 
     /**

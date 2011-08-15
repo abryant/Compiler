@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -16,27 +16,27 @@ public class SwitchCaseAST
   private ExpressionAST caseExpression; // null if this SwitchCaseAST is actually a default case
   private StatementAST[] statements;
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   /**
    * Creates a new SwitchCaseAST with the specified case expression and statements
    * @param caseExpression - the expression for this case, or null if this is a default case
    * @param statements - the statements in this switch case
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public SwitchCaseAST(ExpressionAST caseExpression, StatementAST[] statements, ParseInfo parseInfo)
+  public SwitchCaseAST(ExpressionAST caseExpression, StatementAST[] statements, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.caseExpression = caseExpression;
     this.statements = statements;
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

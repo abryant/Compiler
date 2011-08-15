@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -19,11 +19,11 @@ public class ArrayAccessExpressionAST extends ExpressionAST
    * Creates a new ArrayAccessExpressionAST with the specified array and index expressions
    * @param arrayExpression - the expression for the array that is being accessed
    * @param indexExpression - the expression for the index into the array
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ArrayAccessExpressionAST(ExpressionAST arrayExpression, ExpressionAST indexExpression, ParseInfo parseInfo)
+  public ArrayAccessExpressionAST(ExpressionAST arrayExpression, ExpressionAST indexExpression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.arrayExpression = arrayExpression;
     this.indexExpression = indexExpression;
   }

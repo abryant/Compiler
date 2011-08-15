@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.misc.ModifierAST;
@@ -27,11 +27,11 @@ public class LocalDeclarationStatementAST extends StatementAST
    * @param type - the type of the local variables
    * @param assignees - the assignees which are being declared (or defined to the expression)
    * @param expression - the expression to assign to the assignees, or null if this is just a declaration and not also a definition
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public LocalDeclarationStatementAST(ModifierAST[] modifiers, TypeAST type, DeclarationAssigneeAST[] assignees, ExpressionAST expression, ParseInfo parseInfo)
+  public LocalDeclarationStatementAST(ModifierAST[] modifiers, TypeAST type, DeclarationAssigneeAST[] assignees, ExpressionAST expression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.modifiers = modifiers;
     this.type = type;
     this.assignees = assignees;

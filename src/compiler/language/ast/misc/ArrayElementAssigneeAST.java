@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ArrayAccessExpressionAST;
 
 /*
@@ -18,11 +18,11 @@ public class ArrayElementAssigneeAST extends AssigneeAST
   /**
    * Creates a new ArrayElementAssigneeAST which assigns to the specified array element
    * @param arrayElement - the ArrayAccessExpressionAST to assign to
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ArrayElementAssigneeAST(ArrayAccessExpressionAST arrayElement, ParseInfo parseInfo)
+  public ArrayElementAssigneeAST(ArrayAccessExpressionAST arrayElement, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.arrayElement = arrayElement;
   }
 

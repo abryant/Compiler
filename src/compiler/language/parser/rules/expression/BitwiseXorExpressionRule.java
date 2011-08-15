@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.BitwiseXorExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseType;
@@ -55,10 +55,10 @@ public final class BitwiseXorExpressionRule extends Rule<ParseType>
       {
         // continue the current BitwiseXorExpressionAST if we've already started one
         BitwiseXorExpressionAST startExpression = (BitwiseXorExpressionAST) args[0];
-        return new BitwiseXorExpressionAST(startExpression, secondExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+        return new BitwiseXorExpressionAST(startExpression, secondExpression, LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
       }
       ExpressionAST firstExpression = (ExpressionAST) args[0];
-      return new BitwiseXorExpressionAST(firstExpression, secondExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+      return new BitwiseXorExpressionAST(firstExpression, secondExpression, LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     throw badTypeList();
   }

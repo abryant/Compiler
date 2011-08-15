@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.InlineIfExpressionAST;
 import compiler.language.parser.ParseType;
@@ -57,7 +57,7 @@ public final class InlineIfExpressionRule extends Rule<ParseType>
       ExpressionAST secondExpression = (ExpressionAST) args[2];
       ExpressionAST lastExpression = (ExpressionAST) args[4];
       return new InlineIfExpressionAST(firstExpression, secondExpression, lastExpression,
-                                    ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo(), (ParseInfo) args[3], lastExpression.getParseInfo()));
+                                    LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase(), (LexicalPhrase) args[3], lastExpression.getLexicalPhrase()));
     }
     throw badTypeList();
   }

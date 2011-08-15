@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -14,12 +14,12 @@ public class VoidTypeAST extends TypeAST
 {
 
   /**
-   * Creates a new VoidTypeAST with the specified ParseInfo
-   * @param parseInfo - the parsing information
+   * Creates a new VoidTypeAST with the specified LexicalPhrase
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public VoidTypeAST(ParseInfo parseInfo)
+  public VoidTypeAST(LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
   }
 
   /**

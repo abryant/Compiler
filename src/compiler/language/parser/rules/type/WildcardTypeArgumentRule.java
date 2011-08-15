@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.WildcardTypeArgumentAST;
 import compiler.language.parser.ParseList;
@@ -46,21 +46,21 @@ public final class WildcardTypeArgumentRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new WildcardTypeArgumentAST(new PointerTypeAST[0], new PointerTypeAST[0], (ParseInfo) args[0]);
+      return new WildcardTypeArgumentAST(new PointerTypeAST[0], new PointerTypeAST[0], (LexicalPhrase) args[0]);
     }
     if (EXTENDS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> superTypes = (ParseList<PointerTypeAST>) args[2];
       return new WildcardTypeArgumentAST(superTypes.toArray(new PointerTypeAST[0]), new PointerTypeAST[0],
-                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo()));
+                                       LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], superTypes.getLexicalPhrase()));
     }
     if (SUPER_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> subTypes = (ParseList<PointerTypeAST>) args[2];
       return new WildcardTypeArgumentAST(new PointerTypeAST[0], subTypes.toArray(new PointerTypeAST[0]),
-                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo()));
+                                       LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], subTypes.getLexicalPhrase()));
     }
     if (EXTENDS_SUPER_PRODUCTION.equals(production))
     {
@@ -69,7 +69,7 @@ public final class WildcardTypeArgumentRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> subTypes = (ParseList<PointerTypeAST>) args[4];
       return new WildcardTypeArgumentAST(superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
-                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], superTypes.getParseInfo(), (ParseInfo) args[3], subTypes.getParseInfo()));
+                                       LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], superTypes.getLexicalPhrase(), (LexicalPhrase) args[3], subTypes.getLexicalPhrase()));
     }
     if (SUPER_EXTENDS_PRODUCTION.equals(production))
     {
@@ -78,7 +78,7 @@ public final class WildcardTypeArgumentRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> superTypes = (ParseList<PointerTypeAST>) args[4];
       return new WildcardTypeArgumentAST(superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
-                                       ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], subTypes.getParseInfo(), (ParseInfo) args[3], superTypes.getParseInfo()));
+                                       LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], subTypes.getLexicalPhrase(), (LexicalPhrase) args[3], superTypes.getLexicalPhrase()));
     }
     throw badTypeList();
   }

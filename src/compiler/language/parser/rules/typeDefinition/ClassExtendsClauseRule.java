@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 
@@ -44,7 +44,7 @@ public final class ClassExtendsClauseRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       PointerTypeAST type = (PointerTypeAST) args[1];
-      type.setParseInfo(ParseInfo.combine((ParseInfo) args[0], type.getParseInfo()));
+      type.setLexicalPhrase(LexicalPhrase.combine((LexicalPhrase) args[0], type.getLexicalPhrase()));
       return type;
     }
     throw badTypeList();

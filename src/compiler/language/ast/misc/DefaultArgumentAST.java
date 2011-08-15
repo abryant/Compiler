@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.terminal.NameAST;
 
@@ -21,11 +21,11 @@ public class DefaultArgumentAST extends ArgumentAST
    * Creates a new default argument with the specified name and expression.
    * @param name - the name of the default argument
    * @param expression - the expression for the default argument
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public DefaultArgumentAST(NameAST name, ExpressionAST expression, ParseInfo parseInfo)
+  public DefaultArgumentAST(NameAST name, ExpressionAST expression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.name = name;
     this.expression = expression;
   }

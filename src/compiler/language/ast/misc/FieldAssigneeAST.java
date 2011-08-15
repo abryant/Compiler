@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 
 /*
@@ -18,11 +18,11 @@ public class FieldAssigneeAST extends AssigneeAST
   /**
    * Creates a new FieldAssigneeAST which assigns to the specified field
    * @param field - the FieldAccessExpressionAST to assign to
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public FieldAssigneeAST(FieldAccessExpressionAST field, ParseInfo parseInfo)
+  public FieldAssigneeAST(FieldAccessExpressionAST field, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.field = field;
   }
 

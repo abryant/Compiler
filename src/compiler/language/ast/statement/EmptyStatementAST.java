@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -14,12 +14,12 @@ public class EmptyStatementAST extends StatementAST
 {
 
   /**
-   * Creates a new EmptyStatementAST with the specified ParseInfo
-   * @param parseInfo - the parsing information
+   * Creates a new EmptyStatementAST with the specified LexicalPhrase
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public EmptyStatementAST(ParseInfo parseInfo)
+  public EmptyStatementAST(LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
   }
 
   /**

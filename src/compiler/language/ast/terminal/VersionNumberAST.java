@@ -1,6 +1,6 @@
 package compiler.language.ast.terminal;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 13 Jul 2010
@@ -12,18 +12,18 @@ import compiler.language.ast.ParseInfo;
 public class VersionNumberAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private IntegerLiteralAST[] versionParts;
 
   /**
    * Creates a new version number with the specified version parts
    * @param versionParts - the integer literals representing the parts of this version number
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public VersionNumberAST(IntegerLiteralAST[] versionParts, ParseInfo parseInfo)
+  public VersionNumberAST(IntegerLiteralAST[] versionParts, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.versionParts = versionParts;
   }
 
@@ -36,11 +36,11 @@ public class VersionNumberAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

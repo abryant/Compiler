@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -18,11 +18,11 @@ public class BlockAST extends StatementAST
   /**
    * Creates a new BlockAST with the specified list of statements.
    * @param statements - the statements in this block
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public BlockAST(StatementAST[] statements, ParseInfo parseInfo)
+  public BlockAST(StatementAST[] statements, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.statements = statements;
   }
 

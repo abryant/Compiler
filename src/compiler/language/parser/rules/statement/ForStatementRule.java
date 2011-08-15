@@ -11,7 +11,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.ForStatementAST;
@@ -52,13 +52,13 @@ public final class ForStatementRule extends Rule<ParseType>
       StatementAST update = (StatementAST) args[5];
       BlockAST block = (BlockAST) args[6];
       return new ForStatementAST(init, condition, update, block,
-                              ParseInfo.combine((ParseInfo) args[0],
-                                                init != null ? init.getParseInfo() : null,
-                                                (ParseInfo) args[2],
-                                                condition.getParseInfo(),
-                                                (ParseInfo) args[4],
-                                                update != null ? update.getParseInfo() : null,
-                                                block.getParseInfo()));
+                              LexicalPhrase.combine((LexicalPhrase) args[0],
+                                                init != null ? init.getLexicalPhrase() : null,
+                                                (LexicalPhrase) args[2],
+                                                condition.getLexicalPhrase(),
+                                                (LexicalPhrase) args[4],
+                                                update != null ? update.getLexicalPhrase() : null,
+                                                block.getLexicalPhrase()));
     }
     if (NO_EXPRESSION_PRODUCTION.equals(production))
     {
@@ -66,12 +66,12 @@ public final class ForStatementRule extends Rule<ParseType>
       StatementAST update = (StatementAST) args[4];
       BlockAST block = (BlockAST) args[5];
       return new ForStatementAST(init, null, update, block,
-                              ParseInfo.combine((ParseInfo) args[0],
-                                                init != null ? init.getParseInfo() : null,
-                                                (ParseInfo) args[2],
-                                                (ParseInfo) args[3],
-                                                update != null ? update.getParseInfo() : null,
-                                                block.getParseInfo()));
+                              LexicalPhrase.combine((LexicalPhrase) args[0],
+                                                init != null ? init.getLexicalPhrase() : null,
+                                                (LexicalPhrase) args[2],
+                                                (LexicalPhrase) args[3],
+                                                update != null ? update.getLexicalPhrase() : null,
+                                                block.getLexicalPhrase()));
     }
     throw badTypeList();
   }

@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.misc.ArgumentAST;
 import compiler.language.ast.type.PointerTypeAST;
@@ -24,11 +24,11 @@ public class InstanciationExpressionAST extends StatementExpressionAST
    * @param type - the type of the class to create
    * @param arguments - the arguments for the constructor call
    * @param members - the list of members for the class, or null if no class body was specified
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public InstanciationExpressionAST(PointerTypeAST type, ArgumentAST[] arguments, MemberAST[] members, ParseInfo parseInfo)
+  public InstanciationExpressionAST(PointerTypeAST type, ArgumentAST[] arguments, MemberAST[] members, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.type = type;
     this.arguments = arguments;
     this.members = members;

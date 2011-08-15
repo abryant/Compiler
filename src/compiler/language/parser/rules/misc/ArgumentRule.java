@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.DefaultArgumentAST;
 import compiler.language.ast.misc.NormalArgumentAST;
@@ -45,13 +45,13 @@ public final class ArgumentRule extends Rule<ParseType>
     if (NORMAL_PRODUCTION.equals(production))
     {
       ExpressionAST expression = (ExpressionAST) args[0];
-      return new NormalArgumentAST(expression, expression.getParseInfo());
+      return new NormalArgumentAST(expression, expression.getLexicalPhrase());
     }
     if (DEFAULT_PRODUCTION.equals(production))
     {
       NameAST name = (NameAST) args[1];
       ExpressionAST expression = (ExpressionAST) args[3];
-      return new DefaultArgumentAST(name, expression, ParseInfo.combine((ParseInfo) args[0], name.getParseInfo(), (ParseInfo) args[2], expression.getParseInfo()));
+      return new DefaultArgumentAST(name, expression, LexicalPhrase.combine((LexicalPhrase) args[0], name.getLexicalPhrase(), (LexicalPhrase) args[2], expression.getLexicalPhrase()));
     }
     throw badTypeList();
   }

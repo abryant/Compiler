@@ -1,6 +1,6 @@
 package compiler.language.ast.topLevel;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.terminal.NameAST;
 
@@ -18,13 +18,13 @@ public abstract class TypeDefinitionAST extends MemberAST
   private NameAST name;
 
   /**
-   * Creates a new TypeDefinitionAST with the specified ParseInfo
+   * Creates a new TypeDefinitionAST with the specified LexicalPhrase
    * @param name - the name of the type
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public TypeDefinitionAST(NameAST name, ParseInfo parseInfo)
+  public TypeDefinitionAST(NameAST name, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.name = name;
   }
 

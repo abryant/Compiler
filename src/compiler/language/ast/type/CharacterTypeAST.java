@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -14,12 +14,12 @@ public class CharacterTypeAST extends PrimitiveTypeAST
 {
 
   /**
-   * Creates a new CharacterTypeAST with the specified ParseInfo
-   * @param parseInfo - the parsing information
+   * Creates a new CharacterTypeAST with the specified LexicalPhrase
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public CharacterTypeAST(ParseInfo parseInfo)
+  public CharacterTypeAST(LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
   }
 
   /**

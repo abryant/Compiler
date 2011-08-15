@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.TypeAST;
 
 /*
@@ -20,11 +20,11 @@ public class CastExpressionAST extends ExpressionAST
    * Creates a new CastExpressionAST to cast the specified subExpression to the specified type
    * @param type - the type to case the subExpression to
    * @param subExpression - the subExpression to cast to the specified type
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public CastExpressionAST(TypeAST type, ExpressionAST subExpression, ParseInfo parseInfo)
+  public CastExpressionAST(TypeAST type, ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.type = type;
     this.subExpression = subExpression;
   }

@@ -11,7 +11,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeParameterAST;
@@ -54,8 +54,8 @@ public final class TypeParameterRAngleRule extends Rule<ParseType>
     NameAST name = (NameAST) args[0];
     if (NAME_PRODUCTION.equals(production))
     {
-      TypeParameterAST typeParameter = new TypeParameterAST(name, new PointerTypeAST[0], new PointerTypeAST[0], name.getParseInfo());
-      return new ParseContainer<TypeParameterAST>(typeParameter, ParseInfo.combine(typeParameter.getParseInfo(), (ParseInfo) args[1]));
+      TypeParameterAST typeParameter = new TypeParameterAST(name, new PointerTypeAST[0], new PointerTypeAST[0], name.getLexicalPhrase());
+      return new ParseContainer<TypeParameterAST>(typeParameter, LexicalPhrase.combine(typeParameter.getLexicalPhrase(), (LexicalPhrase) args[1]));
     }
     if (EXTENDS_PRODUCTION.equals(production))
     {
@@ -63,8 +63,8 @@ public final class TypeParameterRAngleRule extends Rule<ParseType>
       ParseContainer<ParseList<PointerTypeAST>> container = (ParseContainer<ParseList<PointerTypeAST>>) args[2];
       ParseList<PointerTypeAST> superTypes = container.getItem();
       TypeParameterAST typeParameter = new TypeParameterAST(name, superTypes.toArray(new PointerTypeAST[0]), new PointerTypeAST[0],
-                                                            ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo()));
-      return new ParseContainer<TypeParameterAST>(typeParameter, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
+                                                            LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], superTypes.getLexicalPhrase()));
+      return new ParseContainer<TypeParameterAST>(typeParameter, LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], container.getLexicalPhrase()));
     }
     if (SUPER_PRODUCTION.equals(production))
     {
@@ -72,8 +72,8 @@ public final class TypeParameterRAngleRule extends Rule<ParseType>
       ParseContainer<ParseList<PointerTypeAST>> container = (ParseContainer<ParseList<PointerTypeAST>>) args[2];
       ParseList<PointerTypeAST> subTypes = container.getItem();
       TypeParameterAST typeParameter = new TypeParameterAST(name, new PointerTypeAST[0], subTypes.toArray(new PointerTypeAST[0]),
-                                                            ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo()));
-      return new ParseContainer<TypeParameterAST>(typeParameter, ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], container.getParseInfo()));
+                                                            LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], subTypes.getLexicalPhrase()));
+      return new ParseContainer<TypeParameterAST>(typeParameter, LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], container.getLexicalPhrase()));
     }
     if (EXTENDS_SUPER_PRODUCTION.equals(production))
     {
@@ -83,11 +83,11 @@ public final class TypeParameterRAngleRule extends Rule<ParseType>
       ParseList<PointerTypeAST> superTypes = (ParseList<PointerTypeAST>) args[2];
       ParseList<PointerTypeAST> subTypes = container.getItem();
       TypeParameterAST typeParameter = new TypeParameterAST(name, superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
-                                                            ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo(),
-                                                                                                   (ParseInfo) args[3], subTypes.getParseInfo()));
+                                                            LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], superTypes.getLexicalPhrase(),
+                                                                                                   (LexicalPhrase) args[3], subTypes.getLexicalPhrase()));
       return new ParseContainer<TypeParameterAST>(typeParameter,
-                                              ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], superTypes.getParseInfo(),
-                                                                                     (ParseInfo) args[3], container.getParseInfo()));
+                                              LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], superTypes.getLexicalPhrase(),
+                                                                                     (LexicalPhrase) args[3], container.getLexicalPhrase()));
     }
     if (SUPER_EXTENDS_PRODUCTION.equals(production))
     {
@@ -97,11 +97,11 @@ public final class TypeParameterRAngleRule extends Rule<ParseType>
       ParseList<PointerTypeAST> subTypes = (ParseList<PointerTypeAST>) args[2];
       ParseList<PointerTypeAST> superTypes = container.getItem();
       TypeParameterAST typeParameter = new TypeParameterAST(name, superTypes.toArray(new PointerTypeAST[0]), subTypes.toArray(new PointerTypeAST[0]),
-                                                            ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo(),
-                                                                                                   (ParseInfo) args[3], superTypes.getParseInfo()));
+                                                            LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], subTypes.getLexicalPhrase(),
+                                                                                                   (LexicalPhrase) args[3], superTypes.getLexicalPhrase()));
       return new ParseContainer<TypeParameterAST>(typeParameter,
-                                              ParseInfo.combine(name.getParseInfo(), (ParseInfo) args[1], subTypes.getParseInfo(),
-                                                                                     (ParseInfo) args[3], container.getParseInfo()));
+                                              LexicalPhrase.combine(name.getLexicalPhrase(), (LexicalPhrase) args[1], subTypes.getLexicalPhrase(),
+                                                                                     (LexicalPhrase) args[3], container.getLexicalPhrase()));
     }
     throw badTypeList();
   }

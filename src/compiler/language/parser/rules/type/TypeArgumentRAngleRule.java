@@ -44,8 +44,8 @@ public final class TypeArgumentRAngleRule extends Rule<ParseType>
     {
       @SuppressWarnings("unchecked")
       ParseContainer<TypeAST> container = (ParseContainer<TypeAST>) args[0];
-      TypeArgumentAST typeArgument = new NormalTypeArgumentAST(container.getItem(), container.getItem().getParseInfo());
-      return new ParseContainer<TypeArgumentAST>(typeArgument, container.getParseInfo());
+      TypeArgumentAST typeArgument = new NormalTypeArgumentAST(container.getItem(), container.getItem().getLexicalPhrase());
+      return new ParseContainer<TypeArgumentAST>(typeArgument, container.getLexicalPhrase());
     }
     if (WILDCARD_PRODUCTION.equals(production))
     {

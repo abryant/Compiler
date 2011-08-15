@@ -11,7 +11,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.ClosureTypeAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
@@ -54,8 +54,8 @@ public final class ClosureTypeRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> thrownTypes = (ParseList<PointerTypeAST>) args[4];
       return new ClosureTypeAST(new TypeParameterAST[0], argumentTypes.toArray(new TypeAST[0]), returnTypes.toArray(new TypeAST[0]), thrownTypes.toArray(new PointerTypeAST[0]),
-                                ParseInfo.combine((ParseInfo) args[0], argumentTypes.getParseInfo(), (ParseInfo) args[2],
-                                                  returnTypes.getParseInfo(), thrownTypes.getParseInfo(), (ParseInfo) args[5]));
+                                LexicalPhrase.combine((LexicalPhrase) args[0], argumentTypes.getLexicalPhrase(), (LexicalPhrase) args[2],
+                                                  returnTypes.getLexicalPhrase(), thrownTypes.getLexicalPhrase(), (LexicalPhrase) args[5]));
     }
     if (TYPE_PARAMETERS_PRODUCTION.equals(production))
     {
@@ -69,8 +69,8 @@ public final class ClosureTypeRule extends Rule<ParseType>
       ParseList<PointerTypeAST> thrownTypes = (ParseList<PointerTypeAST>) args[5];
       return new ClosureTypeAST(typeParameters.toArray(new TypeParameterAST[0]), argumentTypes.toArray(new TypeAST[0]),
                                 returnTypes.toArray(new TypeAST[0]), thrownTypes.toArray(new PointerTypeAST[0]),
-                                ParseInfo.combine((ParseInfo) args[0], typeParameters.getParseInfo(), argumentTypes.getParseInfo(), (ParseInfo) args[3],
-                                                  returnTypes.getParseInfo(), thrownTypes.getParseInfo(), (ParseInfo) args[6]));
+                                LexicalPhrase.combine((LexicalPhrase) args[0], typeParameters.getLexicalPhrase(), argumentTypes.getLexicalPhrase(), (LexicalPhrase) args[3],
+                                                  returnTypes.getLexicalPhrase(), thrownTypes.getLexicalPhrase(), (LexicalPhrase) args[6]));
     }
     throw badTypeList();
   }

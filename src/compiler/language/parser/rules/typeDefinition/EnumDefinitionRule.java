@@ -15,7 +15,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.member.MemberHeaderAST;
 import compiler.language.ast.terminal.NameAST;
@@ -61,10 +61,10 @@ public final class EnumDefinitionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<EnumConstantAST> enumConstants = (ParseList<EnumConstantAST>) args[6];
       return new EnumDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, superType, interfaces.toArray(new PointerTypeAST[0]), enumConstants.toArray(new EnumConstantAST[0]), new MemberAST[0],
-                                ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(),
-                                                  superType != null ? superType.getParseInfo() : null,
-                                                  interfaces.getParseInfo(),
-                                                  (ParseInfo) args[5], enumConstants.getParseInfo(), (ParseInfo) args[7]));
+                                LexicalPhrase.combine(header.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase(),
+                                                  superType != null ? superType.getLexicalPhrase() : null,
+                                                  interfaces.getLexicalPhrase(),
+                                                  (LexicalPhrase) args[5], enumConstants.getLexicalPhrase(), (LexicalPhrase) args[7]));
     }
     if (MEMBERS_PRODUCTION.equals(production))
     {
@@ -78,10 +78,10 @@ public final class EnumDefinitionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<MemberAST> members = (ParseList<MemberAST>) args[8];
       return new EnumDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, superType, interfaces.toArray(new PointerTypeAST[0]), enumConstants.toArray(new EnumConstantAST[0]), members.toArray(new MemberAST[0]),
-                                ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(),
-                                                  superType != null ? superType.getParseInfo() : null,
-                                                  interfaces.getParseInfo(),
-                                                  (ParseInfo) args[5], enumConstants.getParseInfo(), (ParseInfo) args[7], members.getParseInfo(), (ParseInfo) args[9]));
+                                LexicalPhrase.combine(header.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase(),
+                                                  superType != null ? superType.getLexicalPhrase() : null,
+                                                  interfaces.getLexicalPhrase(),
+                                                  (LexicalPhrase) args[5], enumConstants.getLexicalPhrase(), (LexicalPhrase) args[7], members.getLexicalPhrase(), (LexicalPhrase) args[9]));
     }
     throw badTypeList();
   }

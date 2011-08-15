@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.statement.BreakStatementAST;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 import compiler.language.parser.ParseType;
@@ -42,12 +42,12 @@ public final class BreakStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new BreakStatementAST(null, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new BreakStatementAST(null, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     if (NUMBER_PRODUCTION.equals(production))
     {
       IntegerLiteralAST breakLevels = (IntegerLiteralAST) args[1];
-      return new BreakStatementAST(breakLevels, ParseInfo.combine((ParseInfo) args[0], breakLevels.getParseInfo(), (ParseInfo) args[2]));
+      return new BreakStatementAST(breakLevels, LexicalPhrase.combine((LexicalPhrase) args[0], breakLevels.getLexicalPhrase(), (LexicalPhrase) args[2]));
     }
     throw badTypeList();
   }

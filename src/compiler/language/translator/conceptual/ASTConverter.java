@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.AccessSpecifierAST;
 import compiler.language.ast.member.ConstructorAST;
 import compiler.language.ast.member.FieldAST;
@@ -164,21 +164,21 @@ public class ASTConverter
         packageResult = rootPackage.resolve(packageName, false);
         if (packageResult == null)
         {
-          throw new ConceptualException("Package name cannot be resolved", packageDeclaration.getPackageName().getParseInfo());
+          throw new ConceptualException("Package name cannot be resolved", packageDeclaration.getPackageName().getLexicalPhrase());
         }
       }
       catch (UnresolvableException e)
       {
-        throw new ConceptualException("Package name cannot be resolved", e, packageDeclaration.getPackageName().getParseInfo());
+        throw new ConceptualException("Package name cannot be resolved", e, packageDeclaration.getPackageName().getLexicalPhrase());
       }
       if (packageResult.getType() != ScopeType.PACKAGE)
       {
-        throw new ConceptualException("Package name does not resolve to a package", packageDeclaration.getPackageName().getParseInfo());
+        throw new ConceptualException("Package name does not resolve to a package", packageDeclaration.getPackageName().getLexicalPhrase());
       }
       enclosingPackage = (ConceptualPackage) packageResult;
       if (enclosingPackage != expectedPackage)
       {
-        throw new ConceptualException("Expected package name to be \"" + expectedPackage.getName() + "\"", packageDeclaration.getPackageName().getParseInfo());
+        throw new ConceptualException("Expected package name to be \"" + expectedPackage.getName() + "\"", packageDeclaration.getPackageName().getLexicalPhrase());
       }
     }
 
@@ -244,8 +244,8 @@ public class ASTConverter
     AccessSpecifier access = convert(classDefinition.getAccess(), AccessSpecifier.PUBLIC);
     if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
     {
-      // the getParseInfo() call here will not throw a NullPointerException because if classDefinition.getAccess() was null then access would be PUBLIC
-      throw new ConceptualException("Invalid access specifier for a class", classDefinition.getAccess().getParseInfo());
+      // the getLexicalPhrase() call here will not throw a NullPointerException because if classDefinition.getAccess() was null then access would be PUBLIC
+      throw new ConceptualException("Invalid access specifier for a class", classDefinition.getAccess().getLexicalPhrase());
     }
     ModifierAST[] modifiers = classDefinition.getModifiers();
     boolean isAbstract = false;
@@ -269,7 +269,7 @@ public class ASTConverter
         sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for a Class Definition", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for a Class Definition", modifier.getLexicalPhrase());
       }
     }
 
@@ -303,7 +303,7 @@ public class ASTConverter
       Boolean usedInMethod = usedNames.put(typeParameterASTs[i].getName().getName(), false);
       if (usedInMethod != null)
       {
-        throw new NameConflictException(typeParameterASTs[i].getName().getParseInfo());
+        throw new NameConflictException(typeParameterASTs[i].getName().getLexicalPhrase());
       }
       typeParameters[i] =  convert(typeParameterASTs[i]);
     }
@@ -330,7 +330,7 @@ public class ASTConverter
           Boolean usedInMethod = usedNames.put(variable.getName(), false);
           if (usedInMethod != null)
           {
-            throw new NameConflictException(((DeclarationAssigneeAST) conceptualASTNodes.get(variable)).getName().getParseInfo());
+            throw new NameConflictException(((DeclarationAssigneeAST) conceptualASTNodes.get(variable)).getName().getLexicalPhrase());
           }
           variables.add(variable);
         }
@@ -340,7 +340,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((PropertyAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((PropertyAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((PropertyAST) memberAST).getName().getLexicalPhrase());
         }
         properties.add(convert((PropertyAST) memberAST, conceptualClass));
       }
@@ -359,7 +359,7 @@ public class ASTConverter
         if (usedInMethod != null && !usedInMethod)
         {
           // this name has already been used, and not in another method
-          throw new NameConflictException(((MethodAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((MethodAST) memberAST).getName().getLexicalPhrase());
         }
         methods.add(convert((MethodAST) memberAST, conceptualClass));
       }
@@ -368,7 +368,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((ClassDefinitionAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((ClassDefinitionAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((ClassDefinitionAST) memberAST).getName().getLexicalPhrase());
         }
         innerClasses.add(convertInnerClass((ClassDefinitionAST) memberAST, conceptualClass));
       }
@@ -377,7 +377,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((InterfaceDefinitionAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((InterfaceDefinitionAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((InterfaceDefinitionAST) memberAST).getName().getLexicalPhrase());
         }
         innerInterfaces.add(convertInnerInterface((InterfaceDefinitionAST) memberAST, conceptualClass));
       }
@@ -386,7 +386,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((EnumDefinitionAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((EnumDefinitionAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((EnumDefinitionAST) memberAST).getName().getLexicalPhrase());
         }
         innerEnums.add(convertInnerEnum((EnumDefinitionAST) memberAST, conceptualClass));
       }
@@ -419,8 +419,8 @@ public class ASTConverter
     AccessSpecifier access = convert(interfaceDefinition.getAccess(), AccessSpecifier.PUBLIC);
     if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
     {
-      // the getParseInfo() call here will not throw a NullPointerException because if interfaceDefinition.getAccess() was null then access would be PUBLIC
-      throw new ConceptualException("Invalid access specifier for an interface.", interfaceDefinition.getAccess().getParseInfo());
+      // the getLexicalPhrase() call here will not throw a NullPointerException because if interfaceDefinition.getAccess() was null then access would be PUBLIC
+      throw new ConceptualException("Invalid access specifier for an interface.", interfaceDefinition.getAccess().getLexicalPhrase());
     }
     ModifierAST[] modifiers = interfaceDefinition.getModifiers();
     boolean isImmutable = false;
@@ -436,7 +436,7 @@ public class ASTConverter
         sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for an Interface Definition", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for an Interface Definition", modifier.getLexicalPhrase());
       }
     }
 
@@ -469,7 +469,7 @@ public class ASTConverter
       Boolean usedInMethod = usedNames.put(typeParameterASTs[i].getName().getName(), false);
       if (usedInMethod != null)
       {
-        throw new NameConflictException(typeParameterASTs[i].getName().getParseInfo());
+        throw new NameConflictException(typeParameterASTs[i].getName().getLexicalPhrase());
       }
       typeParameters[i] = convert(typeParameterASTs[i]);
     }
@@ -494,12 +494,12 @@ public class ASTConverter
         {
           if (!variable.isStatic())
           {
-            throw new ConceptualException("An interface cannot contain non-static member variables", memberAST.getParseInfo());
+            throw new ConceptualException("An interface cannot contain non-static member variables", memberAST.getLexicalPhrase());
           }
           Boolean usedInMethod = usedNames.put(variable.getName(), false);
           if (usedInMethod != null)
           {
-            throw new NameConflictException(((DeclarationAssigneeAST) conceptualASTNodes.get(variable)).getName().getParseInfo());
+            throw new NameConflictException(((DeclarationAssigneeAST) conceptualASTNodes.get(variable)).getName().getLexicalPhrase());
           }
           variables.add(variable);
         }
@@ -509,7 +509,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((PropertyAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((PropertyAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((PropertyAST) memberAST).getName().getLexicalPhrase());
         }
         properties.add(convert((PropertyAST) memberAST, conceptualInterface));
       }
@@ -524,7 +524,7 @@ public class ASTConverter
         if (usedInMethod != null && !usedInMethod)
         {
           // this name has already been used, and not in another method
-          throw new NameConflictException(((MethodAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((MethodAST) memberAST).getName().getLexicalPhrase());
         }
         methods.add(convert((MethodAST) memberAST, conceptualInterface));
       }
@@ -533,7 +533,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((ClassDefinitionAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((ClassDefinitionAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((ClassDefinitionAST) memberAST).getName().getLexicalPhrase());
         }
         innerClasses.add(convertInnerClass((ClassDefinitionAST) memberAST, conceptualInterface));
       }
@@ -542,7 +542,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((InterfaceDefinitionAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((InterfaceDefinitionAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((InterfaceDefinitionAST) memberAST).getName().getLexicalPhrase());
         }
         innerInterfaces.add(convertInnerInterface((InterfaceDefinitionAST) memberAST, conceptualInterface));
       }
@@ -551,7 +551,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((EnumDefinitionAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((EnumDefinitionAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((EnumDefinitionAST) memberAST).getName().getLexicalPhrase());
         }
         innerEnums.add(convertInnerEnum((EnumDefinitionAST) memberAST, conceptualInterface));
       }
@@ -583,8 +583,8 @@ public class ASTConverter
     AccessSpecifier access = convert(enumDefinition.getAccessSpecifier(), AccessSpecifier.PUBLIC);
     if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
     {
-      // the getParseInfo() call here will not throw a NullPointerException because if enumDefinition.getAccessSpecifier() was null then access would be PUBLIC
-      throw new ConceptualException("Invalid access specifier for an enum", enumDefinition.getAccessSpecifier().getParseInfo());
+      // the getLexicalPhrase() call here will not throw a NullPointerException because if enumDefinition.getAccessSpecifier() was null then access would be PUBLIC
+      throw new ConceptualException("Invalid access specifier for an enum", enumDefinition.getAccessSpecifier().getLexicalPhrase());
     }
     ModifierAST[] modifiers = enumDefinition.getModifiers();
     SinceSpecifier sinceSpecifier = null;
@@ -596,7 +596,7 @@ public class ASTConverter
         sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for an Enum Definition", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for an Enum Definition", modifier.getLexicalPhrase());
       }
     }
 
@@ -631,7 +631,7 @@ public class ASTConverter
       Boolean usedInMethod = usedNames.put(constantASTs[i].getName().getName(), false);
       if (usedInMethod != null)
       {
-        throw new NameConflictException(constantASTs[i].getName().getParseInfo());
+        throw new NameConflictException(constantASTs[i].getName().getLexicalPhrase());
       }
       constants[i] = convert(constantASTs[i]);
     }
@@ -657,7 +657,7 @@ public class ASTConverter
           Boolean usedInMethod = usedNames.put(variable.getName(), false);
           if (usedInMethod != null)
           {
-            throw new NameConflictException(((DeclarationAssigneeAST) conceptualASTNodes.get(variable)).getName().getParseInfo());
+            throw new NameConflictException(((DeclarationAssigneeAST) conceptualASTNodes.get(variable)).getName().getLexicalPhrase());
           }
           variables.add(variable);
         }
@@ -667,7 +667,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((PropertyAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((PropertyAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((PropertyAST) memberAST).getName().getLexicalPhrase());
         }
         properties.add(convert((PropertyAST) memberAST, conceptualEnum));
       }
@@ -686,7 +686,7 @@ public class ASTConverter
         if (usedInMethod != null && !usedInMethod)
         {
           // this name has already been used, and not in another method
-          throw new NameConflictException(((MethodAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((MethodAST) memberAST).getName().getLexicalPhrase());
         }
         methods.add(convert((MethodAST) memberAST, conceptualEnum));
       }
@@ -695,7 +695,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((ClassDefinitionAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((ClassDefinitionAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((ClassDefinitionAST) memberAST).getName().getLexicalPhrase());
         }
         innerClasses.add(convertInnerClass((ClassDefinitionAST) memberAST, conceptualEnum));
       }
@@ -704,7 +704,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((InterfaceDefinitionAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((InterfaceDefinitionAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((InterfaceDefinitionAST) memberAST).getName().getLexicalPhrase());
         }
         innerInterfaces.add(convertInnerInterface((InterfaceDefinitionAST) memberAST, conceptualEnum));
       }
@@ -713,7 +713,7 @@ public class ASTConverter
         Boolean usedInMethod = usedNames.put(((EnumDefinitionAST) memberAST).getName().getName(), false);
         if (usedInMethod != null)
         {
-          throw new NameConflictException(((EnumDefinitionAST) memberAST).getName().getParseInfo());
+          throw new NameConflictException(((EnumDefinitionAST) memberAST).getName().getLexicalPhrase());
         }
         innerEnums.add(convertInnerEnum((EnumDefinitionAST) memberAST, conceptualEnum));
       }
@@ -796,7 +796,7 @@ public class ASTConverter
         isVolatile = true;
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for a Field", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for a Field", modifier.getLexicalPhrase());
       }
     }
 
@@ -857,7 +857,7 @@ public class ASTConverter
         isVolatile = true;
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for a Property", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for a Property", modifier.getLexicalPhrase());
       }
     }
 
@@ -890,7 +890,7 @@ public class ASTConverter
         sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for a Constructor", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for a Constructor", modifier.getLexicalPhrase());
       }
     }
 
@@ -944,7 +944,7 @@ public class ASTConverter
         isSynchronized = true;
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for a Method", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for a Method", modifier.getLexicalPhrase());
       }
     }
 
@@ -993,7 +993,7 @@ public class ASTConverter
         sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for an Inner Class Definition", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for an Inner Class Definition", modifier.getLexicalPhrase());
       }
     }
 
@@ -1032,7 +1032,7 @@ public class ASTConverter
         sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for an Interface Definition", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for an Interface Definition", modifier.getLexicalPhrase());
       }
     }
 
@@ -1057,8 +1057,8 @@ public class ASTConverter
     AccessSpecifier access = convert(enumDefinition.getAccessSpecifier(), AccessSpecifier.PUBLIC);
     if (access != AccessSpecifier.PUBLIC && access != AccessSpecifier.PACKAGE)
     {
-      // the getParseInfo() call here will not throw a NullPointerException because if enumDefinition.getAccessSpecifier() was null then access would be PUBLIC
-      throw new ConceptualException("Invalid access specifier for an enum", enumDefinition.getAccessSpecifier().getParseInfo());
+      // the getLexicalPhrase() call here will not throw a NullPointerException because if enumDefinition.getAccessSpecifier() was null then access would be PUBLIC
+      throw new ConceptualException("Invalid access specifier for an enum", enumDefinition.getAccessSpecifier().getLexicalPhrase());
     }
     ModifierAST[] modifiers = enumDefinition.getModifiers();
     SinceSpecifier sinceSpecifier = null;
@@ -1070,7 +1070,7 @@ public class ASTConverter
         sinceSpecifier = convert((SinceSpecifierAST) modifier);
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for an Enum Definition", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for an Enum Definition", modifier.getLexicalPhrase());
       }
     }
 
@@ -1128,7 +1128,7 @@ public class ASTConverter
       int intValue = value.intValue();
       if (intValue < 0 || !BigInteger.valueOf(intValue).equals(value))
       {
-        throw new ConceptualException("Illegal value in a Since Specifier: " + value, literals[i].getParseInfo());
+        throw new ConceptualException("Illegal value in a Since Specifier: " + value, literals[i].getLexicalPhrase());
       }
       values[i] = intValue;
     }
@@ -1415,7 +1415,7 @@ public class ASTConverter
         isVolatile = true;
         break;
       default:
-        throw new ConceptualException("Illegal Modifier for a parameter", modifier.getParseInfo());
+        throw new ConceptualException("Illegal Modifier for a parameter", modifier.getLexicalPhrase());
       }
     }
 
@@ -1490,18 +1490,18 @@ public class ASTConverter
   }
 
   /**
-   * Extracts the ParseInfo from the specified array of NameASTs.
-   * @param names - the NameAST[] to extract the ParseInfo from
-   * @return the ParseInfo[] created
+   * Extracts the LexicalPhrase from the specified array of NameASTs.
+   * @param names - the NameAST[] to extract the LexicalPhrase from
+   * @return the LexicalPhrase[] created
    */
-  public static ParseInfo[] extractParseInfo(NameAST[] names)
+  public static LexicalPhrase[] extractLexicalPhrase(NameAST[] names)
   {
-    ParseInfo[] parseInfo = new ParseInfo[names.length];
+    LexicalPhrase[] lexicalPhrases = new LexicalPhrase[names.length];
     for (int i = 0; i < names.length; i++)
     {
-      parseInfo[i] = names[i].getParseInfo();
+      lexicalPhrases[i] = names[i].getLexicalPhrase();
     }
-    return parseInfo;
+    return lexicalPhrases;
   }
 
 }

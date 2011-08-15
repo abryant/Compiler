@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ThisAccessExpressionAST;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseType;
@@ -42,12 +42,12 @@ public final class ThisAccessExpressionRule extends Rule<ParseType>
   {
     if (THIS_PRODUCTION.equals(production))
     {
-      return new ThisAccessExpressionAST(null, (ParseInfo) args[0]);
+      return new ThisAccessExpressionAST(null, (LexicalPhrase) args[0]);
     }
     if (QNAME_THIS_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      return new ThisAccessExpressionAST(qname, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      return new ThisAccessExpressionAST(qname, LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2]));
     }
     throw badTypeList();
   }

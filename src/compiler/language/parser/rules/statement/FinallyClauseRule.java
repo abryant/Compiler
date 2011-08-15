@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseType;
@@ -42,7 +42,7 @@ public final class FinallyClauseRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       BlockAST block = (BlockAST) args[1];
-      return new ParseContainer<BlockAST>(block, ParseInfo.combine((ParseInfo) args[0], block.getParseInfo()));
+      return new ParseContainer<BlockAST>(block, LexicalPhrase.combine((LexicalPhrase) args[0], block.getLexicalPhrase()));
     }
     if (EMPTY_PRODUCTION.equals(production))
     {

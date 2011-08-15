@@ -11,7 +11,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.ForEachStatementAST;
@@ -52,8 +52,8 @@ public final class ForEachStatementRule extends Rule<ParseType>
       ExpressionAST expression = (ExpressionAST) args[4];
       BlockAST block = (BlockAST) args[5];
       return new ForEachStatementAST(type, name, expression, block,
-                                  ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(),
-                                                    (ParseInfo) args[3], expression.getParseInfo(), block.getParseInfo()));
+                                  LexicalPhrase.combine((LexicalPhrase) args[0], type.getLexicalPhrase(), name.getLexicalPhrase(),
+                                                    (LexicalPhrase) args[3], expression.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     throw badTypeList();
   }

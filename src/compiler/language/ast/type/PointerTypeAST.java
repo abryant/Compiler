@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.terminal.NameAST;
 
@@ -22,11 +22,11 @@ public class PointerTypeAST extends TypeAST
   /**
    * Creates a new PointerTypeAST that consists only of the specified QNameAST
    * @param qname - the qualified name of the type
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public PointerTypeAST(QNameAST qname, ParseInfo parseInfo)
+  public PointerTypeAST(QNameAST qname, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     immutable = false;
     names = qname.getNames();
     typeArgumentLists = new TypeArgumentAST[names.length][];
@@ -41,11 +41,11 @@ public class PointerTypeAST extends TypeAST
    * @param immutable - true if this type should be immutable, false otherwise
    * @param names - the list of (qualifier) names in this PointerTypeAST, ending in the actual type name
    * @param typeArgumentLists - the type argument list for each name in this pointer type, with empty arrays for names that do not have type arguments
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public PointerTypeAST(boolean immutable, NameAST[] names, TypeArgumentAST[][] typeArgumentLists, ParseInfo parseInfo)
+  public PointerTypeAST(boolean immutable, NameAST[] names, TypeArgumentAST[][] typeArgumentLists, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.immutable = immutable;
 
     if (names.length != typeArgumentLists.length)
@@ -62,11 +62,11 @@ public class PointerTypeAST extends TypeAST
    * @param immutable - true if this type should be immutable, false otherwise
    * @param addedNames - the list of added (qualifier) names in this PointerTypeAST, ending in the actual type name
    * @param addedTypeArgumentLists - the type argument list for each added name in this pointer type, with empty arrays for names that do not have type arguments
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public PointerTypeAST(PointerTypeAST baseType, boolean immutable, NameAST[] addedNames, TypeArgumentAST[][] addedTypeArgumentLists, ParseInfo parseInfo)
+  public PointerTypeAST(PointerTypeAST baseType, boolean immutable, NameAST[] addedNames, TypeArgumentAST[][] addedTypeArgumentLists, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.immutable = immutable;
     if (addedNames.length != addedTypeArgumentLists.length)
     {

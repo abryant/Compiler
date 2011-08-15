@@ -1,6 +1,6 @@
 package compiler.language.conceptual;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 23 Dec 2010
@@ -15,37 +15,37 @@ public class ConceptualException extends Exception
 {
   private static final long serialVersionUID = 1L;
 
-  private ParseInfo[] parseInfo;
+  private LexicalPhrase[] lexicalPhrases;
 
   /**
-   * Creates a new ConceptualException with the specified message and ParseInfo
+   * Creates a new ConceptualException with the specified message and LexicalPhrase
    * @param message - the message for this ConceptualException
-   * @param parseInfo - all of the parsing information specifying where the mistake occurred (this can contain multiple ParseInfo objects)
+   * @param lexicalPhrases - all of the lexical phrases specifying where the mistake occurred (this can contain multiple LexicalPhrase objects)
    */
-  public ConceptualException(String message, ParseInfo... parseInfo)
+  public ConceptualException(String message, LexicalPhrase... lexicalPhrases)
   {
     super(message);
-    this.parseInfo = parseInfo;
+    this.lexicalPhrases = lexicalPhrases;
   }
 
   /**
-   * Creates a new ConceptualException with the specified message and ParseInfo
+   * Creates a new ConceptualException with the specified message and LexicalPhrase
    * @param message - the message for this ConceptualException
    * @param cause - the cause of this exception
-   * @param parseInfo - all of the parsing information specifying where the mistake occurred (this can contain multiple ParseInfo objects)
+   * @param lexicalPhrases - all of the lexical phrases specifying where the mistake occurred (this can contain multiple LexicalPhrase objects)
    */
-  public ConceptualException(String message, Throwable cause, ParseInfo... parseInfo)
+  public ConceptualException(String message, Throwable cause, LexicalPhrase... lexicalPhrases)
   {
     super(message, cause);
-    this.parseInfo = parseInfo;
+    this.lexicalPhrases = lexicalPhrases;
   }
 
   /**
-   * @return all of the parseInfo objects related to this exception
+   * @return all of the LexicalPhrase objects related to this exception
    */
-  public ParseInfo[] getParseInfo()
+  public LexicalPhrase[] getLexicalPhrases()
   {
-    return parseInfo;
+    return lexicalPhrases;
   }
 
 }

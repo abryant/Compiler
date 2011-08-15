@@ -1,4 +1,4 @@
-package compiler.language.ast;
+package compiler.language;
 
 /*
  * Created on 5 Aug 2010
@@ -8,7 +8,7 @@ package compiler.language.ast;
  * An immutable class which stores information from the parser, such as the location in a file that something came from.
  * @author Anthony Bryant
  */
-public class ParseInfo
+public class LexicalPhrase
 {
   // TODO: rename this class to LexicalPhrase (and all variable names that reference it!)
 
@@ -20,24 +20,24 @@ public class ParseInfo
   private int endColumn;
 
   /**
-   * Creates a new ParseInfo object to represent the specified location.
+   * Creates a new LexicalPhrase object to represent the specified location.
    * @param line - the line number
    * @param lineText - the text of the line
    * @param column - the column on the line to represent
    */
-  public ParseInfo(int line, String lineText, int column)
+  public LexicalPhrase(int line, String lineText, int column)
   {
     this(line, lineText, column, column + 1);
   }
 
   /**
-   * Creates a new ParseInfo object to represent the specified range of characters on a single line
+   * Creates a new LexicalPhrase object to represent the specified range of characters on a single line
    * @param line - the line number
    * @param lineText - the text of the line
    * @param startColumn - the start column on the line
    * @param endColumn - the end column on the line + 1 (so that end - start == length)
    */
-  public ParseInfo(int line, String lineText, int startColumn, int endColumn)
+  public LexicalPhrase(int line, String lineText, int startColumn, int endColumn)
   {
     this.line = line;
     this.lineText = lineText;
@@ -46,28 +46,28 @@ public class ParseInfo
   }
 
   /**
-   * Creates a new ParseInfo object containing the line number from the first object, and the start and end column info the range of columns used on the first line
-   * @param parseInfo - the ParseInfo objects to combine
-   * @return a ParseInfo object representing all of the specified ParseInfo objects, or null if all specified inputs are null
+   * Creates a new LexicalPhrase object containing the line number from the first object, and the start and end column info the range of columns used on the first line
+   * @param lexicalPhrases - the LexicalPhrase objects to combine
+   * @return a LexicalPhrase object representing all of the specified LexicalPhrase objects, or null if all specified inputs are null
    */
-  public static ParseInfo combine(ParseInfo... parseInfo)
+  public static LexicalPhrase combine(LexicalPhrase... lexicalPhrases)
   {
-    ParseInfo combined = null;
-    for (ParseInfo info : parseInfo)
+    LexicalPhrase combined = null;
+    for (LexicalPhrase phrase : lexicalPhrases)
     {
-      if (info == null)
+      if (phrase == null)
       {
         continue;
       }
       if (combined == null)
       {
-        combined = new ParseInfo(info.getLine(), info.getLineText(),
-                                 info.getStartColumn(), info.getEndColumn());
+        combined = new LexicalPhrase(phrase.getLine(), phrase.getLineText(),
+                                 phrase.getStartColumn(), phrase.getEndColumn());
       }
       else
       {
-        combined.startColumn = Math.min(combined.getStartColumn(), info.getStartColumn());
-        combined.endColumn = Math.max(combined.getEndColumn(), info.getEndColumn());
+        combined.startColumn = Math.min(combined.getStartColumn(), phrase.getStartColumn());
+        combined.endColumn = Math.max(combined.getEndColumn(), phrase.getEndColumn());
       }
     }
     return combined;

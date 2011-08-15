@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -47,19 +47,19 @@ public final class QNameListRule extends Rule<ParseType>
     if (END_QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      return new ParseList<QNameElementAST>(new QNameElementAST(qname), qname.getParseInfo());
+      return new ParseList<QNameElementAST>(new QNameElementAST(qname), qname.getLexicalPhrase());
     }
     if (END_NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
-      return new ParseList<QNameElementAST>(element, element.getParseInfo());
+      return new ParseList<QNameElementAST>(element, element.getLexicalPhrase());
     }
     if (CONTINUATION_QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
       @SuppressWarnings("unchecked")
       ParseList<QNameElementAST> list = (ParseList<QNameElementAST>) args[2];
-      list.addFirst(new QNameElementAST(qname), ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      list.addFirst(new QNameElementAST(qname), LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
       return list;
     }
     if (CONTINUATION_NESTED_QNAME_LIST_PRODUCTION.equals(production))
@@ -67,7 +67,7 @@ public final class QNameListRule extends Rule<ParseType>
       QNameElementAST nestedList = (QNameElementAST) args[0];
       @SuppressWarnings("unchecked")
       ParseList<QNameElementAST> list = (ParseList<QNameElementAST>) args[2];
-      list.addFirst(nestedList, ParseInfo.combine(nestedList.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      list.addFirst(nestedList, LexicalPhrase.combine(nestedList.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

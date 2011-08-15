@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -20,11 +20,11 @@ public class WildcardTypeArgumentAST extends TypeArgumentAST
    * Creates a new wildcard type argument that bounds its type to the specified range of values.
    * @param superTypes - the super types of this type argument
    * @param subTypes - the sub types of this type argument
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public WildcardTypeArgumentAST(PointerTypeAST[] superTypes, PointerTypeAST[] subTypes, ParseInfo parseInfo)
+  public WildcardTypeArgumentAST(PointerTypeAST[] superTypes, PointerTypeAST[] subTypes, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.superTypes = superTypes;
     this.subTypes = subTypes;
   }

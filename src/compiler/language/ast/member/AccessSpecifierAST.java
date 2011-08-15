@@ -1,6 +1,6 @@
 package compiler.language.ast.member;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 5 Aug 2010
@@ -12,18 +12,18 @@ import compiler.language.ast.ParseInfo;
 public class AccessSpecifierAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private AccessSpecifierTypeAST type;
 
   /**
    * Creates a new access specifier with the specified type.
    * @param type - the type of this access specifier
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public AccessSpecifierAST(AccessSpecifierTypeAST type, ParseInfo parseInfo)
+  public AccessSpecifierAST(AccessSpecifierTypeAST type, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.type = type;
   }
 
@@ -36,11 +36,11 @@ public class AccessSpecifierAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

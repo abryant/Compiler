@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -21,11 +21,11 @@ public class InlineIfExpressionAST extends ExpressionAST
    * @param condition - the condition of the inline if
    * @param trueExpression - the result if the condition is true
    * @param falseExpression - the result if the condition is false
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public InlineIfExpressionAST(ExpressionAST condition, ExpressionAST trueExpression, ExpressionAST falseExpression, ParseInfo parseInfo)
+  public InlineIfExpressionAST(ExpressionAST condition, ExpressionAST trueExpression, ExpressionAST falseExpression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.condition = condition;
     this.trueExpression = trueExpression;
     this.falseExpression = falseExpression;

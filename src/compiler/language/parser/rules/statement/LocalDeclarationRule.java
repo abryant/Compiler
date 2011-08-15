@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.misc.ModifierAST;
@@ -54,7 +54,7 @@ public final class LocalDeclarationRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[1];
       return new LocalDeclarationStatementAST(new ModifierAST[0], type, assignees.toArray(new DeclarationAssigneeAST[0]), null,
-                                           ParseInfo.combine(type.getParseInfo(), assignees.getParseInfo()));
+                                           LexicalPhrase.combine(type.getLexicalPhrase(), assignees.getLexicalPhrase()));
     }
     if (ASSIGNMENT_PRODUCTION.equals(production))
     {
@@ -63,7 +63,7 @@ public final class LocalDeclarationRule extends Rule<ParseType>
       ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[1];
       ExpressionAST expression = (ExpressionAST) args[3];
       return new LocalDeclarationStatementAST(new ModifierAST[0], type, assignees.toArray(new DeclarationAssigneeAST[0]), expression,
-                                           ParseInfo.combine(type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[2], expression.getParseInfo()));
+                                           LexicalPhrase.combine(type.getLexicalPhrase(), assignees.getLexicalPhrase(), (LexicalPhrase) args[2], expression.getLexicalPhrase()));
     }
     if (MODIFIERS_PRODUCTION.equals(production))
     {
@@ -73,7 +73,7 @@ public final class LocalDeclarationRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[2];
       return new LocalDeclarationStatementAST(modifiers.toArray(new ModifierAST[0]), type, assignees.toArray(new DeclarationAssigneeAST[0]), null,
-                                           ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), assignees.getParseInfo()));
+                                           LexicalPhrase.combine(modifiers.getLexicalPhrase(), type.getLexicalPhrase(), assignees.getLexicalPhrase()));
     }
     if (MODIFIERS_ASSIGNMENT_PRODUCTION.equals(production))
     {
@@ -84,7 +84,7 @@ public final class LocalDeclarationRule extends Rule<ParseType>
       ParseList<DeclarationAssigneeAST> assignees = (ParseList<DeclarationAssigneeAST>) args[2];
       ExpressionAST expression = (ExpressionAST) args[4];
       return new LocalDeclarationStatementAST(modifiers.toArray(new ModifierAST[0]), type, assignees.toArray(new DeclarationAssigneeAST[0]), expression,
-                                           ParseInfo.combine(modifiers.getParseInfo(), type.getParseInfo(), assignees.getParseInfo(), (ParseInfo) args[3], expression.getParseInfo()));
+                                           LexicalPhrase.combine(modifiers.getLexicalPhrase(), type.getLexicalPhrase(), assignees.getLexicalPhrase(), (LexicalPhrase) args[3], expression.getLexicalPhrase()));
     }
     throw badTypeList();
   }

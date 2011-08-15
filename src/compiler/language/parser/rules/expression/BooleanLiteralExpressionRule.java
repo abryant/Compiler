@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.BooleanLiteralExpressionAST;
 import compiler.language.parser.ParseType;
 
@@ -40,11 +40,11 @@ public final class BooleanLiteralExpressionRule extends Rule<ParseType>
   {
     if (TRUE_PRODUCTION.equals(production))
     {
-      return new BooleanLiteralExpressionAST(true, (ParseInfo) args[0]);
+      return new BooleanLiteralExpressionAST(true, (LexicalPhrase) args[0]);
     }
     if (FALSE_PRODUCTION.equals(production))
     {
-      return new BooleanLiteralExpressionAST(false, (ParseInfo) args[0]);
+      return new BooleanLiteralExpressionAST(false, (LexicalPhrase) args[0]);
     }
     throw badTypeList();
   }

@@ -1,6 +1,6 @@
 package compiler.language.ast.terminal;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.misc.ModifierTypeAST;
 
@@ -19,11 +19,11 @@ public class SinceSpecifierAST extends ModifierAST
   /**
    * Creates a new SinceSpecifierAST with the specified parts of the version number.
    * @param version - the version number associated with this since specifier
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public SinceSpecifierAST(VersionNumberAST version, ParseInfo parseInfo)
+  public SinceSpecifierAST(VersionNumberAST version, LexicalPhrase lexicalPhrase)
   {
-    super(ModifierTypeAST.SINCE_SPECIFIER, parseInfo);
+    super(ModifierTypeAST.SINCE_SPECIFIER, lexicalPhrase);
     this.version = version;
   }
 

@@ -1,6 +1,6 @@
 package compiler.language.ast.member;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.statement.BlockAST;
@@ -36,11 +36,11 @@ public class PropertyAST extends MemberAST
    * @param setterBlock - the setter block for the property
    * @param getterAccess - the access specifier of the getter
    * @param getterBlock - the getter block for the property
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public PropertyAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ExpressionAST expression, AccessSpecifierAST setterAccess, BlockAST setterBlock, AccessSpecifierAST getterAccess, BlockAST getterBlock, ParseInfo parseInfo)
+  public PropertyAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ExpressionAST expression, AccessSpecifierAST setterAccess, BlockAST setterBlock, AccessSpecifierAST getterAccess, BlockAST getterBlock, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.modifiers = modifiers;
     this.type = type;
     this.name = name;

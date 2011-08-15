@@ -6,7 +6,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.BooleanTypeAST;
 import compiler.language.parser.ParseType;
 
@@ -37,7 +37,7 @@ public final class BooleanTypeRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new BooleanTypeAST((ParseInfo) args[0]);
+      return new BooleanTypeAST((LexicalPhrase) args[0]);
     }
     throw badTypeList();
   }

@@ -1,6 +1,6 @@
 package compiler.language.parser;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.expression.ParenthesisedExpressionAST;
@@ -27,7 +27,7 @@ public class QNameElementAST
 
   private QNameAST qname = null;
   private ParseList<QNameElementAST> elements = null;
-  private ParseInfo listParseInfo = null;
+  private LexicalPhrase listLexicalPhrase = null;
 
   /**
    * Creates a new QNameElementAST to store the specified QNameAST
@@ -41,24 +41,24 @@ public class QNameElementAST
   /**
    * Creates a new QNameElementAST to store the specified list of QNameElements
    * @param elements - the list of QNameElements to store
-   * @param listParseInfo - the parsing information for the list this represents, including the surrounding brackets
+   * @param listLexicalPhrase - the LexicalPhrase for the list this represents, including the surrounding brackets
    */
-  public QNameElementAST(ParseList<QNameElementAST> elements, ParseInfo listParseInfo)
+  public QNameElementAST(ParseList<QNameElementAST> elements, LexicalPhrase listLexicalPhrase)
   {
-    this.listParseInfo = listParseInfo;
+    this.listLexicalPhrase = listLexicalPhrase;
     this.elements = elements;
   }
 
   /**
-   * @return the parsing information for this QNameElementAST
+   * @return the LexicalPhrase for this QNameElementAST
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
     if (qname != null)
     {
-      return qname.getParseInfo();
+      return qname.getLexicalPhrase();
     }
-    return listParseInfo;
+    return listLexicalPhrase;
   }
 
   /**
@@ -69,7 +69,7 @@ public class QNameElementAST
   {
     if (qname != null)
     {
-      return new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      return new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
     }
 
     QNameElementAST[] elems = elements.toArray(new QNameElementAST[0]);
@@ -78,9 +78,9 @@ public class QNameElementAST
     {
       expressions[i] = elems[i].toExpression();
     }
-    TupleExpressionAST expression = new TupleExpressionAST(expressions, elements.getParseInfo());
+    TupleExpressionAST expression = new TupleExpressionAST(expressions, elements.getLexicalPhrase());
 
-    return new ParenthesisedExpressionAST(expression, listParseInfo);
+    return new ParenthesisedExpressionAST(expression, listLexicalPhrase);
   }
 
   /**
@@ -93,7 +93,7 @@ public class QNameElementAST
     {
       NameAST[] names = qname.getNames();
       TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
-      return new PointerTypeAST(false, qname.getNames(), typeArgumentLists, qname.getParseInfo());
+      return new PointerTypeAST(false, qname.getNames(), typeArgumentLists, qname.getLexicalPhrase());
     }
 
     QNameElementAST[] elems = elements.toArray(new QNameElementAST[0]);
@@ -102,7 +102,7 @@ public class QNameElementAST
     {
       types[i] = elems[i].toType();
     }
-    return new TupleTypeAST(types, listParseInfo);
+    return new TupleTypeAST(types, listLexicalPhrase);
   }
 
 }

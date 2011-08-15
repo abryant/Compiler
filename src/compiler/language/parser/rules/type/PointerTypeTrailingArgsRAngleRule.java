@@ -12,7 +12,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
@@ -59,8 +59,8 @@ public final class PointerTypeTrailingArgsRAngleRule extends Rule<ParseType>
       TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
       typeArgumentLists[typeArgumentLists.length - 1] = typeArgumentss.getItem().getItem().toArray(new TypeArgumentAST[0]);
       PointerTypeAST type = new PointerTypeAST(false, names, typeArgumentLists,
-                                               ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], typeArgumentss.getItem().getParseInfo()));
-      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], typeArgumentss.getParseInfo()));
+                                               LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], typeArgumentss.getItem().getLexicalPhrase()));
+      return new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], typeArgumentss.getLexicalPhrase()));
     }
     if (IMMUTABLE_PRODUCTION.equals(production))
     {
@@ -71,8 +71,8 @@ public final class PointerTypeTrailingArgsRAngleRule extends Rule<ParseType>
       TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
       typeArgumentLists[typeArgumentLists.length - 1] = typeArguments.getItem().getItem().toArray(new TypeArgumentAST[0]);
       PointerTypeAST type = new PointerTypeAST(true, names, typeArgumentLists,
-                                               ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], typeArguments.getItem().getParseInfo()));
-      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], typeArguments.getParseInfo()));
+                                               LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase(), (LexicalPhrase) args[2], typeArguments.getItem().getLexicalPhrase()));
+      return new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase(), (LexicalPhrase) args[2], typeArguments.getLexicalPhrase()));
     }
     if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
@@ -84,15 +84,15 @@ public final class PointerTypeTrailingArgsRAngleRule extends Rule<ParseType>
       TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
       typeArgumentLists[typeArgumentLists.length - 1] = typeArguments.getItem().getItem().toArray(new TypeArgumentAST[0]);
       PointerTypeAST type = new PointerTypeAST(oldType, oldType.isImmutable(), names, typeArgumentLists,
-                                               ParseInfo.combine(oldType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3],
-                                                                 typeArguments.getItem().getParseInfo()));
-      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(oldType.getParseInfo(), (ParseInfo) args[1], qname.getParseInfo(), (ParseInfo) args[3],
-                                                                        typeArguments.getItem().getParseInfo()));
+                                               LexicalPhrase.combine(oldType.getLexicalPhrase(), (LexicalPhrase) args[1], qname.getLexicalPhrase(), (LexicalPhrase) args[3],
+                                                                 typeArguments.getItem().getLexicalPhrase()));
+      return new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine(oldType.getLexicalPhrase(), (LexicalPhrase) args[1], qname.getLexicalPhrase(), (LexicalPhrase) args[3],
+                                                                        typeArguments.getItem().getLexicalPhrase()));
     }
     if (RANGLE_PRODUCTION.equals(production))
     {
       PointerTypeAST type = (PointerTypeAST) args[0];
-      return new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1]));
+      return new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine(type.getLexicalPhrase(), (LexicalPhrase) args[1]));
     }
     throw badTypeList();
   }

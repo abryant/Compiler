@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -14,15 +14,15 @@ public class ShiftExpressionAST extends LeftRecursiveExpressionAST
 
   private ShiftExpressionTypeAST[] separatorTypes;
 
-  public ShiftExpressionAST(ExpressionAST firstExpression, ShiftExpressionTypeAST separator, ExpressionAST secondExpression, ParseInfo parseInfo)
+  public ShiftExpressionAST(ExpressionAST firstExpression, ShiftExpressionTypeAST separator, ExpressionAST secondExpression, LexicalPhrase lexicalPhrase)
   {
-    super(firstExpression, secondExpression, parseInfo);
+    super(firstExpression, secondExpression, lexicalPhrase);
     separatorTypes = new ShiftExpressionTypeAST[] {separator};
   }
 
-  public ShiftExpressionAST(ShiftExpressionAST startExpression, ShiftExpressionTypeAST separator, ExpressionAST subExpression, ParseInfo parseInfo)
+  public ShiftExpressionAST(ShiftExpressionAST startExpression, ShiftExpressionTypeAST separator, ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(startExpression, subExpression, parseInfo);
+    super(startExpression, subExpression, lexicalPhrase);
     ShiftExpressionTypeAST[] oldList = startExpression.getSeparatorTypes();
     separatorTypes = new ShiftExpressionTypeAST[oldList.length + 1];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);

@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -18,11 +18,11 @@ public class FloatingTypeAST extends PrimitiveTypeAST
   /**
    * Creates a new Floating type with the specified length
    * @param typeLength - the length of the type
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public FloatingTypeAST(FloatingTypeLengthAST typeLength, ParseInfo parseInfo)
+  public FloatingTypeAST(FloatingTypeLengthAST typeLength, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.typeLength = typeLength;
   }
 

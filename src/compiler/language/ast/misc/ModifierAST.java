@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -13,18 +13,18 @@ import compiler.language.ast.ParseInfo;
 public class ModifierAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private ModifierTypeAST type;
 
   /**
    * Creates a new modifier of the specified type
    * @param type - the type of this modifier
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ModifierAST(ModifierTypeAST type, ParseInfo parseInfo)
+  public ModifierAST(ModifierTypeAST type, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.type = type;
   }
 
@@ -37,11 +37,11 @@ public class ModifierAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

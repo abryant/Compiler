@@ -4,7 +4,7 @@ import parser.BadTokenException;
 import parser.ParseException;
 import parser.Token;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.CharacterLiteralAST;
 import compiler.language.ast.terminal.FloatingLiteralAST;
 import compiler.language.ast.terminal.IntegerLiteralAST;
@@ -46,7 +46,7 @@ public class LanguageParser
     }
     catch (LanguageParseException e)
     {
-      printParseError(e.getMessage(), e.getParseInfo());
+      printParseError(e.getMessage(), e.getLexicalPhrase());
     }
     catch (ParseException e)
     {
@@ -57,51 +57,51 @@ public class LanguageParser
       // TODO: should the error message show a list of expected token types here? they seem to not correspond to what should actually be expected
       Token<ParseType> token = e.getBadToken();
       String message;
-      ParseInfo parseInfo;
+      LexicalPhrase lexicalPhrase;
       if (token.getType() == null)
       {
         message = "Unexpected end of input, expected one of: " + buildStringList(e.getExpectedTokenTypes());
-        parseInfo = (ParseInfo) token.getValue();
+        lexicalPhrase = (LexicalPhrase) token.getValue();
       }
       else
       {
         message = "Unexpected " + token.getType() + ", expected one of: " + buildStringList(e.getExpectedTokenTypes());
-        // extract the ParseInfo from the token's value
+        // extract the LexicalPhrase from the token's value
         // this is simply a matter of casting in most cases, but for literals it must be extracted differently
         if (token.getType() == ParseType.NAME)
         {
-          parseInfo = ((NameAST) token.getValue()).getParseInfo();
+          lexicalPhrase = ((NameAST) token.getValue()).getLexicalPhrase();
         }
         else if (token.getType() == ParseType.INTEGER_LITERAL)
         {
-          parseInfo = ((IntegerLiteralAST) token.getValue()).getParseInfo();
+          lexicalPhrase = ((IntegerLiteralAST) token.getValue()).getLexicalPhrase();
         }
         else if (token.getType() == ParseType.FLOATING_LITERAL)
         {
-          parseInfo = ((FloatingLiteralAST) token.getValue()).getParseInfo();
+          lexicalPhrase = ((FloatingLiteralAST) token.getValue()).getLexicalPhrase();
         }
         else if (token.getType() == ParseType.CHARACTER_LITERAL)
         {
-          parseInfo = ((CharacterLiteralAST) token.getValue()).getParseInfo();
+          lexicalPhrase = ((CharacterLiteralAST) token.getValue()).getLexicalPhrase();
         }
         else if (token.getType() == ParseType.STRING_LITERAL)
         {
-          parseInfo = ((StringLiteralAST) token.getValue()).getParseInfo();
+          lexicalPhrase = ((StringLiteralAST) token.getValue()).getLexicalPhrase();
         }
         else if (token.getType() == ParseType.SINCE_SPECIFIER)
         {
-          parseInfo = ((SinceSpecifierAST) token.getValue()).getParseInfo();
+          lexicalPhrase = ((SinceSpecifierAST) token.getValue()).getLexicalPhrase();
         }
-        else if (token.getValue() instanceof ParseInfo)
+        else if (token.getValue() instanceof LexicalPhrase)
         {
-          parseInfo = (ParseInfo) token.getValue();
+          lexicalPhrase = (LexicalPhrase) token.getValue();
         }
         else
         {
-          parseInfo = null;
+          lexicalPhrase = null;
         }
       }
-      printParseError(message, parseInfo);
+      printParseError(message, lexicalPhrase);
     }
 
     return null;
@@ -127,49 +127,49 @@ public class LanguageParser
   }
 
   /**
-   * Prints a parse error with the specified message and representing the location(s) that the ParseInfos store.
+   * Prints a parse error with the specified message and representing the location(s) that the LexicalPhrases store.
    * @param message - the message to print
-   * @param parseInfo - the ParseInfo representing the location in the input where the error occurred, or null if the location is the end of input
+   * @param lexicalPhrases - the LexicalPhrases representing the location in the input where the error occurred, or null if the location is the end of input
    */
-  private static void printParseError(String message, ParseInfo... parseInfos)
+  private static void printParseError(String message, LexicalPhrase... lexicalPhrases)
   {
-    if (parseInfos == null || parseInfos.length < 1)
+    if (lexicalPhrases == null || lexicalPhrases.length < 1)
     {
       System.err.println(message);
       return;
     }
-    // make a String representation of the ParseInfos' character ranges
+    // make a String representation of the LexicalPhrases' character ranges
     StringBuffer buffer = new StringBuffer();
-    for (int i = 0; i < parseInfos.length; i++)
+    for (int i = 0; i < lexicalPhrases.length; i++)
     {
       // line:start-end
-      if (parseInfos[i] == null)
+      if (lexicalPhrases[i] == null)
       {
         buffer.append("<Unknown Location>");
       }
       else
       {
-        buffer.append(parseInfos[i].getLocationText());
+        buffer.append(lexicalPhrases[i].getLocationText());
       }
-      if (i != parseInfos.length - 1)
+      if (i != lexicalPhrases.length - 1)
       {
         buffer.append(", ");
       }
     }
-    if (parseInfos.length == 1)
+    if (lexicalPhrases.length == 1)
     {
       System.err.println(buffer + ": " + message);
-      if (parseInfos[0] != null)
+      if (lexicalPhrases[0] != null)
       {
-        System.err.println(parseInfos[0].getHighlightedLine());
+        System.err.println(lexicalPhrases[0].getHighlightedLine());
       }
     }
     else
     {
       System.err.println(buffer + ": " + message);
-      for (ParseInfo info : parseInfos)
+      for (LexicalPhrase phrase : lexicalPhrases)
       {
-        System.err.println(info.getHighlightedLine());
+        System.err.println(phrase.getHighlightedLine());
       }
     }
   }

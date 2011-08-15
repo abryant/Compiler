@@ -38,7 +38,7 @@ public final class QNameExpressionRule extends Rule<ParseType>
     if (QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      return new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      return new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
     }
     if (NESTED_QNAME_PRODUCTION.equals(production))
     {

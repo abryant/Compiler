@@ -13,7 +13,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.member.MemberHeaderAST;
 import compiler.language.ast.terminal.NameAST;
@@ -58,8 +58,8 @@ public final class InterfaceDefinitionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<MemberAST> members = (ParseList<MemberAST>) args[5];
       return new InterfaceDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, new TypeParameterAST[0], superInterfaces.toArray(new PointerTypeAST[0]), members.toArray(new MemberAST[0]),
-                                        ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(), superInterfaces.getParseInfo(),
-                                                          (ParseInfo) args[4], members.getParseInfo(), (ParseInfo) args[6]));
+                                        LexicalPhrase.combine(header.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase(), superInterfaces.getLexicalPhrase(),
+                                                          (LexicalPhrase) args[4], members.getLexicalPhrase(), (LexicalPhrase) args[6]));
     }
     if (TYPE_PARAMETERS_PRODUCTION.equals(production))
     {
@@ -72,8 +72,8 @@ public final class InterfaceDefinitionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<MemberAST> members = (ParseList<MemberAST>) args[6];
       return new InterfaceDefinitionAST(header.getAccessSpecifier(), header.getModifiers(), name, typeParameters.toArray(new TypeParameterAST[0]), superInterfaces.toArray(new PointerTypeAST[0]), members.toArray(new MemberAST[0]),
-                                        ParseInfo.combine(header.getParseInfo(), (ParseInfo) args[1], name.getParseInfo(), typeParameters.getParseInfo(), superInterfaces.getParseInfo(),
-                                                          (ParseInfo) args[5], members.getParseInfo(), (ParseInfo) args[7]));
+                                        LexicalPhrase.combine(header.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase(), typeParameters.getLexicalPhrase(), superInterfaces.getLexicalPhrase(),
+                                                          (LexicalPhrase) args[5], members.getLexicalPhrase(), (LexicalPhrase) args[7]));
     }
     throw badTypeList();
   }

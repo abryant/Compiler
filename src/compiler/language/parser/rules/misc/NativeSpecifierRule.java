@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.NativeSpecifierAST;
 import compiler.language.ast.terminal.StringLiteralAST;
 import compiler.language.parser.ParseType;
@@ -42,7 +42,7 @@ public final class NativeSpecifierRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       StringLiteralAST literal = (StringLiteralAST) args[2];
-      return new NativeSpecifierAST(literal, ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], literal.getParseInfo(), (ParseInfo) args[3]));
+      return new NativeSpecifierAST(literal, LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], literal.getLexicalPhrase(), (LexicalPhrase) args[3]));
     }
     throw badTypeList();
   }

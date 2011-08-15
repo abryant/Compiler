@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 8 Jul 2010
@@ -13,32 +13,32 @@ import compiler.language.ast.ParseInfo;
 public abstract class StatementAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   /**
-   * Creates a new StatementAST with the specified ParseInfo
-   * @param parseInfo - the parsing information
+   * Creates a new StatementAST with the specified LexicalPhrase
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public StatementAST(ParseInfo parseInfo)
+  public StatementAST(LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**
-   * Sets this StatementAST's ParseInfo. This should only be used during parsing.
-   * @param parseInfo - the parseInfo to set
+   * Sets this StatementAST's LexicalPhrase. This should only be used during parsing.
+   * @param lexicalPhrase - the LexicalPhrase to set
    */
-  public void setParseInfo(ParseInfo parseInfo)
+  public void setLexicalPhrase(LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
   }
 
 }

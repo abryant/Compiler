@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -42,14 +42,14 @@ public final class DeclarationAssigneeListRule extends Rule<ParseType>
     if (START_PRODUCTION.equals(production))
     {
       DeclarationAssigneeAST assignee = (DeclarationAssigneeAST) args[0];
-      return new ParseList<DeclarationAssigneeAST>(assignee, assignee.getParseInfo());
+      return new ParseList<DeclarationAssigneeAST>(assignee, assignee.getLexicalPhrase());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<DeclarationAssigneeAST> list = (ParseList<DeclarationAssigneeAST>) args[0];
       DeclarationAssigneeAST assignee = (DeclarationAssigneeAST) args[2];
-      list.addLast(assignee, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], assignee.getParseInfo()));
+      list.addLast(assignee, LexicalPhrase.combine(list.getLexicalPhrase(), (LexicalPhrase) args[1], assignee.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

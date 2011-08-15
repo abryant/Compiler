@@ -18,7 +18,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.CharacterLiteralExpressionAST;
 import compiler.language.ast.expression.FloatingLiteralExpressionAST;
 import compiler.language.ast.expression.IntegerLiteralExpressionAST;
@@ -79,26 +79,26 @@ public final class BasicPrimaryRule extends Rule<ParseType>
     if (INTEGER_LITERAL_PRODUCTION.equals(production))
     {
       IntegerLiteralAST literal = (IntegerLiteralAST) args[0];
-      return new IntegerLiteralExpressionAST(literal, literal.getParseInfo());
+      return new IntegerLiteralExpressionAST(literal, literal.getLexicalPhrase());
     }
     if (FLOATING_LITERAL_PRODUCTION.equals(production))
     {
       FloatingLiteralAST literal = (FloatingLiteralAST) args[0];
-      return new FloatingLiteralExpressionAST(literal, literal.getParseInfo());
+      return new FloatingLiteralExpressionAST(literal, literal.getLexicalPhrase());
     }
     if (CHARACTER_LITERAL_PRODUCTION.equals(production))
     {
       CharacterLiteralAST literal = (CharacterLiteralAST) args[0];
-      return new CharacterLiteralExpressionAST(literal, literal.getParseInfo());
+      return new CharacterLiteralExpressionAST(literal, literal.getLexicalPhrase());
     }
     if (STRING_LITERAL_PRODUCTION.equals(production))
     {
       StringLiteralAST literal = (StringLiteralAST) args[0];
-      return new StringLiteralExpressionAST(literal, literal.getParseInfo());
+      return new StringLiteralExpressionAST(literal, literal.getLexicalPhrase());
     }
     if (NIL_LITERAL_PRODUCTION.equals(production))
     {
-      return new NilLiteralExpressionAST((ParseInfo) args[0]);
+      return new NilLiteralExpressionAST((LexicalPhrase) args[0]);
     }
     if (FIELD_ACCESS_PRODUCTION.equals(production)        || STATEMENT_EXPRESSION_PRODUCTION.equals(production) ||
         THIS_ACCESS_PRODUCTION.equals(production)         || SUPER_ACCESS_PRODUCTION.equals(production)         ||

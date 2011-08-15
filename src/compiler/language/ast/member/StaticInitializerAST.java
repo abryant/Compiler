@@ -1,6 +1,6 @@
 package compiler.language.ast.member;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.statement.BlockAST;
 
 /*
@@ -18,11 +18,11 @@ public class StaticInitializerAST extends MemberAST
   /**
    * Creates a new static initializer which contains the specified block
    * @param block - the block for this static initializer
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public StaticInitializerAST(BlockAST block, ParseInfo parseInfo)
+  public StaticInitializerAST(BlockAST block, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.block = block;
   }
 

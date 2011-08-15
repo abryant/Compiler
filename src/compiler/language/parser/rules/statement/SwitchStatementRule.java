@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.SwitchCaseAST;
 import compiler.language.ast.statement.SwitchStatementAST;
@@ -50,15 +50,15 @@ public final class SwitchStatementRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<SwitchCaseAST> cases = (ParseList<SwitchCaseAST>) args[3];
       return new SwitchStatementAST(expression, cases.toArray(new SwitchCaseAST[0]),
-                                 ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(),
-                                                   (ParseInfo) args[2], cases.getParseInfo(), (ParseInfo) args[4]));
+                                 LexicalPhrase.combine((LexicalPhrase) args[0], expression.getLexicalPhrase(),
+                                                   (LexicalPhrase) args[2], cases.getLexicalPhrase(), (LexicalPhrase) args[4]));
     }
     if (NO_EXPRESSION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<SwitchCaseAST> cases = (ParseList<SwitchCaseAST>) args[2];
       return new SwitchStatementAST(null, cases.toArray(new SwitchCaseAST[0]),
-                                 ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], cases.getParseInfo(), (ParseInfo) args[3]));
+                                 LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], cases.getLexicalPhrase(), (LexicalPhrase) args[3]));
     }
     throw badTypeList();
   }

@@ -1,6 +1,6 @@
 package compiler.language.conceptual;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 29 Mar 2011
@@ -15,25 +15,25 @@ public class UnresolvableException extends Exception
 {
   private static final long serialVersionUID = 1L;
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   /**
    * Creates a new UnresolvableException with the specified message.
    * @param message - the message to embed in this exception
-   * @param parseInfo - the ParseInfo of the name that could not be resolved
+   * @param lexicalPhrase - the LexicalPhrase of the name that could not be resolved
    */
-  public UnresolvableException(String message, ParseInfo parseInfo)
+  public UnresolvableException(String message, LexicalPhrase lexicalPhrase)
   {
     super(message);
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
   }
 
   /**
-   * @return the parseInfo of the unresolved name
+   * @return the lexicalPhrase of the unresolved name
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
 }

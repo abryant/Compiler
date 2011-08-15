@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.expression.RelationalExpressionAST;
@@ -53,28 +53,28 @@ public final class RelationalExpressionLessThanQNameRule extends Rule<ParseType>
     {
       QNameAST firstQName = (QNameAST) args[0];
       QNameAST secondQName = (QNameAST) args[2];
-      ExpressionAST firstExpression = new FieldAccessExpressionAST(firstQName, firstQName.getParseInfo());
-      ExpressionAST secondExpression = new FieldAccessExpressionAST(secondQName, secondQName.getParseInfo());
+      ExpressionAST firstExpression = new FieldAccessExpressionAST(firstQName, firstQName.getLexicalPhrase());
+      ExpressionAST secondExpression = new FieldAccessExpressionAST(secondQName, secondQName.getLexicalPhrase());
       return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.LESS_THAN, secondExpression,
-                                      ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+                                      LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     if (QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
       QNameElementAST element = (QNameElementAST) args[2];
-      ExpressionAST firstExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      ExpressionAST firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       ExpressionAST secondExpression = element.toExpression();
       return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.LESS_THAN, secondExpression,
-                                      ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+                                      LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     if (NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
       QNameAST qname = (QNameAST) args[2];
       ExpressionAST firstExpression = element.toExpression();
-      ExpressionAST secondExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      ExpressionAST secondExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.LESS_THAN, secondExpression,
-                                      ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+                                      LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     if (NESTED_QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
@@ -83,7 +83,7 @@ public final class RelationalExpressionLessThanQNameRule extends Rule<ParseType>
       ExpressionAST firstExpression = firstElement.toExpression();
       ExpressionAST secondExpression = secondElement.toExpression();
       return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.LESS_THAN, secondExpression,
-                                      ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], secondExpression.getParseInfo()));
+                                      LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     throw badTypeList();
   }

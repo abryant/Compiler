@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.FloatingTypeAST;
 import compiler.language.ast.type.FloatingTypeLengthAST;
 import compiler.language.parser.ParseType;
@@ -40,11 +40,11 @@ public final class FloatingTypeRule extends Rule<ParseType>
   {
     if (FLOAT_PRODUCTION.equals(production))
     {
-      return new FloatingTypeAST(FloatingTypeLengthAST.FLOAT, (ParseInfo) args[0]);
+      return new FloatingTypeAST(FloatingTypeLengthAST.FLOAT, (LexicalPhrase) args[0]);
     }
     if (DOUBLE_PRODUCTION.equals(production))
     {
-      return new FloatingTypeAST(FloatingTypeLengthAST.DOUBLE, (ParseInfo) args[0]);
+      return new FloatingTypeAST(FloatingTypeLengthAST.DOUBLE, (LexicalPhrase) args[0]);
     }
     throw badTypeList();
   }

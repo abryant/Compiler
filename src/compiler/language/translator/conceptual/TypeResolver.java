@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.ConstructorAST;
 import compiler.language.ast.member.MethodAST;
 import compiler.language.ast.member.PropertyAST;
@@ -200,7 +200,7 @@ public class TypeResolver
     PointerType result = resolvePointerType(pointerTypeAST, startScope);
     if (!(result instanceof ClassPointerType))
     {
-      throw new ConceptualException("This type should resolve to a class, but does not", pointerTypeAST.getParseInfo());
+      throw new ConceptualException("This type should resolve to a class, but does not", pointerTypeAST.getLexicalPhrase());
     }
     return (ClassPointerType) result;
   }
@@ -219,7 +219,7 @@ public class TypeResolver
     PointerType result = resolvePointerType(pointerTypeAST, startScope);
     if (!(result instanceof InterfacePointerType))
     {
-      throw new ConceptualException("This type should resolve to an interface, but does not", pointerTypeAST.getParseInfo());
+      throw new ConceptualException("This type should resolve to an interface, but does not", pointerTypeAST.getLexicalPhrase());
     }
     return (InterfacePointerType) result;
   }
@@ -237,12 +237,12 @@ public class TypeResolver
   {
     // resolve the QName without taking the type argument lists into account
     QName qname = ASTConverter.convert(pointerTypeAST.getNames());
-    ParseInfo[] qnameParseInfo = ASTConverter.extractParseInfo(pointerTypeAST.getNames());
-    Resolvable resolved = resolve(qname, qnameParseInfo, startScope);
+    LexicalPhrase[] qnameLexicalPhrase = ASTConverter.extractLexicalPhrase(pointerTypeAST.getNames());
+    Resolvable resolved = accessSpecifierChecker.resolve(qname, qnameLexicalPhrase, startScope);
 
     if (resolved == null)
     {
-      throw new ConceptualException("Could not resolve PointerType", pointerTypeAST.getParseInfo());
+      throw new ConceptualException("Could not resolve PointerType", pointerTypeAST.getLexicalPhrase());
     }
 
     TypeArgumentAST[][] typeArgumentLists = pointerTypeAST.getTypeArgumentLists();
@@ -260,7 +260,7 @@ public class TypeResolver
       {
         if (typeArgumentLists[i] != null)
         {
-          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[i].getParseInfo());
+          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[i].getLexicalPhrase());
         }
       }
       if (resolved.getType() == ScopeType.OUTER_ENUM ||
@@ -269,7 +269,7 @@ public class TypeResolver
         // make sure the last type argument list is null, as enums do not have type parameters
         if (typeArgumentLists[typeArgumentLists.length - 1] != null)
         {
-          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[typeArgumentLists.length - 1].getParseInfo());
+          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[typeArgumentLists.length - 1].getLexicalPhrase());
         }
         return new EnumPointerType((ConceptualEnum) resolved, pointerTypeAST.isImmutable());
       }
@@ -278,7 +278,7 @@ public class TypeResolver
         // make sure the last type argument list is null, as type parameters do not have type parameters of their own
         if (typeArgumentLists[typeArgumentLists.length - 1] != null)
         {
-          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[typeArgumentLists.length - 1].getParseInfo());
+          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[typeArgumentLists.length - 1].getLexicalPhrase());
         }
         return new TypeParameterPointerType((TypeParameter) resolved, pointerTypeAST.isImmutable());
       }
@@ -300,7 +300,7 @@ public class TypeResolver
         {
           throw new ConceptualException("Expected " + typeParameters.length + " type argument" + (typeParameters.length != 1 ? "s" : "") + " after this name, " +
                                         "but found " + (lastTypeArguments == null ? "none" : lastTypeArguments.length),
-                                        pointerTypeAST.getNames()[typeArgumentLists.length - 1].getParseInfo());
+                                        pointerTypeAST.getNames()[typeArgumentLists.length - 1].getLexicalPhrase());
         }
         typeArguments = ASTConverter.convert(lastTypeArguments, this, startScope);
       }
@@ -314,7 +314,7 @@ public class TypeResolver
     }
     else if (resolved.getType() != ScopeType.INNER_CLASS)
     {
-      throw new ConceptualException("Cannot refer to a " + resolved.getType() + " as a pointer type", pointerTypeAST.getParseInfo());
+      throw new ConceptualException("Cannot refer to a " + resolved.getType() + " as a pointer type", pointerTypeAST.getLexicalPhrase());
     }
 
     // we have an inner class, so find the type arguments for it
@@ -338,7 +338,7 @@ public class TypeResolver
           int parameters = currentClass.getTypeParameters().length;
           throw new ConceptualException("Expected " + parameters + " type argument" + (parameters != 1 ? "s" : "") + " after this name, " +
                                         "but found " + (arguments == null ? "none" : arguments.length),
-                                        pointerTypeAST.getNames()[typeArgumentLists.length - classes.size()].getParseInfo());
+                                        pointerTypeAST.getNames()[typeArgumentLists.length - classes.size()].getLexicalPhrase());
         }
         typeArguments.addFirst(ASTConverter.convert(arguments, this, startScope));
       }
@@ -354,7 +354,7 @@ public class TypeResolver
          * }
          */
         // TODO: there may also be other situations where missing type arguments can be filled in from elsewhere
-        throw new ConceptualException("Not enough type arguments were provided to resolve this pointer type", pointerTypeAST.getParseInfo());
+        throw new ConceptualException("Not enough type arguments were provided to resolve this pointer type", pointerTypeAST.getLexicalPhrase());
       }
 
       // find out whether or not we need to progress to the parent type
@@ -375,55 +375,6 @@ public class TypeResolver
     return new ClassPointerType(classes.toArray(new ConceptualClass[classes.size()]),
                                 typeArguments.toArray(new TypeArgument[typeArguments.size()][]),
                                 pointerTypeAST.isImmutable());
-  }
-
-
-  /**
-   * Resolves the specified QName, while checking that all of the names along the way are accessible according to their access specifiers.
-   * @param name - the QName to resolve
-   * @param nameParseInfo - the ParseInfo objects corresponding to each of the names in the QName being resolved
-   * @param startScope - the scope to start the resolution from
-   * @return the Resolvable resolved
-   * @throws NameConflictException - if a name conflict is detected while resolving this pointer type
-   * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved and is accessible from this startScope
-   * @throws ConceptualException - if an access specifier is invalid
-   */
-  private Resolvable resolve(QName name, ParseInfo[] nameParseInfo, Resolvable startScope) throws NameConflictException, UnresolvableException, ConceptualException
-  {
-    String[] names = name.getNames();
-
-    Resolvable current = startScope;
-    while (current != null)
-    {
-      // try starting with current
-      for (int i = 0; i < names.length; i++)
-      {
-        Resolvable next = current.resolve(names[i]);
-        if (next == null)
-        {
-          if (i == 0)
-          {
-            // try starting with the parent of current
-            break;
-          }
-          return null;
-        }
-
-        // check that the access specifier is valid before going onto the next name
-        accessSpecifierChecker.checkAccess(next, startScope, nameParseInfo[i]);
-
-        if (i == names.length - 1)
-        {
-          // the whole name has been resolved, so return the result
-          return next;
-        }
-        current = next;
-      }
-
-      // try again, this time starting with current's parent
-      current = current.getParent();
-    }
-    return null;
   }
 
   /**
@@ -460,12 +411,12 @@ public class TypeResolver
 
   /**
    * Resolves the parent types of all type definitions in the parentsToResolve queue.
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made
    * @return true if any successful processing was done, false otherwise
    * @throws ConceptualException - if a conceptual problem is detected while resolving parent types
    * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  public boolean resolveTypeParents(Set<ParseInfo> unresolvedParseInfo) throws ConceptualException, NameConflictException
+  public boolean resolveTypeParents(Set<LexicalPhrase> unresolvedLexicalPhrases) throws ConceptualException, NameConflictException
   {
     boolean changed = false;
     Set<TypeDefinition> notFullyResolved = new HashSet<TypeDefinition>();
@@ -486,15 +437,15 @@ public class TypeResolver
       ScopeType type = toResolve.getType();
       if (type == ScopeType.OUTER_CLASS || type == ScopeType.INNER_CLASS)
       {
-        changed |= resolveClassParents((ConceptualClass) toResolve, unresolvedParseInfo, notFullyResolved);
+        changed |= resolveClassParents((ConceptualClass) toResolve, unresolvedLexicalPhrases, notFullyResolved);
       }
       else if (type == ScopeType.OUTER_INTERFACE || type == ScopeType.INNER_INTERFACE)
       {
-        changed |= resolveInterfaceParents((ConceptualInterface) toResolve, unresolvedParseInfo, notFullyResolved);
+        changed |= resolveInterfaceParents((ConceptualInterface) toResolve, unresolvedLexicalPhrases, notFullyResolved);
       }
       else if (type == ScopeType.OUTER_ENUM || type == ScopeType.INNER_ENUM)
       {
-        changed |= resolveEnumParents((ConceptualEnum) toResolve, unresolvedParseInfo, notFullyResolved);
+        changed |= resolveEnumParents((ConceptualEnum) toResolve, unresolvedLexicalPhrases, notFullyResolved);
       }
       else
       {
@@ -509,15 +460,15 @@ public class TypeResolver
    * Attempts to resolve the parent types of the specified ConceptualClass.
    * If not all of the parents are resolved, then the specified class is added to notFullyResolved,
    * and is put back on the end of the parentsToResolve queue.
-   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * The notFullyResolved and unresolvedLexicalPhrases sets are both cleared whenever a change is made.
    * @param toResolve - the ConceptualClass to resolve the parent types of
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made.
    * @param notFullyResolved - the set of types which have parent types which failed to resolve since the last change was made
    * @return true if any changes were made, false otherwise
    * @throws ConceptualException - if a conceptual problem is detected while resolving the parent types
    * @throws NameConflictException - if a name conflict is detected while resolving the parent types
    */
-  private boolean resolveClassParents(ConceptualClass toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
+  private boolean resolveClassParents(ConceptualClass toResolve, Set<LexicalPhrase> unresolvedLexicalPhrases, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
     ClassDefinitionAST astNode = (ClassDefinitionAST) conceptualASTNodes.get(toResolve);
@@ -534,7 +485,7 @@ public class TypeResolver
         toResolve.setBaseClass(baseClass);
         changed = true;
         notFullyResolved.clear();
-        unresolvedParseInfo.clear();
+        unresolvedLexicalPhrases.clear();
       }
       else
       {
@@ -546,12 +497,12 @@ public class TypeResolver
           toResolve.setBaseClass(baseClass);
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
         catch (UnresolvableException e)
         {
           fullyResolved = false;
-          unresolvedParseInfo.add(baseClassAST.getParseInfo());
+          unresolvedLexicalPhrases.add(baseClassAST.getLexicalPhrase());
 
           if (queueState.hasChanged())
           {
@@ -560,7 +511,7 @@ public class TypeResolver
             // this must count as a change, for reasons described above
             changed = true;
             notFullyResolved.clear();
-            unresolvedParseInfo.clear();
+            unresolvedLexicalPhrases.clear();
           }
         }
       }
@@ -591,13 +542,13 @@ public class TypeResolver
         parentInterfaces[i] = parentInterface;
         changed = true;
         notFullyResolved.clear();
-        unresolvedParseInfo.clear();
+        unresolvedLexicalPhrases.clear();
       }
       catch (UnresolvableException e)
       {
         // leave parentInterfaces[i] as null
         fullyResolved = false;
-        unresolvedParseInfo.add(parentInterfaceASTs[i].getParseInfo());
+        unresolvedLexicalPhrases.add(parentInterfaceASTs[i].getLexicalPhrase());
 
         if (queueState.hasChanged())
         {
@@ -606,7 +557,7 @@ public class TypeResolver
           // this must count as a change, for reasons described above
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
     }
@@ -615,7 +566,7 @@ public class TypeResolver
       // we have removed something from the queue, so a change has occurred
       changed = true;
       notFullyResolved.clear();
-      unresolvedParseInfo.clear();
+      unresolvedLexicalPhrases.clear();
       // add the class to the next queue, to resolve its type parameters' bounds
       typeBoundsToResolve.add(toResolve);
     }
@@ -633,15 +584,15 @@ public class TypeResolver
    * Attempts to resolve the parent types of the specified ConceptualInterface.
    * If not all of the parents are resolved, then the specified interface is added to notFullyResolved,
    * and is put back on the end of the parentsToResolve queue.
-   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * The notFullyResolved and unresolvedLexicalPhrases sets are both cleared whenever a change is made.
    * @param toResolve - the ConceptualInterface to resolve the parent types of
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made.
    * @param notFullyResolved - the set of types which have parent types which failed to resolve since the last change was made
    * @return true if any changes were made, false otherwise
    * @throws ConceptualException - if a conceptual problem is detected while resolving the parent types
    * @throws NameConflictException - if a name conflict is detected while resolving the parent types
    */
-  private boolean resolveInterfaceParents(ConceptualInterface toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws ConceptualException, NameConflictException
+  private boolean resolveInterfaceParents(ConceptualInterface toResolve, Set<LexicalPhrase> unresolvedLexicalPhrases, Set<TypeDefinition> notFullyResolved) throws ConceptualException, NameConflictException
   {
     boolean changed = false;
 
@@ -672,13 +623,13 @@ public class TypeResolver
         pointerTypes[i] = parentPointerType;
         changed = true;
         notFullyResolved.clear();
-        unresolvedParseInfo.clear();
+        unresolvedLexicalPhrases.clear();
       }
       catch (UnresolvableException e)
       {
         // leave pointerTypes[i] as null
         fullyResolved = false;
-        unresolvedParseInfo.add(parentInterfaces[i].getParseInfo());
+        unresolvedLexicalPhrases.add(parentInterfaces[i].getLexicalPhrase());
 
         if (queueState.hasChanged())
         {
@@ -695,7 +646,7 @@ public class TypeResolver
           // to counter this, we count adding something to the queue as a change, and clear the unresolvedSinceLastChange set
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
     }
@@ -704,7 +655,7 @@ public class TypeResolver
       // we have removed something from the queue, so a change has occurred
       changed = true;
       notFullyResolved.clear();
-      unresolvedParseInfo.clear();
+      unresolvedLexicalPhrases.clear();
       // add the interface to the next queue, to resolve its type parameters' bounds
       typeBoundsToResolve.add(toResolve);
     }
@@ -722,15 +673,15 @@ public class TypeResolver
    * Attempts to resolve the parent types of the specified ConceptualEnum.
    * If not all of the parents are resolved, then the specified enum is added to notFullyResolved,
    * and is put back on the end of the parentsToResolve queue.
-   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * The notFullyResolved and unresolvedLexicalPhrases sets are both cleared whenever a change is made.
    * @param toResolve - the ConceptualEnum to resolve the parent types of
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made.
    * @param notFullyResolved - the set of types which have parent types which failed to resolve since the last change was made
    * @return true if any changes were made, false otherwise
    * @throws ConceptualException - if a conceptual problem is detected while resolving the parent types
    * @throws NameConflictException - if a name conflict is detected while resolving the parent types
    */
-  private boolean resolveEnumParents(ConceptualEnum toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
+  private boolean resolveEnumParents(ConceptualEnum toResolve, Set<LexicalPhrase> unresolvedLexicalPhrases, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
     boolean fullyResolved = true;
@@ -745,7 +696,7 @@ public class TypeResolver
         toResolve.setBaseClass(baseClass);
         changed = true;
         notFullyResolved.clear();
-        unresolvedParseInfo.clear();
+        unresolvedLexicalPhrases.clear();
       }
       else
       {
@@ -756,12 +707,12 @@ public class TypeResolver
           toResolve.setBaseClass(baseClass);
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
         catch (UnresolvableException e)
         {
           fullyResolved = false;
-          unresolvedParseInfo.add(baseClassAST.getParseInfo());
+          unresolvedLexicalPhrases.add(baseClassAST.getLexicalPhrase());
 
           if (queueState.hasChanged())
           {
@@ -770,7 +721,7 @@ public class TypeResolver
             // this must count as a change, for reasons described above
             changed = true;
             notFullyResolved.clear();
-            unresolvedParseInfo.clear();
+            unresolvedLexicalPhrases.clear();
           }
         }
       }
@@ -801,13 +752,13 @@ public class TypeResolver
         parentInterfaces[i] = parentInterface;
         changed = true;
         notFullyResolved.clear();
-        unresolvedParseInfo.clear();
+        unresolvedLexicalPhrases.clear();
       }
       catch (UnresolvableException e)
       {
         // leave parentInterfaces[i] as null
         fullyResolved = false;
-        unresolvedParseInfo.add(parentInterfaceASTs[i].getParseInfo());
+        unresolvedLexicalPhrases.add(parentInterfaceASTs[i].getLexicalPhrase());
 
         if (queueState.hasChanged())
         {
@@ -816,7 +767,7 @@ public class TypeResolver
           // this must count as a change, for reasons described above
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
     }
@@ -825,7 +776,7 @@ public class TypeResolver
       // we have removed something from the queue, so a change has occurred
       changed = true;
       notFullyResolved.clear();
-      unresolvedParseInfo.clear();
+      unresolvedLexicalPhrases.clear();
       // add this enum to the next queue, to resolve its member variables' types
       membersToResolve.add(toResolve);
     }
@@ -843,7 +794,7 @@ public class TypeResolver
    * Checks the specified InterfacePointerType as being a valid parent interface.
    * If a child interface is provided, this method checks that the child will not become one of its own parents.
    * @param parent - the parent interface's PointerType, to check
-   * @param parentAST - the parent type's PointerTypeAST, to extract ParseInfo from in case of error
+   * @param parentAST - the parent type's PointerTypeAST, to extract LexicalPhrase from in case of error
    * @param child - the prospective child interface, if any
    * @throws ConceptualException - if there is a problem and the PointerType is not a valid parent interface
    */
@@ -864,7 +815,7 @@ public class TypeResolver
       ConceptualInterface current = queue.poll();
       if (child.equals(current))
       {
-        throw new ConceptualException("Cycle detected in interface inheritance hierarchy", parentAST.getParseInfo());
+        throw new ConceptualException("Cycle detected in interface inheritance hierarchy", parentAST.getLexicalPhrase());
       }
       if (current.getSuperInterfaces() == null)
       {
@@ -885,7 +836,7 @@ public class TypeResolver
    * Checks the specified ClassPointerType as being a valid parent class.
    * If a child class is provided, this method checks that the child will not become one of its own parents.
    * @param parent - the parent class's ClassPointerType, to check
-   * @param parentAST - the parent type's PointerTypeAST, to extract ParseInfo from in case of error
+   * @param parentAST - the parent type's PointerTypeAST, to extract LexicalPhrase from in case of error
    * @param child - the prospective child class, if any
    * @throws ConceptualException - if there is a problem and the PointerType is not a valid parent class
    * @throws UnresolvableException - if a parent class cannot be resolved while checking that the parent class is valid
@@ -903,7 +854,7 @@ public class TypeResolver
     {
       if (current.equals(child))
       {
-        throw new ConceptualException("Cycle detected in class inheritance hierarchy", parentAST.getParseInfo());
+        throw new ConceptualException("Cycle detected in class inheritance hierarchy", parentAST.getLexicalPhrase());
       }
       ClassPointerType baseClass = current.getBaseClass();
       if (baseClass == null)
@@ -926,13 +877,13 @@ public class TypeResolver
           // and its outer class must be derived from the parent's outer class
           if (!(child instanceof InnerClass))
           {
-            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getLexicalPhrase());
           }
           InnerClass childClass = (InnerClass) child;
           TypeDefinition childOuterType = childClass.getParent();
           if (childClass.isStatic() || !(childOuterType instanceof ConceptualClass || childOuterType instanceof ConceptualEnum))
           {
-            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getLexicalPhrase());
           }
           ConceptualClass currentClass;
           if (childOuterType instanceof ConceptualEnum)
@@ -942,7 +893,7 @@ public class TypeResolver
             if (baseClass == null)
             {
               // we have not reached the top of the inheritance hierarchy, so wait until more of the hierarchy has been resolved
-              throw new UnresolvableException("Error checking the parents of an inner class", parentAST.getParseInfo());
+              throw new UnresolvableException("Error checking the parents of an inner class", parentAST.getLexicalPhrase());
             }
             currentClass = baseClass.getClassType();
           }
@@ -959,9 +910,9 @@ public class TypeResolver
               if (!currentClass.equals(universalBaseClass.getClassType()))
               {
                 // we have not reached the top of the inheritance hierarchy, so wait until more of the hierarchy has been resolved
-                throw new UnresolvableException("Error checking the parents of an inner class", parentAST.getParseInfo());
+                throw new UnresolvableException("Error checking the parents of an inner class", parentAST.getLexicalPhrase());
               }
-              throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getParseInfo());
+              throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer class", parentAST.getLexicalPhrase());
             }
             currentClass = baseClass.getClassType();
           }
@@ -972,17 +923,17 @@ public class TypeResolver
           // and its outer enum must be the same as the parent's outer enum
           if (!(child instanceof InnerClass))
           {
-            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer enum", parentAST.getParseInfo());
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer enum", parentAST.getLexicalPhrase());
           }
           InnerClass childClass = (InnerClass) child;
           TypeDefinition childOuterType = childClass.getParent();
           if (childClass.isStatic() || !(childOuterType instanceof ConceptualEnum))
           {
-            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer enum", parentAST.getParseInfo());
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer enum", parentAST.getLexicalPhrase());
           }
           if (!childOuterType.equals(parentOuterType))
           {
-            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer enum", parentAST.getParseInfo());
+            throw new ConceptualException("Subclassing a non-static inner class requires an enclosing instance of the outer enum", parentAST.getLexicalPhrase());
           }
         }
       }
@@ -991,12 +942,12 @@ public class TypeResolver
 
   /**
    * Resolves the type parameter bounds of all type definitions in the typeBoundsToResolve queue.
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made
    * @return true if any successful processing was done, false otherwise
    * @throws ConceptualException - if a conceptual problem is detected while resolving type parameter bounds
    * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  public boolean resolveTypeParameterBounds(Set<ParseInfo> unresolvedParseInfo) throws NameConflictException, ConceptualException
+  public boolean resolveTypeParameterBounds(Set<LexicalPhrase> unresolvedLexicalPhrases) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
     Set<TypeDefinition> notFullyResolved = new HashSet<TypeDefinition>();
@@ -1014,11 +965,11 @@ public class TypeResolver
       ScopeType type = toResolve.getType();
       if (type == ScopeType.OUTER_CLASS || type == ScopeType.INNER_CLASS)
       {
-        changed |= resolveClassTypeParameterBounds((ConceptualClass) toResolve, unresolvedParseInfo, notFullyResolved);
+        changed |= resolveClassTypeParameterBounds((ConceptualClass) toResolve, unresolvedLexicalPhrases, notFullyResolved);
       }
       else if (type == ScopeType.OUTER_INTERFACE || type == ScopeType.INNER_INTERFACE)
       {
-        changed |= resolveInterfaceTypeParameterBounds((ConceptualInterface) toResolve, unresolvedParseInfo, notFullyResolved);
+        changed |= resolveInterfaceTypeParameterBounds((ConceptualInterface) toResolve, unresolvedLexicalPhrases, notFullyResolved);
       }
     }
 
@@ -1029,15 +980,15 @@ public class TypeResolver
    * Attempts to resolve the type parameter bounds of the specified ConceptualClass. Both super-type and sub-type bounds are resolved.
    * If not all of the bounds are resolved, then the specified class is added to notFullyResolved,
    * and is put back on the end of the typeBoundsToResolve queue.
-   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * The notFullyResolved and unresolvedLexicalPhrases sets are both cleared whenever a change is made.
    * @param toResolve - the ConceptualClass to resolve the type parameter bounds of
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made.
    * @param notFullyResolved - the set of types which have bounds which failed to resolve since the last change was made
    * @return true if any changes were made, false otherwise
    * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    * @throws ConceptualException - if a conceptual problem is detected while resolving the type parameter bounds
    */
-  private boolean resolveClassTypeParameterBounds(ConceptualClass toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
+  private boolean resolveClassTypeParameterBounds(ConceptualClass toResolve, Set<LexicalPhrase> unresolvedLexicalPhrases, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
     ClassDefinitionAST astNode = (ClassDefinitionAST) conceptualASTNodes.get(toResolve);
@@ -1046,7 +997,7 @@ public class TypeResolver
     {
       // the class has been removed from the queue, so this counts as a change
       notFullyResolved.clear();
-      unresolvedParseInfo.clear();
+      unresolvedLexicalPhrases.clear();
       return true;
     }
     TypeParameter[] parameters = toResolve.getTypeParameters();
@@ -1085,12 +1036,12 @@ public class TypeResolver
             superTypes[j] = resolvePointerType(superTypeASTs[j], toResolve);
             changed = true;
             notFullyResolved.clear();
-            unresolvedParseInfo.clear();
+            unresolvedLexicalPhrases.clear();
           }
           catch (UnresolvableException e)
           {
             fullyResolved = false;
-            unresolvedParseInfo.add(superTypeASTs[j].getParseInfo());
+            unresolvedLexicalPhrases.add(superTypeASTs[j].getLexicalPhrase());
 
             if (queueState.hasChanged())
             {
@@ -1099,7 +1050,7 @@ public class TypeResolver
               // this must count as a change, for reasons described above
               changed = true;
               notFullyResolved.clear();
-              unresolvedParseInfo.clear();
+              unresolvedLexicalPhrases.clear();
             }
           }
         }
@@ -1124,12 +1075,12 @@ public class TypeResolver
             subTypes[j] = resolvePointerType(subTypeASTs[j], toResolve);
             changed = true;
             notFullyResolved.clear();
-            unresolvedParseInfo.clear();
+            unresolvedLexicalPhrases.clear();
           }
           catch (UnresolvableException e)
           {
             fullyResolved = false;
-            unresolvedParseInfo.add(subTypeASTs[j].getParseInfo());
+            unresolvedLexicalPhrases.add(subTypeASTs[j].getLexicalPhrase());
 
             if (queueState.hasChanged())
             {
@@ -1138,7 +1089,7 @@ public class TypeResolver
               // this must count as a change, for reasons described above
               changed = true;
               notFullyResolved.clear();
-              unresolvedParseInfo.clear();
+              unresolvedLexicalPhrases.clear();
             }
           }
         }
@@ -1150,7 +1101,7 @@ public class TypeResolver
       // we have removed something from the queue, so a change has occurred
       changed = true;
       notFullyResolved.clear();
-      unresolvedParseInfo.clear();
+      unresolvedLexicalPhrases.clear();
       // add this class to the next queue, to resolve its member variables' types
       membersToResolve.add(toResolve);
     }
@@ -1167,15 +1118,15 @@ public class TypeResolver
    * Attempts to resolve the type parameter bounds of the specified ConceptualInterface. Both super-type and sub-type bounds are resolved.
    * If not all of the bounds are resolved, then the specified interface is added to notFullyResolved,
    * and is put back on the end of the typeBoundsToResolve queue.
-   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * The notFullyResolved and unresolvedLexicalPhrases sets are both cleared whenever a change is made.
    * @param toResolve - the ConceptualInterface to resolve the type parameter bounds of
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made.
    * @param notFullyResolved - the set of types which have bounds which failed to resolve since the last change was made
    * @return true if any changes were made, false otherwise
    * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    * @throws ConceptualException - if a conceptual problem is detected while resolving the type parameter bounds
    */
-  private boolean resolveInterfaceTypeParameterBounds(ConceptualInterface toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
+  private boolean resolveInterfaceTypeParameterBounds(ConceptualInterface toResolve, Set<LexicalPhrase> unresolvedLexicalPhrases, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
     InterfaceDefinitionAST astNode = (InterfaceDefinitionAST) conceptualASTNodes.get(toResolve);
@@ -1184,7 +1135,7 @@ public class TypeResolver
     {
       // the interface has been removed from the queue, so this counts as a change
       notFullyResolved.clear();
-      unresolvedParseInfo.clear();
+      unresolvedLexicalPhrases.clear();
       return true;
     }
     TypeParameter[] parameters = toResolve.getTypeParameters();
@@ -1223,12 +1174,12 @@ public class TypeResolver
             superTypes[j] = resolvePointerType(superTypeASTs[j], toResolve);
             changed = true;
             notFullyResolved.clear();
-            unresolvedParseInfo.clear();
+            unresolvedLexicalPhrases.clear();
           }
           catch (UnresolvableException e)
           {
             fullyResolved = false;
-            unresolvedParseInfo.add(superTypeASTs[j].getParseInfo());
+            unresolvedLexicalPhrases.add(superTypeASTs[j].getLexicalPhrase());
 
             if (queueState.hasChanged())
             {
@@ -1237,7 +1188,7 @@ public class TypeResolver
               // this must count as a change, for reasons described above
               changed = true;
               notFullyResolved.clear();
-              unresolvedParseInfo.clear();
+              unresolvedLexicalPhrases.clear();
             }
           }
         }
@@ -1262,12 +1213,12 @@ public class TypeResolver
             subTypes[j] = resolvePointerType(subTypeASTs[j], toResolve);
             changed = true;
             notFullyResolved.clear();
-            unresolvedParseInfo.clear();
+            unresolvedLexicalPhrases.clear();
           }
           catch (UnresolvableException e)
           {
             fullyResolved = false;
-            unresolvedParseInfo.add(subTypeASTs[j].getParseInfo());
+            unresolvedLexicalPhrases.add(subTypeASTs[j].getLexicalPhrase());
 
             if (queueState.hasChanged())
             {
@@ -1276,7 +1227,7 @@ public class TypeResolver
               // this must count as a change, for reasons described above
               changed = true;
               notFullyResolved.clear();
-              unresolvedParseInfo.clear();
+              unresolvedLexicalPhrases.clear();
             }
           }
         }
@@ -1288,7 +1239,7 @@ public class TypeResolver
       // we have removed something from the queue, so a change has occurred
       changed = true;
       notFullyResolved.clear();
-      unresolvedParseInfo.clear();
+      unresolvedLexicalPhrases.clear();
       // add this interface to the next queue, to resolve its member variables' types
       membersToResolve.add(toResolve);
     }
@@ -1304,12 +1255,12 @@ public class TypeResolver
 
   /**
    * Resolves the members of all type definitions in the membersToResolve queue.
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made
    * @return true if any successful processing was done, false otherwise
    * @throws ConceptualException - if a conceptual problem is detected while resolving members
    * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  public boolean resolveTypeMembers(Set<ParseInfo> unresolvedParseInfo) throws ConceptualException, NameConflictException
+  public boolean resolveTypeMembers(Set<LexicalPhrase> unresolvedLexicalPhrases) throws ConceptualException, NameConflictException
   {
     boolean changed = false;
     Set<TypeDefinition> notFullyResolved = new HashSet<TypeDefinition>();
@@ -1327,15 +1278,15 @@ public class TypeResolver
       ScopeType type = toResolve.getType();
       if (type == ScopeType.OUTER_CLASS || type == ScopeType.INNER_CLASS)
       {
-        changed |= resolveClassMembers((ConceptualClass) toResolve, unresolvedParseInfo, notFullyResolved);
+        changed |= resolveClassMembers((ConceptualClass) toResolve, unresolvedLexicalPhrases, notFullyResolved);
       }
       else if (type == ScopeType.OUTER_INTERFACE || type == ScopeType.INNER_INTERFACE)
       {
-        changed |= resolveInterfaceMembers((ConceptualInterface) toResolve, unresolvedParseInfo, notFullyResolved);
+        changed |= resolveInterfaceMembers((ConceptualInterface) toResolve, unresolvedLexicalPhrases, notFullyResolved);
       }
       else if (type == ScopeType.OUTER_ENUM || type == ScopeType.INNER_ENUM)
       {
-        changed |= resolveEnumMembers((ConceptualEnum) toResolve, unresolvedParseInfo, notFullyResolved);
+        changed |= resolveEnumMembers((ConceptualEnum) toResolve, unresolvedLexicalPhrases, notFullyResolved);
       }
     }
     return changed;
@@ -1345,15 +1296,15 @@ public class TypeResolver
    * Attempts to resolve the members of the specified ConceptualClass.
    * If not all member types are resolved, then the specified class is added to notFullyResolved,
    * and is put back on the end of the membersToResolve queue.
-   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * The notFullyResolved and unresolvedLexicalPhrases sets are both cleared whenever a change is made.
    * @param toResolve - the ConceptualClass to resolve the member types of
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made.
    * @param notFullyResolved - the set of types which have bounds which failed to resolve since the last change was made
    * @return true if any changes were made, false otherwise
    * @throws ConceptualException - if a conceptual problem is detected while resolving the member types
    * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  private boolean resolveClassMembers(ConceptualClass toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws ConceptualException, NameConflictException
+  private boolean resolveClassMembers(ConceptualClass toResolve, Set<LexicalPhrase> unresolvedLexicalPhrases, Set<TypeDefinition> notFullyResolved) throws ConceptualException, NameConflictException
   {
     boolean changed = false;
     QueueState queueState = new QueueState();
@@ -1365,7 +1316,7 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       for (Property property : toResolve.getProperties())
@@ -1374,7 +1325,7 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       for (MemberVariable variable : toResolve.getVariables())
@@ -1383,7 +1334,7 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       for (Constructor constructor : toResolve.getConstructors())
@@ -1392,19 +1343,19 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       // if we get here then everything has been processed
       // we have removed something from the queue, so a change has occurred
       changed = true;
       notFullyResolved.clear();
-      unresolvedParseInfo.clear();
+      unresolvedLexicalPhrases.clear();
     }
     catch (UnresolvableException e)
     {
       notFullyResolved.add(toResolve);
-      unresolvedParseInfo.add(e.getParseInfo());
+      unresolvedLexicalPhrases.add(e.getLexicalPhrase());
 
       // some members still need filling in, so add this to the end of the queue again
       membersToResolve.add(toResolve);
@@ -1416,7 +1367,7 @@ public class TypeResolver
         // this must count as a change, for reasons described above
         changed = true;
         notFullyResolved.clear();
-        unresolvedParseInfo.clear();
+        unresolvedLexicalPhrases.clear();
       }
     }
 
@@ -1427,15 +1378,15 @@ public class TypeResolver
    * Attempts to resolve the members of the specified ConceptualInterface.
    * If not all member types are resolved, then the specified interface is added to notFullyResolved,
    * and is put back on the end of the membersToResolve queue.
-   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * The notFullyResolved and unresolvedLexicalPhrases sets are both cleared whenever a change is made.
    * @param toResolve - the ConceptualInterface to resolve the member types of
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made.
    * @param notFullyResolved - the set of types which have bounds which failed to resolve since the last change was made
    * @return true if any changes were made, false otherwise
    * @throws ConceptualException - if a conceptual problem is detected while resolving the member types
    * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  private boolean resolveInterfaceMembers(ConceptualInterface toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
+  private boolean resolveInterfaceMembers(ConceptualInterface toResolve, Set<LexicalPhrase> unresolvedLexicalPhrases, Set<TypeDefinition> notFullyResolved) throws NameConflictException, ConceptualException
   {
     boolean changed = false;
     QueueState queueState = new QueueState();
@@ -1447,7 +1398,7 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       for (Property property : toResolve.getProperties())
@@ -1456,7 +1407,7 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       for (MemberVariable variable : toResolve.getStaticVariables())
@@ -1465,19 +1416,19 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       // if we get here then everything has been processed
       // we have removed something from the queue, so a change has occurred
       changed = true;
       notFullyResolved.clear();
-      unresolvedParseInfo.clear();
+      unresolvedLexicalPhrases.clear();
     }
     catch (UnresolvableException e)
     {
       notFullyResolved.add(toResolve);
-      unresolvedParseInfo.add(e.getParseInfo());
+      unresolvedLexicalPhrases.add(e.getLexicalPhrase());
 
       // some members still need filling in, so add this to the end of the queue again
       membersToResolve.add(toResolve);
@@ -1489,7 +1440,7 @@ public class TypeResolver
         // this must count as a change, for reasons described above
         changed = true;
         notFullyResolved.clear();
-        unresolvedParseInfo.clear();
+        unresolvedLexicalPhrases.clear();
       }
     }
 
@@ -1500,15 +1451,15 @@ public class TypeResolver
    * Attempts to resolve the members of the specified ConceptualEnum.
    * If not all member types are resolved, then the specified enum is added to notFullyResolved,
    * and is put back on the end of the membersToResolve queue.
-   * The notFullyResolved and unresolvedParseInfo sets are both cleared whenever a change is made.
+   * The notFullyResolved and unresolvedLexicalPhrases sets are both cleared whenever a change is made.
    * @param toResolve - the ConceptualEnum to resolve the member types of
-   * @param unresolvedParseInfo - the set containing the ParseInfo of each QName which has been tried for resolution unsuccessfully since the last change was made.
+   * @param unresolvedLexicalPhrases - the set containing the LexicalPhrase of each QName which has been tried for resolution unsuccessfully since the last change was made.
    * @param notFullyResolved - the set of types which have bounds which failed to resolve since the last change was made
    * @return true if any changes were made, false otherwise
    * @throws ConceptualException - if a conceptual problem is detected while resolving the member types
    * @throws NameConflictException - if a name conflict is detected while resolving a PointerType
    */
-  private boolean resolveEnumMembers(ConceptualEnum toResolve, Set<ParseInfo> unresolvedParseInfo, Set<TypeDefinition> notFullyResolved) throws ConceptualException, NameConflictException
+  private boolean resolveEnumMembers(ConceptualEnum toResolve, Set<LexicalPhrase> unresolvedLexicalPhrases, Set<TypeDefinition> notFullyResolved) throws ConceptualException, NameConflictException
   {
     boolean changed = false;
     QueueState queueState = new QueueState();
@@ -1520,7 +1471,7 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       for (Property property : toResolve.getProperties())
@@ -1529,7 +1480,7 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       for (MemberVariable variable : toResolve.getVariables())
@@ -1538,7 +1489,7 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       for (Constructor constructor : toResolve.getConstructors())
@@ -1547,19 +1498,19 @@ public class TypeResolver
         {
           changed = true;
           notFullyResolved.clear();
-          unresolvedParseInfo.clear();
+          unresolvedLexicalPhrases.clear();
         }
       }
       // if we get here then everything has been processed
       // we have removed something from the queue, so a change has occurred
       changed = true;
       notFullyResolved.clear();
-      unresolvedParseInfo.clear();
+      unresolvedLexicalPhrases.clear();
     }
     catch (UnresolvableException e)
     {
       notFullyResolved.add(toResolve);
-      unresolvedParseInfo.add(e.getParseInfo());
+      unresolvedLexicalPhrases.add(e.getLexicalPhrase());
 
       // some members still need filling in, so add this to the end of the queue again
       membersToResolve.add(toResolve);
@@ -1571,7 +1522,7 @@ public class TypeResolver
         // this must count as a change, for reasons described above
         changed = true;
         notFullyResolved.clear();
-        unresolvedParseInfo.clear();
+        unresolvedLexicalPhrases.clear();
       }
     }
     return changed;

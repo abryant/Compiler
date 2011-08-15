@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.TypeAST;
@@ -23,11 +23,11 @@ public class DefaultParameterAST extends SingleParameterAST
    * @param type - the type of this default parameter
    * @param name - the name of this default parameter
    * @param defaultExpression - the default expression for this default parameter
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public DefaultParameterAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ExpressionAST defaultExpression, ParseInfo parseInfo)
+  public DefaultParameterAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ExpressionAST defaultExpression, LexicalPhrase lexicalPhrase)
   {
-    super(modifiers, type, name, parseInfo);
+    super(modifiers, type, name, lexicalPhrase);
     this.defaultExpression = defaultExpression;
   }
 

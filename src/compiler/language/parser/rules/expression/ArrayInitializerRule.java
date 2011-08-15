@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -46,19 +46,19 @@ public final class ArrayInitializerRule extends Rule<ParseType>
     {
       @SuppressWarnings("unchecked")
       ParseList<ExpressionAST> list = (ParseList<ExpressionAST>) args[1];
-      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2]));
+      list.setLexicalPhrase(LexicalPhrase.combine((LexicalPhrase) args[0], list.getLexicalPhrase(), (LexicalPhrase) args[2]));
       return list;
     }
     if (TRAILING_COMMA_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<ExpressionAST> list = (ParseList<ExpressionAST>) args[1];
-      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], list.getParseInfo(), (ParseInfo) args[2], (ParseInfo) args[3]));
+      list.setLexicalPhrase(LexicalPhrase.combine((LexicalPhrase) args[0], list.getLexicalPhrase(), (LexicalPhrase) args[2], (LexicalPhrase) args[3]));
       return list;
     }
     if (EMPTY_PRODUCTION.equals(production))
     {
-      return new ParseList<ExpressionAST>(ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+      return new ParseList<ExpressionAST>(LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     throw badTypeList();
   }

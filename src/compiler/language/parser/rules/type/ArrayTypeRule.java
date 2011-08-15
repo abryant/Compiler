@@ -11,7 +11,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.ArrayTypeAST;
 import compiler.language.ast.type.PointerTypeAST;
@@ -54,34 +54,34 @@ public final class ArrayTypeRule extends Rule<ParseType>
     if (PRODUCTION.equals(production))
     {
       TypeAST type = (TypeAST) args[0];
-      return new ArrayTypeAST(type, false, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      return new ArrayTypeAST(type, false, LexicalPhrase.combine(type.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2]));
     }
     if (QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      return new ArrayTypeAST(new PointerTypeAST(qname, qname.getParseInfo()), false, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      return new ArrayTypeAST(new PointerTypeAST(qname, qname.getLexicalPhrase()), false, LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2]));
     }
     if (NESTED_QNAME_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
       TypeAST baseType = element.toType();
-      return new ArrayTypeAST(baseType, false, ParseInfo.combine(element.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2]));
+      return new ArrayTypeAST(baseType, false, LexicalPhrase.combine(element.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2]));
     }
     if (IMMUTABLE_PRODUCTION.equals(production))
     {
       TypeAST type = (TypeAST) args[0];
-      return new ArrayTypeAST(type, true, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2], (ParseInfo) args[3]));
+      return new ArrayTypeAST(type, true, LexicalPhrase.combine(type.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2], (LexicalPhrase) args[3]));
     }
     if (IMMUTABLE_QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      return new ArrayTypeAST(new PointerTypeAST(qname, qname.getParseInfo()), true, ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2], (ParseInfo) args[3]));
+      return new ArrayTypeAST(new PointerTypeAST(qname, qname.getLexicalPhrase()), true, LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2], (LexicalPhrase) args[3]));
     }
     if (IMMUTABLE_NESTED_QNAME_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
       TypeAST baseType = element.toType();
-      return new ArrayTypeAST(baseType, true, ParseInfo.combine(element.getParseInfo(), (ParseInfo) args[1], (ParseInfo) args[2], (ParseInfo) args[3]));
+      return new ArrayTypeAST(baseType, true, LexicalPhrase.combine(element.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2], (LexicalPhrase) args[3]));
     }
     throw badTypeList();
   }

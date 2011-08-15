@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -25,11 +25,11 @@ public class ForStatementAST extends StatementAST
    * @param condition - the for loop condition
    * @param update - the update statement
    * @param block - the block of the loop
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ForStatementAST(StatementAST init, ExpressionAST condition, StatementAST update, BlockAST block, ParseInfo parseInfo)
+  public ForStatementAST(StatementAST init, ExpressionAST condition, StatementAST update, BlockAST block, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.init = init;
     this.condition = condition;
     this.update = update;

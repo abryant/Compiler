@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseList;
@@ -43,7 +43,7 @@ public final class TypeParametersRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseContainer<ParseList<TypeParameterAST>> container = (ParseContainer<ParseList<TypeParameterAST>>) args[1];
       ParseList<TypeParameterAST> list = container.getItem();
-      list.setParseInfo(ParseInfo.combine((ParseInfo) args[0], container.getParseInfo()));
+      list.setLexicalPhrase(LexicalPhrase.combine((LexicalPhrase) args[0], container.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

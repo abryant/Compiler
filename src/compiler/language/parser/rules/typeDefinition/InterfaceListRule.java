@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -41,14 +41,14 @@ public final class InterfaceListRule extends Rule<ParseType>
     if (START_PRODUCTION.equals(production))
     {
       PointerTypeAST type = (PointerTypeAST) args[0];
-      return new ParseList<PointerTypeAST>(type, type.getParseInfo());
+      return new ParseList<PointerTypeAST>(type, type.getLexicalPhrase());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<PointerTypeAST> list = (ParseList<PointerTypeAST>) args[0];
       PointerTypeAST newType = (PointerTypeAST) args[2];
-      list.addLast(newType, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], newType.getParseInfo()));
+      list.addLast(newType, LexicalPhrase.combine(list.getLexicalPhrase(), (LexicalPhrase) args[1], newType.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

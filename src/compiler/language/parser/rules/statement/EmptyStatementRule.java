@@ -6,7 +6,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.statement.EmptyStatementAST;
 import compiler.language.parser.ParseType;
 
@@ -38,7 +38,7 @@ public final class EmptyStatementRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      return new EmptyStatementAST((ParseInfo) args[0]);
+      return new EmptyStatementAST((LexicalPhrase) args[0]);
     }
     throw badTypeList();
   }

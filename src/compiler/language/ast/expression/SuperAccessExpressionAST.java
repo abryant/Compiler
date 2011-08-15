@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 
 /*
@@ -18,11 +18,11 @@ public class SuperAccessExpressionAST extends ExpressionAST
   /**
    * Creates a new SuperAccessExpressionAST with the specified qualifier.
    * @param qualifier - the qualifier for the super expression, or null if no qualifier is specified
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public SuperAccessExpressionAST(QNameAST qualifier, ParseInfo parseInfo)
+  public SuperAccessExpressionAST(QNameAST qualifier, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.qualifier = qualifier;
   }
 

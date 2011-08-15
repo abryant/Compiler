@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseContainer;
@@ -54,7 +54,7 @@ public final class PointerTypeTripleRAngleRule extends Rule<ParseType>
     if (QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      type = new PointerTypeAST(qname, qname.getParseInfo());
+      type = new PointerTypeAST(qname, qname.getLexicalPhrase());
     }
     else if (NO_TRAILING_PARAMS_PRODUCTION.equals(production))
     {
@@ -65,13 +65,13 @@ public final class PointerTypeTripleRAngleRule extends Rule<ParseType>
       throw badTypeList();
     }
 
-    ParseInfo tripleRAngleInfo = (ParseInfo) args[1];
-    ParseInfo firstAngleInfo     = ParseUtil.splitTripleRAngleFirst(tripleRAngleInfo);
-    ParseInfo firstTwoAnglesInfo = ParseUtil.splitTripleRAngleFirstTwo(tripleRAngleInfo);
-    ParseContainer<PointerTypeAST> firstContainer = new ParseContainer<PointerTypeAST>(type, ParseInfo.combine(type.getParseInfo(), firstAngleInfo));
+    LexicalPhrase tripleRAnglePhrase = (LexicalPhrase) args[1];
+    LexicalPhrase firstAnglePhrase     = ParseUtil.splitTripleRAngleFirst(tripleRAnglePhrase);
+    LexicalPhrase firstTwoAnglesPhrase = ParseUtil.splitTripleRAngleFirstTwo(tripleRAnglePhrase);
+    ParseContainer<PointerTypeAST> firstContainer = new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine(type.getLexicalPhrase(), firstAnglePhrase));
     ParseContainer<ParseContainer<PointerTypeAST>> secondContainer =
-      new ParseContainer<ParseContainer<PointerTypeAST>>(firstContainer, ParseInfo.combine(type.getParseInfo(), firstTwoAnglesInfo));
-    return new ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>(secondContainer, ParseInfo.combine(type.getParseInfo(), tripleRAngleInfo));
+      new ParseContainer<ParseContainer<PointerTypeAST>>(firstContainer, LexicalPhrase.combine(type.getLexicalPhrase(), firstTwoAnglesPhrase));
+    return new ParseContainer<ParseContainer<ParseContainer<PointerTypeAST>>>(secondContainer, LexicalPhrase.combine(type.getLexicalPhrase(), tripleRAnglePhrase));
   }
 
 }

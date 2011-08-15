@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.StringLiteralAST;
 
 /*
@@ -18,11 +18,11 @@ public class StringLiteralExpressionAST extends ExpressionAST
   /**
    * Creates a new StringLiteralExpressionAST with the specified literal value.
    * @param literal - the String literal
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public StringLiteralExpressionAST(StringLiteralAST literal, ParseInfo parseInfo)
+  public StringLiteralExpressionAST(StringLiteralAST literal, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.literal = literal;
   }
 

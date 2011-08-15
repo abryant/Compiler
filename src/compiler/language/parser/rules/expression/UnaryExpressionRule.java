@@ -12,7 +12,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.BitwiseNotExpressionAST;
 import compiler.language.ast.expression.BooleanNotExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
@@ -69,22 +69,22 @@ public final class UnaryExpressionRule extends Rule<ParseType>
     if (UNARY_PLUS_PRODUCTION.equals(production) || UNARY_PLUS_QNAME_PRODUCTION.equals(production))
     {
       ExpressionAST expression = (ExpressionAST) args[1];
-      return new UnaryPlusExpressionAST(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
+      return new UnaryPlusExpressionAST(expression, LexicalPhrase.combine((LexicalPhrase) args[0], expression.getLexicalPhrase()));
     }
     if (UNARY_MINUS_PRODUCTION.equals(production) || UNARY_MINUS_QNAME_PRODUCTION.equals(production))
     {
       ExpressionAST expression = (ExpressionAST) args[1];
-      return new UnaryMinusExpressionAST(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
+      return new UnaryMinusExpressionAST(expression, LexicalPhrase.combine((LexicalPhrase) args[0], expression.getLexicalPhrase()));
     }
     if (BOOLEAN_NOT_PRODUCTION.equals(production) || BOOLEAN_NOT_QNAME_PRODUCTION.equals(production))
     {
       ExpressionAST expression = (ExpressionAST) args[1];
-      return new BooleanNotExpressionAST(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
+      return new BooleanNotExpressionAST(expression, LexicalPhrase.combine((LexicalPhrase) args[0], expression.getLexicalPhrase()));
     }
     if (BITWISE_NOT_PRODUCTION.equals(production) || BITWISE_NOT_QNAME_PRODUCTION.equals(production))
     {
       ExpressionAST expression = (ExpressionAST) args[1];
-      return new BitwiseNotExpressionAST(expression, ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo()));
+      return new BitwiseNotExpressionAST(expression, LexicalPhrase.combine((LexicalPhrase) args[0], expression.getLexicalPhrase()));
     }
     throw badTypeList();
   }

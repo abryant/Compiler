@@ -45,9 +45,9 @@ public final class TypeArgumentDoubleRAngleRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<TypeAST>> oldContainer = (ParseContainer<ParseContainer<TypeAST>>) args[0];
       TypeAST type = oldContainer.getItem().getItem();
-      TypeArgumentAST argument = new NormalTypeArgumentAST(type, type.getParseInfo());
-      ParseContainer<TypeArgumentAST> firstContainer = new ParseContainer<TypeArgumentAST>(argument, oldContainer.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<TypeArgumentAST>>(firstContainer, oldContainer.getParseInfo());
+      TypeArgumentAST argument = new NormalTypeArgumentAST(type, type.getLexicalPhrase());
+      ParseContainer<TypeArgumentAST> firstContainer = new ParseContainer<TypeArgumentAST>(argument, oldContainer.getItem().getLexicalPhrase());
+      return new ParseContainer<ParseContainer<TypeArgumentAST>>(firstContainer, oldContainer.getLexicalPhrase());
     }
     if (WILDCARD_PRODUCTION.equals(production))
     {

@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.IntegerLiteralAST;
 
 /*
@@ -18,11 +18,11 @@ public class ContinueStatementAST extends StatementAST
   /**
    * Creates a new ContinueStatementAST which continues through the specified number of levels of nested loops.
    * @param continueLevels - the integer literal representing the number of levels to continue through, or null if no number of levels was specified
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ContinueStatementAST(IntegerLiteralAST continueLevels, ParseInfo parseInfo)
+  public ContinueStatementAST(IntegerLiteralAST continueLevels, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.continueLevels = continueLevels;
   }
 

@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.ModifierAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.CatchClauseAST;
@@ -52,7 +52,7 @@ public final class CatchClauseRule extends Rule<ParseType>
       NameAST name = (NameAST) args[2];
       BlockAST block = (BlockAST) args[3];
       return new CatchClauseAST(new ModifierAST[0], type, name, block,
-                             ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), name.getParseInfo(), block.getParseInfo()));
+                             LexicalPhrase.combine((LexicalPhrase) args[0], type.getLexicalPhrase(), name.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     if (MODIFIERS_PRODUCTION.equals(production))
     {
@@ -62,7 +62,7 @@ public final class CatchClauseRule extends Rule<ParseType>
       NameAST name = (NameAST) args[3];
       BlockAST block = (BlockAST) args[4];
       return new CatchClauseAST(modifiers.toArray(new ModifierAST[0]), type, name, block,
-                             ParseInfo.combine((ParseInfo) args[0], modifiers.getParseInfo(), type.getParseInfo(), name.getParseInfo(), block.getParseInfo()));
+                             LexicalPhrase.combine((LexicalPhrase) args[0], modifiers.getLexicalPhrase(), type.getLexicalPhrase(), name.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     throw badTypeList();
   }

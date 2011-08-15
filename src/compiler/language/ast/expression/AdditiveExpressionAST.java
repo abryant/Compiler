@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -14,15 +14,15 @@ public class AdditiveExpressionAST extends LeftRecursiveExpressionAST
 
   private AdditiveExpressionTypeAST[] separatorTypes;
 
-  public AdditiveExpressionAST(ExpressionAST firstExpression, AdditiveExpressionTypeAST separator, ExpressionAST secondExpression, ParseInfo parseInfo)
+  public AdditiveExpressionAST(ExpressionAST firstExpression, AdditiveExpressionTypeAST separator, ExpressionAST secondExpression, LexicalPhrase lexicalPhrase)
   {
-    super(firstExpression, secondExpression, parseInfo);
+    super(firstExpression, secondExpression, lexicalPhrase);
     separatorTypes = new AdditiveExpressionTypeAST[] {separator};
   }
 
-  public AdditiveExpressionAST(AdditiveExpressionAST startExpression, AdditiveExpressionTypeAST separator, ExpressionAST subExpression, ParseInfo parseInfo)
+  public AdditiveExpressionAST(AdditiveExpressionAST startExpression, AdditiveExpressionTypeAST separator, ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(startExpression, subExpression, parseInfo);
+    super(startExpression, subExpression, lexicalPhrase);
     AdditiveExpressionTypeAST[] oldList = startExpression.getSeparatorTypes();
     separatorTypes = new AdditiveExpressionTypeAST[oldList.length + 1];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);

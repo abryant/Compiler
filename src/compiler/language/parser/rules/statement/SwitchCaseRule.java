@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.StatementAST;
 import compiler.language.ast.statement.SwitchCaseAST;
@@ -50,7 +50,7 @@ public final class SwitchCaseRule extends Rule<ParseType>
     {
       ExpressionAST expression = (ExpressionAST) args[1];
       return new SwitchCaseAST(expression, new StatementAST[0],
-                            ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), (ParseInfo) args[2]));
+                            LexicalPhrase.combine((LexicalPhrase) args[0], expression.getLexicalPhrase(), (LexicalPhrase) args[2]));
     }
     if (STATEMENTS_PRODUCTION.equals(production))
     {
@@ -58,19 +58,19 @@ public final class SwitchCaseRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<StatementAST> statements = (ParseList<StatementAST>) args[3];
       return new SwitchCaseAST(expression, statements.toArray(new StatementAST[0]),
-                            ParseInfo.combine((ParseInfo) args[0], expression.getParseInfo(), (ParseInfo) args[2], statements.getParseInfo()));
+                            LexicalPhrase.combine((LexicalPhrase) args[0], expression.getLexicalPhrase(), (LexicalPhrase) args[2], statements.getLexicalPhrase()));
     }
     if (DEFAULT_PRODUCTION.equals(production))
     {
       return new SwitchCaseAST(null, new StatementAST[0],
-                            ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1]));
+                            LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1]));
     }
     if (DEFAULT_STATEMENTS_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<StatementAST> statements = (ParseList<StatementAST>) args[2];
       return new SwitchCaseAST(null, statements.toArray(new StatementAST[0]),
-                            ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], statements.getParseInfo()));
+                            LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], statements.getLexicalPhrase()));
     }
     throw badTypeList();
   }

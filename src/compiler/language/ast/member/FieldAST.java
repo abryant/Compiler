@@ -1,6 +1,6 @@
 package compiler.language.ast.member;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.DeclarationAssigneeAST;
 import compiler.language.ast.misc.ModifierAST;
@@ -27,11 +27,11 @@ public class FieldAST extends MemberAST
    * @param modifiers - the modifiers for this field
    * @param type - the type of this field
    * @param assignees - the assignees for this field
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public FieldAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, TypeAST type, DeclarationAssigneeAST[] assignees, ParseInfo parseInfo)
+  public FieldAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, TypeAST type, DeclarationAssigneeAST[] assignees, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.accessSpecifier = accessSpecifier;
     this.modifiers = modifiers;
     this.type = type;
@@ -49,11 +49,11 @@ public class FieldAST extends MemberAST
    * @param type - the type of this field
    * @param assignees - the assignees for this field
    * @param expression - the expression to assign to this field by default
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public FieldAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, TypeAST type, DeclarationAssigneeAST[] assignees, ExpressionAST expression, ParseInfo parseInfo)
+  public FieldAST(AccessSpecifierAST accessSpecifier, ModifierAST[] modifiers, TypeAST type, DeclarationAssigneeAST[] assignees, ExpressionAST expression, LexicalPhrase lexicalPhrase)
   {
-    this(accessSpecifier, modifiers, type, assignees, parseInfo);
+    this(accessSpecifier, modifiers, type, assignees, lexicalPhrase);
     this.expression = expression;
   }
 

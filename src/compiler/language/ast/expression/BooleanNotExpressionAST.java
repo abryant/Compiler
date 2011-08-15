@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -17,11 +17,11 @@ public class BooleanNotExpressionAST extends ExpressionAST
   /**
    * Creates a new BooleanNotExpressionAST with the specified subExpression
    * @param subExpression - the expression that will have the boolean not operation performed on it
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public BooleanNotExpressionAST(ExpressionAST subExpression, ParseInfo parseInfo)
+  public BooleanNotExpressionAST(ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.subExpression = subExpression;
   }
 

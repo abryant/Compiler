@@ -6,7 +6,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseList;
@@ -43,7 +43,7 @@ public final class DimensionExpressionsRule extends Rule<ParseType>
     {
       @SuppressWarnings("unchecked")
       ParseContainer<ExpressionAST> container = (ParseContainer<ExpressionAST>) args[0];
-      return new ParseList<ExpressionAST>(container.getItem(), container.getParseInfo());
+      return new ParseList<ExpressionAST>(container.getItem(), container.getLexicalPhrase());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
@@ -51,7 +51,7 @@ public final class DimensionExpressionsRule extends Rule<ParseType>
       ParseList<ExpressionAST> list = (ParseList<ExpressionAST>) args[0];
       @SuppressWarnings("unchecked")
       ParseContainer<ExpressionAST> container = (ParseContainer<ExpressionAST>) args[1];
-      list.addLast(container.getItem(), ParseInfo.combine(list.getParseInfo(), container.getParseInfo()));
+      list.addLast(container.getItem(), LexicalPhrase.combine(list.getLexicalPhrase(), container.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

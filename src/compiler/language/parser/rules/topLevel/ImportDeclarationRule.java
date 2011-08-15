@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.topLevel.ImportDeclarationAST;
 import compiler.language.parser.ParseType;
@@ -44,12 +44,12 @@ public final class ImportDeclarationRule extends Rule<ParseType>
     if (NORMAL_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[1];
-      return new ImportDeclarationAST(qname, false, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2]));
+      return new ImportDeclarationAST(qname, false, LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase(), (LexicalPhrase) args[2]));
     }
     if (ALL_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[1];
-      return new ImportDeclarationAST(qname, true, ParseInfo.combine((ParseInfo) args[0], qname.getParseInfo(), (ParseInfo) args[2], (ParseInfo) args[3], (ParseInfo) args[4]));
+      return new ImportDeclarationAST(qname, true, LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase(), (LexicalPhrase) args[2], (LexicalPhrase) args[3], (LexicalPhrase) args[4]));
     }
     throw badTypeList();
   }

@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.TypeParameterAST;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseList;
@@ -45,18 +45,18 @@ public final class TypeParameterListRAngleRule extends Rule<ParseType>
     {
       @SuppressWarnings("unchecked")
       ParseContainer<TypeParameterAST> typeParameter = (ParseContainer<TypeParameterAST>) args[0];
-      ParseList<TypeParameterAST> list = new ParseList<TypeParameterAST>(typeParameter.getItem(), typeParameter.getItem().getParseInfo());
-      return new ParseContainer<ParseList<TypeParameterAST>>(list, typeParameter.getParseInfo());
+      ParseList<TypeParameterAST> list = new ParseList<TypeParameterAST>(typeParameter.getItem(), typeParameter.getItem().getLexicalPhrase());
+      return new ParseContainer<ParseList<TypeParameterAST>>(list, typeParameter.getLexicalPhrase());
     }
     if (LIST_END_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<TypeParameterAST> list = (ParseList<TypeParameterAST>) args[0];
-      ParseInfo listParseInfo = list.getParseInfo();
+      LexicalPhrase listLexicalPhrase = list.getLexicalPhrase();
       @SuppressWarnings("unchecked")
       ParseContainer<TypeParameterAST> typeParameter = (ParseContainer<TypeParameterAST>) args[2];
-      list.addLast(typeParameter.getItem(), ParseInfo.combine(listParseInfo, (ParseInfo) args[1], typeParameter.getItem().getParseInfo()));
-      return new ParseContainer<ParseList<TypeParameterAST>>(list, ParseInfo.combine(listParseInfo, (ParseInfo) args[1], typeParameter.getParseInfo()));
+      list.addLast(typeParameter.getItem(), LexicalPhrase.combine(listLexicalPhrase, (LexicalPhrase) args[1], typeParameter.getItem().getLexicalPhrase()));
+      return new ParseContainer<ParseList<TypeParameterAST>>(list, LexicalPhrase.combine(listLexicalPhrase, (LexicalPhrase) args[1], typeParameter.getLexicalPhrase()));
     }
     throw badTypeList();
   }

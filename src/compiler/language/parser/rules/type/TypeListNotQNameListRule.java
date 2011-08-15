@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
@@ -53,8 +53,8 @@ public final class TypeListNotQNameListRule extends Rule<ParseType>
       QNameAST qname = (QNameAST) args[0];
       @SuppressWarnings("unchecked")
       ParseList<TypeAST> list = (ParseList<TypeAST>) args[2];
-      list.addFirst(new PointerTypeAST(qname, qname.getParseInfo()),
-                    ParseInfo.combine(qname.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      list.addFirst(new PointerTypeAST(qname, qname.getLexicalPhrase()),
+                    LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
       return list;
     }
     if (NESTED_QNAME_PRODUCTION.equals(production))
@@ -62,7 +62,7 @@ public final class TypeListNotQNameListRule extends Rule<ParseType>
       QNameElementAST element = (QNameElementAST) args[0];
       @SuppressWarnings("unchecked")
       ParseList<TypeAST> list = (ParseList<TypeAST>) args[2];
-      list.addFirst(element.toType(), ParseInfo.combine(element.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      list.addFirst(element.toType(), LexicalPhrase.combine(element.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
       return list;
     }
     if (REAL_TYPE_LIST_PRODUCTION.equals(production))
@@ -70,13 +70,13 @@ public final class TypeListNotQNameListRule extends Rule<ParseType>
       TypeAST type = (TypeAST) args[0];
       @SuppressWarnings("unchecked")
       ParseList<TypeAST> list = (ParseList<TypeAST>) args[2];
-      list.addFirst(type, ParseInfo.combine(type.getParseInfo(), (ParseInfo) args[1], list.getParseInfo()));
+      list.addFirst(type, LexicalPhrase.combine(type.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));
       return list;
     }
     if (REAL_TYPE_PRODUCTION.equals(production))
     {
       TypeAST type = (TypeAST) args[0];
-      return new ParseList<TypeAST>(type, type.getParseInfo());
+      return new ParseList<TypeAST>(type, type.getLexicalPhrase());
     }
     throw badTypeList();
   }

@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.AssigneeAST;
 import compiler.language.ast.misc.AssignmentOperatorAST;
@@ -24,11 +24,11 @@ public class AssignmentStatementAST extends StatementAST
    * @param assignees - the list of assignees
    * @param operator - the assignment operator
    * @param expression - the expression to assign to the assignees
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public AssignmentStatementAST(AssigneeAST[] assignees, AssignmentOperatorAST operator, ExpressionAST expression, ParseInfo parseInfo)
+  public AssignmentStatementAST(AssigneeAST[] assignees, AssignmentOperatorAST operator, ExpressionAST expression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.assignees = assignees;
     this.operator = operator;
     this.expression = expression;

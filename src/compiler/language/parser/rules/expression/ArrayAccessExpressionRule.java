@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ArrayAccessExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
@@ -52,16 +52,16 @@ public final class ArrayAccessExpressionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseContainer<ExpressionAST> dimensionExpression = (ParseContainer<ExpressionAST>) args[1];
       return new ArrayAccessExpressionAST(expression, dimensionExpression.getItem(),
-                                       ParseInfo.combine(expression.getParseInfo(), dimensionExpression.getParseInfo()));
+                                       LexicalPhrase.combine(expression.getLexicalPhrase(), dimensionExpression.getLexicalPhrase()));
     }
     if (QNAME_PRODUCTION.equals(production))
     {
       QNameAST qname = (QNameAST) args[0];
-      FieldAccessExpressionAST fieldAccessExpression = new FieldAccessExpressionAST(qname, qname.getParseInfo());
+      FieldAccessExpressionAST fieldAccessExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       @SuppressWarnings("unchecked")
       ParseContainer<ExpressionAST> dimensionExpression = (ParseContainer<ExpressionAST>) args[1];
       return new ArrayAccessExpressionAST(fieldAccessExpression, dimensionExpression.getItem(),
-                                       ParseInfo.combine(qname.getParseInfo(), dimensionExpression.getParseInfo()));
+                                       LexicalPhrase.combine(qname.getLexicalPhrase(), dimensionExpression.getLexicalPhrase()));
     }
     if (NESTED_QNAME_LIST_PRODUCTION.equals(production))
     {
@@ -70,7 +70,7 @@ public final class ArrayAccessExpressionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseContainer<ExpressionAST> dimensionExpression = (ParseContainer<ExpressionAST>) args[1];
       return new ArrayAccessExpressionAST(expression, dimensionExpression.getItem(),
-                                       ParseInfo.combine(expression.getParseInfo(), dimensionExpression.getParseInfo()));
+                                       LexicalPhrase.combine(expression.getLexicalPhrase(), dimensionExpression.getLexicalPhrase()));
     }
     throw badTypeList();
   }

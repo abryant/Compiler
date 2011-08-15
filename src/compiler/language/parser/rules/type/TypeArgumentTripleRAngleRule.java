@@ -46,10 +46,10 @@ public final class TypeArgumentTripleRAngleRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<ParseContainer<TypeAST>>> oldContainer = (ParseContainer<ParseContainer<ParseContainer<TypeAST>>>) args[0];
       TypeAST type = oldContainer.getItem().getItem().getItem();
-      TypeArgumentAST argument = new NormalTypeArgumentAST(type, type.getParseInfo());
-      ParseContainer<TypeArgumentAST> firstContainer = new ParseContainer<TypeArgumentAST>(argument, oldContainer.getItem().getItem().getParseInfo());
-      ParseContainer<ParseContainer<TypeArgumentAST>> secondContainer = new ParseContainer<ParseContainer<TypeArgumentAST>>(firstContainer, oldContainer.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<ParseContainer<TypeArgumentAST>>>(secondContainer, oldContainer.getParseInfo());
+      TypeArgumentAST argument = new NormalTypeArgumentAST(type, type.getLexicalPhrase());
+      ParseContainer<TypeArgumentAST> firstContainer = new ParseContainer<TypeArgumentAST>(argument, oldContainer.getItem().getItem().getLexicalPhrase());
+      ParseContainer<ParseContainer<TypeArgumentAST>> secondContainer = new ParseContainer<ParseContainer<TypeArgumentAST>>(firstContainer, oldContainer.getItem().getLexicalPhrase());
+      return new ParseContainer<ParseContainer<ParseContainer<TypeArgumentAST>>>(secondContainer, oldContainer.getLexicalPhrase());
     }
     if (WILDCARD_PRODUCTION.equals(production))
     {

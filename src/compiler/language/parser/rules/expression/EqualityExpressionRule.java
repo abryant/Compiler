@@ -9,7 +9,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.EqualityExpressionAST;
 import compiler.language.ast.expression.EqualityExpressionTypeAST;
 import compiler.language.ast.expression.ExpressionAST;
@@ -76,10 +76,10 @@ public final class EqualityExpressionRule extends Rule<ParseType>
     {
       // continue the current EqualityExpressionAST if we've started one
       EqualityExpressionAST startExpression = (EqualityExpressionAST) args[0];
-      return new EqualityExpressionAST(startExpression, separator, newExpression, ParseInfo.combine(startExpression.getParseInfo(), (ParseInfo) args[1], newExpression.getParseInfo()));
+      return new EqualityExpressionAST(startExpression, separator, newExpression, LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], newExpression.getLexicalPhrase()));
     }
     ExpressionAST firstExpression = (ExpressionAST) args[0];
-    return new EqualityExpressionAST(firstExpression, separator, newExpression, ParseInfo.combine(firstExpression.getParseInfo(), (ParseInfo) args[1], newExpression.getParseInfo()));
+    return new EqualityExpressionAST(firstExpression, separator, newExpression, LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], newExpression.getLexicalPhrase()));
   }
 
 }

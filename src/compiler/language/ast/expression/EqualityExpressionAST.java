@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -14,15 +14,15 @@ public class EqualityExpressionAST extends LeftRecursiveExpressionAST
 
   private EqualityExpressionTypeAST[] separatorTypes;
 
-  public EqualityExpressionAST(ExpressionAST firstExpression, EqualityExpressionTypeAST separator, ExpressionAST secondExpression, ParseInfo parseInfo)
+  public EqualityExpressionAST(ExpressionAST firstExpression, EqualityExpressionTypeAST separator, ExpressionAST secondExpression, LexicalPhrase lexicalPhrase)
   {
-    super(firstExpression, secondExpression, parseInfo);
+    super(firstExpression, secondExpression, lexicalPhrase);
     separatorTypes = new EqualityExpressionTypeAST[] {separator};
   }
 
-  public EqualityExpressionAST(EqualityExpressionAST startExpression, EqualityExpressionTypeAST separator, ExpressionAST subExpression, ParseInfo parseInfo)
+  public EqualityExpressionAST(EqualityExpressionAST startExpression, EqualityExpressionTypeAST separator, ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(startExpression, subExpression, parseInfo);
+    super(startExpression, subExpression, lexicalPhrase);
     EqualityExpressionTypeAST[] oldList = startExpression.getSeparatorTypes();
     separatorTypes = new EqualityExpressionTypeAST[oldList.length + 1];
     System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);

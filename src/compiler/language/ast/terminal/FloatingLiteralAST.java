@@ -1,6 +1,6 @@
 package compiler.language.ast.terminal;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 11 Aug 2010
@@ -12,27 +12,27 @@ import compiler.language.ast.ParseInfo;
 public class FloatingLiteralAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private String stringRepresentation;
 
   /**
    * Creates a new floating literal with the specified string representation.
    * @param stringRepresentation - the string representation of the floating literal
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public FloatingLiteralAST(String stringRepresentation, ParseInfo parseInfo)
+  public FloatingLiteralAST(String stringRepresentation, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.stringRepresentation = stringRepresentation;
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

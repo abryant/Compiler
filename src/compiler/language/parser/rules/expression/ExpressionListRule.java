@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -42,14 +42,14 @@ public final class ExpressionListRule extends Rule<ParseType>
     if (START_PRODUCTION.equals(production))
     {
       ExpressionAST expression = (ExpressionAST) args[0];
-      return new ParseList<ExpressionAST>(expression, expression.getParseInfo());
+      return new ParseList<ExpressionAST>(expression, expression.getLexicalPhrase());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<ExpressionAST> list = (ParseList<ExpressionAST>) args[0];
       ExpressionAST expression = (ExpressionAST) args[2];
-      list.addLast(expression, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], expression.getParseInfo()));
+      list.addLast(expression, LexicalPhrase.combine(list.getLexicalPhrase(), (LexicalPhrase) args[1], expression.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

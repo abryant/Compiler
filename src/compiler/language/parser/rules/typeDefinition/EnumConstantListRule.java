@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.typeDefinition.EnumConstantAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -41,14 +41,14 @@ public final class EnumConstantListRule extends Rule<ParseType>
     if (START_PRODUCTION.equals(production))
     {
       EnumConstantAST enumConstant = (EnumConstantAST) args[0];
-      return new ParseList<EnumConstantAST>(enumConstant, enumConstant.getParseInfo());
+      return new ParseList<EnumConstantAST>(enumConstant, enumConstant.getLexicalPhrase());
     }
     if (CONTINUATION_PRODUCTION.equals(production))
     {
       @SuppressWarnings("unchecked")
       ParseList<EnumConstantAST> list = (ParseList<EnumConstantAST>) args[0];
       EnumConstantAST newEnumConstant = (EnumConstantAST) args[2];
-      list.addLast(newEnumConstant, ParseInfo.combine(list.getParseInfo(), (ParseInfo) args[1], newEnumConstant.getParseInfo()));
+      list.addLast(newEnumConstant, LexicalPhrase.combine(list.getLexicalPhrase(), (LexicalPhrase) args[1], newEnumConstant.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

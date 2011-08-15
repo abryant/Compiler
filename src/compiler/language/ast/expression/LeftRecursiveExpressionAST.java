@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 3 Aug 2010
@@ -20,11 +20,11 @@ public abstract class LeftRecursiveExpressionAST extends ExpressionAST
    * Creates a new LeftRecursiveExpressionAST with the specified initial subExpressions
    * @param firstExpression - the first sub expression of this LeftRecursiveExpressionAST
    * @param secondExpression - the second sub expression of this LeftRecursiveExpressionAST
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public LeftRecursiveExpressionAST(ExpressionAST firstExpression, ExpressionAST secondExpression, ParseInfo parseInfo)
+  public LeftRecursiveExpressionAST(ExpressionAST firstExpression, ExpressionAST secondExpression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.subExpressions = new ExpressionAST[] {firstExpression, secondExpression};
   }
 
@@ -32,11 +32,11 @@ public abstract class LeftRecursiveExpressionAST extends ExpressionAST
    * Creates a new LeftRecursiveExpressionAST from all of the sub expressions in startExpression plus a new subExpression
    * @param startExpression - the existing LeftRecursiveExpressionAST to take subExpressions from
    * @param subExpression - the new sub expression for this LeftRecursiveExpressionAST
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public LeftRecursiveExpressionAST(LeftRecursiveExpressionAST startExpression, ExpressionAST subExpression, ParseInfo parseInfo)
+  public LeftRecursiveExpressionAST(LeftRecursiveExpressionAST startExpression, ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     ExpressionAST[] oldList = startExpression.getSubExpressions();
     subExpressions = new ExpressionAST[oldList.length + 1];
     System.arraycopy(oldList, 0, subExpressions, 0, oldList.length);

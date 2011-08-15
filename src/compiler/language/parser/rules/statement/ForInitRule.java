@@ -53,7 +53,7 @@ public final class ForInitRule extends Rule<ParseType>
     if (EXPRESSION_PRODUCTION.equals(production))
     {
       StatementExpressionAST expression = (StatementExpressionAST) args[0];
-      return new ExpressionStatementAST(expression, expression.getParseInfo());
+      return new ExpressionStatementAST(expression, expression.getLexicalPhrase());
     }
     throw badTypeList();
   }

@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseContainer;
@@ -52,8 +52,8 @@ public final class TypeDoubleRAngleRule extends Rule<ParseType>
       // repackage the ParseContainer<ParseContainer<PointerTypeAST>> to a ParseContainer<ParseContainer<TypeAST>>
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<PointerTypeAST>> oldContainer = (ParseContainer<ParseContainer<PointerTypeAST>>) args[0];
-      ParseContainer<TypeAST> firstContainer = new ParseContainer<TypeAST>(oldContainer.getItem().getItem(), oldContainer.getItem().getParseInfo());
-      return new ParseContainer<ParseContainer<TypeAST>>(firstContainer, oldContainer.getParseInfo());
+      ParseContainer<TypeAST> firstContainer = new ParseContainer<TypeAST>(oldContainer.getItem().getItem(), oldContainer.getItem().getLexicalPhrase());
+      return new ParseContainer<ParseContainer<TypeAST>>(firstContainer, oldContainer.getLexicalPhrase());
     }
 
     // the other three productions are similar, so they can share code once the TypeAST has been found
@@ -72,10 +72,10 @@ public final class TypeDoubleRAngleRule extends Rule<ParseType>
       throw badTypeList();
     }
 
-    ParseInfo doubleRAngleInfo = (ParseInfo) args[1];
-    ParseInfo firstRAngleInfo = ParseUtil.splitDoubleRAngle(doubleRAngleInfo);
-    ParseContainer<TypeAST> firstContainer = new ParseContainer<TypeAST>(type, ParseInfo.combine(type.getParseInfo(), firstRAngleInfo));
-    return new ParseContainer<ParseContainer<TypeAST>>(firstContainer, ParseInfo.combine(type.getParseInfo(), doubleRAngleInfo));
+    LexicalPhrase doubleRAnglePhrase = (LexicalPhrase) args[1];
+    LexicalPhrase firstRAnglePhrase = ParseUtil.splitDoubleRAngle(doubleRAnglePhrase);
+    ParseContainer<TypeAST> firstContainer = new ParseContainer<TypeAST>(type, LexicalPhrase.combine(type.getLexicalPhrase(), firstRAnglePhrase));
+    return new ParseContainer<ParseContainer<TypeAST>>(firstContainer, LexicalPhrase.combine(type.getLexicalPhrase(), doubleRAnglePhrase));
   }
 
 }

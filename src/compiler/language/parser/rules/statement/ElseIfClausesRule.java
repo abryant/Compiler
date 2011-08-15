@@ -6,7 +6,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.statement.ElseIfClauseAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
@@ -47,7 +47,7 @@ public final class ElseIfClausesRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<ElseIfClauseAST> list = (ParseList<ElseIfClauseAST>) args[0];
       ElseIfClauseAST clause = (ElseIfClauseAST) args[1];
-      list.addLast(clause, ParseInfo.combine(list.getParseInfo(), clause.getParseInfo()));
+      list.addLast(clause, LexicalPhrase.combine(list.getLexicalPhrase(), clause.getLexicalPhrase()));
       return list;
     }
     throw badTypeList();

@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 12 Aug 2010
@@ -16,18 +16,18 @@ import compiler.language.ast.ParseInfo;
 public class DimensionsAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private int dimensions;
 
   /**
    * Creates a new DimensionsAST object representing the specified number of dimensions
    * @param dimensions - the number of dimensions to store
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public DimensionsAST(int dimensions, ParseInfo parseInfo)
+  public DimensionsAST(int dimensions, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.dimensions = dimensions;
   }
 
@@ -40,11 +40,11 @@ public class DimensionsAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
 }

@@ -2,7 +2,7 @@ package compiler.language.ast.terminal;
 
 import java.math.BigInteger;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 13 Jul 2010
@@ -14,7 +14,7 @@ import compiler.language.ast.ParseInfo;
 public class IntegerLiteralAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private BigInteger value;
   private String stringRepresentation;
@@ -23,12 +23,12 @@ public class IntegerLiteralAST
    * Creates a new integer literal with the specified string representation.
    * @param value - the value of this integer literal
    * @param stringRepresentation - the string representation of the integer literal
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public IntegerLiteralAST(BigInteger value, String stringRepresentation, ParseInfo parseInfo)
+  public IntegerLiteralAST(BigInteger value, String stringRepresentation, LexicalPhrase lexicalPhrase)
   {
     this.value = value;
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.stringRepresentation = stringRepresentation;
   }
 
@@ -41,11 +41,11 @@ public class IntegerLiteralAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

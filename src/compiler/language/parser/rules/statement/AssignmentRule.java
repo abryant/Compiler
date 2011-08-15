@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.misc.AssigneeAST;
 import compiler.language.ast.misc.AssignmentOperatorAST;
@@ -51,7 +51,7 @@ public final class AssignmentRule extends Rule<ParseType>
       ParseContainer<AssignmentOperatorAST> operator = (ParseContainer<AssignmentOperatorAST>) args[1];
       ExpressionAST expression = (ExpressionAST) args[2];
       return new AssignmentStatementAST(assignees.toArray(new AssigneeAST[0]), operator.getItem(), expression,
-                                     ParseInfo.combine(assignees.getParseInfo(), operator.getParseInfo(), expression.getParseInfo()));
+                                     LexicalPhrase.combine(assignees.getLexicalPhrase(), operator.getLexicalPhrase(), expression.getLexicalPhrase()));
     }
     throw badTypeList();
   }

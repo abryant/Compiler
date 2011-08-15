@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 5 Aug 2010
@@ -21,37 +21,37 @@ public class ParseList<E>
 
   private List<E> list;
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   /**
-   * Creates a new empty ParseList with the specified ParseInfo
-   * @param parseInfo - the ParseInfo to store
+   * Creates a new empty ParseList with the specified LexicalPhrase
+   * @param lexicalPhrase - the LexicalPhrase to store
    */
-  public ParseList(ParseInfo parseInfo)
+  public ParseList(LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     list = new LinkedList<E>();
   }
 
   /**
-   * Creates a new ParseList containing the specified initial element with the specified ParseInfo
+   * Creates a new ParseList containing the specified initial element with the specified LexicalPhrase
    * @param elem - the initial element for the list
-   * @param parseInfo - the ParseInfo to store
+   * @param lexicalPhrase - the LexicalPhrase to store
    */
-  public ParseList(E elem, ParseInfo parseInfo)
+  public ParseList(E elem, LexicalPhrase lexicalPhrase)
   {
-    this(parseInfo);
+    this(lexicalPhrase);
     list.add(elem);
   }
 
   /**
-   * Creates a new ParseList containing the specified list of elements with the specified ParseInfo
+   * Creates a new ParseList containing the specified list of elements with the specified LexicalPhrase
    * @param elements - the elements in this list
-   * @param parseInfo - the parsing information to store
+   * @param lexicalPhrase - the lexical phrase to store
    */
-  public ParseList(E[] elements, ParseInfo parseInfo)
+  public ParseList(E[] elements, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     list = new ArrayList<E>(elements.length);
     for (E element : elements)
     {
@@ -70,32 +70,32 @@ public class ParseList<E>
   /**
    * Adds the specified element to the start of the list.
    * @param elem - the element to add
-   * @param newInfo - the new ParseInfo for the entire list
+   * @param newPhrase - the new LexicalPhrase for the entire list
    */
-  public void addFirst(E elem, ParseInfo newInfo)
+  public void addFirst(E elem, LexicalPhrase newPhrase)
   {
     list.add(0, elem);
-    parseInfo = newInfo;
+    lexicalPhrase = newPhrase;
   }
 
   /**
    * Adds the specified element to the end of the list.
    * @param elem - the element to add
-   * @param newInfo - the new ParseInfo for the entire list
+   * @param newPhrase - the new LexicalPhrase for the entire list
    */
-  public void addLast(E elem, ParseInfo newInfo)
+  public void addLast(E elem, LexicalPhrase newPhrase)
   {
     list.add(elem);
-    parseInfo = newInfo;
+    lexicalPhrase = newPhrase;
   }
 
   /**
-   * Sets this list's ParseInfo to the specified ParseInfo object
-   * @param parseInfo - the new ParseInfo object for this list
+   * Sets this list's LexicalPhrase to the specified LexicalPhrase object
+   * @param lexicalPhrase - the new LexicalPhrase object for this list
    */
-  public void setParseInfo(ParseInfo parseInfo)
+  public void setLexicalPhrase(LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
   }
 
   /**
@@ -110,11 +110,11 @@ public class ParseList<E>
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
 }

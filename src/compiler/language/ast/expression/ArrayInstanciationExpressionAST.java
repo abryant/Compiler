@@ -1,6 +1,6 @@
 package compiler.language.ast.expression;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.TypeAST;
 
 /*
@@ -24,11 +24,11 @@ public class ArrayInstanciationExpressionAST extends ExpressionAST
    * @param dimensionExpressions - the dimension expressions
    * @param dimensions - the total number of dimensions, including those from the dimension expressions
    * @param arrayInitializerExpressions - the array initializer's expressions, or null if no initializer was specified
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ArrayInstanciationExpressionAST(TypeAST baseType, ExpressionAST[] dimensionExpressions, int dimensions, ExpressionAST[] arrayInitializerExpressions, ParseInfo parseInfo)
+  public ArrayInstanciationExpressionAST(TypeAST baseType, ExpressionAST[] dimensionExpressions, int dimensions, ExpressionAST[] arrayInitializerExpressions, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.baseType = baseType;
     this.dimensionExpressions = dimensionExpressions;
     this.dimensions = dimensions;

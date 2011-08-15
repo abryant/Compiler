@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -20,11 +20,11 @@ public class SynchronizedStatementAST extends StatementAST
    * Creates a new SynchronizedStatementAST which synchronizes its block on the result of the specified expression.
    * @param expression - the expression which returns the object to synchronize on, or null if no expression was specified
    * @param block - the block to synchronize
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public SynchronizedStatementAST(ExpressionAST expression, BlockAST block, ParseInfo parseInfo)
+  public SynchronizedStatementAST(ExpressionAST expression, BlockAST block, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.expression = expression;
     this.block = block;
   }

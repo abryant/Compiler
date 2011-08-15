@@ -1,6 +1,6 @@
 package compiler.language.ast.terminal;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 /*
  * Created on 5 Aug 2010
@@ -12,7 +12,7 @@ import compiler.language.ast.ParseInfo;
 public class StringLiteralAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private String literalValue;
   private String stringRepresentation;
@@ -21,11 +21,11 @@ public class StringLiteralAST
    * Creates a new String literal with the specified value
    * @param literalValue - the value of the string literal
    * @param stringRepresentation - the string representation of this literal, including escape sequences and surrounding quotes
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public StringLiteralAST(String literalValue, String stringRepresentation, ParseInfo parseInfo)
+  public StringLiteralAST(String literalValue, String stringRepresentation, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.literalValue = literalValue;
     this.stringRepresentation = stringRepresentation;
   }
@@ -39,11 +39,11 @@ public class StringLiteralAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

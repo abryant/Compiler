@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.statement.BlockAST;
 import compiler.language.ast.statement.WhileStatementAST;
@@ -45,7 +45,7 @@ public final class WhileStatementRule extends Rule<ParseType>
       ExpressionAST condition = (ExpressionAST) args[1];
       BlockAST block = (BlockAST) args[2];
       return new WhileStatementAST(condition, block,
-                                ParseInfo.combine((ParseInfo) args[0], condition.getParseInfo(), block.getParseInfo()));
+                                LexicalPhrase.combine((LexicalPhrase) args[0], condition.getLexicalPhrase(), block.getLexicalPhrase()));
     }
     throw badTypeList();
   }

@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
@@ -165,8 +165,8 @@ public final class ConceptualPackage extends Resolvable
         String dirName = file.getName();
         if (typeFiles.containsKey(dirName))
         {
-          // TODO: fill in this ParseInfo object with references to both the package directory and the type definition
-          throw new NameConflictException("Package name \"" + name + "\" conflicts with a type definition.", (ParseInfo[]) null);
+          // TODO: fill in this LexicalPhrase object with references to both the package directory and the type definition
+          throw new NameConflictException("Package name \"" + name + "\" conflicts with a type definition.", (LexicalPhrase[]) null);
         }
         if (name.equals(dirName))
         {
@@ -195,7 +195,7 @@ public final class ConceptualPackage extends Resolvable
       {
         if (sourceFilesDir != null)
         {
-          // TODO: add the ParseInfo of the two conflicting package directories
+          // TODO: add the LexicalPhrase of the two conflicting package directories
           throw new NameConflictException("Unable to add sub-package " + this.name + "." + name + " as multiple package directories exist.");
         }
         sourceFilesDir = dir;

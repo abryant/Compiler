@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.member.FieldAST;
 import compiler.language.ast.terminal.NameAST;
 
@@ -15,7 +15,7 @@ import compiler.language.ast.terminal.NameAST;
 public class DeclarationAssigneeAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private NameAST name;
 
@@ -24,20 +24,20 @@ public class DeclarationAssigneeAST
   /**
    * Creates a new DeclarationAssigneeAST with the specified name
    * @param name - the name of the assignee, or null if no name was intended for this assignee
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public DeclarationAssigneeAST(NameAST name, ParseInfo parseInfo)
+  public DeclarationAssigneeAST(NameAST name, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.name = name;
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**

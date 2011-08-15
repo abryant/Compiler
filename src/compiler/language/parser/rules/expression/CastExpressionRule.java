@@ -10,7 +10,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.CastExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.type.TypeAST;
@@ -50,7 +50,7 @@ public final class CastExpressionRule extends Rule<ParseType>
       ParseContainer<TypeAST> type = (ParseContainer<TypeAST>) args[2];
       ExpressionAST expression = (ExpressionAST) args[3];
       return new CastExpressionAST(type.getItem(), expression,
-                                ParseInfo.combine((ParseInfo) args[0], (ParseInfo) args[1], type.getParseInfo(), expression.getParseInfo()));
+                                LexicalPhrase.combine((LexicalPhrase) args[0], (LexicalPhrase) args[1], type.getLexicalPhrase(), expression.getLexicalPhrase()));
     }
     throw badTypeList();
   }

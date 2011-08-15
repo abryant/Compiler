@@ -1,6 +1,6 @@
 package compiler.language.ast.statement;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 
 /*
@@ -20,11 +20,11 @@ public class SwitchStatementAST extends StatementAST
    * Creates a new SwitchStatementAST with the specified switch expression and list of cases.
    * @param switchExpression - the expression to switch on
    * @param cases - the list of switch cases in this switch statement
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public SwitchStatementAST(ExpressionAST switchExpression, SwitchCaseAST[] cases, ParseInfo parseInfo)
+  public SwitchStatementAST(ExpressionAST switchExpression, SwitchCaseAST[] cases, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.switchExpression = switchExpression;
     this.cases = cases;
   }

@@ -1,6 +1,6 @@
 package compiler.language.ast.type;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 
 
 /*
@@ -18,11 +18,11 @@ public class TupleTypeAST extends TypeAST
   /**
    * Creates a new Tuple TypeAST with the specified list of types
    * @param types - the types contained in this tuple type
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public TupleTypeAST(TypeAST[] types, ParseInfo parseInfo)
+  public TupleTypeAST(TypeAST[] types, LexicalPhrase lexicalPhrase)
   {
-    super(parseInfo);
+    super(lexicalPhrase);
     this.types = types;
   }
 

@@ -8,7 +8,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.MethodCallExpressionAST;
 import compiler.language.ast.misc.ArgumentAST;
@@ -50,7 +50,7 @@ public final class MethodCallExpressionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<ArgumentAST> arguments = (ParseList<ArgumentAST>) args[1];
       return new MethodCallExpressionAST(expression, arguments.toArray(new ArgumentAST[0]),
-                                      ParseInfo.combine(expression.getParseInfo(), arguments.getParseInfo()));
+                                      LexicalPhrase.combine(expression.getLexicalPhrase(), arguments.getLexicalPhrase()));
     }
     throw badTypeList();
   }

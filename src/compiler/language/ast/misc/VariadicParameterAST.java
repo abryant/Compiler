@@ -1,6 +1,6 @@
 package compiler.language.ast.misc;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.TypeAST;
 
@@ -19,11 +19,11 @@ public class VariadicParameterAST extends SingleParameterAST
    * @param modifiers - the modifiers of the parameter
    * @param type - the type of the parameter
    * @param name - the name of the parameter
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public VariadicParameterAST(ModifierAST[] modifiers, TypeAST type, NameAST name, ParseInfo parseInfo)
+  public VariadicParameterAST(ModifierAST[] modifiers, TypeAST type, NameAST name, LexicalPhrase lexicalPhrase)
   {
-    super(modifiers, type, name, parseInfo);
+    super(modifiers, type, name, lexicalPhrase);
   }
 
   /**

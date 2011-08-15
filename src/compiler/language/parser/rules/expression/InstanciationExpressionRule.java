@@ -12,7 +12,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.expression.InstanciationExpressionAST;
 import compiler.language.ast.member.MemberAST;
 import compiler.language.ast.misc.ArgumentAST;
@@ -53,7 +53,7 @@ public final class InstanciationExpressionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<ArgumentAST> arguments = (ParseList<ArgumentAST>) args[2];
       return new InstanciationExpressionAST(type, arguments.toArray(new ArgumentAST[0]), null,
-                                            ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), arguments.getParseInfo()));
+                                            LexicalPhrase.combine((LexicalPhrase) args[0], type.getLexicalPhrase(), arguments.getLexicalPhrase()));
     }
     if (MEMBER_LIST_PRODUCTION.equals(production))
     {
@@ -63,8 +63,8 @@ public final class InstanciationExpressionRule extends Rule<ParseType>
       @SuppressWarnings("unchecked")
       ParseList<MemberAST> members = (ParseList<MemberAST>) args[5];
       return new InstanciationExpressionAST(type, arguments.toArray(new ArgumentAST[0]), members.toArray(new MemberAST[0]),
-                                            ParseInfo.combine((ParseInfo) args[0], type.getParseInfo(), arguments.getParseInfo(),
-                                                              (ParseInfo) args[3], (ParseInfo) args[4], members.getParseInfo(), (ParseInfo) args[6]));
+                                            LexicalPhrase.combine((LexicalPhrase) args[0], type.getLexicalPhrase(), arguments.getLexicalPhrase(),
+                                                              (LexicalPhrase) args[3], (LexicalPhrase) args[4], members.getLexicalPhrase(), (LexicalPhrase) args[6]));
     }
     throw badTypeList();
   }

@@ -1,6 +1,6 @@
 package compiler.language.ast.topLevel;
 
-import compiler.language.ast.ParseInfo;
+import compiler.language.LexicalPhrase;
 import compiler.language.ast.misc.QNameAST;
 
 /*
@@ -13,7 +13,7 @@ import compiler.language.ast.misc.QNameAST;
 public class ImportDeclarationAST
 {
 
-  private ParseInfo parseInfo;
+  private LexicalPhrase lexicalPhrase;
 
   private QNameAST name;
   private boolean all;
@@ -22,11 +22,11 @@ public class ImportDeclarationAST
    * Creates a new ImportDeclarationAST with the specified name, and whether or not to import all names under this name.
    * @param name - the name to import
    * @param all - true to import all names under this one, false otherwise
-   * @param parseInfo - the parsing information
+   * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ImportDeclarationAST(QNameAST name, boolean all, ParseInfo parseInfo)
+  public ImportDeclarationAST(QNameAST name, boolean all, LexicalPhrase lexicalPhrase)
   {
-    this.parseInfo = parseInfo;
+    this.lexicalPhrase = lexicalPhrase;
     this.name = name;
     this.all = all;
   }
@@ -48,11 +48,11 @@ public class ImportDeclarationAST
   }
 
   /**
-   * @return the parseInfo
+   * @return the lexicalPhrase
    */
-  public ParseInfo getParseInfo()
+  public LexicalPhrase getLexicalPhrase()
   {
-    return parseInfo;
+    return lexicalPhrase;
   }
 
   /**
