@@ -9,7 +9,7 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
+import compiler.language.QName;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 import compiler.language.parser.QNameElementAST;
@@ -46,7 +46,7 @@ public final class QNameListRule extends Rule<ParseType>
   {
     if (END_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       return new ParseList<QNameElementAST>(new QNameElementAST(qname), qname.getLexicalPhrase());
     }
     if (END_NESTED_QNAME_LIST_PRODUCTION.equals(production))
@@ -56,7 +56,7 @@ public final class QNameListRule extends Rule<ParseType>
     }
     if (CONTINUATION_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       @SuppressWarnings("unchecked")
       ParseList<QNameElementAST> list = (ParseList<QNameElementAST>) args[2];
       list.addFirst(new QNameElementAST(qname), LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], list.getLexicalPhrase()));

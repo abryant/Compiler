@@ -9,7 +9,7 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
+import compiler.language.QName;
 import compiler.language.ast.topLevel.PackageDeclarationAST;
 import compiler.language.parser.ParseType;
 
@@ -40,7 +40,7 @@ public final class PackageDeclarationRule extends Rule<ParseType>
   {
     if (PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[1];
+      QName qname = (QName) args[1];
       return new PackageDeclarationAST(qname, LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase(), (LexicalPhrase) args[2]));
     }
     throw badTypeList();

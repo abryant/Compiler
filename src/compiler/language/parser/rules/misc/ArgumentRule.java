@@ -1,10 +1,10 @@
 package compiler.language.parser.rules.misc;
 
+import static compiler.language.parser.ParseType.ARGUMENT;
 import static compiler.language.parser.ParseType.AT;
 import static compiler.language.parser.ParseType.EQUALS;
 import static compiler.language.parser.ParseType.EXPRESSION_NO_TUPLE;
 import static compiler.language.parser.ParseType.NAME;
-import static compiler.language.parser.ParseType.ARGUMENT;
 import parser.ParseException;
 import parser.Production;
 import parser.Rule;

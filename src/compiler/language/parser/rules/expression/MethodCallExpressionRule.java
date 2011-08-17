@@ -1,7 +1,7 @@
 package compiler.language.parser.rules.expression;
 
-import static compiler.language.parser.ParseType.METHOD_CALL_EXPRESSION;
 import static compiler.language.parser.ParseType.ARGUMENTS;
+import static compiler.language.parser.ParseType.METHOD_CALL_EXPRESSION;
 import static compiler.language.parser.ParseType.PRIMARY;
 import static compiler.language.parser.ParseType.QNAME_EXPRESSION;
 import parser.ParseException;

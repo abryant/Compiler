@@ -10,10 +10,10 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.ast.expression.ArrayAccessExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
-import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseContainer;
 import compiler.language.parser.ParseType;
 import compiler.language.parser.QNameElementAST;
@@ -56,7 +56,7 @@ public final class ArrayAccessExpressionRule extends Rule<ParseType>
     }
     if (QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       FieldAccessExpressionAST fieldAccessExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       @SuppressWarnings("unchecked")
       ParseContainer<ExpressionAST> dimensionExpression = (ParseContainer<ExpressionAST>) args[1];

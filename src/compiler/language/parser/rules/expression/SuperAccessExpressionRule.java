@@ -9,8 +9,8 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.ast.expression.SuperAccessExpressionAST;
-import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseType;
 
 /*
@@ -46,7 +46,7 @@ public final class SuperAccessExpressionRule extends Rule<ParseType>
     }
     if (QNAME_SUPER_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       return new SuperAccessExpressionAST(qname, LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2]));
     }
     throw badTypeList();

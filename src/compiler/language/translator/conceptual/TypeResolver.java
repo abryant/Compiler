@@ -8,6 +8,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.ast.member.ConstructorAST;
 import compiler.language.ast.member.MethodAST;
 import compiler.language.ast.member.PropertyAST;
@@ -20,7 +21,6 @@ import compiler.language.ast.typeDefinition.EnumDefinitionAST;
 import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
-import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
@@ -62,7 +62,9 @@ public class TypeResolver
   private Queue<TypeDefinition> typeBoundsToResolve = new LinkedList<TypeDefinition>();
   private Queue<TypeDefinition> membersToResolve = new LinkedList<TypeDefinition>();
 
-  private static final QName UNIVERSAL_BASE_CLASS_QNAME = new QName("x", "Object");
+  private static final QName UNIVERSAL_BASE_CLASS_QNAME = new QName(new String[] {"x", "Object"},
+                                                                    new LexicalPhrase[] {new LexicalPhrase(1, "x.Object", 1, 2),
+                                                                                         new LexicalPhrase(1, "x.Object", 3, 9)});
   private OuterClassPointerType universalBaseClass;
 
   private AccessSpecifierChecker accessSpecifierChecker;
@@ -236,9 +238,8 @@ public class TypeResolver
   public PointerType resolvePointerType(PointerTypeAST pointerTypeAST, Resolvable startScope) throws NameConflictException, ConceptualException, UnresolvableException
   {
     // resolve the QName without taking the type argument lists into account
-    QName qname = ASTConverter.convert(pointerTypeAST.getNames());
-    LexicalPhrase[] qnameLexicalPhrase = ASTConverter.extractLexicalPhrase(pointerTypeAST.getNames());
-    Resolvable resolved = accessSpecifierChecker.resolve(qname, qnameLexicalPhrase, startScope);
+    QName qname = pointerTypeAST.getQualifiedName();
+    Resolvable resolved = accessSpecifierChecker.resolve(qname, startScope);
 
     if (resolved == null)
     {
@@ -260,7 +261,7 @@ public class TypeResolver
       {
         if (typeArgumentLists[i] != null)
         {
-          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[i].getLexicalPhrase());
+          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getQualifiedName().getLexicalPhrases()[i]);
         }
       }
       if (resolved.getType() == ScopeType.OUTER_ENUM ||
@@ -269,7 +270,7 @@ public class TypeResolver
         // make sure the last type argument list is null, as enums do not have type parameters
         if (typeArgumentLists[typeArgumentLists.length - 1] != null)
         {
-          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[typeArgumentLists.length - 1].getLexicalPhrase());
+          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getQualifiedName().getLexicalPhrases()[typeArgumentLists.length - 1]);
         }
         return new EnumPointerType((ConceptualEnum) resolved, pointerTypeAST.isImmutable());
       }
@@ -278,7 +279,7 @@ public class TypeResolver
         // make sure the last type argument list is null, as type parameters do not have type parameters of their own
         if (typeArgumentLists[typeArgumentLists.length - 1] != null)
         {
-          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getNames()[typeArgumentLists.length - 1].getLexicalPhrase());
+          throw new ConceptualException("Type arguments are not allowed on this name", pointerTypeAST.getQualifiedName().getLexicalPhrases()[typeArgumentLists.length - 1]);
         }
         return new TypeParameterPointerType((TypeParameter) resolved, pointerTypeAST.isImmutable());
       }
@@ -300,7 +301,7 @@ public class TypeResolver
         {
           throw new ConceptualException("Expected " + typeParameters.length + " type argument" + (typeParameters.length != 1 ? "s" : "") + " after this name, " +
                                         "but found " + (lastTypeArguments == null ? "none" : lastTypeArguments.length),
-                                        pointerTypeAST.getNames()[typeArgumentLists.length - 1].getLexicalPhrase());
+                                        pointerTypeAST.getQualifiedName().getLexicalPhrases()[typeArgumentLists.length - 1]);
         }
         typeArguments = ASTConverter.convert(lastTypeArguments, this, startScope);
       }
@@ -338,7 +339,7 @@ public class TypeResolver
           int parameters = currentClass.getTypeParameters().length;
           throw new ConceptualException("Expected " + parameters + " type argument" + (parameters != 1 ? "s" : "") + " after this name, " +
                                         "but found " + (arguments == null ? "none" : arguments.length),
-                                        pointerTypeAST.getNames()[typeArgumentLists.length - classes.size()].getLexicalPhrase());
+                                        pointerTypeAST.getQualifiedName().getLexicalPhrases()[typeArgumentLists.length - classes.size()]);
         }
         typeArguments.addFirst(ASTConverter.convert(arguments, this, startScope));
       }

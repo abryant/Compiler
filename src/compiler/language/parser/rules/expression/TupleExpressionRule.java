@@ -13,12 +13,12 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.expression.RelationalExpressionAST;
 import compiler.language.ast.expression.RelationalExpressionTypeAST;
 import compiler.language.ast.expression.TupleExpressionAST;
-import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseList;
 import compiler.language.parser.ParseType;
 import compiler.language.parser.QNameElementAST;
@@ -96,7 +96,7 @@ public final class TupleExpressionRule extends Rule<ParseType>
     LexicalPhrase finalLexicalPhrase;
     if (QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       secondExpression = (ExpressionAST) args[2];
       finalLexicalPhrase = LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase());
@@ -116,8 +116,8 @@ public final class TupleExpressionRule extends Rule<ParseType>
     }
     else if (QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST firstQName = (QNameAST) args[0];
-      QNameAST secondQName = (QNameAST) args[2];
+      QName firstQName = (QName) args[0];
+      QName secondQName = (QName) args[2];
       ExpressionAST leftExpression = new FieldAccessExpressionAST(firstQName, firstQName.getLexicalPhrase());
       ExpressionAST rightExpression = new FieldAccessExpressionAST(secondQName, secondQName.getLexicalPhrase());
       firstExpression = new RelationalExpressionAST(leftExpression, RelationalExpressionTypeAST.LESS_THAN, rightExpression,
@@ -127,7 +127,7 @@ public final class TupleExpressionRule extends Rule<ParseType>
     }
     else if (QNAME_LESS_THAN_NESTED_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       QNameElementAST element = (QNameElementAST) args[2];
       ExpressionAST leftExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       ExpressionAST rightExpression = element.toExpression();
@@ -139,7 +139,7 @@ public final class TupleExpressionRule extends Rule<ParseType>
     else if (NESTED_QNAME_LESS_THAN_QNAME_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
-      QNameAST qname = (QNameAST) args[2];
+      QName qname = (QName) args[2];
       ExpressionAST leftExpression = element.toExpression();
       ExpressionAST rightExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       firstExpression = new RelationalExpressionAST(leftExpression, RelationalExpressionTypeAST.LESS_THAN, rightExpression,

@@ -12,7 +12,7 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
+import compiler.language.QName;
 import compiler.language.ast.type.ArrayTypeAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
@@ -58,7 +58,7 @@ public final class ArrayTypeRule extends Rule<ParseType>
     }
     if (QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       return new ArrayTypeAST(new PointerTypeAST(qname, qname.getLexicalPhrase()), false, LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2]));
     }
     if (NESTED_QNAME_PRODUCTION.equals(production))
@@ -74,7 +74,7 @@ public final class ArrayTypeRule extends Rule<ParseType>
     }
     if (IMMUTABLE_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       return new ArrayTypeAST(new PointerTypeAST(qname, qname.getLexicalPhrase()), true, LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], (LexicalPhrase) args[2], (LexicalPhrase) args[3]));
     }
     if (IMMUTABLE_NESTED_QNAME_PRODUCTION.equals(production))

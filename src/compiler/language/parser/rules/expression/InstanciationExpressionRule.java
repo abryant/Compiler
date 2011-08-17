@@ -1,11 +1,11 @@
 package compiler.language.parser.rules.expression;
 
+import static compiler.language.parser.ParseType.ARGUMENTS;
 import static compiler.language.parser.ParseType.CLASS_KEYWORD;
 import static compiler.language.parser.ParseType.INSTANCIATION_EXPRESSION;
 import static compiler.language.parser.ParseType.LBRACE;
 import static compiler.language.parser.ParseType.MEMBER_LIST;
 import static compiler.language.parser.ParseType.NEW_KEYWORD;
-import static compiler.language.parser.ParseType.ARGUMENTS;
 import static compiler.language.parser.ParseType.POINTER_TYPE;
 import static compiler.language.parser.ParseType.RBRACE;
 import parser.ParseException;

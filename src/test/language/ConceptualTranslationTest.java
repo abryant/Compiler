@@ -5,9 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
-import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
@@ -48,10 +48,35 @@ public class ConceptualTranslationTest
 
     ConceptualTranslator translator = new ConceptualTranslator(parser, classpath);
 
-    String[] names = args[0].split("\\.");
+    // extract the names and the lexical phrases for them from args[0]
+    List<String> namesList = new LinkedList<String>();
+    List<LexicalPhrase> lexicalPhrasesList = new LinkedList<LexicalPhrase>();
+    String remaining = args[0];
+    int column = 0;
+    while (remaining.length() > 0)
+    {
+      String name;
+      if (remaining.indexOf('.') == -1)
+      {
+        name = remaining;
+        remaining = "";
+      }
+      else
+      {
+        name = remaining.substring(0, remaining.indexOf('.'));
+        remaining = remaining.substring(name.length() + 1);
+      }
+      LexicalPhrase lexicalPhrase = new LexicalPhrase(1, args[0], column, column + name.length());
+      column += name.length() + 1;
+      namesList.add(name);
+      lexicalPhrasesList.add(lexicalPhrase);
+    }
+    String[] names = namesList.toArray(new String[0]);
+    LexicalPhrase[] lexicalPhrases = lexicalPhrasesList.toArray(new LexicalPhrase[0]);
+
     try
     {
-      Resolvable resolved = translator.translate(new QName(names));
+      Resolvable resolved = translator.translate(new QName(names, lexicalPhrases));
       if (resolved == null || resolved.getType() != ScopeType.OUTER_CLASS)
       {
         System.out.println("\"" + args[0] + "\" could not be resolved to a class");

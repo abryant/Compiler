@@ -16,12 +16,12 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.expression.InstanceOfExpressionAST;
 import compiler.language.ast.expression.RelationalExpressionAST;
 import compiler.language.ast.expression.RelationalExpressionTypeAST;
-import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseType;
 import compiler.language.parser.QNameElementAST;
@@ -97,10 +97,10 @@ public final class RelationalExpressionNotLessThanQNameRule extends Rule<ParseTy
       TypeAST type = (TypeAST) args[2];
       return new InstanceOfExpressionAST(expression, type, LexicalPhrase.combine(expression.getLexicalPhrase(), (LexicalPhrase) args[1], type.getLexicalPhrase()));
     }
-    // handle the special case QNameAST rules for Less Than
+    // handle the special case QName rules for Less Than
     if (QNAME_LESS_THAN_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       ExpressionAST firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       ExpressionAST secondExpression = (ExpressionAST) args[2];
       return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.LESS_THAN, secondExpression,
@@ -114,10 +114,10 @@ public final class RelationalExpressionNotLessThanQNameRule extends Rule<ParseTy
       return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.LESS_THAN, secondExpression,
                                       LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
-    // handle the special case QNameAST rules for Greater Than
+    // handle the special case QName rules for Greater Than
     if (QNAME_GREATER_THAN_PRODUCTION.equals(production) || QNAME_GREATER_THAN_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       ExpressionAST firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       ExpressionAST secondExpression = (ExpressionAST) args[2];
       return new RelationalExpressionAST(firstExpression, RelationalExpressionTypeAST.GREATER_THAN, secondExpression,

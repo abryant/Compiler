@@ -9,10 +9,10 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.misc.AssigneeAST;
 import compiler.language.ast.misc.FieldAssigneeAST;
-import compiler.language.ast.misc.QNameAST;
 import compiler.language.ast.statement.IncrementStatementAST;
 import compiler.language.parser.ParseType;
 
@@ -52,7 +52,7 @@ public final class IncrementRule extends Rule<ParseType>
     }
     if (PRE_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[1];
+      QName qname = (QName) args[1];
       FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getLexicalPhrase());
       return new IncrementStatementAST(assignee, LexicalPhrase.combine((LexicalPhrase) args[0], assignee.getLexicalPhrase()));
@@ -64,7 +64,7 @@ public final class IncrementRule extends Rule<ParseType>
     }
     if (POST_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       FieldAccessExpressionAST fieldAccess = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       AssigneeAST assignee = new FieldAssigneeAST(fieldAccess, fieldAccess.getLexicalPhrase());
       return new IncrementStatementAST(assignee, LexicalPhrase.combine(assignee.getLexicalPhrase(), (LexicalPhrase) args[1]));

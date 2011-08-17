@@ -1,7 +1,7 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.TYPE_NOT_QNAME_LIST;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENT_NOT_QNAME_LIST;
+import static compiler.language.parser.ParseType.TYPE_NOT_QNAME_LIST;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_ARGUMENT;
 import parser.ParseException;
 import parser.Production;

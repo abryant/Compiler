@@ -7,7 +7,7 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
-import compiler.language.ast.misc.QNameAST;
+import compiler.language.QName;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.parser.ParseType;
 
@@ -44,8 +44,8 @@ public final class TypeRule extends Rule<ParseType>
     }
     if (QNAME_PRODUCTION.equals(production))
     {
-      // create a new PointerTypeAST from the QNameAST
-      QNameAST qname = (QNameAST) args[0];
+      // create a new PointerTypeAST from the QName
+      QName qname = (QName) args[0];
       return new PointerTypeAST(qname, qname.getLexicalPhrase());
     }
     throw badTypeList();

@@ -1,6 +1,6 @@
 package compiler.language.conceptual.topLevel;
 
-import compiler.language.conceptual.QName;
+import compiler.language.QName;
 
 /*
  * Created on 13 Feb 2011

@@ -7,8 +7,8 @@ import parser.ParseException;
 import parser.Production;
 import parser.Rule;
 
+import compiler.language.QName;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
-import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseType;
 
 /*
@@ -40,7 +40,7 @@ public final class FieldAccessExpressionRule extends Rule<ParseType>
   {
     if (QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       return new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
     }
     if (PRODUCTION.equals(production))

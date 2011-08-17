@@ -1,4 +1,5 @@
-package compiler.language.conceptual;
+package compiler.language;
+
 
 /*
  * Created on 13 Feb 2011
@@ -6,33 +7,67 @@ package compiler.language.conceptual;
 
 /**
  * Represents an immutable qualified name, consisting of a list of Strings.
+ * This also stores a LexicalPhrase for each of the constituent names.
+ * NOTE: equals() and hashCode() are not defined in terms of the LexicalPhrases that this object stores.
  * @author Anthony Bryant
  */
 public class QName
 {
 
   private String[] names;
+  private LexicalPhrase[] lexicalPhrases;
 
   /**
    * Creates a new QName with the specified list of Strings
    * @param names - the names to represent
-   */
+   *//*
   public QName(String... names)
   {
     this.names = names;
+    lexicalPhrases = new LexicalPhrase[names.length];
+  }*/
+
+  /**
+   *
+   * @param name
+   * @param lexicalPhrase
+   */
+  public QName(String name, LexicalPhrase lexicalPhrase)
+  {
+    names = new String[] {name};
+    lexicalPhrases = new LexicalPhrase[] {lexicalPhrase};
+  }
+
+  /**
+   * Creates a new QName with the specified list of Strings and LexicalPhrases.
+   * @param names - the names to represent
+   * @param lexicalPhrases - the lexicalPhrases to represent
+   */
+  public QName(String[] names, LexicalPhrase[] lexicalPhrases)
+  {
+    this.names = names;
+    this.lexicalPhrases = lexicalPhrases;
+    if (names.length != lexicalPhrases.length)
+    {
+      throw new IllegalArgumentException("The number of names must be equal to the number of lexical phrases provided.");
+    }
   }
 
   /**
    * Creates a new QName with the names from the specified QName, plus another name
    * @param startName - the QName containing the names to start with
    * @param name - the final name for the QName
+   * @param lexicalPhrase - the final LexicalPhrase for the QName
    */
-  public QName(QName startName, String name)
+  public QName(QName startName, String name, LexicalPhrase lexicalPhrase)
   {
     int oldLength = startName.names.length;
     names = new String[oldLength + 1];
+    lexicalPhrases = new LexicalPhrase[oldLength + 1];
     System.arraycopy(startName.names, 0, names, 0, oldLength);
+    System.arraycopy(startName.lexicalPhrases, 0, lexicalPhrases, 0, oldLength);
     names[oldLength] = name;
+    lexicalPhrases[oldLength] = lexicalPhrase;
   }
 
   /**
@@ -49,6 +84,22 @@ public class QName
   public String[] getNames()
   {
     return names.clone();
+  }
+
+  /**
+   * @return a copy of the lexical phrases stored in this QName (this is a copy so that the immutability is preserved)
+   */
+  public LexicalPhrase[] getLexicalPhrases()
+  {
+    return lexicalPhrases.clone();
+  }
+
+  /**
+   * @return the combined LexicalPhrases for each of the constituent QNames
+   */
+  public LexicalPhrase getLexicalPhrase()
+  {
+    return LexicalPhrase.combine(lexicalPhrases);
   }
 
   /**
@@ -75,36 +126,10 @@ public class QName
   public QName getTrailingNames()
   {
     String[] otherNames = new String[names.length - 1];
+    LexicalPhrase[] otherPhrases = new LexicalPhrase[lexicalPhrases.length - 1];
     System.arraycopy(names, 1, otherNames, 0, otherNames.length);
-    return new QName(otherNames);
-  }
-
-  /**
-   * Subtracts the start of this QName and returns a QName containing the remainder.
-   * @param start - the QName to subtract from the start of this QName
-   * @return a QName containing all but the specified start of this QName, or null if this QName does not start with the specified QName
-   */
-  public QName subtractStart(QName start)
-  {
-    if (names.length < start.names.length)
-    {
-      // impossible for containing to contain us, as it is longer than us
-      return null;
-    }
-
-    for (int i = 0; i < start.names.length; i++)
-    {
-      if (!names[i].equals(start.names[i]))
-      {
-        return null;
-      }
-    }
-    String[] newNames = new String[start.names.length - names.length];
-    for (int i = start.names.length; i < names.length; i++)
-    {
-      newNames[i - start.names.length] = names[i];
-    }
-    return new QName(newNames);
+    System.arraycopy(lexicalPhrases, 1, otherPhrases, 0, otherPhrases.length);
+    return new QName(otherNames, otherPhrases);
   }
 
   /**
@@ -127,6 +152,7 @@ public class QName
   }
 
   /**
+   * NOTE: this does not depend on the LexicalPhrases of the constituent names, only on the names themselves
    * {@inheritDoc}
    * @see java.lang.Object#equals(java.lang.Object)
    */
@@ -153,6 +179,7 @@ public class QName
   }
 
   /**
+   * NOTE: this does not depend on the LexicalPhrases of the constituent names, only on the names themselves
    * {@inheritDoc}
    * @see java.lang.Object#hashCode()
    */

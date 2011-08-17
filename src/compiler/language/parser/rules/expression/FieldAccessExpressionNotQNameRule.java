@@ -44,7 +44,7 @@ public final class FieldAccessExpressionNotQNameRule extends Rule<ParseType>
     {
       ExpressionAST expression = (ExpressionAST) args[0];
       NameAST name = (NameAST) args[2];
-      return new FieldAccessExpressionAST(expression, name, LexicalPhrase.combine(expression.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase()));
+      return new FieldAccessExpressionAST(expression, name.getName(), LexicalPhrase.combine(expression.getLexicalPhrase(), (LexicalPhrase) args[1], name.getLexicalPhrase()));
     }
     throw badTypeList();
   }

@@ -1,10 +1,10 @@
 package compiler.language.parser.rules.member;
 
-import static compiler.language.parser.ParseType.PARAMETERS;
 import static compiler.language.parser.ParseType.BLOCK;
 import static compiler.language.parser.ParseType.MEMBER_HEADER;
 import static compiler.language.parser.ParseType.METHOD;
 import static compiler.language.parser.ParseType.NAME;
+import static compiler.language.parser.ParseType.PARAMETERS;
 import static compiler.language.parser.ParseType.SEMICOLON;
 import static compiler.language.parser.ParseType.THROWS_CLAUSE;
 import static compiler.language.parser.ParseType.TYPE;

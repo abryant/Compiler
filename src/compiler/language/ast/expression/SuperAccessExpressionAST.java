@@ -1,7 +1,7 @@
 package compiler.language.ast.expression;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
+import compiler.language.QName;
 
 /*
  * Created on 15 Aug 2010
@@ -13,14 +13,14 @@ import compiler.language.ast.misc.QNameAST;
 public class SuperAccessExpressionAST extends ExpressionAST
 {
 
-  private QNameAST qualifier;
+  private QName qualifier;
 
   /**
    * Creates a new SuperAccessExpressionAST with the specified qualifier.
    * @param qualifier - the qualifier for the super expression, or null if no qualifier is specified
    * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public SuperAccessExpressionAST(QNameAST qualifier, LexicalPhrase lexicalPhrase)
+  public SuperAccessExpressionAST(QName qualifier, LexicalPhrase lexicalPhrase)
   {
     super(lexicalPhrase);
     this.qualifier = qualifier;
@@ -29,7 +29,7 @@ public class SuperAccessExpressionAST extends ExpressionAST
   /**
    * @return the qualifier
    */
-  public QNameAST getQualifier()
+  public QName getQualifier()
   {
     return qualifier;
   }

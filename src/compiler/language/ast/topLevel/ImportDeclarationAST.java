@@ -1,7 +1,7 @@
 package compiler.language.ast.topLevel;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
+import compiler.language.QName;
 
 /*
  * Created on 30 Jun 2010
@@ -15,7 +15,7 @@ public class ImportDeclarationAST
 
   private LexicalPhrase lexicalPhrase;
 
-  private QNameAST name;
+  private QName name;
   private boolean all;
 
   /**
@@ -24,7 +24,7 @@ public class ImportDeclarationAST
    * @param all - true to import all names under this one, false otherwise
    * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public ImportDeclarationAST(QNameAST name, boolean all, LexicalPhrase lexicalPhrase)
+  public ImportDeclarationAST(QName name, boolean all, LexicalPhrase lexicalPhrase)
   {
     this.lexicalPhrase = lexicalPhrase;
     this.name = name;
@@ -34,7 +34,7 @@ public class ImportDeclarationAST
   /**
    * @return the name
    */
-  public QNameAST getName()
+  public QName getName()
   {
     return name;
   }

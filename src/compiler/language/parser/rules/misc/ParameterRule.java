@@ -1,13 +1,13 @@
 package compiler.language.parser.rules.misc;
 
-import static compiler.language.parser.ParseType.PARAMETER;
-import static compiler.language.parser.ParseType.PARAMETERS;
 import static compiler.language.parser.ParseType.AT;
 import static compiler.language.parser.ParseType.ELLIPSIS;
 import static compiler.language.parser.ParseType.EQUALS;
 import static compiler.language.parser.ParseType.EXPRESSION_NO_TUPLE;
 import static compiler.language.parser.ParseType.MODIFIERS;
 import static compiler.language.parser.ParseType.NAME;
+import static compiler.language.parser.ParseType.PARAMETER;
+import static compiler.language.parser.ParseType.PARAMETERS;
 import static compiler.language.parser.ParseType.TYPE;
 import parser.ParseException;
 import parser.Production;

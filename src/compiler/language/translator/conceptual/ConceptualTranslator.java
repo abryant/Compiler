@@ -6,10 +6,10 @@ import java.io.FileReader;
 import java.util.List;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.ast.topLevel.CompilationUnitAST;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
-import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.UnresolvableException;
 import compiler.language.conceptual.topLevel.ConceptualFile;

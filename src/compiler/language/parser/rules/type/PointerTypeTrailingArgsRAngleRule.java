@@ -13,8 +13,7 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.terminal.NameAST;
+import compiler.language.QName;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.parser.ParseContainer;
@@ -52,38 +51,35 @@ public final class PointerTypeTrailingArgsRAngleRule extends Rule<ParseType>
   {
     if (MUTABLE_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>> typeArgumentss = (ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>) args[2];
-      NameAST[] names = qname.getNames();
-      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
+      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[qname.getLength()][];
       typeArgumentLists[typeArgumentLists.length - 1] = typeArgumentss.getItem().getItem().toArray(new TypeArgumentAST[0]);
-      PointerTypeAST type = new PointerTypeAST(false, names, typeArgumentLists,
+      PointerTypeAST type = new PointerTypeAST(false, qname, typeArgumentLists,
                                                LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], typeArgumentss.getItem().getLexicalPhrase()));
       return new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1], typeArgumentss.getLexicalPhrase()));
     }
     if (IMMUTABLE_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[1];
+      QName qname = (QName) args[1];
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>> typeArguments = (ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>) args[3];
-      NameAST[] names = qname.getNames();
-      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
+      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[qname.getLength()][];
       typeArgumentLists[typeArgumentLists.length - 1] = typeArguments.getItem().getItem().toArray(new TypeArgumentAST[0]);
-      PointerTypeAST type = new PointerTypeAST(true, names, typeArgumentLists,
+      PointerTypeAST type = new PointerTypeAST(true, qname, typeArgumentLists,
                                                LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase(), (LexicalPhrase) args[2], typeArguments.getItem().getLexicalPhrase()));
       return new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase(), (LexicalPhrase) args[2], typeArguments.getLexicalPhrase()));
     }
     if (TRAILING_PARAMS_PRODUCTION.equals(production))
     {
       PointerTypeAST oldType = (PointerTypeAST) args[0];
-      QNameAST qname = (QNameAST) args[2];
+      QName qname = (QName) args[2];
       @SuppressWarnings("unchecked")
       ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>> typeArguments = (ParseContainer<ParseContainer<ParseList<TypeArgumentAST>>>) args[4];
-      NameAST[] names = qname.getNames();
-      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
+      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[qname.getLength()][];
       typeArgumentLists[typeArgumentLists.length - 1] = typeArguments.getItem().getItem().toArray(new TypeArgumentAST[0]);
-      PointerTypeAST type = new PointerTypeAST(oldType, oldType.isImmutable(), names, typeArgumentLists,
+      PointerTypeAST type = new PointerTypeAST(oldType, oldType.isImmutable(), qname, typeArgumentLists,
                                                LexicalPhrase.combine(oldType.getLexicalPhrase(), (LexicalPhrase) args[1], qname.getLexicalPhrase(), (LexicalPhrase) args[3],
                                                                  typeArguments.getItem().getLexicalPhrase()));
       return new ParseContainer<PointerTypeAST>(type, LexicalPhrase.combine(oldType.getLexicalPhrase(), (LexicalPhrase) args[1], qname.getLexicalPhrase(), (LexicalPhrase) args[3],

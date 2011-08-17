@@ -1,12 +1,11 @@
 package compiler.language.parser;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.expression.ParenthesisedExpressionAST;
 import compiler.language.ast.expression.TupleExpressionAST;
-import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.terminal.NameAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TupleTypeAST;
 import compiler.language.ast.type.TypeAST;
@@ -17,7 +16,7 @@ import compiler.language.ast.type.TypeArgumentAST;
  */
 
 /**
- * A class which holds either a QNameAST or a nested list of QNameElementASTs.
+ * A class which holds either a QName or a nested list of QNameElementASTs.
  * This should only be used during parsing, and should never occur in the final
  * AST.
  * @author Anthony Bryant
@@ -25,15 +24,15 @@ import compiler.language.ast.type.TypeArgumentAST;
 public class QNameElementAST
 {
 
-  private QNameAST qname = null;
+  private QName qname = null;
   private ParseList<QNameElementAST> elements = null;
   private LexicalPhrase listLexicalPhrase = null;
 
   /**
-   * Creates a new QNameElementAST to store the specified QNameAST
-   * @param qname - the QNameAST to store
+   * Creates a new QNameElementAST to store the specified QName
+   * @param qname - the QName to store
    */
-  public QNameElementAST(QNameAST qname)
+  public QNameElementAST(QName qname)
   {
     this.qname = qname;
   }
@@ -91,9 +90,8 @@ public class QNameElementAST
   {
     if (qname != null)
     {
-      NameAST[] names = qname.getNames();
-      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
-      return new PointerTypeAST(false, qname.getNames(), typeArgumentLists, qname.getLexicalPhrase());
+      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[qname.getLength()][];
+      return new PointerTypeAST(false, qname, typeArgumentLists, qname.getLexicalPhrase());
     }
 
     QNameElementAST[] elems = elements.toArray(new QNameElementAST[0]);

@@ -1,15 +1,15 @@
 package compiler.language.parser.rules.expression;
 
-import static compiler.language.parser.ParseType.PARAMETER_LIST;
 import static compiler.language.parser.ParseType.ARROW;
 import static compiler.language.parser.ParseType.BLOCK;
 import static compiler.language.parser.ParseType.CLOSURE_CREATION_EXPRESSION;
 import static compiler.language.parser.ParseType.CLOSURE_KEYWORD;
 import static compiler.language.parser.ParseType.LPAREN;
+import static compiler.language.parser.ParseType.PARAMETER_LIST;
 import static compiler.language.parser.ParseType.RPAREN;
 import static compiler.language.parser.ParseType.THROWS_CLAUSE;
-import static compiler.language.parser.ParseType.TYPE_PARAMETERS;
 import static compiler.language.parser.ParseType.TYPE_LIST;
+import static compiler.language.parser.ParseType.TYPE_PARAMETERS;
 import static compiler.language.parser.ParseType.VOID_TYPE;
 import parser.ParseException;
 import parser.Production;

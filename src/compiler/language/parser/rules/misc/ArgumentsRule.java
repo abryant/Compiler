@@ -1,8 +1,8 @@
 package compiler.language.parser.rules.misc;
 
-import static compiler.language.parser.ParseType.LPAREN;
 import static compiler.language.parser.ParseType.ARGUMENTS;
 import static compiler.language.parser.ParseType.ARGUMENT_LIST;
+import static compiler.language.parser.ParseType.LPAREN;
 import static compiler.language.parser.ParseType.RPAREN;
 import parser.ParseException;
 import parser.Production;

@@ -13,11 +13,11 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
 import compiler.language.ast.expression.ShiftExpressionAST;
 import compiler.language.ast.expression.ShiftExpressionTypeAST;
-import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseType;
 import compiler.language.parser.QNameElementAST;
 
@@ -92,7 +92,7 @@ public final class ShiftExpressionRule extends Rule<ParseType>
     }
     else if (QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production)        || QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       separator = ShiftExpressionTypeAST.ARITHMETIC_RIGHT_SHIFT;
     }
@@ -109,7 +109,7 @@ public final class ShiftExpressionRule extends Rule<ParseType>
     }
     else if (QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)           || QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
       separator = ShiftExpressionTypeAST.LOGICAL_RIGHT_SHIFT;
     }

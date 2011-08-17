@@ -3,6 +3,7 @@ package compiler.language.parser.rules.type;
 import parser.ParseException;
 import parser.Production;
 import parser.Rule;
+
 import compiler.language.LexicalPhrase;
 import compiler.language.ast.type.IntegerTypeAST;
 import compiler.language.ast.type.IntegerTypeLengthAST;

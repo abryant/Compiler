@@ -1,7 +1,7 @@
 package compiler.language.parser.rules.type;
 
-import static compiler.language.parser.ParseType.TYPE_DOUBLE_RANGLE;
 import static compiler.language.parser.ParseType.TYPE_ARGUMENT_DOUBLE_RANGLE;
+import static compiler.language.parser.ParseType.TYPE_DOUBLE_RANGLE;
 import static compiler.language.parser.ParseType.WILDCARD_TYPE_ARGUMENT_DOUBLE_RANGLE;
 import parser.ParseException;
 import parser.Production;

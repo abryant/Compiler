@@ -13,8 +13,7 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.terminal.NameAST;
+import compiler.language.QName;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.parser.ParseContainer;
@@ -92,39 +91,33 @@ public final class PointerTypeTrailingArgsDoubleRAngleRule extends Rule<ParseTyp
     LexicalPhrase startPhrase;
     if (MUTABLE_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
-
-      NameAST[] names = qname.getNames();
-      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
+      QName qname = (QName) args[0];
+      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[qname.getLength()][];
       typeArgumentLists[typeArgumentLists.length - 1] = arguments.toArray(new TypeArgumentAST[arguments.size()]);
 
       startPhrase = LexicalPhrase.combine(qname.getLexicalPhrase(), (LexicalPhrase) args[1]);
-      type = new PointerTypeAST(false, names, typeArgumentLists,
+      type = new PointerTypeAST(false, qname, typeArgumentLists,
                                 LexicalPhrase.combine(startPhrase, thirdArgsContainer.getLexicalPhrase()));
     }
     else if (IMMUTABLE_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[1];
-
-      NameAST[] names = qname.getNames();
-      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
+      QName qname = (QName) args[1];
+      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[qname.getLength()][];
       typeArgumentLists[typeArgumentLists.length - 1] = arguments.toArray(new TypeArgumentAST[arguments.size()]);
 
       startPhrase = LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase(), (LexicalPhrase) args[2]);
-      type = new PointerTypeAST(true, names, typeArgumentLists,
+      type = new PointerTypeAST(true, qname, typeArgumentLists,
                                 LexicalPhrase.combine(startPhrase, thirdArgsContainer.getLexicalPhrase()));
     }
     else if (TRAILING_ARGS_PRODUCTION.equals(production))
     {
       PointerTypeAST baseType = (PointerTypeAST) args[0];
-      QNameAST qname = (QNameAST) args[2];
-
-      NameAST[] names = qname.getNames();
-      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
+      QName qname = (QName) args[2];
+      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[qname.getLength()][];
       typeArgumentLists[typeArgumentLists.length - 1] = arguments.toArray(new TypeArgumentAST[arguments.size()]);
 
       startPhrase = LexicalPhrase.combine(baseType.getLexicalPhrase(), (LexicalPhrase) args[1], qname.getLexicalPhrase(), (LexicalPhrase) args[3]);
-      type = new PointerTypeAST(baseType, baseType.isImmutable(), names, typeArgumentLists,
+      type = new PointerTypeAST(baseType, baseType.isImmutable(), qname, typeArgumentLists,
                                 LexicalPhrase.combine(startPhrase, thirdArgsContainer.getLexicalPhrase()));
     }
     else

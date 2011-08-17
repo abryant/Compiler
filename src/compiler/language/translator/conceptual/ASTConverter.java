@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.ast.member.AccessSpecifierAST;
 import compiler.language.ast.member.ConstructorAST;
 import compiler.language.ast.member.FieldAST;
@@ -54,7 +55,6 @@ import compiler.language.ast.typeDefinition.EnumDefinitionAST;
 import compiler.language.ast.typeDefinition.InterfaceDefinitionAST;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
-import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
@@ -157,7 +157,7 @@ public class ASTConverter
     }
     else
     {
-      QName packageName = new QName(packageDeclaration.getPackageName().getNameStrings());
+      QName packageName = packageDeclaration.getPackageName();
       Resolvable packageResult = null;
       try
       {
@@ -193,7 +193,7 @@ public class ASTConverter
     List<Import> imports = new LinkedList<Import>();
     for (ImportDeclarationAST importDeclaration : compilationUnit.getImports())
     {
-      QName qname = new QName(importDeclaration.getName().getNameStrings());
+      QName qname = importDeclaration.getName();
       imports.add(new Import(qname, importDeclaration.isAll()));
     }
 
@@ -1482,11 +1482,13 @@ public class ASTConverter
   public static QName convert(NameAST[] names)
   {
     String[] nameStrings = new String[names.length];
+    LexicalPhrase[] lexicalPhrases = new LexicalPhrase[names.length];
     for (int i = 0; i < names.length; i++)
     {
       nameStrings[i] = names[i].getName();
+      lexicalPhrases[i] = names[i].getLexicalPhrase();
     }
-    return new QName(nameStrings);
+    return new QName(nameStrings, lexicalPhrases);
   }
 
   /**
@@ -1494,7 +1496,7 @@ public class ASTConverter
    * @param names - the NameAST[] to extract the LexicalPhrase from
    * @return the LexicalPhrase[] created
    */
-  public static LexicalPhrase[] extractLexicalPhrase(NameAST[] names)
+  public static LexicalPhrase[] extractLexicalPhrases(NameAST[] names)
   {
     LexicalPhrase[] lexicalPhrases = new LexicalPhrase[names.length];
     for (int i = 0; i < names.length; i++)

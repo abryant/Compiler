@@ -10,7 +10,7 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
+import compiler.language.QName;
 import compiler.language.ast.type.NormalTypeArgumentAST;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
@@ -57,7 +57,7 @@ public final class TypeArgumentListRule extends Rule<ParseType>
     }
     if (QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       TypeAST type = new PointerTypeAST(qname, qname.getLexicalPhrase());
       TypeArgumentAST argument = new NormalTypeArgumentAST(type, type.getLexicalPhrase());
       return new ParseList<TypeArgumentAST>(argument, argument.getLexicalPhrase());
@@ -79,7 +79,7 @@ public final class TypeArgumentListRule extends Rule<ParseType>
     }
     if (CONTINUATION_QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       PointerTypeAST type = new PointerTypeAST(qname, qname.getLexicalPhrase());
       TypeArgumentAST newTypeArgument = new NormalTypeArgumentAST(type, type.getLexicalPhrase());
       @SuppressWarnings("unchecked")

@@ -11,7 +11,7 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
+import compiler.language.QName;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeAST;
 import compiler.language.parser.ParseList;
@@ -50,7 +50,7 @@ public final class TypeListNotQNameListRule extends Rule<ParseType>
   {
     if (QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       @SuppressWarnings("unchecked")
       ParseList<TypeAST> list = (ParseList<TypeAST>) args[2];
       list.addFirst(new PointerTypeAST(qname, qname.getLexicalPhrase()),

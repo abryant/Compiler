@@ -3,8 +3,9 @@ package compiler.language.parser.rules.expression;
 import parser.ParseException;
 import parser.Production;
 import parser.Rule;
+
+import compiler.language.QName;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
-import compiler.language.ast.misc.QNameAST;
 import compiler.language.parser.ParseType;
 import compiler.language.parser.QNameElementAST;
 
@@ -37,7 +38,7 @@ public final class QNameExpressionRule extends Rule<ParseType>
   {
     if (QNAME_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[0];
+      QName qname = (QName) args[0];
       return new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
     }
     if (NESTED_QNAME_PRODUCTION.equals(production))

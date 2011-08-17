@@ -1,10 +1,10 @@
 package compiler.language.parser.rules.typeDefinition;
 
+import static compiler.language.parser.ParseType.ARGUMENTS;
 import static compiler.language.parser.ParseType.ENUM_CONSTANT;
 import static compiler.language.parser.ParseType.LBRACE;
 import static compiler.language.parser.ParseType.MEMBER_LIST;
 import static compiler.language.parser.ParseType.NAME;
-import static compiler.language.parser.ParseType.ARGUMENTS;
 import static compiler.language.parser.ParseType.RBRACE;
 import parser.ParseException;
 import parser.Production;

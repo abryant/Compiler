@@ -1,7 +1,7 @@
 package compiler.language.ast.topLevel;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
+import compiler.language.QName;
 
 /*
  * Created on 30 Jun 2010
@@ -16,14 +16,14 @@ public class PackageDeclarationAST
 
   private LexicalPhrase lexicalPhrase;
 
-  private QNameAST packageName;
+  private QName packageName;
 
   /**
    * Creates a new Package Declaration with the specified package name
    * @param packageName - the qualified name of the package
    * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public PackageDeclarationAST(QNameAST packageName, LexicalPhrase lexicalPhrase)
+  public PackageDeclarationAST(QName packageName, LexicalPhrase lexicalPhrase)
   {
     this.lexicalPhrase = lexicalPhrase;
     this.packageName = packageName;
@@ -32,7 +32,7 @@ public class PackageDeclarationAST
   /**
    * @return the packageName
    */
-  public QNameAST getPackageName()
+  public QName getPackageName()
   {
     return packageName;
   }

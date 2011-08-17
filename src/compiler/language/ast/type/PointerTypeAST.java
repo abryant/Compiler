@@ -1,8 +1,7 @@
 package compiler.language.ast.type;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.terminal.NameAST;
+import compiler.language.QName;
 
 /*
  * Created on 30 Jun 2010
@@ -16,20 +15,20 @@ public class PointerTypeAST extends TypeAST
 
   private boolean immutable;
 
-  private NameAST[] names;
+  private QName names;
   private TypeArgumentAST[][] typeArgumentLists;
 
   /**
-   * Creates a new PointerTypeAST that consists only of the specified QNameAST
+   * Creates a new PointerTypeAST that consists only of the specified QName
    * @param qname - the qualified name of the type
    * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public PointerTypeAST(QNameAST qname, LexicalPhrase lexicalPhrase)
+  public PointerTypeAST(QName qname, LexicalPhrase lexicalPhrase)
   {
     super(lexicalPhrase);
     immutable = false;
-    names = qname.getNames();
-    typeArgumentLists = new TypeArgumentAST[names.length][];
+    names = qname;
+    typeArgumentLists = new TypeArgumentAST[names.getLength()][];
     for (int i = 0; i < typeArgumentLists.length; i++)
     {
       typeArgumentLists[i] = null;
@@ -39,20 +38,20 @@ public class PointerTypeAST extends TypeAST
   /**
    * Creates a new PointerTypeAST with the specified immutability, qualifying names and type argument lists.
    * @param immutable - true if this type should be immutable, false otherwise
-   * @param names - the list of (qualifier) names in this PointerTypeAST, ending in the actual type name
+   * @param qname - the qualified name of this PointerTypeAST, ending in the actual type name
    * @param typeArgumentLists - the type argument list for each name in this pointer type, with empty arrays for names that do not have type arguments
    * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public PointerTypeAST(boolean immutable, NameAST[] names, TypeArgumentAST[][] typeArgumentLists, LexicalPhrase lexicalPhrase)
+  public PointerTypeAST(boolean immutable, QName qname, TypeArgumentAST[][] typeArgumentLists, LexicalPhrase lexicalPhrase)
   {
     super(lexicalPhrase);
     this.immutable = immutable;
 
-    if (names.length != typeArgumentLists.length)
+    if (qname.getLength() != typeArgumentLists.length)
     {
       throw new IllegalArgumentException("A PointerTypeAST must have an equal number of names and lists of type arguments");
     }
-    this.names = names;
+    this.names = qname;
     this.typeArgumentLists = typeArgumentLists;
   }
 
@@ -60,27 +59,32 @@ public class PointerTypeAST extends TypeAST
    * Creates a new PointerTypeAST with the specified immutability, qualifying names and type argument lists.
    * @param baseType - the base PointerTypeAST to copy the old qualifying names and type arguments from
    * @param immutable - true if this type should be immutable, false otherwise
-   * @param addedNames - the list of added (qualifier) names in this PointerTypeAST, ending in the actual type name
+   * @param addedNames - the list of added (qualifier) names in this PointerTypeAST, ending in the actual type name, this should be provided as a QName
    * @param addedTypeArgumentLists - the type argument list for each added name in this pointer type, with empty arrays for names that do not have type arguments
    * @param lexicalPhrase - the lexical phrase associated with this AST node
    */
-  public PointerTypeAST(PointerTypeAST baseType, boolean immutable, NameAST[] addedNames, TypeArgumentAST[][] addedTypeArgumentLists, LexicalPhrase lexicalPhrase)
+  public PointerTypeAST(PointerTypeAST baseType, boolean immutable, QName addedNames, TypeArgumentAST[][] addedTypeArgumentLists, LexicalPhrase lexicalPhrase)
   {
     super(lexicalPhrase);
     this.immutable = immutable;
-    if (addedNames.length != addedTypeArgumentLists.length)
+    if (addedNames.getLength() != addedTypeArgumentLists.length)
     {
       throw new IllegalArgumentException("A PointerTypeAST must have an equal number of names and lists of type arguments");
     }
-    NameAST[] oldNames = baseType.getNames();
+    QName oldNames = baseType.getQualifiedName();
     TypeArgumentAST[][] oldTypeArgumentLists = baseType.getTypeArgumentLists();
 
-    names = new NameAST[oldNames.length + addedNames.length];
+    String[] newNames = new String[oldNames.getLength() + addedNames.getLength()];
+    LexicalPhrase[] newLexicalPhrases = new LexicalPhrase[oldNames.getLength() + addedNames.getLength()];
     typeArgumentLists = new TypeArgumentAST[oldTypeArgumentLists.length + addedTypeArgumentLists.length][];
-    System.arraycopy(oldNames, 0, names, 0, oldNames.length);
-    System.arraycopy(addedNames, 0, names, oldNames.length, addedNames.length);
-    System.arraycopy(oldTypeArgumentLists, 0, typeArgumentLists, 0, oldTypeArgumentLists.length);
-    System.arraycopy(addedTypeArgumentLists, 0, typeArgumentLists, oldTypeArgumentLists.length, addedTypeArgumentLists.length);
+    System.arraycopy(oldNames.getNames(),            0, newNames,          0,                           oldNames.getLength());
+    System.arraycopy(addedNames.getNames(),          0, newNames,          oldNames.getLength(),        addedNames.getLength());
+    System.arraycopy(oldNames.getLexicalPhrases(),   0, newLexicalPhrases, 0,                           oldNames.getLength());
+    System.arraycopy(addedNames.getLexicalPhrases(), 0, newLexicalPhrases, oldNames.getLength(),        addedNames.getLength());
+    System.arraycopy(oldTypeArgumentLists,           0, typeArgumentLists, 0,                           oldTypeArgumentLists.length);
+    System.arraycopy(addedTypeArgumentLists,         0, typeArgumentLists, oldTypeArgumentLists.length, addedTypeArgumentLists.length);
+
+    names = new QName(newNames, newLexicalPhrases);
   }
 
   /**
@@ -92,9 +96,9 @@ public class PointerTypeAST extends TypeAST
   }
 
   /**
-   * @return the names
+   * @return the qualified name of this PointerTypeAST
    */
-  public NameAST[] getNames()
+  public QName getQualifiedName()
   {
     return names;
   }
@@ -118,9 +122,10 @@ public class PointerTypeAST extends TypeAST
     {
       buffer.append("#");
     }
-    for (int i = 0; i < names.length; i++)
+    String[] nameStrings = names.getNames();
+    for (int i = 0; i < nameStrings.length; i++)
     {
-      buffer.append(names[i]);
+      buffer.append(nameStrings[i]);
       TypeArgumentAST[] typeArgumentList = typeArgumentLists[i];
       if (typeArgumentList != null && typeArgumentList.length > 0)
       {
@@ -135,7 +140,7 @@ public class PointerTypeAST extends TypeAST
         }
         buffer.append(">");
       }
-      if (i != names.length - 1)
+      if (i != nameStrings.length - 1)
       {
         buffer.append(".");
       }

@@ -10,8 +10,7 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.misc.QNameAST;
-import compiler.language.ast.terminal.NameAST;
+import compiler.language.QName;
 import compiler.language.ast.type.PointerTypeAST;
 import compiler.language.ast.type.TypeArgumentAST;
 import compiler.language.parser.ParseType;
@@ -45,18 +44,16 @@ public final class PointerTypeNoTrailingArgsNotQNameRule extends Rule<ParseType>
   {
     if (IMMUTABLE_PRODUCTION.equals(production))
     {
-      QNameAST qname = (QNameAST) args[1];
-      NameAST[] names = qname.getNames();
-      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
-      return new PointerTypeAST(true, names, typeArgumentLists, LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase()));
+      QName qname = (QName) args[1];
+      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[qname.getLength()][];
+      return new PointerTypeAST(true, qname, typeArgumentLists, LexicalPhrase.combine((LexicalPhrase) args[0], qname.getLexicalPhrase()));
     }
     if (TRAILING_PARAMS_QNAME_PRODUCTION.equals(production))
     {
       PointerTypeAST oldType = (PointerTypeAST) args[0];
-      QNameAST qname = (QNameAST) args[2];
-      NameAST[] names = qname.getNames();
-      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[names.length][];
-      return new PointerTypeAST(oldType, oldType.isImmutable(), names, typeArgumentLists,
+      QName qname = (QName) args[2];
+      TypeArgumentAST[][] typeArgumentLists = new TypeArgumentAST[qname.getLength()][];
+      return new PointerTypeAST(oldType, oldType.isImmutable(), qname, typeArgumentLists,
                              LexicalPhrase.combine(oldType.getLexicalPhrase(), (LexicalPhrase) args[1], qname.getLexicalPhrase()));
     }
     throw badTypeList();

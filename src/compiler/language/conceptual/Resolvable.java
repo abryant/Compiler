@@ -1,5 +1,7 @@
 package compiler.language.conceptual;
 
+import compiler.language.QName;
+
 /*
  * Created on 6 Mar 2011
  */

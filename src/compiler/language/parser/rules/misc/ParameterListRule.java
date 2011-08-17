@@ -1,8 +1,8 @@
 package compiler.language.parser.rules.misc;
 
+import static compiler.language.parser.ParseType.COMMA;
 import static compiler.language.parser.ParseType.PARAMETER;
 import static compiler.language.parser.ParseType.PARAMETER_LIST;
-import static compiler.language.parser.ParseType.COMMA;
 import parser.ParseException;
 import parser.Production;
 import parser.Rule;

@@ -6,9 +6,9 @@ import java.util.Queue;
 import java.util.Set;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.QName;
 import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
-import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
@@ -57,9 +57,10 @@ public class AccessSpecifierChecker
    * @throws UnresolvableException - if further initialisation must be done before it can be known whether one of the names can be resolved and is accessible from this startScope
    * @throws ConceptualException - if an access specifier is invalid
    */
-  public Resolvable resolve(QName name, LexicalPhrase[] nameLexicalPhrases, Resolvable startScope) throws NameConflictException, UnresolvableException, ConceptualException
+  public Resolvable resolve(QName name, Resolvable startScope) throws NameConflictException, UnresolvableException, ConceptualException
   {
     String[] names = name.getNames();
+    LexicalPhrase[] lexicalPhrases = name.getLexicalPhrases();
 
     Resolvable current = startScope;
     while (current != null)
@@ -79,7 +80,7 @@ public class AccessSpecifierChecker
         }
 
         // check that the access specifier is valid before going onto the next name
-        checkAccess(next, startScope, nameLexicalPhrases[i]);
+        checkAccess(next, startScope, lexicalPhrases[i]);
 
         if (i == names.length - 1)
         {

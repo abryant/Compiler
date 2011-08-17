@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import compiler.language.QName;
 import compiler.language.conceptual.NameConflictException;
-import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
@@ -196,7 +196,7 @@ public final class ConceptualFile extends Resolvable
           // TODO: handle import failure better
           throw new IllegalStateException("Import resolution failed for: " + importedQName);
         }
-        Resolvable wildcardResult = baseResult.resolve(new QName(name), false);
+        Resolvable wildcardResult = baseResult.resolve(name);
         if (wildcardResult != null)
         {
           return wildcardResult;

@@ -203,7 +203,7 @@ public enum ParseType
   PARAMETER,                  // ParameterAST
   PARAMETER_LIST,             // ParseList<ParameterAST>
   PARAMETERS,                 // ParameterListAST
-  QNAME,                      // QNameAST
+  QNAME,                      // QName
   QNAME_LIST,                 // ParseList<QNameElementAST>
   NESTED_QNAME_LIST,          // QNameElementAST
   THROWS_LIST,                // ParseList<PointerTypeAST> (length > 0)

@@ -8,7 +8,6 @@ import java.util.Map;
 
 import compiler.language.LexicalPhrase;
 import compiler.language.conceptual.NameConflictException;
-import compiler.language.conceptual.QName;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
 import compiler.language.conceptual.UnresolvableException;
@@ -36,7 +35,7 @@ public final class ConceptualPackage extends Resolvable
   private ConceptualPackage rootPackage;
   private ConceptualPackage parentPackage;
 
-  private QName name;
+  private String[] name;
 
   // this stores the directories that this package can represent
   // if there are source files in this package, then only one directory is allowed in this list (unless it is the root package)
@@ -57,7 +56,7 @@ public final class ConceptualPackage extends Resolvable
   public ConceptualPackage(ConceptualTranslator translator, List<File> directories)
   {
     this.translator = translator;
-    name = new QName();
+    name = new String[0];
     this.directories = directories;
   }
 
@@ -76,7 +75,10 @@ public final class ConceptualPackage extends Resolvable
     this.parentPackage = parentPackage;
     if (parentPackage != null && packageName != null)
     {
-      this.name = new QName(parentPackage.getName(), packageName);
+      String[] parentName = parentPackage.getName();
+      name = new String[parentName.length + 1];
+      System.arraycopy(parentName, 0, name, 0, parentName.length);
+      name[parentName.length] = packageName;
     }
     this.directories = directories;
   }
@@ -122,9 +124,9 @@ public final class ConceptualPackage extends Resolvable
   }
 
   /**
-   * @return the name of this ConceptualPackage
+   * @return the qualified name of this ConceptualPackage
    */
-  public QName getName()
+  public String[] getName()
   {
     return name;
   }
