@@ -9,6 +9,7 @@ import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.topLevel.ConceptualFile;
 import compiler.language.conceptual.topLevel.ConceptualPackage;
+import compiler.language.conceptual.type.OuterClassPointerType;
 
 /*
  * Created on 20 Feb 2011
@@ -19,6 +20,8 @@ import compiler.language.conceptual.topLevel.ConceptualPackage;
  */
 public final class NameResolver
 {
+
+  private AccessSpecifierChecker accessSpecifierChecker;
 
   private TypeResolver typeResolver;
 
@@ -36,9 +39,19 @@ public final class NameResolver
    * This involves building the universal base class, which becomes the base class of any classes which do not specify a base class
    * @param rootPackage - the root package to look up names in
    */
-  public void initialize(ConceptualPackage rootPackage)
+  public void initialise(ConceptualPackage rootPackage)
   {
-    typeResolver.buildUniversalBaseClass(rootPackage);
+    OuterClassPointerType universalBaseClass = typeResolver.buildUniversalBaseClass(rootPackage);
+    accessSpecifierChecker = new AccessSpecifierChecker(universalBaseClass.getClassType());
+    typeResolver.setAccessSpecifierChecker(accessSpecifierChecker);
+  }
+
+  /**
+   * @return the AccessSpecifierChecker that should be used to check that accessing certain conceptual objects is valid
+   */
+  public AccessSpecifierChecker getAccessSpecifierChecker()
+  {
+    return accessSpecifierChecker;
   }
 
   /**

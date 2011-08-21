@@ -111,6 +111,8 @@ public class ASTConverter
 
   private ConceptualPackage rootPackage;
 
+  private AccessSpecifierChecker accessSpecifierChecker;
+
   // a mapping from conceptual node back to AST node, which allows the name resolver to find the names this ASTConverter cannot convert
   private Map<Object, Object> conceptualASTNodes;
 
@@ -127,6 +129,17 @@ public class ASTConverter
   {
     this.rootPackage = rootPackage;
     conceptualASTNodes = new HashMap<Object, Object>();
+  }
+
+  /**
+   * Initialises this ASTConverter, using values from the specified NameResolver.
+   * This should only be called after the specified NameResolver has been initialised,
+   * as the ASTConverter needs access to the AccessSpecifierChecker, which is created in NameResolver.initialise(ConceptualPackage).
+   * @param nameResolver - the NameResolver to get the AccessSpecifierChecker from
+   */
+  public void initialise(NameResolver nameResolver)
+  {
+    accessSpecifierChecker = nameResolver.getAccessSpecifierChecker();
   }
 
   /**
@@ -197,7 +210,7 @@ public class ASTConverter
       imports.add(new Import(qname, importDeclaration.isAll()));
     }
 
-    ConceptualFile conceptualFile = new ConceptualFile(rootPackage, enclosingPackage, imports);
+    ConceptualFile conceptualFile = new ConceptualFile(rootPackage, accessSpecifierChecker, enclosingPackage, imports);
 
     // convert the type definitions
     Set<ConceptualClass> classes = new HashSet<ConceptualClass>();

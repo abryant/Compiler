@@ -28,7 +28,7 @@ public abstract class Resolvable
    * @throws UnresolvableException - if it is unknown whether the name can be resolved
    * @throws ConceptualException - if a conceptual error is detected while resolving the name
    */
-  public abstract Resolvable resolve(String name) throws NameConflictException, UnresolvableException;
+  public abstract Resolvable resolve(String name) throws NameConflictException, UnresolvableException, ConceptualException;
 
   /**
    * @return the parent resolvable object that should be consulted about resolving names that this cannot resolve
@@ -44,7 +44,7 @@ public abstract class Resolvable
    * @throws UnresolvableException - if it is unknown whether the name can be resolved
    * @throws ConceptualException - if a conceptual error is detected while resolving the name
    */
-  public final Resolvable resolve(QName name, boolean recurseUpwards) throws NameConflictException, UnresolvableException
+  public final Resolvable resolve(QName name, boolean recurseUpwards) throws NameConflictException, UnresolvableException, ConceptualException
   {
     return resolve(name, this, recurseUpwards);
   }
@@ -59,7 +59,7 @@ public abstract class Resolvable
    * @throws UnresolvableException - if it is unknown whether the name can be resolved
    * @throws ConceptualException - if a conceptual error is detected while resolving the name
    */
-  private final Resolvable resolve(QName name, Resolvable startScope, boolean recurseUpwards) throws NameConflictException, UnresolvableException
+  private final Resolvable resolve(QName name, Resolvable startScope, boolean recurseUpwards) throws NameConflictException, UnresolvableException, ConceptualException
   {
     Resolvable resolvable = this;
     boolean resolvedOne = false;

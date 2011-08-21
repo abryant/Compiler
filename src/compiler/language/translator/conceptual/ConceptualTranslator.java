@@ -43,7 +43,12 @@ public class ConceptualTranslator
     rootPackage = new ConceptualPackage(this, classpath);
     astConverter = new ASTConverter(rootPackage);
     nameResolver = new NameResolver(astConverter.getConceptualASTNodes());
-    nameResolver.initialize(rootPackage);
+    // initialise the NameResolver. This will build the universal base class, by resolving "x.Object" from the root package,
+    // which will result in a single call into the ASTConverter before it is initialised, and before it has an AccessSpecifierChecker.
+    // To avoid any problems here, the compilation unit containing x.Object should not contain any imports, as checking them would
+    // fail since its ConceptualFile does not have an AccessSpecifierChecker.
+    nameResolver.initialise(rootPackage);
+    astConverter.initialise(nameResolver);
   }
 
   /**
@@ -62,8 +67,9 @@ public class ConceptualTranslator
    * @return the Resolvable resolved
    * @throws NameConflictException - if a name conflict was detected
    * @throws UnresolvableException - if the name is not resolvable without more information
+   * @throws ConceptualException - if a conceptual problem is detected while resolving the specified QName
    */
-  public Resolvable translate(QName name) throws NameConflictException, UnresolvableException
+  public Resolvable translate(QName name) throws NameConflictException, UnresolvableException, ConceptualException
   {
     return rootPackage.resolve(name, false);
   }

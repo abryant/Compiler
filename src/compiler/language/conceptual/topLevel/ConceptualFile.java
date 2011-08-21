@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import compiler.language.QName;
+import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
@@ -15,6 +16,7 @@ import compiler.language.conceptual.UnresolvableException;
 import compiler.language.conceptual.typeDefinition.ConceptualClass;
 import compiler.language.conceptual.typeDefinition.ConceptualEnum;
 import compiler.language.conceptual.typeDefinition.ConceptualInterface;
+import compiler.language.translator.conceptual.AccessSpecifierChecker;
 
 /*
  * Created on 13 Feb 2011
@@ -29,6 +31,8 @@ public final class ConceptualFile extends Resolvable
   private ConceptualPackage rootPackage;
   private ConceptualPackage enclosingPackage;
 
+  private AccessSpecifierChecker accessSpecifierChecker; // for checking access specifiers on imports
+
   private List<Import> imports;
 
   private Map<String, ConceptualClass> classes = new HashMap<String, ConceptualClass>();
@@ -38,12 +42,14 @@ public final class ConceptualFile extends Resolvable
   /**
    * Creates a new ConceptualFile with the specified enclosing package, imports and sets of classes, interfaces and enums
    * @param rootPackage - the root package
+   * @param accessSpecifierChecker - the AccessSpecifierChecker to use to check the access specifiers on imports
    * @param enclosingPackage - the package that this file is defined in
    * @param imports - the imports for this conceptual file
    */
-  public ConceptualFile(ConceptualPackage rootPackage, ConceptualPackage enclosingPackage, List<Import> imports)
+  public ConceptualFile(ConceptualPackage rootPackage, AccessSpecifierChecker accessSpecifierChecker, ConceptualPackage enclosingPackage, List<Import> imports)
   {
     this.rootPackage = rootPackage;
+    this.accessSpecifierChecker = accessSpecifierChecker;
     this.enclosingPackage = enclosingPackage;
     this.imports = imports;
   }
@@ -165,7 +171,7 @@ public final class ConceptualFile extends Resolvable
    * {@inheritDoc}
    */
   @Override
-  public Resolvable resolve(String name) throws NameConflictException, UnresolvableException
+  public Resolvable resolve(String name) throws NameConflictException, UnresolvableException, ConceptualException
   {
     ConceptualClass conceptualClass = classes.get(name);
     if (conceptualClass != null)
@@ -189,13 +195,13 @@ public final class ConceptualFile extends Resolvable
       QName importedQName = imported.getImportedQName();
       if (imported.isAddChildren())
       {
-        // TODO: check access specifiers for imports here
-        Resolvable baseResult = rootPackage.resolve(importedQName, false);
+        Resolvable baseResult = accessSpecifierChecker.resolve(importedQName, rootPackage);
         if (baseResult == null)
         {
           // TODO: handle import failure better
           throw new IllegalStateException("Import resolution failed for: " + importedQName);
         }
+        // no need to check the access specifier on this name, as it will be checked when the name is actually used
         Resolvable wildcardResult = baseResult.resolve(name);
         if (wildcardResult != null)
         {
@@ -204,8 +210,7 @@ public final class ConceptualFile extends Resolvable
       }
       else if (importedQName.getLastName().equals(name))
       {
-        // TODO: check access specifiers for imports here
-        Resolvable result = rootPackage.resolve(importedQName, false);
+        Resolvable result = accessSpecifierChecker.resolve(importedQName, rootPackage);
         if (result == null)
         {
           // TODO: handle import failure better

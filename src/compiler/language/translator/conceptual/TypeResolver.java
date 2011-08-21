@@ -163,9 +163,11 @@ public class TypeResolver
 
   /**
    * Resolves the universal base class, so that it can be used later in the place of missing base classes.
+   * This universal base class is also stored by this TypeResolver so that it can be used in name resolution later on.
    * @param rootPackage - the root package to resolve the universal base class from
+   * @return the universal base class created
    */
-  public void buildUniversalBaseClass(ConceptualPackage rootPackage)
+  public OuterClassPointerType buildUniversalBaseClass(ConceptualPackage rootPackage)
   {
     Resolvable baseClass;
     try
@@ -180,12 +182,25 @@ public class TypeResolver
     {
       throw new IllegalStateException("Unable to resolve the universal base class: " + UNIVERSAL_BASE_CLASS_QNAME, e);
     }
+    catch (ConceptualException e)
+    {
+      throw new IllegalStateException("Encountered a conceptual problem while resolving the universal base class: " + UNIVERSAL_BASE_CLASS_QNAME, e);
+    }
     if (baseClass.getType() != ScopeType.OUTER_CLASS)
     {
       throw new IllegalStateException("Universal base class " + UNIVERSAL_BASE_CLASS_QNAME + " does not resolve to an outer class!");
     }
     universalBaseClass = new OuterClassPointerType((ConceptualClass) baseClass, null, false);
-    accessSpecifierChecker = new AccessSpecifierChecker(universalBaseClass.getClassType());
+    return universalBaseClass;
+  }
+
+  /**
+   * Sets the AccessSpecifierChecker that will be used while resolving names.
+   * @param accessSpecifierChecker - the AccessSpecifierChecker to use while resolving names
+   */
+  public void setAccessSpecifierChecker(AccessSpecifierChecker accessSpecifierChecker)
+  {
+    this.accessSpecifierChecker = accessSpecifierChecker;
   }
 
   /**

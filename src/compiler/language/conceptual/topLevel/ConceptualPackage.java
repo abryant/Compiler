@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
@@ -298,7 +299,7 @@ public final class ConceptualPackage extends Resolvable
    * {@inheritDoc}
    */
   @Override
-  public Resolvable resolve(String name) throws NameConflictException, UnresolvableException
+  public Resolvable resolve(String name) throws NameConflictException, UnresolvableException, ConceptualException
   {
     ConceptualPackage subPackage = getSubPackage(name);
     if (subPackage != null)

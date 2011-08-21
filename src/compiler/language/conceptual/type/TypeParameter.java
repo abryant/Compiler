@@ -1,5 +1,6 @@
 package compiler.language.conceptual.type;
 
+import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.NameConflictException;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.ScopeType;
@@ -81,7 +82,7 @@ public class TypeParameter extends Resolvable
    * {@inheritDoc}
    */
   @Override
-  public Resolvable resolve(String name) throws NameConflictException
+  public Resolvable resolve(String name) throws NameConflictException, ConceptualException
   {
     // TODO: implement
     return null;

@@ -1,5 +1,6 @@
 package compiler.language.conceptual.typeDefinition;
 
+import compiler.language.conceptual.ConceptualException;
 import compiler.language.conceptual.Resolvable;
 import compiler.language.conceptual.member.Constructor;
 import compiler.language.conceptual.member.MemberVariable;
@@ -253,7 +254,7 @@ public abstract class ConceptualClass extends TypeDefinition
    * {@inheritDoc}
    */
   @Override
-  public final Resolvable resolve(String name)
+  public final Resolvable resolve(String name) throws ConceptualException
   {
     for (TypeParameter typeParameter : typeParameters)
     {
