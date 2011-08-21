@@ -2,6 +2,7 @@ package compiler.language.conceptual.topLevel;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,9 @@ public final class ConceptualPackage extends Resolvable
   // the sub-packages of this package - this is populated by addSubPackage()
   private Map<String, ConceptualPackage> subPackages = new HashMap<String, ConceptualPackage>();
 
+  // the unloaded files that this package can try to load. this is populated in findFiles() and consumed by loadFileForType()
+  private Map<String, File> unloadedFiles;
+
   // stores a mapping from type definition name to the conceptual file it is declared in
   private Map<String, ConceptualFile> typeFiles = new HashMap<String, ConceptualFile>();
 
@@ -84,11 +88,17 @@ public final class ConceptualPackage extends Resolvable
   }
 
   /**
-   * Loads all of the source files from this package's only directory.
+   * Finds all of the source files from this package's only directory.
    * @throws IllegalStateException - if this package has multiple directories
    */
-  public void loadFiles()
+  public void findFiles()
   {
+    if (unloadedFiles != null)
+    {
+      return;
+    }
+    unloadedFiles = new HashMap<String, File>();
+
     if (directories.size() != 1)
     {
       throw new IllegalStateException("Cannot load source files for a package unless it has only one directory");
@@ -106,20 +116,12 @@ public final class ConceptualPackage extends Resolvable
       {
         continue;
       }
-      String name =  file.getName();
+      String name = file.getName();
       if (!name.endsWith(FILE_EXTENSION))
       {
         continue;
       }
-      ConceptualFile conceptualFile = translator.parseFile(file, this);
-      if (conceptualFile == null)
-      {
-        continue;
-      }
-      for (String typeName : conceptualFile.getDeclaredTypeNames())
-      {
-        typeFiles.put(typeName, conceptualFile);
-      }
+      unloadedFiles.put(name, file);
     }
   }
 
@@ -141,7 +143,7 @@ public final class ConceptualPackage extends Resolvable
 
   /**
    * Finds the sub-package with the specified name.
-   * If the package does not already exist, this method will search through it's associated folder(s) for matching subdirectory names and add the package is possible.
+   * If the package does not already exist, this method will search through it's associated folder(s) for matching subdirectory names and add the package if possible.
    * @param name - the name of the sub-package
    * @return the ConceptualPackage added, or null if no directory for a package with that name could be found
    * @throws NameConflictException - if there is a conflict between a package and a source file, or
@@ -214,9 +216,82 @@ public final class ConceptualPackage extends Resolvable
     subPackages.put(name, conceptualPackage);
     if (newPackageDirs.size() == 1)
     {
-      conceptualPackage.loadFiles();
+      conceptualPackage.findFiles();
     }
     return conceptualPackage;
+  }
+
+  /**
+   * Loads the file for the type with the specified name.
+   * If the file has already been loaded, then that file is returned.
+   * If a file with the specified name exists but has not been loaded, it is tried first.
+   * Otherwise, all files in this package are loaded in an arbitrary order, and once a file containing the name is found it is returned.
+   * @param name - the name of the type to find
+   * @return the ConceptualFile containing the type with the specified name, or null if no such file exists
+   */
+  public ConceptualFile loadFileForType(String name)
+  {
+    ConceptualFile typeFile = typeFiles.get(name);
+    if (typeFile != null)
+    {
+      return typeFile;
+    }
+
+    if (unloadedFiles == null)
+    {
+      return null;
+    }
+
+    // try the file named the same as the type (if such a file exists)
+    File unloadedFile = unloadedFiles.remove(name);
+    if (unloadedFile != null)
+    {
+      ConceptualFile conceptualFile = translator.parseFile(unloadedFile, this);
+      if (conceptualFile != null)
+      {
+        boolean found = false;
+        for (String typeName : conceptualFile.getDeclaredTypeNames())
+        {
+          typeFiles.put(typeName, conceptualFile);
+          if (name.equals(typeName))
+          {
+            found = true;
+          }
+        }
+        if (found)
+        {
+          return conceptualFile;
+        }
+      }
+    }
+
+    // try the rest of the unloaded files in an arbitrary order
+    Iterator<File> it = unloadedFiles.values().iterator();
+    while (it.hasNext())
+    {
+      File file = it.next();
+      it.remove();
+      ConceptualFile conceptualFile = translator.parseFile(file, this);
+      if (conceptualFile == null)
+      {
+        continue;
+      }
+      boolean found = false;
+      for (String typeName : conceptualFile.getDeclaredTypeNames())
+      {
+        typeFiles.put(typeName, conceptualFile);
+        if (name.equals(typeName))
+        {
+          found = true;
+        }
+      }
+      if (found)
+      {
+        return conceptualFile;
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -230,7 +305,8 @@ public final class ConceptualPackage extends Resolvable
     {
       return subPackage;
     }
-    ConceptualFile file = typeFiles.get(name);
+
+    ConceptualFile file = loadFileForType(name);
     if (file == null)
     {
       return null;
