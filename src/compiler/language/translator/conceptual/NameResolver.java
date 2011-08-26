@@ -64,11 +64,12 @@ public final class NameResolver
   }
 
   /**
-   * Resolves the parent types (base classes and super-interfaces) of all types in files which have been added via addFile()
+   * Resolves all of the names in all of the types in the files which have been added via addFile(),
+   * which finishes the conversion from the AST to the conceptual hierarchy.
    * @throws NameConflictException - if a name conflict was detected while resolving a PointerType
    * @throws ConceptualException - if a conceptual problem occurs while resolving parent types
    */
-  public void resolveParents() throws NameConflictException, ConceptualException
+  public void resolveNames() throws NameConflictException, ConceptualException
   {
     // resolve base types
     boolean changed = true;

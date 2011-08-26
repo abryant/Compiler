@@ -58,11 +58,11 @@ public class ConceptualTranslator
    */
   public void translate() throws NameConflictException, ConceptualException
   {
-    nameResolver.resolveParents();
+    nameResolver.resolveNames();
   }
 
   /**
-   * Resolves the specified QName on the root package
+   * Resolves the specified QName on the root package, and translates everything related to it to the conceptual hierarchy.
    * @param name - the name to resolve
    * @return the Resolvable resolved
    * @throws NameConflictException - if a name conflict was detected
@@ -71,7 +71,9 @@ public class ConceptualTranslator
    */
   public Resolvable translate(QName name) throws NameConflictException, UnresolvableException, ConceptualException
   {
-    return rootPackage.resolve(name, false);
+    Resolvable result = rootPackage.resolve(name, false);
+    translate();
+    return result;
   }
 
   /**
@@ -119,7 +121,12 @@ public class ConceptualTranslator
     }
   }
 
-  private static void printConceptualException(String message, LexicalPhrase... lexicalPhrases)
+  /**
+   * Prints all of the data from a ConceptualException to System.err.
+   * @param message - the message from the exception
+   * @param lexicalPhrases - the LexicalPhrases associated with the exception
+   */
+  public static void printConceptualException(String message, LexicalPhrase... lexicalPhrases)
   {
     if (lexicalPhrases == null || lexicalPhrases.length < 1)
     {

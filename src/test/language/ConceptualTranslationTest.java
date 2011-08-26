@@ -84,59 +84,24 @@ public class ConceptualTranslationTest
       }
       ConceptualClass conceptualClass = (ConceptualClass) resolved;
       System.out.println("Translated: " + conceptualClass);
-
-      translator.translate();
     }
     catch (NameConflictException e)
     {
-      printConceptualException(e.getMessage(), e.getLexicalPhrases());
+      ConceptualTranslator.printConceptualException(e.getMessage(), e.getLexicalPhrases());
       return;
     }
     catch (UnresolvableException e)
     {
-      printConceptualException(e.getMessage(), e.getLexicalPhrase());
+      ConceptualTranslator.printConceptualException(e.getMessage(), e.getLexicalPhrase());
       return;
     }
     catch (ConceptualException e)
     {
-      printConceptualException(e.getMessage(), e.getLexicalPhrases());
+      ConceptualTranslator.printConceptualException(e.getMessage(), e.getLexicalPhrases());
       return;
     }
 
     System.out.println("Successfully translated");
-  }
-
-  private static void printConceptualException(String message, LexicalPhrase... lexicalPhrases)
-  {
-    if (lexicalPhrases == null || lexicalPhrases.length < 1)
-    {
-      System.err.println(message);
-      return;
-    }
-    // make a String representation of the LexicalPhrases' character ranges
-    StringBuffer buffer = new StringBuffer();
-    for (int i = 0; i < lexicalPhrases.length; i++)
-    {
-      // line:start-end
-      buffer.append(lexicalPhrases[i].getLocationText());
-      if (i != lexicalPhrases.length - 1)
-      {
-        buffer.append(", ");
-      }
-    }
-    if (lexicalPhrases.length == 1)
-    {
-      System.err.println(buffer + ": " + message);
-      System.err.println(lexicalPhrases[0].getHighlightedLine());
-    }
-    else
-    {
-      System.err.println(buffer + ": " + message);
-      for (LexicalPhrase phrase : lexicalPhrases)
-      {
-        System.err.println(phrase.getHighlightedLine());
-      }
-    }
   }
 
 }
