@@ -14,10 +14,11 @@ import parser.Rule;
 
 import compiler.language.LexicalPhrase;
 import compiler.language.QName;
+import compiler.language.ast.expression.ArithmeticRightShiftExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
 import compiler.language.ast.expression.FieldAccessExpressionAST;
-import compiler.language.ast.expression.ShiftExpressionAST;
-import compiler.language.ast.expression.ShiftExpressionTypeAST;
+import compiler.language.ast.expression.LeftShiftExpressionAST;
+import compiler.language.ast.expression.LogicalRightShiftExpressionAST;
 import compiler.language.parser.ParseType;
 import compiler.language.parser.QNameElementAST;
 
@@ -77,64 +78,51 @@ public final class ShiftExpressionRule extends Rule<ParseType>
       return args[0];
     }
 
-    ExpressionAST firstExpression;
-    ShiftExpressionTypeAST separator;
+    ExpressionAST rightExpression = (ExpressionAST) args[2];
     if (LEFT_SHIFT_PRODUCTION.equals(production)       || LEFT_SHIFT_QNAME_PRODUCTION.equals(production) ||
         QNAME_LEFT_SHIFT_PRODUCTION.equals(production) || QNAME_LEFT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      firstExpression = (ExpressionAST) args[0];
-      separator = ShiftExpressionTypeAST.LEFT_SHIFT;
+      ExpressionAST leftExpression = (ExpressionAST) args[0];
+      return new LeftShiftExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else if (ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production)              || ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      firstExpression = (ExpressionAST) args[0];
-      separator = ShiftExpressionTypeAST.ARITHMETIC_RIGHT_SHIFT;
+      ExpressionAST leftExpression = (ExpressionAST) args[0];
+      return new ArithmeticRightShiftExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else if (QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production)        || QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
-      firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
-      separator = ShiftExpressionTypeAST.ARITHMETIC_RIGHT_SHIFT;
+      ExpressionAST leftExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
+      return new ArithmeticRightShiftExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else if (NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_PRODUCTION.equals(production) || NESTED_QNAME_ARITHMETIC_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
-      firstExpression = element.toExpression();
-      separator = ShiftExpressionTypeAST.ARITHMETIC_RIGHT_SHIFT;
+      ExpressionAST leftExpression = element.toExpression();
+      return new ArithmeticRightShiftExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else if (LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)                 || LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
-      firstExpression = (ExpressionAST) args[0];
-      separator = ShiftExpressionTypeAST.LOGICAL_RIGHT_SHIFT;
+      ExpressionAST leftExpression = (ExpressionAST) args[0];
+      return new LogicalRightShiftExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else if (QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)           || QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       QName qname = (QName) args[0];
-      firstExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
-      separator = ShiftExpressionTypeAST.LOGICAL_RIGHT_SHIFT;
+      ExpressionAST leftExpression = new FieldAccessExpressionAST(qname, qname.getLexicalPhrase());
+      return new LogicalRightShiftExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else if (NESTED_QNAME_LOGICAL_RIGHT_SHIFT_PRODUCTION.equals(production)    || NESTED_QNAME_LOGICAL_RIGHT_SHIFT_QNAME_PRODUCTION.equals(production))
     {
       QNameElementAST element = (QNameElementAST) args[0];
-      firstExpression = element.toExpression();
-      separator = ShiftExpressionTypeAST.LOGICAL_RIGHT_SHIFT;
+      ExpressionAST leftExpression = element.toExpression();
+      return new LogicalRightShiftExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else
     {
       throw badTypeList();
     }
-
-
-    ExpressionAST secondExpression = (ExpressionAST) args[2];
-    if (firstExpression instanceof ShiftExpressionAST)
-    {
-      // continue the existing ShiftExpressionAST if we've already started one
-      ShiftExpressionAST startExpression = (ShiftExpressionAST) args[0];
-      return new ShiftExpressionAST(startExpression, separator, secondExpression,
-                                 LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
-    }
-    return new ShiftExpressionAST(firstExpression, separator, secondExpression,
-                               LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
   }
 
 }

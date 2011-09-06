@@ -9,34 +9,32 @@ import compiler.language.LexicalPhrase;
 /**
  * @author Anthony Bryant
  */
-public class EqualityExpressionAST extends LeftRecursiveExpressionAST
+public class EqualityExpressionAST extends BinaryOperatorExpressionAST
 {
 
-  private EqualityExpressionTypeAST[] separatorTypes;
+  private EqualityExpressionTypeAST separatorType;
 
   public EqualityExpressionAST(ExpressionAST firstExpression, EqualityExpressionTypeAST separator, ExpressionAST secondExpression, LexicalPhrase lexicalPhrase)
   {
     super(firstExpression, secondExpression, lexicalPhrase);
-    separatorTypes = new EqualityExpressionTypeAST[] {separator};
+    this.separatorType = separator;
   }
 
-  public EqualityExpressionAST(EqualityExpressionAST startExpression, EqualityExpressionTypeAST separator, ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
+  /**
+   * @return the separatorType
+   */
+  public EqualityExpressionTypeAST getSeparatorType()
   {
-    super(startExpression, subExpression, lexicalPhrase);
-    EqualityExpressionTypeAST[] oldList = startExpression.getSeparatorTypes();
-    separatorTypes = new EqualityExpressionTypeAST[oldList.length + 1];
-    System.arraycopy(oldList, 0, separatorTypes, 0, oldList.length);
-    separatorTypes[oldList.length] = separator;
+    return separatorType;
   }
 
   /**
    * {@inheritDoc}
-   * @see compiler.language.ast.expression.LeftRecursiveExpressionAST#getSeparator(int)
    */
   @Override
-  protected String getSeparator(int index)
+  public String getSeparator()
   {
-    switch (separatorTypes[index])
+    switch (separatorType)
     {
     case EQUAL:
       return " == ";
@@ -44,14 +42,6 @@ public class EqualityExpressionAST extends LeftRecursiveExpressionAST
       return " != ";
     }
     return null;
-  }
-
-  /**
-   * @return the separatorTypes
-   */
-  public EqualityExpressionTypeAST[] getSeparatorTypes()
-  {
-    return separatorTypes;
   }
 
 }

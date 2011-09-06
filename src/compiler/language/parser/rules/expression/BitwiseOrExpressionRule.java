@@ -50,14 +50,8 @@ public final class BitwiseOrExpressionRule extends Rule<ParseType>
     }
     if (OR_PRODUCTION.equals(production) || OR_QNAME_PRODUCTION.equals(production) || QNAME_OR_PRODUCTION.equals(production) || QNAME_OR_QNAME_PRODUCTION.equals(production))
     {
-      ExpressionAST secondExpression = (ExpressionAST) args[2];
-      if (args[0] instanceof BitwiseOrExpressionAST)
-      {
-        // continue the current BitwiseOrExpressionAST if we've already started one
-        BitwiseOrExpressionAST startExpression = (BitwiseOrExpressionAST) args[0];
-        return new BitwiseOrExpressionAST(startExpression, secondExpression, LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
-      }
       ExpressionAST firstExpression = (ExpressionAST) args[0];
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
       return new BitwiseOrExpressionAST(firstExpression, secondExpression, LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     throw badTypeList();

@@ -50,14 +50,8 @@ public final class BooleanOrExpressionRule extends Rule<ParseType>
     }
     if (OR_PRODUCTION.equals(production) || OR_QNAME_PRODUCTION.equals(production) || QNAME_OR_PRODUCTION.equals(production) || QNAME_OR_QNAME_PRODUCTION.equals(production))
     {
-      ExpressionAST secondExpression = (ExpressionAST) args[2];
-      if (args[0] instanceof BooleanOrExpressionAST)
-      {
-        // continue the existing BooleanOrExpressionAST if we've already started one
-        BooleanOrExpressionAST startExpression = (BooleanOrExpressionAST) args[0];
-        return new BooleanOrExpressionAST(startExpression, secondExpression, LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
-      }
       ExpressionAST firstExpression = (ExpressionAST) args[0];
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
       return new BooleanOrExpressionAST(firstExpression, secondExpression, LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     throw badTypeList();

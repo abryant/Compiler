@@ -10,9 +10,9 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
-import compiler.language.ast.expression.AdditiveExpressionAST;
-import compiler.language.ast.expression.AdditiveExpressionTypeAST;
+import compiler.language.ast.expression.AdditionExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
+import compiler.language.ast.expression.SubtractionExpressionAST;
 import compiler.language.parser.ParseType;
 
 /*
@@ -57,31 +57,21 @@ public final class AdditiveExpressionRule extends Rule<ParseType>
       return args[0];
     }
 
-    AdditiveExpressionTypeAST type = null;
+    ExpressionAST leftExpression = (ExpressionAST) args[0];
+    ExpressionAST rightExpression = (ExpressionAST) args[2];
+
     if (PLUS_PRODUCTION.equals(production) || PLUS_QNAME_PRODUCTION.equals(production) || QNAME_PLUS_PRODUCTION.equals(production) || QNAME_PLUS_QNAME_PRODUCTION.equals(production))
     {
-      type = AdditiveExpressionTypeAST.PLUS;
+      return new AdditionExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else if (MINUS_PRODUCTION.equals(production) || MINUS_QNAME_PRODUCTION.equals(production) || QNAME_MINUS_PRODUCTION.equals(production) || QNAME_MINUS_QNAME_PRODUCTION.equals(production))
     {
-      type = AdditiveExpressionTypeAST.MINUS;
+      return new SubtractionExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else
     {
       throw badTypeList();
     }
-    ExpressionAST secondExpression = (ExpressionAST) args[2];
-
-    if (args[0] instanceof AdditiveExpressionAST)
-    {
-      // continue the existing AdditiveExpressionAST if we've already started one
-      AdditiveExpressionAST startExpression = (AdditiveExpressionAST) args[0];
-      return new AdditiveExpressionAST(startExpression, type, secondExpression,
-                                    LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
-    }
-    ExpressionAST firstExpression = (ExpressionAST) args[0];
-    return new AdditiveExpressionAST(firstExpression, type, secondExpression,
-                                  LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
   }
 
 }

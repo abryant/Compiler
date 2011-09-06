@@ -11,9 +11,10 @@ import parser.Production;
 import parser.Rule;
 
 import compiler.language.LexicalPhrase;
+import compiler.language.ast.expression.DivisionExpressionAST;
 import compiler.language.ast.expression.ExpressionAST;
-import compiler.language.ast.expression.MultiplicativeExpressionAST;
-import compiler.language.ast.expression.MultiplicativeExpressionTypeAST;
+import compiler.language.ast.expression.ModulusExpressionAST;
+import compiler.language.ast.expression.MultiplicationExpressionAST;
 import compiler.language.parser.ParseType;
 
 /*
@@ -63,35 +64,25 @@ public final class MultiplicativeExpressionRule extends Rule<ParseType>
       return args[0];
     }
 
-    MultiplicativeExpressionTypeAST type = null;
+    ExpressionAST leftExpression = (ExpressionAST) args[0];
+    ExpressionAST rightExpression = (ExpressionAST) args[2];
+
     if (TIMES_PRODUCTION.equals(production) || TIMES_QNAME_PRODUCTION.equals(production) || QNAME_TIMES_PRODUCTION.equals(production) || QNAME_TIMES_QNAME_PRODUCTION.equals(production))
     {
-      type = MultiplicativeExpressionTypeAST.TIMES;
+      return new MultiplicationExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else if (DIVIDE_PRODUCTION.equals(production) || DIVIDE_QNAME_PRODUCTION.equals(production) || QNAME_DIVIDE_PRODUCTION.equals(production) || QNAME_DIVIDE_QNAME_PRODUCTION.equals(production))
     {
-      type = MultiplicativeExpressionTypeAST.DIVIDE;
+      return new DivisionExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else if (MODULUS_PRODUCTION.equals(production) || MODULUS_QNAME_PRODUCTION.equals(production) || QNAME_MODULUS_PRODUCTION.equals(production) || QNAME_MODULUS_QNAME_PRODUCTION.equals(production))
     {
-      type = MultiplicativeExpressionTypeAST.MODULUS;
+      return new ModulusExpressionAST(leftExpression, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
     }
     else
     {
       throw badTypeList();
     }
-    ExpressionAST secondExpression = (ExpressionAST) args[2];
-
-    if (args[0] instanceof MultiplicativeExpressionAST)
-    {
-      // continue the existing MultiplicativeExpressionAST if we've already started one
-      MultiplicativeExpressionAST startExpression = (MultiplicativeExpressionAST) args[0];
-      return new MultiplicativeExpressionAST(startExpression, type, secondExpression,
-                                          LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
-    }
-    ExpressionAST firstExpression = (ExpressionAST) args[0];
-    return new MultiplicativeExpressionAST(firstExpression, type, secondExpression,
-                                        LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
   }
 
 }

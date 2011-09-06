@@ -3,16 +3,16 @@ package compiler.language.ast.expression;
 import compiler.language.LexicalPhrase;
 
 /*
- * Created on 3 Aug 2010
+ * Created on 6 Sep 2011
  */
 
 /**
  * @author Anthony Bryant
  */
-public class BooleanAndExpressionAST extends BinaryOperatorExpressionAST
+public class DivisionExpressionAST extends BinaryOperatorExpressionAST
 {
 
-  public BooleanAndExpressionAST(ExpressionAST leftExpression, ExpressionAST rightExpression, LexicalPhrase lexicalPhrase)
+  public DivisionExpressionAST(ExpressionAST leftExpression, ExpressionAST rightExpression, LexicalPhrase lexicalPhrase)
   {
     super(leftExpression, rightExpression, lexicalPhrase);
   }
@@ -23,7 +23,7 @@ public class BooleanAndExpressionAST extends BinaryOperatorExpressionAST
   @Override
   public String getSeparator()
   {
-    return " && ";
+    return " / ";
   }
 
 }

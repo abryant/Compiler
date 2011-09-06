@@ -50,14 +50,8 @@ public final class BitwiseXorExpressionRule extends Rule<ParseType>
     }
     if (XOR_PRODUCTION.equals(production) || XOR_QNAME_PRODUCTION.equals(production) || QNAME_XOR_PRODUCTION.equals(production) || QNAME_XOR_QNAME_PRODUCTION.equals(production))
     {
-      ExpressionAST secondExpression = (ExpressionAST) args[2];
-      if (args[0] instanceof BitwiseXorExpressionAST)
-      {
-        // continue the current BitwiseXorExpressionAST if we've already started one
-        BitwiseXorExpressionAST startExpression = (BitwiseXorExpressionAST) args[0];
-        return new BitwiseXorExpressionAST(startExpression, secondExpression, LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
-      }
       ExpressionAST firstExpression = (ExpressionAST) args[0];
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
       return new BitwiseXorExpressionAST(firstExpression, secondExpression, LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     throw badTypeList();

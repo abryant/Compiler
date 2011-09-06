@@ -9,10 +9,10 @@ import compiler.language.LexicalPhrase;
 /**
  * @author Anthony Bryant
  */
-public class BooleanAndExpressionAST extends BinaryOperatorExpressionAST
+public class AdditionExpressionAST extends BinaryOperatorExpressionAST
 {
 
-  public BooleanAndExpressionAST(ExpressionAST leftExpression, ExpressionAST rightExpression, LexicalPhrase lexicalPhrase)
+  public AdditionExpressionAST(ExpressionAST leftExpression, ExpressionAST rightExpression, LexicalPhrase lexicalPhrase)
   {
     super(leftExpression, rightExpression, lexicalPhrase);
   }
@@ -23,7 +23,7 @@ public class BooleanAndExpressionAST extends BinaryOperatorExpressionAST
   @Override
   public String getSeparator()
   {
-    return " && ";
+    return " + ";
   }
 
 }

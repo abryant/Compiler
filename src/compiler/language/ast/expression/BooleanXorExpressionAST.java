@@ -9,25 +9,19 @@ import compiler.language.LexicalPhrase;
 /**
  * @author Anthony Bryant
  */
-public class BooleanXorExpressionAST extends LeftRecursiveExpressionAST
+public class BooleanXorExpressionAST extends BinaryOperatorExpressionAST
 {
 
-  public BooleanXorExpressionAST(ExpressionAST firstExpression, ExpressionAST secondExpression, LexicalPhrase lexicalPhrase)
+  public BooleanXorExpressionAST(ExpressionAST leftExpression, ExpressionAST rightExpression, LexicalPhrase lexicalPhrase)
   {
-    super(firstExpression, secondExpression, lexicalPhrase);
-  }
-
-  public BooleanXorExpressionAST(BooleanXorExpressionAST startExpression, ExpressionAST subExpression, LexicalPhrase lexicalPhrase)
-  {
-    super(startExpression, subExpression, lexicalPhrase);
+    super(leftExpression, rightExpression, lexicalPhrase);
   }
 
   /**
    * {@inheritDoc}
-   * @see compiler.language.ast.expression.LeftRecursiveExpressionAST#getSeparator()
    */
   @Override
-  protected String getSeparator(int index)
+  public String getSeparator()
   {
     return " ^^ ";
   }

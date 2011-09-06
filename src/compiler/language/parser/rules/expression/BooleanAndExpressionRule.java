@@ -50,14 +50,8 @@ public final class BooleanAndExpressionRule extends Rule<ParseType>
     }
     if (AND_PRODUCTION.equals(production) || AND_QNAME_PRODUCTION.equals(production) || QNAME_AND_PRODUCTION.equals(production) || QNAME_AND_QNAME_PRODUCTION.equals(production))
     {
-      ExpressionAST secondExpression = (ExpressionAST) args[2];
-      if (args[0] instanceof BooleanAndExpressionAST)
-      {
-        // continue the current BooleanAndExpressionAST if we've already started one
-        BooleanAndExpressionAST startExpression = (BooleanAndExpressionAST) args[0];
-        return new BooleanAndExpressionAST(startExpression, secondExpression, LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
-      }
       ExpressionAST firstExpression = (ExpressionAST) args[0];
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
       return new BooleanAndExpressionAST(firstExpression, secondExpression, LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     throw badTypeList();

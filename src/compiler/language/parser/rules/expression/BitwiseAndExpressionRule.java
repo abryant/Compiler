@@ -51,14 +51,8 @@ public final class BitwiseAndExpressionRule extends Rule<ParseType>
     }
     if (AND_PRODUCTION.equals(production) || AND_QNAME_PRODUCTION.equals(production) || QNAME_AND_PRODUCTION.equals(production) || QNAME_AND_QNAME_PRODUCTION.equals(production))
     {
-      ExpressionAST secondExpression = (ExpressionAST) args[2];
-      if (args[0] instanceof BitwiseAndExpressionAST)
-      {
-        // continue the current BitwiseAndExpressionAST if we've already started one
-        BitwiseAndExpressionAST startExpression = (BitwiseAndExpressionAST) args[0];
-        return new BitwiseAndExpressionAST(startExpression, secondExpression, LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
-      }
       ExpressionAST firstExpression = (ExpressionAST) args[0];
+      ExpressionAST secondExpression = (ExpressionAST) args[2];
       return new BitwiseAndExpressionAST(firstExpression, secondExpression, LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], secondExpression.getLexicalPhrase()));
     }
     throw badTypeList();

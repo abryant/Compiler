@@ -57,7 +57,7 @@ public final class EqualityExpressionRule extends Rule<ParseType>
       return args[0];
     }
 
-    EqualityExpressionTypeAST separator = null;
+    EqualityExpressionTypeAST separator;
     if (EQUALS_PRODUCTION.equals(production) || EQUALS_QNAME_PRODUCTION.equals(production) || QNAME_EQUALS_PRODUCTION.equals(production) || QNAME_EQUALS_QNAME_PRODUCTION.equals(production))
     {
       separator = EqualityExpressionTypeAST.EQUAL;
@@ -70,16 +70,11 @@ public final class EqualityExpressionRule extends Rule<ParseType>
     {
       throw badTypeList();
     }
-    ExpressionAST newExpression = (ExpressionAST) args[2];
 
-    if (args[0] instanceof EqualityExpressionAST)
-    {
-      // continue the current EqualityExpressionAST if we've started one
-      EqualityExpressionAST startExpression = (EqualityExpressionAST) args[0];
-      return new EqualityExpressionAST(startExpression, separator, newExpression, LexicalPhrase.combine(startExpression.getLexicalPhrase(), (LexicalPhrase) args[1], newExpression.getLexicalPhrase()));
-    }
-    ExpressionAST firstExpression = (ExpressionAST) args[0];
-    return new EqualityExpressionAST(firstExpression, separator, newExpression, LexicalPhrase.combine(firstExpression.getLexicalPhrase(), (LexicalPhrase) args[1], newExpression.getLexicalPhrase()));
+    ExpressionAST leftExpression = (ExpressionAST) args[0];
+    ExpressionAST rightExpression = (ExpressionAST) args[2];
+
+    return new EqualityExpressionAST(leftExpression, separator, rightExpression, LexicalPhrase.combine(leftExpression.getLexicalPhrase(), (LexicalPhrase) args[1], rightExpression.getLexicalPhrase()));
   }
 
 }
