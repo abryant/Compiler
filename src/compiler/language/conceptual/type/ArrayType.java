@@ -40,4 +40,19 @@ public class ArrayType extends Type
     return isImmutable;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean canAssign(Type type)
+  {
+    if (!(type instanceof ArrayType))
+    {
+      return false;
+    }
+    ArrayType other = (ArrayType) type;
+    return (baseType == null ? other.baseType == null : baseType.equals(other.baseType)) &&
+           (isImmutable || !other.isImmutable);
+  }
+
 }

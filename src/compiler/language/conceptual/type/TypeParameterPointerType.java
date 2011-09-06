@@ -32,4 +32,13 @@ public final class TypeParameterPointerType extends PointerType
     return typeParameter;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean canAssign(Type type)
+  {
+    return typeParameter.canAssign(type);
+  }
+
 }

@@ -30,4 +30,31 @@ public class TupleType extends Type
     return types;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean canAssign(Type type)
+  {
+    if (!(type instanceof TupleType))
+    {
+      return types.length == 1 && types[0].canAssign(type);
+    }
+    TupleType other = (TupleType) type;
+    if (types.length != other.types.length)
+    {
+      return false;
+    }
+    for (int i = 0; i < types.length; i++)
+    {
+      if (!types[i].canAssign(other.types[i]))
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+
 }

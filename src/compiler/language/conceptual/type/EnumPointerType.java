@@ -33,4 +33,19 @@ public class EnumPointerType extends PointerType
     return enumType;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean canAssign(Type type)
+  {
+    if (!(type instanceof EnumPointerType))
+    {
+      return false;
+    }
+    EnumPointerType other = (EnumPointerType) type;
+    return enumType.equals(other.getEnumType()) &&
+           (isImmutable() || !other.isImmutable());
+  }
+
 }

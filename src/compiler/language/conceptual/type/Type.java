@@ -9,5 +9,10 @@ package compiler.language.conceptual.type;
  */
 public abstract class Type
 {
-  // abstract base class, no members (yet)
+  /**
+   * Checks whether the specified Type can be assigned to a variable of this Type.
+   * @param type - the type to check
+   * @return true if the specified other type can be assigned to this one, false otherwise
+   */
+  public abstract boolean canAssign(Type type);
 }

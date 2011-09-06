@@ -79,6 +79,81 @@ public class TypeParameter extends Resolvable
   }
 
   /**
+   * Checks whether the specified Type can be assigned to this TypeParameter.
+   * @param type - the Type to check
+   * @return true if the specified type can be assigned to this TypeParameter, false otherwise
+   */
+  public boolean canAssign(Type type)
+  {
+    if (type instanceof TypeParameterPointerType)
+    {
+      return canAssign(((TypeParameterPointerType) type).getTypeParameter());
+    }
+
+    for (PointerType superType : superTypes)
+    {
+      if (!superType.canAssign(type))
+      {
+        return false;
+      }
+    }
+    for (PointerType subType : subTypes)
+    {
+      if (!type.canAssign(subType))
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Checks whether the specified TypeParameter can be assigned to this TypeParameter.
+   * @param typeParameter - the TypeParameter to check
+   * @return true if all possible instantiations of the specified TypeParameter can be assigned to this TypeParameter
+   */
+  public boolean canAssign(TypeParameter typeParameter)
+  {
+    // for each super type, we must find at least one super type in typeParameter that we can assign to that super type
+    // this ensures that the specified typeParameter allows a subset of the types allowed by this TypeParameter.
+    for (PointerType superType : superTypes)
+    {
+      boolean found = false;
+      for (PointerType otherSuperType : typeParameter.getSuperTypes())
+      {
+        if (superType.canAssign(otherSuperType))
+        {
+          found = true;
+          break;
+        }
+      }
+      if (!found)
+      {
+        return false;
+      }
+    }
+    // similarly, for each sub type, we much find at least on sub type in typeParameter that we can assign that sub type to
+    // this also ensures that the specified typeParameter only allows a subset of the types this TypeParameter allows
+    for (PointerType subType : subTypes)
+    {
+      boolean found = false;
+      for (PointerType otherSubType : typeParameter.getSubTypes())
+      {
+        if (otherSubType.canAssign(subType))
+        {
+          found = true;
+          break;
+        }
+      }
+      if (!found)
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
    * {@inheritDoc}
    */
   @Override

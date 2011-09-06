@@ -62,4 +62,51 @@ public class ClassPointerType extends PointerType
     return nestedTypeArguments[nestedTypeArguments.length - 1];
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean canAssign(Type type)
+  {
+    // ClassPointerTypes and EnumPointerTypes are the only things which can be assigned to a ClassPointerType
+    if (type instanceof ClassPointerType || type instanceof EnumPointerType)
+    {
+      ClassPointerType currentPointerType;
+      boolean currentImmutability;
+
+      if (type instanceof ClassPointerType)
+      {
+        currentPointerType = (ClassPointerType) type;
+        if (!isImmutable() && currentPointerType.isImmutable())
+        {
+          return false;
+        }
+        currentImmutability = currentPointerType.isImmutable();
+      }
+      else // type instanceof EnumPointerType
+      {
+        EnumPointerType other = (EnumPointerType) type;
+        if (!isImmutable() && other.isImmutable())
+        {
+          return false;
+        }
+        currentPointerType = other.getEnumType().getBaseClass();
+        currentImmutability = other.isImmutable() || (currentPointerType != null && currentPointerType.isImmutable());
+      }
+
+      while (currentPointerType != null)
+      {
+        ConceptualClass currentClass = currentPointerType.getClassType();
+        if (currentClass.equals(getClassType()) && (isImmutable() || !currentImmutability))
+        {
+          return true;
+        }
+        currentPointerType = currentClass.getBaseClass();
+        currentImmutability = currentImmutability || currentPointerType.isImmutable();
+      }
+      return false;
+    }
+    return false;
+  }
+
 }
