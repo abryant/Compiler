@@ -908,7 +908,7 @@ public class LanguageTokenizer extends Tokenizer<ParseType>
       {
         return makeSymbolToken(ParseType.CARET_EQUALS, 2);
       }
-      if (secondChar == '|')
+      if (secondChar == '^')
       {
         int thirdChar = reader.read(2);
         if (thirdChar == '=')
